@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -52,21 +51,12 @@ fun SignInScreen(
             .safeDrawingPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Spacer(Modifier.weight(1f))
 
-        Text(
-            text = stringResource(R.string.welcome_to_kanban_boards),
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-        )
-
-        Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            Spacer(Modifier.weight(1f))
-
-            signInResultUiState.Handle(onSuccessSignIn)
-            credentialResultUiState.Show(viewModel)
-
-            Spacer(Modifier.weight(1f))
-
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Welcome!", style = MaterialTheme.typography.titleLarge)
+            Spacer(Modifier.height(16.dp))
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
@@ -75,7 +65,7 @@ fun SignInScreen(
                     }
                 }
             ) {
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(R.drawable.ic_google),
                         contentDescription = "Google"
@@ -84,7 +74,16 @@ fun SignInScreen(
                     Text(stringResource(R.string.sign_in_with_google))
                 }
             }
-            Spacer(Modifier.height(16.dp))
         }
+
+
+        Column(modifier = Modifier.weight(1f)) {
+            Spacer(Modifier.weight(1f))
+            signInResultUiState.Handle(onSuccessSignIn)
+            credentialResultUiState.Show(viewModel)
+            Spacer(Modifier.weight(1f))
+        }
+
+        Spacer(Modifier.height(16.dp))
     }
 }

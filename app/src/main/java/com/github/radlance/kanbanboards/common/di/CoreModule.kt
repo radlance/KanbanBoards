@@ -1,7 +1,11 @@
 package com.github.radlance.kanbanboards.common.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.github.radlance.kanbanboards.common.core.ManageResource
+import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.RemoteDataSource
@@ -46,4 +50,18 @@ class CoreModule {
     @Singleton
     @Provides
     fun provideDispatcherList(): DispatchersList = DispatchersList.Base()
+
+    @Singleton
+    @Provides
+    fun provideDataStore(context: Context): DataStore<Preferences> = context.datastore
+
+    @Singleton
+    @Provides
+    fun provideDataStoreManager(dataStore: DataStore<Preferences>): DataStoreManager {
+        return DataStoreManager.Base(dataStore)
+    }
+
+    companion object {
+        private val Context.datastore by preferencesDataStore("settings")
+    }
 }

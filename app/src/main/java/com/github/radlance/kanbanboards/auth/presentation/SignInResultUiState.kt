@@ -4,7 +4,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import java.io.Serializable
 
 interface SignInResultUiState : Serializable {
@@ -24,7 +23,11 @@ interface SignInResultUiState : Serializable {
 
         @Composable
         override fun Handle(navigateToHomeScreen: () -> Unit) {
-            Text(text = message, color = Color.Red, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 
