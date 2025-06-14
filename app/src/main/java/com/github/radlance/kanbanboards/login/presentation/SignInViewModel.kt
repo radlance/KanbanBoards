@@ -1,7 +1,7 @@
-package com.github.radlance.kanbanboards.auth.presentation
+package com.github.radlance.kanbanboards.login.presentation
 
-import com.github.radlance.kanbanboards.auth.domain.AuthRepository
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.login.domain.AuthRepository
+import com.github.radlance.kanbanboards.login.domain.AuthResult
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.DispatchersList
 import dagger.hilt.android.lifecycle.HiltViewModel

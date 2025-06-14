@@ -12,7 +12,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.github.radlance.kanbanboards.auth.presentation.SignInScreen
+import com.github.radlance.kanbanboards.login.presentation.SignInScreen
 
 @Composable
 fun NavGraph(
@@ -33,6 +33,7 @@ fun NavGraph(
                 onDelayFinished = { authorized.navigate(navHostController) }
             )
         }
+
         composable<SignIn> {
             SignInScreen(
                 onSuccessSignIn = {
@@ -47,7 +48,6 @@ fun NavGraph(
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(text = "home screen")
             }
-            }
         }
-
+    }
 }

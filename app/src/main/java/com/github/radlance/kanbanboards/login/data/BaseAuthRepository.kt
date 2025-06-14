@@ -1,7 +1,7 @@
-package com.github.radlance.kanbanboards.auth.data
+package com.github.radlance.kanbanboards.login.data
 
-import com.github.radlance.kanbanboards.auth.domain.AuthRepository
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.login.domain.AuthRepository
+import com.github.radlance.kanbanboards.login.domain.AuthResult
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.RemoteDataSource
 import javax.inject.Inject

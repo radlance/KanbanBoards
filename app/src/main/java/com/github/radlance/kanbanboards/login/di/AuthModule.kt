@@ -1,16 +1,16 @@
-package com.github.radlance.kanbanboards.auth.di
+package com.github.radlance.kanbanboards.login.di
 
 import androidx.lifecycle.SavedStateHandle
-import com.github.radlance.kanbanboards.auth.data.BaseAuthRepository
-import com.github.radlance.kanbanboards.auth.data.HandleAuthResult
-import com.github.radlance.kanbanboards.auth.domain.AuthRepository
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
-import com.github.radlance.kanbanboards.auth.presentation.CredentialResult
-import com.github.radlance.kanbanboards.auth.presentation.CredentialResultMapper
-import com.github.radlance.kanbanboards.auth.presentation.CredentialUiState
-import com.github.radlance.kanbanboards.auth.presentation.SignInResultMapper
-import com.github.radlance.kanbanboards.auth.presentation.SignInResultUiState
-import com.github.radlance.kanbanboards.auth.presentation.SignInViewModelWrapper
+import com.github.radlance.kanbanboards.login.data.BaseAuthRepository
+import com.github.radlance.kanbanboards.login.data.HandleAuthResult
+import com.github.radlance.kanbanboards.login.domain.AuthRepository
+import com.github.radlance.kanbanboards.login.domain.AuthResult
+import com.github.radlance.kanbanboards.login.presentation.CredentialResult
+import com.github.radlance.kanbanboards.login.presentation.CredentialResultMapper
+import com.github.radlance.kanbanboards.login.presentation.CredentialUiState
+import com.github.radlance.kanbanboards.login.presentation.SignInResultMapper
+import com.github.radlance.kanbanboards.login.presentation.SignInResultUiState
+import com.github.radlance.kanbanboards.login.presentation.SignInViewModelWrapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

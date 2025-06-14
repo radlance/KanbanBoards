@@ -6,15 +6,15 @@ interface AuthorizedUiState {
 
     fun navigate(navHostController: NavHostController)
 
-    object Authorized : AuthorizedUiState {
+    abstract class Abstract(private val destination: Destination) : AuthorizedUiState {
         override fun navigate(navHostController: NavHostController) {
-            navHostController.navigate(Home)
+            navHostController.navigate(destination) {
+                popUpTo<Splash> { inclusive = true }
+            }
         }
     }
 
-    object UnAuthorized : AuthorizedUiState {
-        override fun navigate(navHostController: NavHostController) {
-            navHostController.navigate(SignIn)
-        }
-    }
+    object Authorized : Abstract(Home)
+
+    object UnAuthorized : Abstract(SignIn)
 }

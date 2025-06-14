@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.auth.presentation
+package com.github.radlance.kanbanboards.login.presentation
 
 import android.app.Activity
 import androidx.credentials.CredentialManager

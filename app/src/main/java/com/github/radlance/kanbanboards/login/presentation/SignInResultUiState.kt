@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.auth.presentation
+package com.github.radlance.kanbanboards.login.presentation
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -9,26 +9,32 @@ import java.io.Serializable
 interface SignInResultUiState : Serializable {
 
     @Composable
-    fun Handle(navigateToHomeScreen: () -> Unit)
+    fun Show(navigateToHomeScreen: () -> Unit)
+
+    fun buttonEnabled(): Boolean
 
     object Success : SignInResultUiState {
 
         private fun readResolve(): Any = Success
 
         @Composable
-        override fun Handle(navigateToHomeScreen: () -> Unit) = navigateToHomeScreen()
+        override fun Show(navigateToHomeScreen: () -> Unit) = navigateToHomeScreen()
+
+        override fun buttonEnabled(): Boolean = true
     }
 
     data class Error(private val message: String) : SignInResultUiState {
 
         @Composable
-        override fun Handle(navigateToHomeScreen: () -> Unit) {
+        override fun Show(navigateToHomeScreen: () -> Unit) {
             Text(
                 text = message,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.titleMedium
             )
         }
+
+        override fun buttonEnabled(): Boolean = true
     }
 
     object Loading : SignInResultUiState {
@@ -36,7 +42,9 @@ interface SignInResultUiState : Serializable {
         private fun readResolve(): Any = Loading
 
         @Composable
-        override fun Handle(navigateToHomeScreen: () -> Unit) = CircularProgressIndicator()
+        override fun Show(navigateToHomeScreen: () -> Unit) = CircularProgressIndicator()
+
+        override fun buttonEnabled(): Boolean = false
     }
 
     object Initial : SignInResultUiState {
@@ -44,6 +52,8 @@ interface SignInResultUiState : Serializable {
         private fun readResolve(): Any = Initial
 
         @Composable
-        override fun Handle(navigateToHomeScreen: () -> Unit) = Unit
+        override fun Show(navigateToHomeScreen: () -> Unit) = Unit
+
+        override fun buttonEnabled(): Boolean = true
     }
 }

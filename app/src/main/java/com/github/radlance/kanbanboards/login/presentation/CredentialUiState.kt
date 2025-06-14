@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.auth.presentation
+package com.github.radlance.kanbanboards.login.presentation
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

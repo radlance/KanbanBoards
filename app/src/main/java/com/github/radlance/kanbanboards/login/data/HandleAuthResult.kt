@@ -1,7 +1,7 @@
-package com.github.radlance.kanbanboards.auth.data
+package com.github.radlance.kanbanboards.login.data
 
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.login.domain.AuthResult
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.domain.DomainException
 import javax.inject.Inject

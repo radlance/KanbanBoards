@@ -23,11 +23,12 @@ interface RemoteDataSource {
 
                 val uid = user!!.uid
                 val email = user.email!!
+                val name = user.displayName
 
                 provideDatabase.database()
                     .child("users")
                     .child(uid)
-                    .setValue(UserProfileEntity(email))
+                    .setValue(UserProfileEntity(email, name))
                     .await()
 
             } catch (e: Exception) {
@@ -38,5 +39,6 @@ interface RemoteDataSource {
 }
 
 private data class UserProfileEntity(
-    val email: String
+    val email: String,
+    val name: String?
 )

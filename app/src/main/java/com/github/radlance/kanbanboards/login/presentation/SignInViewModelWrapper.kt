@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.auth.presentation
+package com.github.radlance.kanbanboards.login.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.flow.StateFlow

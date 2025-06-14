@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.auth.presentation
+package com.github.radlance.kanbanboards.login.presentation
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
@@ -58,6 +58,7 @@ fun SignInScreen(
             Text(text = "Welcome!", style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(16.dp))
             OutlinedButton(
+                enabled = signInResultUiState.buttonEnabled(),
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     scope.launch {
@@ -79,7 +80,7 @@ fun SignInScreen(
 
         Column(modifier = Modifier.weight(1f)) {
             Spacer(Modifier.weight(1f))
-            signInResultUiState.Handle(onSuccessSignIn)
+            signInResultUiState.Show(onSuccessSignIn)
             credentialResultUiState.Show(viewModel)
             Spacer(Modifier.weight(1f))
         }
