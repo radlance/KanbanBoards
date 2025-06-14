@@ -71,6 +71,7 @@ dependencies {
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.analytics)
     implementation(libs.google.firebase.auth)
+    implementation(libs.google.firebase.database)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

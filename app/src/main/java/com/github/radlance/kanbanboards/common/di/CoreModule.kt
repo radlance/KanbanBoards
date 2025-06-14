@@ -3,9 +3,9 @@ package com.github.radlance.kanbanboards.common.di
 import android.content.Context
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.HandleError
+import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.RemoteDataSource
 import com.github.radlance.kanbanboards.common.presentation.DispatchersList
-import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class CommonModule {
+class CoreModule {
 
     @Singleton
     @Provides
@@ -31,16 +31,16 @@ class CommonModule {
 
     @Singleton
     @Provides
-    fun provideFirebase(): Firebase = Firebase
+    fun provideProvideDatabase(): ProvideDatabase = ProvideDatabase.Base()
 
     @Singleton
     @Provides
     fun provideRemoteDataSource(
-        firebase: Firebase,
-        handleError: HandleError
+        handleError: HandleError,
+        provideDatabase: ProvideDatabase
     ): RemoteDataSource = RemoteDataSource.FirebaseClient(
-        firebase = firebase,
-        handle = handleError
+        handle = handleError,
+        provideDatabase = provideDatabase
     )
 
     @Singleton

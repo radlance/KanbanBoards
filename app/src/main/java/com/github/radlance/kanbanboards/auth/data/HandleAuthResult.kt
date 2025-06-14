@@ -21,6 +21,8 @@ interface HandleAuthResult {
                 AuthResult.Success
             } catch (e: DomainException.NoInternetException) {
                 AuthResult.Error(managerResource.string(R.string.no_internet_connection))
+            } catch (e: DomainException.ServerUnavailableException) {
+                AuthResult.Error(e.message)
             }
         }
     }
