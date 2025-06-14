@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.ui.theme
+package com.github.radlance.kanbanboards.uikit
 
 import androidx.compose.ui.graphics.Color
 

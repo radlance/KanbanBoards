@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">KanbanBoards</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="error_enter_with_google">Error sign in with Google</string>
+    <string name="loading">loading…</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="welcome_to_kanban_boards">Welcome to Kanban Boards</string>
 </resources>
