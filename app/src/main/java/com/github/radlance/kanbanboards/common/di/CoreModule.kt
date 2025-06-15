@@ -10,6 +10,7 @@ import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.RemoteDataSource
 import com.github.radlance.kanbanboards.common.presentation.DispatchersList
+import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,6 +60,12 @@ class CoreModule {
     @Provides
     fun provideDataStoreManager(dataStore: DataStore<Preferences>): DataStoreManager {
         return DataStoreManager.Base(dataStore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRunAsync(dispatchersList: DispatchersList): RunAsync {
+        return RunAsync.Base(dispatchersList)
     }
 
     companion object {

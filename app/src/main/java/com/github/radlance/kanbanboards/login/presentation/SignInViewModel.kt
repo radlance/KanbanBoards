@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.login.presentation
 
+import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
+import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.login.domain.AuthRepository
 import com.github.radlance.kanbanboards.login.domain.AuthResult
-import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
-import com.github.radlance.kanbanboards.common.presentation.DispatchersList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -13,8 +13,8 @@ class SignInViewModel @Inject constructor(
     private val signInViewModelWrapper: SignInViewModelWrapper,
     private val signInMapper: AuthResult.Mapper<SignInResultUiState>,
     private val credentialMapper: CredentialResult.Mapper<CredentialUiState>,
-    dispatchersList: DispatchersList
-) : BaseViewModel(dispatchersList), SignInAction {
+    runAsync: RunAsync
+) : BaseViewModel(runAsync), SignInAction {
 
     val signInResultUiState = signInViewModelWrapper.signInState()
 

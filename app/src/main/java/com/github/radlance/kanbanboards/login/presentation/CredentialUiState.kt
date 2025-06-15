@@ -12,13 +12,13 @@ interface CredentialUiState : Serializable {
     @Composable
     fun Show(signInAction: SignInAction)
 
-    class Success(private val idToken: String) : CredentialUiState {
+    data class Success(private val idToken: String) : CredentialUiState {
 
         @Composable
         override fun Show(signInAction: SignInAction) = signInAction.signIn(idToken)
     }
 
-    class Error(private val manageResource: ManageResource) : CredentialUiState {
+    data class Error(private val manageResource: ManageResource) : CredentialUiState {
 
         @Composable
         override fun Show(signInAction: SignInAction) {

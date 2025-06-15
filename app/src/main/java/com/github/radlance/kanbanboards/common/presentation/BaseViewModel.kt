@@ -6,21 +6,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 abstract class BaseViewModel(
-    private val dispatchersList: DispatchersList
+    private val runAsync: RunAsync
 ) : ViewModel() {
 
     fun <T : Any> handle(background: suspend () -> T, ui: (T) -> Unit) {
-        viewModelScope.launch(dispatchersList.io()) {
-            val result = background.invoke()
-
-            withContext(dispatchersList.main()) {
-                ui.invoke(result)
-            }
-        }
+        runAsync.runAsync(background, ui, viewModelScope)
     }
 
     fun <T> Flow<T>.stateInViewModel(initialValue: T): StateFlow<T> {
