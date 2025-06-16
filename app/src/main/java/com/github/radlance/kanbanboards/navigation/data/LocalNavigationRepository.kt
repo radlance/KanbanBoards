@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class LocalNavigationRepository @Inject constructor(
     private val dataStoreManager: DataStoreManager
-): NavigationRepository {
+) : NavigationRepository {
 
     override fun authorizedStatus(): Flow<Boolean> = dataStoreManager.authorized()
 }

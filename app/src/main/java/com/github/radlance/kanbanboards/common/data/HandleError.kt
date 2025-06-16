@@ -9,7 +9,7 @@ interface HandleError {
 
     fun handle(e: Exception): DomainException
 
-    class Base @Inject constructor(): HandleError {
+    class Base @Inject constructor() : HandleError {
         override fun handle(e: Exception): DomainException {
             return if (e is UnknownHostException || e is ConnectException) {
                 DomainException.NoInternetException()

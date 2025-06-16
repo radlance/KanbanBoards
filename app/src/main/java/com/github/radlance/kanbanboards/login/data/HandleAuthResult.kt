@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.login.data
 
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.login.domain.AuthResult
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.domain.DomainException
+import com.github.radlance.kanbanboards.login.domain.AuthResult
 import javax.inject.Inject
 
 interface HandleAuthResult {

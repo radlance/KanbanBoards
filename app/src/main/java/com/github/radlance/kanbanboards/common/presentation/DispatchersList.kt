@@ -10,7 +10,7 @@ interface DispatchersList {
 
     fun main(): CoroutineDispatcher
 
-    class Base @Inject constructor(): DispatchersList {
+    class Base @Inject constructor() : DispatchersList {
 
         override fun io(): CoroutineDispatcher = Dispatchers.IO
 
