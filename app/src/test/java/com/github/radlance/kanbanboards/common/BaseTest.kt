@@ -1,5 +1,6 @@
 package com.github.radlance.kanbanboards.common
 
+import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,5 +31,15 @@ abstract class BaseTest {
             SharingStarted.Eagerly,
             initialValue
         )
+    }
+
+    protected class TestManageResource : ManageResource {
+
+        var stringCalledCount = 0
+
+        override fun string(id: Int): String {
+            stringCalledCount++
+            return "fake string resource"
+        }
     }
 }
