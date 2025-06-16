@@ -1,25 +1,16 @@
-package com.github.radlance.kanbanboards
+package com.github.radlance.kanbanboards.login.presentation
 
+import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.login.domain.AuthRepository
 import com.github.radlance.kanbanboards.login.domain.AuthResult
-import com.github.radlance.kanbanboards.login.presentation.CredentialResult
-import com.github.radlance.kanbanboards.login.presentation.CredentialResultMapper
-import com.github.radlance.kanbanboards.login.presentation.CredentialUiState
-import com.github.radlance.kanbanboards.login.presentation.SignInResultMapper
-import com.github.radlance.kanbanboards.login.presentation.SignInResultUiState
-import com.github.radlance.kanbanboards.login.presentation.SignInViewModel
-import com.github.radlance.kanbanboards.login.presentation.SignInViewModelWrapper
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class SignInViewModelTest {
+class SignInViewModelTest : BaseTest() {
 
     private lateinit var viewModelWrapper: TestSignInViewModelWrapper
     private lateinit var signInMapper: SignInResultMapper
@@ -145,17 +136,6 @@ class SignInViewModelTest {
         override fun credentialState(): StateFlow<CredentialUiState> {
             credentialStateCalledCount++
             return credentialUiState
-        }
-    }
-
-    private class TestRunAsync : RunAsync {
-        override fun <T : Any> runAsync(
-            background: suspend () -> T,
-            ui: (T) -> Unit,
-            scope: CoroutineScope
-        ) = runBlocking {
-            val result = background.invoke()
-            ui.invoke(result)
         }
     }
 
