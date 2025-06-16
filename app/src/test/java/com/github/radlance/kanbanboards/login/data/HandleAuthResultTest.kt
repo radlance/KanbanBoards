@@ -28,8 +28,9 @@ class HandleAuthResultTest : BaseTest() {
 
     @Test
     fun test_handle_no_connection(): Unit = runBlocking {
+        manageResource.makeExpectedAnswer("no internet connection")
         val result = handleAuthResult.handle { throw DomainException.NoInternetException() }
-        assertEquals(AuthResult.Error("fake string resource"), result)
+        assertEquals(AuthResult.Error("no internet connection"), result)
         assertEquals(1, manageResource.stringCalledCount)
     }
 

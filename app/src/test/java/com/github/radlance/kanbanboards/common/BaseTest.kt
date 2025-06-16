@@ -37,9 +37,15 @@ abstract class BaseTest {
 
         var stringCalledCount = 0
 
+        private var string = ""
+
+        fun makeExpectedAnswer(expected: String) {
+            string = expected
+        }
+
         override fun string(id: Int): String {
             stringCalledCount++
-            return "fake string resource"
+            return string
         }
     }
 }
