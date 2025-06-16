@@ -1,17 +1,15 @@
 package com.github.radlance.kanbanboards.login.data
 
-import com.github.radlance.kanbanboards.common.data.DataStoreManager
+import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.data.RemoteDataSource
 import com.github.radlance.kanbanboards.login.domain.AuthRepository
 import com.github.radlance.kanbanboards.login.domain.AuthResult
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class AuthRepositoryTest {
+class AuthRepositoryTest : BaseTest() {
 
     private lateinit var remoteDataSource: TestRemoteDataSource
     private lateinit var handleAuthResult: TestHandleAuthResult
@@ -88,23 +86,6 @@ class AuthRepositoryTest {
             } catch (e: Exception) {
                 AuthResult.Error(e.message ?: "")
             }
-        }
-    }
-
-    private class TestDataStoreManager : DataStoreManager {
-
-        private val authorizedCurrent = MutableStateFlow(false)
-        val saveAuthorizedCalledList = mutableListOf<Boolean>()
-        var authorizedCalledCount = 0
-
-        override suspend fun saveAuthorized(authorized: Boolean) {
-            saveAuthorizedCalledList.add(authorized)
-            authorizedCurrent.value = authorized
-        }
-
-        override fun authorized(): Flow<Boolean> {
-            authorizedCalledCount++
-            return authorizedCurrent
         }
     }
 }
