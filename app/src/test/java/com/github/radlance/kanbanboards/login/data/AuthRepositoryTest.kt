@@ -1,7 +1,6 @@
 package com.github.radlance.kanbanboards.login.data
 
 import com.github.radlance.kanbanboards.common.BaseTest
-import com.github.radlance.kanbanboards.common.data.RemoteDataSource
 import com.github.radlance.kanbanboards.login.domain.AuthRepository
 import com.github.radlance.kanbanboards.login.domain.AuthResult
 import kotlinx.coroutines.runBlocking
@@ -61,17 +60,6 @@ class AuthRepositoryTest : BaseTest() {
         assertEquals("1234567890", remoteDataSource.signInCalledList[0])
         assertEquals(1, handleAuthResult.handleCalledCount)
         assertEquals(0, dataStoreManager.saveAuthorizedCalledList.size)
-    }
-
-    private class TestRemoteDataSource : RemoteDataSource {
-
-        val signInCalledList = mutableListOf<String>()
-        var signInException: Exception? = null
-
-        override suspend fun signIn(userTokenId: String) {
-            signInCalledList.add(userTokenId)
-            signInException?.let { throw it }
-        }
     }
 
     private class TestHandleAuthResult : HandleAuthResult {

@@ -55,7 +55,10 @@ fun SignInScreen(
         Spacer(Modifier.weight(1f))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Welcome!", style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = stringResource(R.string.welcome),
+                style = MaterialTheme.typography.titleLarge
+            )
             Spacer(Modifier.height(16.dp))
             OutlinedButton(
                 enabled = signInResultUiState.buttonEnabled(),

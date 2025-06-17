@@ -10,6 +10,8 @@ interface RemoteDataSource {
 
     suspend fun signIn(userTokenId: String)
 
+    fun userExists(): Boolean
+
     class FirebaseClient @Inject constructor(
         private val handle: HandleError,
         private val provideDatabase: ProvideDatabase
@@ -35,6 +37,8 @@ interface RemoteDataSource {
                 throw handle.handle(e)
             }
         }
+
+        override fun userExists(): Boolean = Firebase.auth.currentUser != null
     }
 }
 

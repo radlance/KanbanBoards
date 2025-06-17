@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.common
 
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
+import com.github.radlance.kanbanboards.common.data.RemoteDataSource
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,6 +66,25 @@ abstract class BaseTest {
         override fun authorized(): Flow<Boolean> {
             authorizedCalledCount++
             return authorizedCurrent
+        }
+    }
+
+    protected class TestRemoteDataSource : RemoteDataSource {
+
+        val signInCalledList = mutableListOf<String>()
+        var signInException: Exception? = null
+
+        var userExistsCalledCount = 0
+        var userExists = false
+
+        override suspend fun signIn(userTokenId: String) {
+            signInCalledList.add(userTokenId)
+            signInException?.let { throw it }
+        }
+
+        override fun userExists(): Boolean {
+            userExistsCalledCount++
+            return userExists
         }
     }
 }

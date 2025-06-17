@@ -13,27 +13,49 @@ import org.junit.Test
 class NavigationRepositoryTest : BaseTest() {
 
     private lateinit var dataStoreManager: TestDataStoreManager
+    private lateinit var remoteDataSource: TestRemoteDataSource
+
     private lateinit var repository: NavigationRepository
 
     @Before
     fun setup() {
         dataStoreManager = TestDataStoreManager()
-        repository = LocalNavigationRepository(dataStoreManager = dataStoreManager)
+        remoteDataSource = TestRemoteDataSource()
+
+        repository = BaseNavigationRepository(
+            dataStoreManager = dataStoreManager,
+            remoteDataSource = remoteDataSource
+        )
     }
 
     @Test
-    fun test_collect_authorized_state() = runBlocking {
+    fun test_first_call() = runBlocking {
         assertEquals(0, dataStoreManager.authorizedCalledCount)
         val authorizedStatus = repository.authorizedStatus()
         assertFalse(authorizedStatus.first())
         assertEquals(1, dataStoreManager.authorizedCalledCount)
+        assertEquals(1, remoteDataSource.userExistsCalledCount)
+    }
 
-        dataStoreManager.saveAuthorized(true)
+    @Test
+    fun test_authorized_user_exists() = runBlocking {
+        remoteDataSource.userExists = true
+        val authorizedStatus = repository.authorizedStatus()
+
+        dataStoreManager.saveAuthorized(authorized = true)
         assertEquals(1, dataStoreManager.authorizedCalledCount)
+        assertEquals(1, remoteDataSource.userExistsCalledCount)
         assertTrue(authorizedStatus.first())
+    }
 
-        dataStoreManager.saveAuthorized(false)
+    @Test
+    fun test_authorized_user_not_exists() = runBlocking {
+        remoteDataSource.userExists = false
+        val authorizedStatus = repository.authorizedStatus()
+
+        dataStoreManager.saveAuthorized(authorized = true)
         assertEquals(1, dataStoreManager.authorizedCalledCount)
+        assertEquals(1, remoteDataSource.userExistsCalledCount)
         assertFalse(authorizedStatus.first())
     }
 }
