@@ -20,20 +20,14 @@ class ProfileViewModel @Inject constructor(
 ) : BaseViewModel(runAsync) {
 
     val profileUiState = profileViewModelWrapper.profileUiState().onStart {
-        loadProfile()
-    }.stateInViewModel(initialValue = ProfileUiState.Initial)
-
-    private fun loadProfile() {
         profileViewModelWrapper.saveProfileUiState(ProfileUiState.Loading)
 
-        handle(background = { profileRepository.profile() }) {
+        handle(background = profileRepository::profile) {
             profileViewModelWrapper.saveProfileUiState(it.map(profileMapper))
         }
-    }
+    }.stateInViewModel(initialValue = ProfileUiState.Initial)
 
     fun signOut() {
-        viewModelScope.launch(Dispatchers.IO) {
-            profileRepository.signOut()
-        }
+        handle(background = profileRepository::signOut, ui = {})
     }
 }
