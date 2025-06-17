@@ -1,11 +1,7 @@
 package com.github.radlance.kanbanboards.navigation.core
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -13,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.github.radlance.kanbanboards.login.presentation.SignInScreen
+import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 
 @Composable
 fun NavGraph(
@@ -37,17 +34,21 @@ fun NavGraph(
         composable<SignIn> {
             SignInScreen(
                 onSuccessSignIn = {
-                    navHostController.navigate(Home) {
+                    navHostController.navigate(Profile) {
                         popUpTo<SignIn> { inclusive = true }
                     }
                 }
             )
         }
 
-        composable<Home> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "home screen")
-            }
+        composable<Profile> {
+            ProfileScreen(
+                navigateToLoginScreen = {
+                    navHostController.navigate(SignIn) {
+                        popUpTo<SignIn>()
+                    }
+                }
+            )
         }
     }
 }

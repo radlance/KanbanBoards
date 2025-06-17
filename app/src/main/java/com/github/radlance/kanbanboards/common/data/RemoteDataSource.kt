@@ -12,6 +12,10 @@ interface RemoteDataSource {
 
     fun userExists(): Boolean
 
+    fun profile(): UserProfileEntity
+
+    fun signOut()
+
     class FirebaseClient @Inject constructor(
         private val handle: HandleError,
         private val provideDatabase: ProvideDatabase
@@ -39,10 +43,19 @@ interface RemoteDataSource {
         }
 
         override fun userExists(): Boolean = Firebase.auth.currentUser != null
+
+        override fun profile(): UserProfileEntity {
+            val currentUser = Firebase.auth.currentUser!!
+            return UserProfileEntity(currentUser.email!!, currentUser.displayName)
+        }
+
+        override fun signOut() {
+            Firebase.auth.signOut()
+        }
     }
 }
 
-private data class UserProfileEntity(
+data class UserProfileEntity(
     val email: String,
     val name: String?
 )

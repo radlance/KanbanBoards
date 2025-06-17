@@ -15,4 +15,4 @@ object SignIn : Destination
 
 @Keep
 @Serializable
-object Home : Destination
+object Profile : Destination

@@ -42,7 +42,7 @@ interface AuthModule {
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class ViewModelModule {
+class SignInViewModelModule {
 
     @ViewModelScoped
     @Provides

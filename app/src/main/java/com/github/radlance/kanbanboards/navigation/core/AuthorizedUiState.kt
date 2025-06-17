@@ -14,7 +14,7 @@ interface AuthorizedUiState {
         }
     }
 
-    data object Authorized : Abstract(Home)
+    data object Authorized : Abstract(Profile)
 
     data object Unauthorized : Abstract(SignIn)
 }

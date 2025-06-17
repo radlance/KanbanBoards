@@ -5,11 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -26,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 import kotlinx.coroutines.launch
 
 @Composable
@@ -44,14 +42,7 @@ fun SignInScreen(
     val signInResultUiState by viewModel.signInResultUiState.collectAsStateWithLifecycle()
     val credentialResultUiState by viewModel.credentialResultUiState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-            .safeDrawingPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
+    BaseColumn(modifier = modifier) {
         Spacer(Modifier.weight(1f))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

@@ -3,6 +3,7 @@ package com.github.radlance.kanbanboards.common
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.RemoteDataSource
+import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,11 +72,20 @@ abstract class BaseTest {
 
     protected class TestRemoteDataSource : RemoteDataSource {
 
+        private var userProfileEntity: UserProfileEntity? = null
+
         val signInCalledList = mutableListOf<String>()
         var signInException: Exception? = null
 
         var userExistsCalledCount = 0
         var userExists = false
+
+        var profileCalledCount = 0
+        var signOutCalledCount = 0
+
+        fun setUserData(name: String, email: String) {
+            userProfileEntity = UserProfileEntity(email, name)
+        }
 
         override suspend fun signIn(userTokenId: String) {
             signInCalledList.add(userTokenId)
@@ -85,6 +95,15 @@ abstract class BaseTest {
         override fun userExists(): Boolean {
             userExistsCalledCount++
             return userExists
+        }
+
+        override fun profile(): UserProfileEntity {
+            profileCalledCount++
+            return userProfileEntity!!
+        }
+
+        override fun signOut() {
+            signOutCalledCount++
         }
     }
 }

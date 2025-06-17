@@ -7,4 +7,7 @@
     <string name="welcome_to_kanban_boards">Welcome to Kanban Boards</string>
     <string name="kanban_boards">Kanban Boards</string>
     <string name="welcome">Welcome!</string>
+    <string name="my_name">My name: %1$s</string>
+    <string name="my_email">My email: %1$s</string>
+    <string name="sign_out">Sign out</string>
 </resources>

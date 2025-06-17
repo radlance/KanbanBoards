@@ -21,6 +21,7 @@ class SignInViewModel @Inject constructor(
     val credentialResultUiState = signInViewModelWrapper.credentialState()
 
     override fun signIn(userTokenId: String) {
+        signInViewModelWrapper.saveCredentialState(CredentialUiState.Initial)
         signInViewModelWrapper.saveSignInState(SignInResultUiState.Loading)
 
         handle(background = { authRepository.signIn(userTokenId) }) { result ->
