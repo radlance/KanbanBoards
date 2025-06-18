@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.profile.presentation
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -33,12 +32,12 @@ fun ProfileScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = "Profile")
+                    Text(text = stringResource(R.string.profile))
                 }
             )
         }
-    ) {
-        BaseColumn(modifier = modifier) {
+    ) { contentPadding ->
+        BaseColumn(modifier = modifier.padding(contentPadding)) {
             Spacer(Modifier.weight(1f))
             profileUiState.Show()
             Spacer(Modifier.weight(1f))

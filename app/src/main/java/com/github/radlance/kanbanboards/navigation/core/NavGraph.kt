@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
 import com.github.radlance.kanbanboards.login.presentation.SignInScreen
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 
@@ -34,11 +35,15 @@ fun NavGraph(
         composable<SignIn> {
             SignInScreen(
                 onSuccessSignIn = {
-                    navHostController.navigate(Profile) {
+                    navHostController.navigate(Boards) {
                         popUpTo<SignIn> { inclusive = true }
                     }
                 }
             )
+        }
+
+        composable<Boards> {
+            BoardsScreen()
         }
 
         composable<Profile> {

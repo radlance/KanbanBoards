@@ -10,4 +10,7 @@
     <string name="my_name">My name: %1$s</string>
     <string name="my_email">My email: %1$s</string>
     <string name="sign_out">Sign out</string>
+    <string name="error">Error</string>
+    <string name="profile">Profile</string>
+    <string name="boards">Kanban Boards</string>
 </resources>

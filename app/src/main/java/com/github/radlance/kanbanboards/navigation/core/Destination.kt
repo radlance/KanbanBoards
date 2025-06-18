@@ -15,4 +15,8 @@ object SignIn : Destination
 
 @Keep
 @Serializable
+object Boards : Destination
+
+@Keep
+@Serializable
 object Profile : Destination
