@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.profile.di
 
 import androidx.lifecycle.SavedStateHandle
+import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
 import com.github.radlance.kanbanboards.profile.data.RemoteProfileRepository
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
@@ -26,6 +27,9 @@ interface ProfileModule {
 
     @Binds
     fun provideProfileRepository(profileRepository: RemoteProfileRepository): ProfileRepository
+
+    @Binds
+    fun provideProfileRemoteDataSource(profileRemoteDataSource: ProfileRemoteDataSource.Base): ProfileRemoteDataSource
 }
 
 @Module

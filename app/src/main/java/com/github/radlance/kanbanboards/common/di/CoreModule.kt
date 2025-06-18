@@ -8,7 +8,6 @@ import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
-import com.github.radlance.kanbanboards.common.data.RemoteDataSource
 import com.github.radlance.kanbanboards.common.presentation.DispatchersList
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.Module
@@ -37,16 +36,6 @@ class CoreModule {
     @Singleton
     @Provides
     fun provideProvideDatabase(): ProvideDatabase = ProvideDatabase.Base()
-
-    @Singleton
-    @Provides
-    fun provideRemoteDataSource(
-        handleError: HandleError,
-        provideDatabase: ProvideDatabase
-    ): RemoteDataSource = RemoteDataSource.FirebaseClient(
-        handle = handleError,
-        provideDatabase = provideDatabase
-    )
 
     @Singleton
     @Provides

@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.navigation.di
 
 import com.github.radlance.kanbanboards.navigation.data.BaseNavigationRepository
+import com.github.radlance.kanbanboards.navigation.data.NavigationRemoteDataSource
 import com.github.radlance.kanbanboards.navigation.domain.NavigationRepository
 import dagger.Binds
 import dagger.Module
@@ -13,4 +14,7 @@ interface NavigationModule {
 
     @Binds
     fun provideNavigationRepository(navigationRepository: BaseNavigationRepository): NavigationRepository
+
+    @Binds
+    fun provideNavigationRemoteDataSource(navigationRemoteDataSource: NavigationRemoteDataSource.Base): NavigationRemoteDataSource
 }

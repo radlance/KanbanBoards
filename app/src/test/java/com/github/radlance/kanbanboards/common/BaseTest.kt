@@ -2,9 +2,11 @@ package com.github.radlance.kanbanboards.common
 
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
-import com.github.radlance.kanbanboards.common.data.RemoteDataSource
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
+import com.github.radlance.kanbanboards.login.data.AuthRemoteDataSource
+import com.github.radlance.kanbanboards.navigation.data.NavigationRemoteDataSource
+import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -70,7 +72,7 @@ abstract class BaseTest {
         }
     }
 
-    protected class TestRemoteDataSource : RemoteDataSource {
+    protected class TestRemoteDataSource : AuthRemoteDataSource, NavigationRemoteDataSource, ProfileRemoteDataSource {
 
         private var userProfileEntity: UserProfileEntity? = null
 

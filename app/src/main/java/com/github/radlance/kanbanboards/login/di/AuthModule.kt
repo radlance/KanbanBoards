@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.login.di
 
 import androidx.lifecycle.SavedStateHandle
+import com.github.radlance.kanbanboards.login.data.AuthRemoteDataSource
 import com.github.radlance.kanbanboards.login.data.BaseAuthRepository
 import com.github.radlance.kanbanboards.login.data.HandleAuthResult
 import com.github.radlance.kanbanboards.login.domain.AuthRepository
@@ -38,6 +39,9 @@ interface AuthModule {
     fun provideSignInResultMapper(
         signInResultMapper: SignInResultMapper
     ): AuthResult.Mapper<SignInResultUiState>
+
+    @Binds
+    fun provideAuthRemoteDataSource(authRemoteDataSource: AuthRemoteDataSource.Base): AuthRemoteDataSource
 }
 
 @Module

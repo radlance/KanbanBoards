@@ -1,25 +1,22 @@
-package com.github.radlance.kanbanboards.common.data
+package com.github.radlance.kanbanboards.login.data
 
+import com.github.radlance.kanbanboards.common.data.HandleError
+import com.github.radlance.kanbanboards.common.data.ProvideDatabase
+import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-interface RemoteDataSource {
+interface AuthRemoteDataSource {
 
     suspend fun signIn(userTokenId: String)
 
-    fun userExists(): Boolean
-
-    fun profile(): UserProfileEntity
-
-    fun signOut()
-
-    class FirebaseClient @Inject constructor(
+    class Base @Inject constructor(
         private val handle: HandleError,
         private val provideDatabase: ProvideDatabase
-    ) : RemoteDataSource {
+    ): AuthRemoteDataSource {
 
         override suspend fun signIn(userTokenId: String) {
             try {
@@ -41,21 +38,5 @@ interface RemoteDataSource {
                 throw handle.handle(e)
             }
         }
-
-        override fun userExists(): Boolean = Firebase.auth.currentUser != null
-
-        override fun profile(): UserProfileEntity {
-            val currentUser = Firebase.auth.currentUser!!
-            return UserProfileEntity(currentUser.email!!, currentUser.displayName)
-        }
-
-        override fun signOut() {
-            Firebase.auth.signOut()
-        }
     }
 }
-
-data class UserProfileEntity(
-    val email: String,
-    val name: String?
-)
