@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface BoardsRepository {
 
-    fun boards(): Flow<List<Board>>
+    fun boards(): Flow<BoardsResult>
 }

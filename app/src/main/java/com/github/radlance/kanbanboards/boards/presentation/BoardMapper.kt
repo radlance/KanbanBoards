@@ -10,8 +10,6 @@ class BoardMapper @Inject constructor(): Board.Mapper<BoardUi> {
     override fun mapOtherBoard(id: String, name: String, owner: String): BoardUi =
         BoardUi.Other(id, name, owner)
 
-    override fun mapError(message: String): BoardUi = BoardUi.Error(message)
-
     override fun mapNyOwnBoardTitle(): BoardUi = BoardUi.MyOwnBoardsTitle
 
     override fun mapNoBoardsOfMyOwnHint(): BoardUi = BoardUi.NoBoardsOfMyOwnHint

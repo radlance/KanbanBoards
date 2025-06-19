@@ -73,20 +73,6 @@ interface BoardUi {
         }
     }
 
-    data class Error(private val message: String) : BoardUi {
-
-        @Composable
-        override fun Show() {
-            Text(
-                text = stringResource(R.string.error),
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.error
-                )
-            )
-        }
-    }
-
     object MyOwnBoardsTitle : BoardUi {
 
         @Composable

@@ -3,6 +3,7 @@ package com.github.radlance.kanbanboards.boards.data
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.boards.domain.BoardsRepository
+import com.github.radlance.kanbanboards.boards.domain.BoardsResult
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -14,14 +15,14 @@ class RemoteBoardsRepository @Inject constructor(
     private val remoteDataSource: BoardsRemoteDataSource,
     private val manageResource: ManageResource
 ) : BoardsRepository {
-    override fun boards(): Flow<List<Board>> {
-        return combine(
+    override fun boards(): Flow<BoardsResult> {
+        return combine<List<Board>, List<Board>, BoardsResult>(
             remoteDataSource.myBoard().onStart { emit(emptyList()) },
             remoteDataSource.otherBoards().onStart { emit(emptyList()) }
         ) { myBoards, otherBoards ->
-            buildMergedBoardList(myBoards, otherBoards)
+            BoardsResult.Success(buildMergedBoardList(myBoards, otherBoards))
         }.catch { e ->
-            emit(listOf(Board.Error(e.message ?: manageResource.string(R.string.error))))
+            emit(BoardsResult.Error(e.message ?: manageResource.string(R.string.error)))
         }
     }
 

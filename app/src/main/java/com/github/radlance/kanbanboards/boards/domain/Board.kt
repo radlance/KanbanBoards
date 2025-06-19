@@ -10,8 +10,6 @@ interface Board {
 
         fun mapOtherBoard(id: String, name: String, owner: String): T
 
-        fun mapError(message: String): T
-
         fun mapNyOwnBoardTitle(): T
 
         fun mapNoBoardsOfMyOwnHint(): T
@@ -33,11 +31,6 @@ interface Board {
     ) : Board {
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapOtherBoard(id, name, owner)
-    }
-
-    data class Error(private val message: String) : Board {
-
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapError(message)
     }
 
     object MyOwnBoardsTitle : Board {

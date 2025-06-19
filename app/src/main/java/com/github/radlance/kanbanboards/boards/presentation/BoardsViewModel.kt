@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.boards.presentation
 
-import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.boards.domain.BoardsRepository
+import com.github.radlance.kanbanboards.boards.domain.BoardsResult
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,12 +11,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoardsViewModel @Inject constructor(
-    private val boardMapper: Board.Mapper<BoardUi>,
+    private val boardsMapper: BoardsResult.Mapper<BoardsUiState>,
     boardsRepository: BoardsRepository,
     runAsync: RunAsync
 ) : BaseViewModel(runAsync) {
 
-    val boards: StateFlow<List<BoardUi>> = boardsRepository.boards().map { boardList ->
-        boardList.map { it.map(boardMapper) }
-    }.stateInViewModel(initialValue = emptyList())
+    val boards: StateFlow<BoardsUiState> = boardsRepository.boards().map { boardsResult ->
+        boardsResult.map(boardsMapper)
+    }.stateInViewModel(initialValue = BoardsUiState.Loading)
 }

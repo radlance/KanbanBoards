@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.boards.presentation
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -25,7 +24,7 @@ fun BoardsScreen(
     modifier: Modifier = Modifier,
     viewModel: BoardsViewModel = hiltViewModel()
 ) {
-    val boards by viewModel.boards.collectAsStateWithLifecycle(initialValue = emptyList())
+    val boardsUiState by viewModel.boards.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -46,13 +45,7 @@ fun BoardsScreen(
                     .weight(1f)
                     .verticalScroll(rememberScrollState()),
             ) {
-                Column {
-                    boards.forEach {
-                        Crossfade(targetState = it) { boardUi ->
-                            boardUi.Show()
-                        }
-                    }
-                }
+                boardsUiState.Show()
             }
         }
     }
