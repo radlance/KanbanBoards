@@ -43,7 +43,6 @@ interface BoardsRemoteDataSource {
                 .catch { e -> throw IllegalStateException(e.message) }
         }
 
-        // fixme other boards fetch
         @OptIn(ExperimentalCoroutinesApi::class)
         override fun otherBoards(): Flow<List<Board>> {
             val myUserId = Firebase.auth.currentUser!!.uid
@@ -92,5 +91,5 @@ private data class BoardEntity(
 
 private data class OtherBoardEntity(
     val memberId: String = "",
-    val boardId: String
+    val boardId: String  = ""
 )
