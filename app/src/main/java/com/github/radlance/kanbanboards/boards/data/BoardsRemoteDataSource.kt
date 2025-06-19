@@ -11,8 +11,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 interface BoardsRemoteDataSource {
@@ -32,15 +33,13 @@ interface BoardsRemoteDataSource {
                 .orderByChild("owner")
                 .equalTo(myUserId)
 
-            return query.snapshots
-                .map { snapshot ->
-                    snapshot.children.mapNotNull {
-                        val key = it.key ?: return@mapNotNull null
-                        val entity = it.getValue<BoardEntity>() ?: return@mapNotNull null
-                        Board.My(key, entity.name)
-                    }
+            return query.snapshots.map { snapshot ->
+                snapshot.children.mapNotNull {
+                    val key = it.key ?: return@mapNotNull null
+                    val entity = it.getValue<BoardEntity>() ?: return@mapNotNull null
+                    Board.My(key, entity.name)
                 }
-                .catch { e -> throw IllegalStateException(e.message) }
+            }.catch { e -> throw IllegalStateException(e.message) }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -51,35 +50,32 @@ interface BoardsRemoteDataSource {
                 .orderByChild("memberId")
                 .equalTo(myUserId)
 
-            return membersQuery.snapshots
-                .flatMapLatest { membersSnapshot ->
-                    val boardIds = membersSnapshot.children.mapNotNull {
-                        it.getValue<OtherBoardEntity>()?.boardId
-                    }
-
-                    if (boardIds.isEmpty()) {
-                        flow { emit(emptyList()) }
-                    } else {
-                        combine(
-                            boardIds.map { boardId ->
-                                provideDatabase.database()
-                                    .child("boards")
-                                    .child(boardId)
-                                    .snapshots
-                                    .map { boardSnapshot ->
-                                        boardSnapshot.getValue<BoardEntity>()?.let { entity ->
-                                            Board.Other(
-                                                id = boardSnapshot.key ?: "",
-                                                name = entity.name,
-                                                owner = entity.owner
-                                            )
-                                        }
-                                    }
-                            }
-                        ) { boards -> boards.filterNotNull() }
-                    }
+            return membersQuery.snapshots.flatMapLatest { membersSnapshot ->
+                val boardIds = membersSnapshot.children.mapNotNull {
+                    it.getValue<OtherBoardEntity>()?.boardId
                 }
-                .catch { e -> throw IllegalStateException(e.message) }
+
+                if (boardIds.isEmpty()) {
+                    flowOf(emptyList())
+                } else {
+                    combine(
+                        boardIds.map { boardId ->
+                            provideDatabase.database()
+                                .child("boards")
+                                .child(boardId)
+                                .snapshots.mapNotNull { boardSnapshot ->
+                                    boardSnapshot.getValue<BoardEntity>()?.let { entity ->
+                                        Board.Other(
+                                            id = boardSnapshot.key ?: "",
+                                            name = entity.name,
+                                            owner = entity.owner
+                                        )
+                                    }
+                                }
+                        }
+                    ) { boards: Array<Board> -> boards.toList() }
+                }
+            }.catch { e -> throw IllegalStateException(e.message) }
         }
     }
 }

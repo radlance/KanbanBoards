@@ -20,10 +20,9 @@ class RemoteBoardsRepository @Inject constructor(
             remoteDataSource.otherBoards().onStart { emit(emptyList()) }
         ) { myBoards, otherBoards ->
             buildMergedBoardList(myBoards, otherBoards)
+        }.catch { e ->
+            emit(listOf(Board.Error(e.message ?: manageResource.string(R.string.error))))
         }
-            .catch { e ->
-                emit(listOf(Board.Error(e.message ?: manageResource.string(R.string.error))))
-            }
     }
 
     private fun buildMergedBoardList(

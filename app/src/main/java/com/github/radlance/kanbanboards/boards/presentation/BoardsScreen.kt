@@ -46,9 +46,11 @@ fun BoardsScreen(
                     .weight(1f)
                     .verticalScroll(rememberScrollState()),
             ) {
-                Crossfade(targetState = boards) { state ->
-                    Column {
-                        state.forEach { it.Show() }
+                Column {
+                    boards.forEach {
+                        Crossfade(targetState = it) { boardUi ->
+                            boardUi.Show()
+                        }
                     }
                 }
             }
