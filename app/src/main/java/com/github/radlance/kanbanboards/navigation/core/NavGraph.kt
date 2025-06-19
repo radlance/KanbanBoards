@@ -43,7 +43,10 @@ fun NavGraph(
         }
 
         composable<Boards> {
-            BoardsScreen()
+            BoardsScreen(
+                navigateToProfile = { navHostController.navigate(Profile) },
+                navigateToBoardCreation = {}
+            )
         }
 
         composable<Profile> {
@@ -52,7 +55,8 @@ fun NavGraph(
                     navHostController.navigate(SignIn) {
                         popUpTo<SignIn>()
                     }
-                }
+                },
+                navigateUp = navHostController::navigateUp
             )
         }
     }

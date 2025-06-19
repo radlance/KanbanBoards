@@ -17,4 +17,7 @@
     <string name="my_boards_hint">You have not created board yet. Go ahead and make one</string>
     <string name="boards_you_are_added_to">Boards you are added to</string>
     <string name="other_boards_hint">Other users can add you to their boards. Check your email in profile settings</string>
+    <string name="account_icon">Account icon</string>
+    <string name="navigate_up">navigate up</string>
+    <string name="create">Create</string>
 </resources>
