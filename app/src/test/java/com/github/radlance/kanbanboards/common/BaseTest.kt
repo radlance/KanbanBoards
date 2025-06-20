@@ -1,5 +1,7 @@
 package com.github.radlance.kanbanboards.common
 
+import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
+import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
@@ -13,6 +15,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 
@@ -72,7 +76,10 @@ abstract class BaseTest {
         }
     }
 
-    protected class TestRemoteDataSource : AuthRemoteDataSource, NavigationRemoteDataSource, ProfileRemoteDataSource {
+    protected class TestRemoteDataSource : AuthRemoteDataSource,
+        NavigationRemoteDataSource,
+        ProfileRemoteDataSource,
+        BoardsRemoteDataSource {
 
         private var userProfileEntity: UserProfileEntity? = null
 
@@ -85,8 +92,28 @@ abstract class BaseTest {
         var profileCalledCount = 0
         var signOutCalledCount = 0
 
+        var boardsCalledCount = 0
+        private val boards = MutableStateFlow<List<Board>>(emptyList())
+
+        var otherBoardsCalledCount = 0
+        private val otherBoards = MutableStateFlow<List<Board>>(emptyList())
+
+        private var anyBoardsException: Exception? = null
+
         fun setUserData(name: String, email: String) {
             userProfileEntity = UserProfileEntity(email, name)
+        }
+
+        fun makeExpectedMyBoards(myBoards: List<Board>) {
+            this.boards.value = myBoards
+        }
+
+        fun makeExpectedOtherBoards(otherBoards: List<Board>) {
+            this.otherBoards.value = otherBoards
+        }
+
+        fun makeExpectedBoardsException(expected: Exception) {
+            anyBoardsException = expected
         }
 
         override suspend fun signIn(userTokenId: String) {
@@ -106,6 +133,18 @@ abstract class BaseTest {
 
         override fun signOut() {
             signOutCalledCount++
+        }
+
+        override fun myBoard(): Flow<List<Board>> = flow {
+            boardsCalledCount++
+            anyBoardsException?.let { throw it }
+            emitAll(boards)
+        }
+
+        override fun otherBoards(): Flow<List<Board>> = flow {
+            otherBoardsCalledCount++
+            anyBoardsException?.let { throw it }
+            emitAll(otherBoards)
         }
     }
 }

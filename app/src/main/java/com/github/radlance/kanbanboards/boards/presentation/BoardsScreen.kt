@@ -61,7 +61,7 @@ fun BoardsScreen(
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
-                boardsUiState.Show()
+                boardsUiState.Show(this@Column)
             }
 
             Button(onClick = navigateToBoardCreation, modifier = Modifier.fillMaxWidth()) {

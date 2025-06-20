@@ -33,22 +33,22 @@ interface Board {
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapOtherBoard(id, name, owner)
     }
 
-    object MyOwnBoardsTitle : Board {
+    data object MyOwnBoardsTitle : Board {
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapNyOwnBoardTitle()
     }
 
-    object NoBoardsOfMyOwnHint : Board {
+    data object NoBoardsOfMyOwnHint : Board {
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapNoBoardsOfMyOwnHint()
     }
 
-    object OtherBoardsTitle : Board {
+    data object OtherBoardsTitle : Board {
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapOtherBoardsTitle()
     }
 
-    object HowToBeAddedToBoardHint : Board {
+    data object HowToBeAddedToBoardHint : Board {
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapHowToBeAddedToBoardHint()
     }

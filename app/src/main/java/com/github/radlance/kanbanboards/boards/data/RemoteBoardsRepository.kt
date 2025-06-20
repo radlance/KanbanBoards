@@ -8,7 +8,6 @@ import com.github.radlance.kanbanboards.common.core.ManageResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 class RemoteBoardsRepository @Inject constructor(
@@ -17,8 +16,8 @@ class RemoteBoardsRepository @Inject constructor(
 ) : BoardsRepository {
     override fun boards(): Flow<BoardsResult> {
         return combine<List<Board>, List<Board>, BoardsResult>(
-            remoteDataSource.myBoard().onStart { emit(emptyList()) },
-            remoteDataSource.otherBoards().onStart { emit(emptyList()) }
+            remoteDataSource.myBoard(),
+            remoteDataSource.otherBoards()
         ) { myBoards, otherBoards ->
             BoardsResult.Success(buildMergedBoardList(myBoards, otherBoards))
         }.catch { e ->
