@@ -32,14 +32,22 @@ class BoardsViewModelTest : BaseTest() {
             BoardsResult.Success(
                 boards = listOf(
                     Board.My(id = "test id", name = "test name"),
-                    Board.Other(id = "test id", name = "test name", owner = "test owner")
+                    Board.Other(id = "test id", name = "test name", owner = "test owner"),
+                    Board.MyOwnBoardsTitle,
+                    Board.NoBoardsOfMyOwnHint,
+                    Board.OtherBoardsTitle,
+                    Board.HowToBeAddedToBoardHint
                 )
             )
         )
         val expected = BoardsUiState.Success(
             boards = listOf(
                 BoardUi.My(id = "test id", name = "test name"),
-                BoardUi.Other(id = "test id", name = "test name", owner = "test owner")
+                BoardUi.Other(id = "test id", name = "test name", owner = "test owner"),
+                BoardUi.MyOwnBoardsTitle,
+                BoardUi.NoBoardsOfMyOwnHint,
+                BoardUi.OtherBoardsTitle,
+                BoardUi.HowToBeAddedToBoardHint
             )
         )
 
