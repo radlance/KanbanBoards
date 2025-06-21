@@ -11,7 +11,7 @@ interface ProvideDatabase {
     class Base : ProvideDatabase {
 
         init {
-            Firebase.database(DATABASE_URL).setPersistenceEnabled(true)
+            Firebase.database(DATABASE_URL).setPersistenceEnabled(false)
         }
 
         override fun database(): DatabaseReference {

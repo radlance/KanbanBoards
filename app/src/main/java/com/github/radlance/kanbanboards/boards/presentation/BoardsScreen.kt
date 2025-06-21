@@ -1,13 +1,8 @@
 package com.github.radlance.kanbanboards.boards.presentation
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -55,18 +50,10 @@ fun BoardsScreen(
             horizontalAlignment = Alignment.Start,
             modifier = modifier.padding(contentPadding)
         ) {
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                boardsUiState.Show(this@Column)
-            }
-
-            Button(onClick = navigateToBoardCreation, modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(R.string.create))
-            }
+            boardsUiState.Show(
+                columnScope = this@BaseColumn,
+                navigateToBoardCreation = navigateToBoardCreation
+            )
         }
     }
 }
