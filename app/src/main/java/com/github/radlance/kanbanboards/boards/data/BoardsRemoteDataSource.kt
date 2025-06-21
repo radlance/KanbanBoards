@@ -3,6 +3,7 @@ package com.github.radlance.kanbanboards.boards.data
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.getValue
 import com.google.firebase.database.snapshots
 import com.google.firebase.ktx.Firebase
@@ -18,32 +19,33 @@ import javax.inject.Inject
 
 interface BoardsRemoteDataSource {
 
-    fun myBoard(): Flow<List<Board>>
+    fun myBoard(): Flow<List<Board.Storage>>
 
-    fun otherBoards(): Flow<List<Board>>
+    fun otherBoards(): Flow<List<Board.Storage>>
 
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase
     ) : BoardsRemoteDataSource {
 
-        override fun myBoard(): Flow<List<Board>> {
+        override fun myBoard(): Flow<List<Board.Storage>> {
             val myUserId = Firebase.auth.currentUser!!.uid
             val query = provideDatabase.database()
                 .child("boards")
                 .orderByChild("owner")
                 .equalTo(myUserId)
 
-            return query.snapshots.map { snapshot ->
+            return query.snapshots.map<DataSnapshot, List<Board.Storage>> { snapshot ->
                 snapshot.children.mapNotNull {
                     val key = it.key ?: return@mapNotNull null
                     val entity = it.getValue<BoardEntity>() ?: return@mapNotNull null
                     Board.My(key, entity.name)
                 }
+
             }.catch { e -> throw IllegalStateException(e.message) }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
-        override fun otherBoards(): Flow<List<Board>> {
+        override fun otherBoards(): Flow<List<Board.Storage>> {
             val myUserId = Firebase.auth.currentUser!!.uid
             val membersQuery = provideDatabase.database()
                 .child("boards-members")
@@ -56,7 +58,7 @@ interface BoardsRemoteDataSource {
                 }
 
                 if (boardIds.isEmpty()) {
-                    flowOf(emptyList())
+                    flowOf<List<Board.Storage>>(emptyList())
                 } else {
                     combine(
                         boardIds.map { boardId ->
@@ -73,19 +75,9 @@ interface BoardsRemoteDataSource {
                                     }
                                 }
                         }
-                    ) { boards: Array<Board> -> boards.toList() }
+                    ) { boards: Array<Board.Storage> -> boards.toList() }
                 }
             }.catch { e -> throw IllegalStateException(e.message) }
         }
     }
 }
-
-private data class BoardEntity(
-    val name: String = "",
-    val owner: String = ""
-)
-
-private data class OtherBoardEntity(
-    val memberId: String = "",
-    val boardId: String  = ""
-)

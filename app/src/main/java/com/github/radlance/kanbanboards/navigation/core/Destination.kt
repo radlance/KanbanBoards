@@ -20,3 +20,11 @@ object Boards : Destination
 @Keep
 @Serializable
 object Profile : Destination
+
+@Keep
+@Serializable
+object CreateBoard : Destination
+
+@Keep
+@Serializable
+object Board : Destination

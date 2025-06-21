@@ -19,7 +19,14 @@ interface Board {
         fun mapHowToBeAddedToBoardHint(): T
     }
 
-    data class My(private val id: String, private val name: String) : Board {
+    interface Storage : Board {
+
+        fun compareName(name: String): Boolean
+    }
+
+    data class My(private val id: String, private val name: String) : Storage {
+
+        override fun compareName(name: String): Boolean = this.name.equals(name, ignoreCase = true)
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapMyBoard(id, name)
     }
@@ -28,7 +35,9 @@ interface Board {
         private val id: String,
         private val name: String,
         private val owner: String
-    ) : Board {
+    ) : Storage {
+
+        override fun compareName(name: String): Boolean = this.name.equals(name, ignoreCase = true)
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapOtherBoard(id, name, owner)
     }

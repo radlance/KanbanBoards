@@ -20,4 +20,9 @@
     <string name="account_icon">Account icon</string>
     <string name="navigate_up">navigate up</string>
     <string name="create">Create</string>
+    <string name="create_board">Create Board</string>
+    <string name="at_least_3_symbol">At least 3 symbol</string>
+    <string name="board_name">Board name</string>
+    <string name="board_with_this_already_exists">Board with this name already exists</string>
+    <string name="create_board_error">Creating board error</string>
 </resources>

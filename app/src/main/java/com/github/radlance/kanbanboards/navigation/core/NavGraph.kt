@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
+import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardsScreen
 import com.github.radlance.kanbanboards.login.presentation.SignInScreen
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 
@@ -45,7 +46,7 @@ fun NavGraph(
         composable<Boards> {
             BoardsScreen(
                 navigateToProfile = { navHostController.navigate(Profile) },
-                navigateToBoardCreation = {}
+                navigateToBoardCreation = { navHostController.navigate(CreateBoard) }
             )
         }
 
@@ -58,6 +59,19 @@ fun NavGraph(
                 },
                 navigateUp = navHostController::navigateUp
             )
+        }
+
+        composable<CreateBoard> {
+            CreateBoardsScreen(
+                navigateUp = navHostController::navigateUp,
+                navigateToBoardScreen = {
+                    navHostController.navigate(Board) { popUpTo<Boards>() }
+                }
+            )
+        }
+
+        composable<Board> {
+
         }
     }
 }
