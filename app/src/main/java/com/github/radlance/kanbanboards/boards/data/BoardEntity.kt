@@ -9,3 +9,9 @@ data class OtherBoardEntity(
     val memberId: String = "",
     val boardId: String  = ""
 )
+
+fun main() {
+    for (i in 1..<5) {
+        println(i)
+    }
+}

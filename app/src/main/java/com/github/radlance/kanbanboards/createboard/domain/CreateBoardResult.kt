@@ -10,7 +10,7 @@ interface CreateBoardResult {
 
         fun mapError(message: String): T
 
-        fun mapAlreadyExists(): T
+        fun mapAlreadyExists(message: String): T
     }
 
     object Success : CreateBoardResult {
@@ -23,8 +23,8 @@ interface CreateBoardResult {
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapError(message)
     }
 
-    object AlreadyExists : CreateBoardResult {
+    data class AlreadyExists(private val message: String) : CreateBoardResult {
 
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapAlreadyExists()
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapAlreadyExists(message)
     }
 }

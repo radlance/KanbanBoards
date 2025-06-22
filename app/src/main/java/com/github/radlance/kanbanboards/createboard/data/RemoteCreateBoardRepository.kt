@@ -14,13 +14,11 @@ class RemoteCreateBoardRepository @Inject constructor(
     private val manageResource: ManageResource
 ) : CreateBoardRepository {
 
-    override suspend fun checkBoard(name: String): Boolean {
-        return boardsRemoteDataSource.myBoard().first().any { it.compareName(name) }
-    }
-
     override suspend fun createBoard(name: String): CreateBoardResult {
         return if (boardsRemoteDataSource.myBoard().first().any { it.compareName(name) }) {
-            CreateBoardResult.AlreadyExists
+            CreateBoardResult.AlreadyExists(
+                manageResource.string(R.string.board_with_this_already_exists)
+            )
         } else try {
             createBoardsRemoteDataSource.createBoard(name)
             CreateBoardResult.Success

@@ -93,10 +93,10 @@ abstract class BaseTest {
         var signOutCalledCount = 0
 
         var boardsCalledCount = 0
-        private val boards = MutableStateFlow<List<Board>>(emptyList())
+        private val boards = MutableStateFlow<List<Board.Storage>>(emptyList())
 
         var otherBoardsCalledCount = 0
-        private val otherBoards = MutableStateFlow<List<Board>>(emptyList())
+        private val otherBoards = MutableStateFlow<List<Board.Storage>>(emptyList())
 
         private var anyBoardsException: Exception? = null
 
@@ -104,11 +104,11 @@ abstract class BaseTest {
             userProfileEntity = UserProfileEntity(email, name)
         }
 
-        fun makeExpectedMyBoards(myBoards: List<Board>) {
+        fun makeExpectedMyBoards(myBoards: List<Board.Storage>) {
             this.boards.value = myBoards
         }
 
-        fun makeExpectedOtherBoards(otherBoards: List<Board>) {
+        fun makeExpectedOtherBoards(otherBoards: List<Board.Storage>) {
             this.otherBoards.value = otherBoards
         }
 
@@ -135,13 +135,13 @@ abstract class BaseTest {
             signOutCalledCount++
         }
 
-        override fun myBoard(): Flow<List<Board>> = flow {
+        override fun myBoard(): Flow<List<Board.Storage>> = flow {
             boardsCalledCount++
             anyBoardsException?.let { throw it }
             emitAll(boards)
         }
 
-        override fun otherBoards(): Flow<List<Board>> = flow {
+        override fun otherBoards(): Flow<List<Board.Storage>> = flow {
             otherBoardsCalledCount++
             anyBoardsException?.let { throw it }
             emitAll(otherBoards)
