@@ -8,13 +8,13 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-interface CreateBoardsRemoteDataSource {
+interface CreateBoardRemoteDataSource {
 
     suspend fun createBoard(name: String): BoardInfo
 
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase
-    ) : CreateBoardsRemoteDataSource {
+    ) : CreateBoardRemoteDataSource {
 
         override suspend fun createBoard(name: String): BoardInfo {
             val myUid = Firebase.auth.currentUser!!.uid

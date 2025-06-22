@@ -26,7 +26,7 @@ interface Board {
 
     data class My(private val id: String, private val name: String) : Storage {
 
-        override fun compareName(name: String): Boolean = this.name.equals(name, ignoreCase = true)
+        override fun compareName(name: String): Boolean = this.name == name
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapMyBoard(id, name)
     }
@@ -37,7 +37,7 @@ interface Board {
         private val owner: String
     ) : Storage {
 
-        override fun compareName(name: String): Boolean = this.name.equals(name, ignoreCase = true)
+        override fun compareName(name: String): Boolean = this.name == name
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapOtherBoard(id, name, owner)
     }

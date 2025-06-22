@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class RemoteCreateBoardRepository @Inject constructor(
     private val boardsRemoteDataSource: BoardsRemoteDataSource,
-    private val createBoardsRemoteDataSource: CreateBoardsRemoteDataSource,
+    private val createBoardRemoteDataSource: CreateBoardRemoteDataSource,
     private val manageResource: ManageResource
 ) : CreateBoardRepository {
 
@@ -20,7 +20,7 @@ class RemoteCreateBoardRepository @Inject constructor(
                 manageResource.string(R.string.board_with_this_already_exists)
             )
         } else try {
-            createBoardsRemoteDataSource.createBoard(name)
+            createBoardRemoteDataSource.createBoard(name)
             CreateBoardResult.Success
         } catch (e: Exception) {
             CreateBoardResult.Error(

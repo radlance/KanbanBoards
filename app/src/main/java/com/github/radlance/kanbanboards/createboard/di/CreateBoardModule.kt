@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.createboard.di
 
 import androidx.lifecycle.SavedStateHandle
-import com.github.radlance.kanbanboards.createboard.data.CreateBoardsRemoteDataSource
+import com.github.radlance.kanbanboards.createboard.data.CreateBoardRemoteDataSource
 import com.github.radlance.kanbanboards.createboard.data.RemoteCreateBoardRepository
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardResult
@@ -27,7 +27,7 @@ interface CreateBoardModule {
     fun provideCreateBoardResultMapper(createBoardResultMapper: CreateBoardResultMapper): CreateBoardResult.Mapper<CreateBoardUiState>
 
     @Binds
-    fun provideCreateBoardsClodDataSource(createBoardsRemoteDataSource: CreateBoardsRemoteDataSource.Base): CreateBoardsRemoteDataSource
+    fun provideCreateBoardsClodDataSource(createBoardRemoteDataSource: CreateBoardRemoteDataSource.Base): CreateBoardRemoteDataSource
 }
 
 @Module

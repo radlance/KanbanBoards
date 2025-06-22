@@ -3,9 +3,11 @@ package com.github.radlance.kanbanboards.common
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource
+import com.github.radlance.kanbanboards.common.data.BoardInfo
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
+import com.github.radlance.kanbanboards.createboard.data.CreateBoardRemoteDataSource
 import com.github.radlance.kanbanboards.login.data.AuthRemoteDataSource
 import com.github.radlance.kanbanboards.navigation.data.NavigationRemoteDataSource
 import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
@@ -79,7 +81,8 @@ abstract class BaseTest {
     protected class TestRemoteDataSource : AuthRemoteDataSource,
         NavigationRemoteDataSource,
         ProfileRemoteDataSource,
-        BoardsRemoteDataSource {
+        BoardsRemoteDataSource,
+        CreateBoardRemoteDataSource {
 
         private var userProfileEntity: UserProfileEntity? = null
 
@@ -100,6 +103,10 @@ abstract class BaseTest {
 
         private var anyBoardsException: Exception? = null
 
+        var createBoardCalledCount = 0
+
+        private var createBoardException: Exception? = null
+
         fun setUserData(name: String, email: String) {
             userProfileEntity = UserProfileEntity(email, name)
         }
@@ -114,6 +121,10 @@ abstract class BaseTest {
 
         fun makeExpectedBoardsException(expected: Exception) {
             anyBoardsException = expected
+        }
+
+        fun makeExpectedCreateBoardException(expected: Exception) {
+            createBoardException = expected
         }
 
         override suspend fun signIn(userTokenId: String) {
@@ -145,6 +156,17 @@ abstract class BaseTest {
             otherBoardsCalledCount++
             anyBoardsException?.let { throw it }
             emitAll(otherBoards)
+        }
+
+        override suspend fun createBoard(name: String): BoardInfo {
+            createBoardCalledCount++
+            createBoardException?.let { throw it }
+            return BoardInfo(
+                id = "",
+                name = name,
+                isMyBoard = true,
+                ownerId = ""
+            )
         }
     }
 }
