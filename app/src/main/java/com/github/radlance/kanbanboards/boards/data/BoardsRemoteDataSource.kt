@@ -58,7 +58,7 @@ interface BoardsRemoteDataSource {
                 }
 
                 if (boardIds.isEmpty()) {
-                    flowOf<List<Board.Storage>>(emptyList())
+                    flowOf(emptyList())
                 } else {
                     combine(
                         boardIds.map { boardId ->

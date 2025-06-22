@@ -9,12 +9,10 @@ import org.junit.Test
 class SignInViewModelWrapperTest : BaseTest() {
 
     private lateinit var signInViewModelWrapper: SignInViewModelWrapper
-    private lateinit var savedStateHandle: SavedStateHandle
 
     @Before
     fun setup() {
-        savedStateHandle = SavedStateHandle()
-        signInViewModelWrapper = SignInViewModelWrapper.Base(savedStateHandle)
+        signInViewModelWrapper = SignInViewModelWrapper.Base(SavedStateHandle())
     }
 
     @Test
