@@ -33,7 +33,10 @@ class ProfileViewModelTest : BaseTest() {
     fun test_initial_state() {
         assertEquals(1, profileViewModelWrapper.profileUiStateCalledCount)
         assertEquals(2, profileViewModelWrapper.saveProfileUiStateCalledList.size)
-        assertEquals(ProfileUiState.Loading, profileViewModelWrapper.saveProfileUiStateCalledList[0])
+        assertEquals(
+            ProfileUiState.Loading,
+            profileViewModelWrapper.saveProfileUiStateCalledList[0]
+        )
         assertEquals(
             ProfileUiState.Base(name = "test name", email = "test@gmail.com"),
             profileViewModelWrapper.saveProfileUiStateCalledList[1]

@@ -10,7 +10,6 @@ interface HandleAuthResult {
 
     suspend fun handle(action: suspend () -> Unit): AuthResult
 
-
     class Base @Inject constructor(
         private val managerResource: ManageResource
     ) : HandleAuthResult {
