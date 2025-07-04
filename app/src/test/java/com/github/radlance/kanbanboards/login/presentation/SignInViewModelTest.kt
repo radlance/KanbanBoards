@@ -12,7 +12,7 @@ import org.junit.Test
 
 class SignInViewModelTest : BaseTest() {
 
-    private lateinit var viewModelWrapper: TestSignInViewModelWrapper
+    private lateinit var handle: TestHandleSignIn
     private lateinit var signInMapper: SignInResultMapper
     private lateinit var credentialMapper: CredentialResultMapper
     private lateinit var manageResource: TestManageResources
@@ -24,14 +24,14 @@ class SignInViewModelTest : BaseTest() {
     @Before
     fun setup() {
         authRepository = TestAuthRepository()
-        viewModelWrapper = TestSignInViewModelWrapper()
+        handle = TestHandleSignIn()
         signInMapper = SignInResultMapper()
         manageResource = TestManageResources()
         credentialMapper = CredentialResultMapper(manageResource)
 
         viewModel = SignInViewModel(
             authRepository = authRepository,
-            signInViewModelWrapper = viewModelWrapper,
+            handleSignIn = handle,
             signInMapper = signInMapper,
             credentialMapper = credentialMapper,
             runAsync = TestRunAsync()
@@ -43,10 +43,10 @@ class SignInViewModelTest : BaseTest() {
         assertEquals(SignInResultUiState.Initial, viewModel.signInResultUiState.value)
         assertEquals(CredentialUiState.Initial, viewModel.credentialResultUiState.value)
 
-        assertEquals(1, viewModelWrapper.signInStateCalledCount)
-        assertEquals(1, viewModelWrapper.credentialStateCalledCount)
-        assertEquals(emptyList<SignInResultUiState>(), viewModelWrapper.saveSignInStateCalledList)
-        assertEquals(emptyList<CredentialUiState>(), viewModelWrapper.saveCredentialStateCalledList)
+        assertEquals(1, handle.signInStateCalledCount)
+        assertEquals(1, handle.credentialStateCalledCount)
+        assertEquals(emptyList<SignInResultUiState>(), handle.saveSignInStateCalledList)
+        assertEquals(emptyList<CredentialUiState>(), handle.saveCredentialStateCalledList)
     }
 
     @Test
@@ -55,11 +55,11 @@ class SignInViewModelTest : BaseTest() {
         assertEquals(SignInResultUiState.Initial, viewModel.signInResultUiState.value)
         viewModel.signIn(userTokenId = "1234567890")
         assertEquals(1, authRepository.signInCalledList.size)
-        assertEquals(2, viewModelWrapper.saveSignInStateCalledList.size)
-        assertEquals(SignInResultUiState.Loading, viewModelWrapper.saveSignInStateCalledList[0])
+        assertEquals(2, handle.saveSignInStateCalledList.size)
+        assertEquals(SignInResultUiState.Loading, handle.saveSignInStateCalledList[0])
         assertEquals(
             SignInResultUiState.Error("no internet connection"),
-            viewModelWrapper.saveSignInStateCalledList[1]
+            handle.saveSignInStateCalledList[1]
         )
         assertEquals(
             SignInResultUiState.Error("no internet connection"),
@@ -72,26 +72,26 @@ class SignInViewModelTest : BaseTest() {
         assertEquals(2, authRepository.signInCalledList.size)
         assertEquals(2, authRepository.signInCalledList.size)
         assertEquals(AuthResult.Success, authRepository.signInResult)
-        assertEquals(4, viewModelWrapper.saveSignInStateCalledList.size)
-        assertEquals(SignInResultUiState.Loading, viewModelWrapper.saveSignInStateCalledList[2])
-        assertEquals(SignInResultUiState.Success, viewModelWrapper.saveSignInStateCalledList[3])
+        assertEquals(4, handle.saveSignInStateCalledList.size)
+        assertEquals(SignInResultUiState.Loading, handle.saveSignInStateCalledList[2])
+        assertEquals(SignInResultUiState.Success, handle.saveSignInStateCalledList[3])
         assertEquals(SignInResultUiState.Success, viewModel.signInResultUiState.value)
     }
 
     @Test
     fun test_create_credential() {
         viewModel.createCredential(CredentialResult.Error)
-        assertEquals(1, viewModelWrapper.saveCredentialStateCalledList.size)
+        assertEquals(1, handle.saveCredentialStateCalledList.size)
         assertEquals(
             CredentialUiState.Error(manageResource),
-            viewModelWrapper.saveCredentialStateCalledList[0]
+            handle.saveCredentialStateCalledList[0]
         )
 
         viewModel.createCredential(CredentialResult.Success(idToken = "987654321"))
-        assertEquals(2, viewModelWrapper.saveCredentialStateCalledList.size)
+        assertEquals(2, handle.saveCredentialStateCalledList.size)
         assertEquals(
             CredentialUiState.Success(idToken = "987654321"),
-            viewModelWrapper.saveCredentialStateCalledList[1]
+            handle.saveCredentialStateCalledList[1]
         )
     }
 
@@ -106,7 +106,7 @@ class SignInViewModelTest : BaseTest() {
         }
     }
 
-    private class TestSignInViewModelWrapper : SignInViewModelWrapper {
+    private class TestHandleSignIn : HandleSignIn {
 
         private var signInResultUiState =
             MutableStateFlow<SignInResultUiState>(SignInResultUiState.Initial)

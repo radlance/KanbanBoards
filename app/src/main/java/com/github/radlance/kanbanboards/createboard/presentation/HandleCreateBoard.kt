@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
-interface CreateBoardViewModelWrapper {
+interface HandleCreateBoard {
 
     fun createBoardUiState(): StateFlow<CreateBoardUiState>
 
@@ -12,7 +12,7 @@ interface CreateBoardViewModelWrapper {
 
     class Base @Inject constructor(
         private val savedStateHandle: SavedStateHandle
-    ) : CreateBoardViewModelWrapper {
+    ) : HandleCreateBoard {
 
         override fun createBoardUiState(): StateFlow<CreateBoardUiState> {
             return savedStateHandle.getStateFlow(KEY_CREATE_BOARD, CreateBoardUiState.CanNotCreate)

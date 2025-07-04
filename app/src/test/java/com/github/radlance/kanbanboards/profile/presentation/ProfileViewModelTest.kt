@@ -13,33 +13,33 @@ import org.junit.Test
 class ProfileViewModelTest : BaseTest() {
 
     private lateinit var profileRepository: TestProfileRepository
-    private lateinit var profileViewModelWrapper: TestProfileViewModelWrapper
+    private lateinit var handleProfile: TestHandleProfile
     private lateinit var viewModel: ProfileViewModel
 
     @Before
     fun setup() {
         profileRepository = TestProfileRepository()
-        profileViewModelWrapper = TestProfileViewModelWrapper()
+        handleProfile = TestHandleProfile()
 
         viewModel = ProfileViewModel(
             profileRepository = profileRepository,
             profileMapper = LoadProfileResultMapper(),
-            profileViewModelWrapper = profileViewModelWrapper,
+            handleProfile = handleProfile,
             runAsync = TestRunAsync()
         )
     }
 
     @Test
     fun test_initial_state() {
-        assertEquals(1, profileViewModelWrapper.profileUiStateCalledCount)
-        assertEquals(2, profileViewModelWrapper.saveProfileUiStateCalledList.size)
+        assertEquals(1, handleProfile.profileUiStateCalledCount)
+        assertEquals(2, handleProfile.saveProfileUiStateCalledList.size)
         assertEquals(
             ProfileUiState.Loading,
-            profileViewModelWrapper.saveProfileUiStateCalledList[0]
+            handleProfile.saveProfileUiStateCalledList[0]
         )
         assertEquals(
             ProfileUiState.Base(name = "test name", email = "test@gmail.com"),
-            profileViewModelWrapper.saveProfileUiStateCalledList[1]
+            handleProfile.saveProfileUiStateCalledList[1]
         )
     }
 
@@ -69,7 +69,7 @@ class ProfileViewModelTest : BaseTest() {
         }
     }
 
-    private class TestProfileViewModelWrapper : ProfileViewModelWrapper {
+    private class TestHandleProfile : HandleProfile {
 
         private val profileUiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Initial)
         var profileUiStateCalledCount = 0

@@ -11,7 +11,7 @@ import com.github.radlance.kanbanboards.login.presentation.CredentialResultMappe
 import com.github.radlance.kanbanboards.login.presentation.CredentialUiState
 import com.github.radlance.kanbanboards.login.presentation.SignInResultMapper
 import com.github.radlance.kanbanboards.login.presentation.SignInResultUiState
-import com.github.radlance.kanbanboards.login.presentation.SignInViewModelWrapper
+import com.github.radlance.kanbanboards.login.presentation.HandleSignIn
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -50,7 +50,7 @@ class SignInViewModelModule {
 
     @ViewModelScoped
     @Provides
-    fun provideSignInViewModelWrapper(savedStateHandle: SavedStateHandle): SignInViewModelWrapper {
-        return SignInViewModelWrapper.Base(savedStateHandle)
+    fun provideHandleSignIn(savedStateHandle: SavedStateHandle): HandleSignIn {
+        return HandleSignIn.Base(savedStateHandle)
     }
 }

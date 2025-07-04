@@ -7,7 +7,7 @@ import com.github.radlance.kanbanboards.createboard.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardResult
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardResultMapper
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardUiState
-import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardViewModelWrapper
+import com.github.radlance.kanbanboards.createboard.presentation.HandleCreateBoard
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -36,7 +36,7 @@ class CreateBoardViewModelModule {
 
     @ViewModelScoped
     @Provides
-    fun provideCreateBoardViewModelWrapper(savedStateHandle: SavedStateHandle): CreateBoardViewModelWrapper {
-        return CreateBoardViewModelWrapper.Base(savedStateHandle)
+    fun provideHandleCreateBoard(savedStateHandle: SavedStateHandle): HandleCreateBoard {
+        return HandleCreateBoard.Base(savedStateHandle)
     }
 }

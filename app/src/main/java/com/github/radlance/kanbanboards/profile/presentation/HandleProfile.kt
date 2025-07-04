@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
-interface ProfileViewModelWrapper {
+interface HandleProfile {
 
     fun profileUiState(): StateFlow<ProfileUiState>
 
@@ -12,7 +12,7 @@ interface ProfileViewModelWrapper {
 
     class Base @Inject constructor(
         private val savedStateHandle: SavedStateHandle
-    ) : ProfileViewModelWrapper {
+    ) : HandleProfile {
         override fun profileUiState(): StateFlow<ProfileUiState> {
             return savedStateHandle.getStateFlow(KEY_PROFILE, initialValue = ProfileUiState.Initial)
         }

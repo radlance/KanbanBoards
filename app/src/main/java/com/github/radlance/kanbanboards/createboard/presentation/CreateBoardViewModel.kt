@@ -10,15 +10,15 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateBoardViewModel @Inject constructor(
     private val createBoardRepository: CreateBoardRepository,
-    private val createBoardViewModelWrapper: CreateBoardViewModelWrapper,
+    private val handleCreateBoard: HandleCreateBoard,
     private val mapper: CreateBoardResult.Mapper<CreateBoardUiState>,
     runAsync: RunAsync
 ) : BaseViewModel(runAsync), CreateBoardActions {
 
-    val createBoardUiState = createBoardViewModelWrapper.createBoardUiState()
+    val createBoardUiState = handleCreateBoard.createBoardUiState()
 
     override fun checkBoard(name: String) {
-        createBoardViewModelWrapper.saveCreateBoardUiState(
+        handleCreateBoard.saveCreateBoardUiState(
             if (name.trim().length >= 3) {
                 CreateBoardUiState.CanCreate
             } else CreateBoardUiState.CanNotCreate
@@ -26,10 +26,10 @@ class CreateBoardViewModel @Inject constructor(
     }
 
     override fun createBoard(name: String) {
-        createBoardViewModelWrapper.saveCreateBoardUiState(CreateBoardUiState.Loading)
+        handleCreateBoard.saveCreateBoardUiState(CreateBoardUiState.Loading)
 
         handle(background = { createBoardRepository.createBoard(name) }) {
-            createBoardViewModelWrapper.saveCreateBoardUiState(it.map(mapper))
+            handleCreateBoard.saveCreateBoardUiState(it.map(mapper))
         }
     }
 }

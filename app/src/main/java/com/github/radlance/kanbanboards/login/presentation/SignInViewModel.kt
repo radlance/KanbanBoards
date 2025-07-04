@@ -10,27 +10,27 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val signInViewModelWrapper: SignInViewModelWrapper,
+    private val handleSignIn: HandleSignIn,
     private val signInMapper: AuthResult.Mapper<SignInResultUiState>,
     private val credentialMapper: CredentialResult.Mapper<CredentialUiState>,
     runAsync: RunAsync
 ) : BaseViewModel(runAsync), SignInAction {
 
-    val signInResultUiState = signInViewModelWrapper.signInState()
+    val signInResultUiState = handleSignIn.signInState()
 
-    val credentialResultUiState = signInViewModelWrapper.credentialState()
+    val credentialResultUiState = handleSignIn.credentialState()
 
     override fun signIn(userTokenId: String) {
-        signInViewModelWrapper.saveCredentialState(CredentialUiState.Initial)
-        signInViewModelWrapper.saveSignInState(SignInResultUiState.Loading)
+        handleSignIn.saveCredentialState(CredentialUiState.Initial)
+        handleSignIn.saveSignInState(SignInResultUiState.Loading)
 
         handle(background = { authRepository.signIn(userTokenId) }) { result ->
-            signInViewModelWrapper.saveSignInState(result.map(signInMapper))
+            handleSignIn.saveSignInState(result.map(signInMapper))
         }
     }
 
     fun createCredential(credentialResult: CredentialResult) {
-        signInViewModelWrapper.saveCredentialState(credentialResult.map(credentialMapper))
+        handleSignIn.saveCredentialState(credentialResult.map(credentialMapper))
     }
 }
 

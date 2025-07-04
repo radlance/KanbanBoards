@@ -7,7 +7,7 @@ import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
 import com.github.radlance.kanbanboards.profile.presentation.LoadProfileResultMapper
 import com.github.radlance.kanbanboards.profile.presentation.ProfileUiState
-import com.github.radlance.kanbanboards.profile.presentation.ProfileViewModelWrapper
+import com.github.radlance.kanbanboards.profile.presentation.HandleProfile
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -38,9 +38,9 @@ class ProfileViewModelModule {
 
     @ViewModelScoped
     @Provides
-    fun provideProfileViewModelWrapper(
+    fun provideHandleProfile(
         savedStateHandle: SavedStateHandle
-    ): ProfileViewModelWrapper {
-        return ProfileViewModelWrapper.Base(savedStateHandle)
+    ): HandleProfile {
+        return HandleProfile.Base(savedStateHandle)
     }
 }

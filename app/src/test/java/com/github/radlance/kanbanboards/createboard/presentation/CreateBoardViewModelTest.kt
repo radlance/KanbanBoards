@@ -12,18 +12,18 @@ import org.junit.Test
 class CreateBoardViewModelTest : BaseTest() {
 
     private lateinit var repository: TestCreateBoardRepository
-    private lateinit var viewModelWrapper: TestCreateBoardViewModelWrapper
+    private lateinit var handle: TestHandleCreateBoard
 
     private lateinit var viewModel: CreateBoardViewModel
 
     @Before
     fun setup() {
         repository = TestCreateBoardRepository()
-        viewModelWrapper = TestCreateBoardViewModelWrapper()
+        handle = TestHandleCreateBoard()
 
         viewModel = CreateBoardViewModel(
             createBoardRepository = repository,
-            createBoardViewModelWrapper = viewModelWrapper,
+            handleCreateBoard = handle,
             mapper = CreateBoardResultMapper(),
             runAsync = TestRunAsync()
         )
@@ -32,40 +32,40 @@ class CreateBoardViewModelTest : BaseTest() {
     @Test
     fun test_initial_state() {
         assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
-        assertEquals(1, viewModelWrapper.createBoardUiStateCalledCount)
+        assertEquals(1, handle.createBoardUiStateCalledCount)
     }
 
     @Test
     fun test_check_board_short_name() {
         viewModel.checkBoard(name = "go")
         assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
-        assertEquals(1, viewModelWrapper.saveCreateBoardUiStateCalledList.size)
+        assertEquals(1, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanNotCreate,
-            viewModelWrapper.saveCreateBoardUiStateCalledList[0]
+            handle.saveCreateBoardUiStateCalledList[0]
         )
-        assertEquals(1, viewModelWrapper.createBoardUiStateCalledCount)
+        assertEquals(1, handle.createBoardUiStateCalledCount)
 
         viewModel.checkBoard(name = "  it    ")
         assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
-        assertEquals(2, viewModelWrapper.saveCreateBoardUiStateCalledList.size)
+        assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanNotCreate,
-            viewModelWrapper.saveCreateBoardUiStateCalledList[1]
+            handle.saveCreateBoardUiStateCalledList[1]
         )
-        assertEquals(1, viewModelWrapper.createBoardUiStateCalledCount)
+        assertEquals(1, handle.createBoardUiStateCalledCount)
     }
 
     @Test
     fun test_check_board_valid_name() {
         viewModel.checkBoard(name = "test name")
         assertEquals(CreateBoardUiState.CanCreate, viewModel.createBoardUiState.value)
-        assertEquals(1, viewModelWrapper.saveCreateBoardUiStateCalledList.size)
+        assertEquals(1, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanCreate,
-            viewModelWrapper.saveCreateBoardUiStateCalledList[0]
+            handle.saveCreateBoardUiStateCalledList[0]
         )
-        assertEquals(1, viewModelWrapper.createBoardUiStateCalledCount)
+        assertEquals(1, handle.createBoardUiStateCalledCount)
     }
 
     @Test
@@ -79,14 +79,14 @@ class CreateBoardViewModelTest : BaseTest() {
             CreateBoardUiState.AlreadyExists(message = "board already exists"),
             viewModel.createBoardUiState.value
         )
-        assertEquals(2, viewModelWrapper.saveCreateBoardUiStateCalledList.size)
+        assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.Loading,
-            viewModelWrapper.saveCreateBoardUiStateCalledList[0]
+            handle.saveCreateBoardUiStateCalledList[0]
         )
         assertEquals(
             CreateBoardUiState.AlreadyExists(message = "board already exists"),
-            viewModelWrapper.saveCreateBoardUiStateCalledList[1]
+            handle.saveCreateBoardUiStateCalledList[1]
         )
         assertEquals(1, repository.createBoardCalledCount)
     }
@@ -102,27 +102,27 @@ class CreateBoardViewModelTest : BaseTest() {
             viewModel.createBoardUiState.value
         )
 
-        assertEquals(2, viewModelWrapper.saveCreateBoardUiStateCalledList.size)
+        assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.Loading,
-            viewModelWrapper.saveCreateBoardUiStateCalledList[0]
+            handle.saveCreateBoardUiStateCalledList[0]
         )
         assertEquals(
             CreateBoardUiState.Error(message = "no internet connection"),
-            viewModelWrapper.saveCreateBoardUiStateCalledList[1]
+            handle.saveCreateBoardUiStateCalledList[1]
         )
         assertEquals(1, repository.createBoardCalledCount)
 
         repository.makeExpectedCreateBoardResult(CreateBoardResult.Success)
         viewModel.createBoard(name = "second board")
-        assertEquals(4, viewModelWrapper.saveCreateBoardUiStateCalledList.size)
+        assertEquals(4, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.Loading,
-            viewModelWrapper.saveCreateBoardUiStateCalledList[2]
+            handle.saveCreateBoardUiStateCalledList[2]
         )
         assertEquals(
             CreateBoardUiState.Success,
-            viewModelWrapper.saveCreateBoardUiStateCalledList[3]
+            handle.saveCreateBoardUiStateCalledList[3]
         )
         assertEquals(2, repository.createBoardCalledCount)
     }
@@ -143,7 +143,7 @@ class CreateBoardViewModelTest : BaseTest() {
         }
     }
 
-    private class TestCreateBoardViewModelWrapper : CreateBoardViewModelWrapper {
+    private class TestHandleCreateBoard : HandleCreateBoard {
 
         var createBoardUiStateCalledCount = 0
         val saveCreateBoardUiStateCalledList = mutableListOf<CreateBoardUiState>()

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
-interface SignInViewModelWrapper {
+interface HandleSignIn {
 
     fun saveSignInState(signInResultUiState: SignInResultUiState)
 
@@ -16,7 +16,7 @@ interface SignInViewModelWrapper {
 
     class Base @Inject constructor(
         private val savedStateHandle: SavedStateHandle
-    ) : SignInViewModelWrapper {
+    ) : HandleSignIn {
 
         override fun saveSignInState(signInResultUiState: SignInResultUiState) {
             savedStateHandle[KEY_SIGN_IN] = signInResultUiState

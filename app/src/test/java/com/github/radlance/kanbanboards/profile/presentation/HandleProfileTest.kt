@@ -5,24 +5,24 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class ProfileViewModelWrapperTest {
+class HandleProfileTest {
 
-    private lateinit var profileViewModelWrapper: ProfileViewModelWrapper
+    private lateinit var handleProfile: HandleProfile
 
     @Before
     fun setup() {
-        profileViewModelWrapper = ProfileViewModelWrapper.Base(
+        handleProfile = HandleProfile.Base(
             savedStateHandle = SavedStateHandle()
         )
     }
 
     @Test
     fun test_profile_ui_state() {
-        assertEquals(ProfileUiState.Initial, profileViewModelWrapper.profileUiState().value)
-        profileViewModelWrapper.saveProfileUiState(ProfileUiState.Loading)
-        assertEquals(ProfileUiState.Loading, profileViewModelWrapper.profileUiState().value)
+        assertEquals(ProfileUiState.Initial, handleProfile.profileUiState().value)
+        handleProfile.saveProfileUiState(ProfileUiState.Loading)
+        assertEquals(ProfileUiState.Loading, handleProfile.profileUiState().value)
 
-        profileViewModelWrapper.saveProfileUiState(
+        handleProfile.saveProfileUiState(
             ProfileUiState.Base(
                 name = "name",
                 email = "email@example.com"
@@ -34,7 +34,7 @@ class ProfileViewModelWrapperTest {
                 name = "name",
                 email = "email@example.com"
             ),
-            profileViewModelWrapper.profileUiState().value
+            handleProfile.profileUiState().value
         )
     }
 }
