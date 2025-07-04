@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +22,7 @@ interface BoardUi {
     @Composable
     fun Show()
 
-    data class My(private val id: String, private val name: String) : BoardUi {
+    abstract class Abstract : BoardUi {
 
         @Composable
         override fun Show() {
@@ -35,13 +34,24 @@ interface BoardUi {
                     .background(MaterialTheme.colorScheme.primary),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = name,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(16.dp)
-                )
+                Content()
             }
+        }
+
+        @Composable
+        protected abstract fun Content()
+    }
+
+    data class My(private val id: String, private val name: String) : Abstract() {
+
+        @Composable
+        override fun Content() {
+            Text(
+                text = name,
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(16.dp)
+            )
         }
     }
 
@@ -49,22 +59,23 @@ interface BoardUi {
         private val id: String,
         private val name: String,
         private val owner: String
-    ) : BoardUi {
+    ) : Abstract() {
 
         @Composable
-        override fun Show() {
+        override fun Content() {
             Column(
-                modifier = Modifier
-                    .padding(vertical = 10.dp)
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.primary),
-                verticalArrangement = Arrangement.Center
+                modifier = Modifier.padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-
                 Text(
                     text = name,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Text(
+                    text = stringResource(R.string.owner, owner),
                     color = MaterialTheme.colorScheme.onPrimary,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(horizontal = 16.dp)

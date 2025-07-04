@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.boards.data
 
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
+import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.getValue
@@ -11,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -61,23 +63,34 @@ interface BoardsRemoteDataSource {
                     flowOf(emptyList())
                 } else {
                     combine(
-                        boardIds.map { boardId ->
-                            provideDatabase.database()
-                                .child("boards")
-                                .child(boardId)
-                                .snapshots.mapNotNull { boardSnapshot ->
-                                    boardSnapshot.getValue<BoardEntity>()?.let { entity ->
-                                        Board.Other(
-                                            id = boardSnapshot.key ?: "",
-                                            name = entity.name,
-                                            owner = entity.owner
-                                        )
-                                    }
-                                }
-                        }
+                        boardIds.map { boardId -> otherBoard(boardId) }
                     ) { boards: Array<Board.Storage> -> boards.toList() }
                 }
             }.catch { e -> throw IllegalStateException(e.message) }
         }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        private fun otherBoard(boardId: String): Flow<Board.Other> = provideDatabase
+            .database()
+            .child("boards")
+            .child(boardId)
+            .snapshots.flatMapLatest { boardSnapshot ->
+                val boardEntity = boardSnapshot.getValue<BoardEntity>()
+                if (boardEntity != null) {
+                    provideDatabase.database()
+                        .child("users")
+                        .child(boardEntity.owner)
+                        .snapshots.mapNotNull { userSnapshot ->
+                            val user = userSnapshot.getValue<UserProfileEntity>()
+                            Board.Other(
+                                id = boardSnapshot.key ?: return@mapNotNull null,
+                                name = boardEntity.name,
+                                owner = user?.email ?: return@mapNotNull null
+                            )
+                        }
+                } else {
+                    flowOf(null)
+                }
+            }.filterNotNull()
     }
 }

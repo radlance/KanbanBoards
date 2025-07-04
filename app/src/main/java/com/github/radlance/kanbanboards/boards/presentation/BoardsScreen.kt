@@ -52,7 +52,8 @@ fun BoardsScreen(
         ) {
             boardsUiState.Show(
                 columnScope = this@BaseColumn,
-                navigateToBoardCreation = navigateToBoardCreation
+                navigateToBoardCreation = navigateToBoardCreation,
+                navigateToBoard = {}
             )
         }
     }

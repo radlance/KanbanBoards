@@ -4,11 +4,7 @@ interface Board {
 
     fun <T : Any> map(mapper: Mapper<T>): T
 
-    interface Mapper<T : Any> {
-
-        fun mapMyBoard(id: String, name: String): T
-
-        fun mapOtherBoard(id: String, name: String, owner: String): T
+    interface StateMapper<T : Any> {
 
         fun mapNyOwnBoardTitle(): T
 
@@ -19,27 +15,40 @@ interface Board {
         fun mapHowToBeAddedToBoardHint(): T
     }
 
-    interface Storage : Board {
+    interface StorageMapper<T : Any> {
 
-        fun compareName(name: String): Boolean
+        fun mapMyBoard(id: String, name: String): T
+
+        fun mapOtherBoard(id: String, name: String, owner: String): T
     }
 
-    data class My(private val id: String, private val name: String) : Storage {
+    interface Mapper<T : Any> : StateMapper<T>, StorageMapper<T>
 
-        override fun compareName(name: String): Boolean = this.name == name
+    abstract class Storage(private val name: String) : Board {
 
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapMyBoard(id, name)
+        fun <T : Any> map(storageMapper: StorageMapper<T>): T = mapStorage(storageMapper)
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapStorage(mapper)
+
+        protected abstract fun <T : Any> mapStorage(mapper: StorageMapper<T>): T
+
+        fun compareName(name: String): Boolean = this.name == name
+    }
+
+    data class My(private val id: String, private val name: String) : Storage(name) {
+
+        override fun <T : Any> mapStorage(mapper: StorageMapper<T>): T = mapper.mapMyBoard(id, name)
     }
 
     data class Other(
         private val id: String,
         private val name: String,
         private val owner: String
-    ) : Storage {
+    ) : Storage(name) {
 
-        override fun compareName(name: String): Boolean = this.name == name
-
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapOtherBoard(id, name, owner)
+        override fun <T : Any> mapStorage(mapper: StorageMapper<T>): T = mapper.mapOtherBoard(
+            id = id, name = name, owner = owner
+        )
     }
 
     data object MyOwnBoardsTitle : Board {

@@ -3,7 +3,6 @@ package com.github.radlance.kanbanboards.common
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.data.BoardInfo
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
@@ -158,15 +157,9 @@ abstract class BaseTest {
             emitAll(otherBoards)
         }
 
-        override suspend fun createBoard(name: String): BoardInfo {
+        override suspend fun createBoard(name: String) {
             createBoardCalledCount++
             createBoardException?.let { throw it }
-            return BoardInfo(
-                id = "",
-                name = name,
-                isMyBoard = true,
-                ownerId = ""
-            )
         }
     }
 }

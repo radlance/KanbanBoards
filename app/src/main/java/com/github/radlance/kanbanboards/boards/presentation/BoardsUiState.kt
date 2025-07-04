@@ -25,14 +25,19 @@ import com.github.radlance.kanbanboards.R
 interface BoardsUiState {
 
     @Composable
-    fun Show(columnScope: ColumnScope, navigateToBoardCreation: () -> Unit)
+    fun Show(
+        columnScope: ColumnScope,
+        navigateToBoardCreation: () -> Unit,
+        navigateToBoard: () -> Unit
+    )
 
     data class Success(private val boards: List<BoardUi>) : BoardsUiState {
 
         @Composable
         override fun Show(
             columnScope: ColumnScope,
-            navigateToBoardCreation: () -> Unit
+            navigateToBoardCreation: () -> Unit,
+            navigateToBoard: () -> Unit
         ) = with(columnScope) {
             Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())) {
                 boards.forEach {
@@ -52,7 +57,11 @@ interface BoardsUiState {
     data class Error(private val message: String) : BoardsUiState {
 
         @Composable
-        override fun Show(columnScope: ColumnScope, navigateToBoardCreation: () -> Unit) {
+        override fun Show(
+            columnScope: ColumnScope,
+            navigateToBoardCreation: () -> Unit,
+            navigateToBoard: () -> Unit
+        ) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
                     text = message,
@@ -70,7 +79,8 @@ interface BoardsUiState {
         @Composable
         override fun Show(
             columnScope: ColumnScope,
-            navigateToBoardCreation: () -> Unit
+            navigateToBoardCreation: () -> Unit,
+            navigateToBoard: () -> Unit
         ) = with(columnScope) {
             Box(
                 modifier = Modifier
