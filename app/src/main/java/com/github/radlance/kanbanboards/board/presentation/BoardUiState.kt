@@ -3,11 +3,13 @@ package com.github.radlance.kanbanboards.board.presentation
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,19 +26,27 @@ import java.io.Serializable
 interface BoardUiState : Serializable {
 
     @Composable
-    fun Show(modifier: Modifier)
+    fun Show(navigateUp: () -> Unit, modifier: Modifier = Modifier)
 
     data class Success(private val boardInfo: BoardInfo) : BoardUiState {
 
         @OptIn(ExperimentalMaterial3Api::class)
         @Composable
-        override fun Show(modifier: Modifier) {
+        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
             Scaffold(
                 topBar = {
                     CenterAlignedTopAppBar(
                         title = {
                             Crossfade(targetState = boardInfo.name) { name ->
                                 Text(text = name)
+                            }
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = navigateUp) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                    contentDescription = stringResource(R.string.navigate_up)
+                                )
                             }
                         },
                         actions = {
@@ -64,7 +74,7 @@ interface BoardUiState : Serializable {
     data class Error(private val message: String) : BoardUiState {
 
         @Composable
-        override fun Show(modifier: Modifier) {
+        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
             Text(
                 text = message,
                 style = MaterialTheme.typography.titleLarge.copy(
@@ -80,7 +90,7 @@ interface BoardUiState : Serializable {
         private fun readResolve(): Any = Loading
 
         @Composable
-        override fun Show(modifier: Modifier) {
+        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
             CircularProgressIndicator()
         }
     }

@@ -19,6 +19,6 @@ fun BoardScreen(
     val boardUiState by viewModel.boardUiState.collectAsStateWithLifecycle()
 
     BaseColumn(verticalArrangement = Arrangement.Center) {
-        boardUiState.Show(modifier.weight(1f))
+        boardUiState.Show(navigateUp = navigateUp, modifier = modifier.weight(1f))
     }
 }
