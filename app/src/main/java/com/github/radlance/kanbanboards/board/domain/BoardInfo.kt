@@ -7,7 +7,7 @@ data class BoardInfo(
     val id: String,
     val name: String,
     val isMyBoard: Boolean,
-    val ownerId: String = ""
+    val owner: String = ""
 )
 
 class BoardStorageMapper @Inject constructor(): Board.StorageMapper<BoardInfo> {
@@ -17,6 +17,6 @@ class BoardStorageMapper @Inject constructor(): Board.StorageMapper<BoardInfo> {
     )
 
     override fun mapOtherBoard(id: String, name: String, owner: String): BoardInfo = BoardInfo(
-        id = id, name = name, isMyBoard = false, ownerId = owner
+        id = id, name = name, isMyBoard = false, owner = owner
     )
 }

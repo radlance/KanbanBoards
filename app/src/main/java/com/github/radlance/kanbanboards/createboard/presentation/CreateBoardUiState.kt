@@ -20,14 +20,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import java.io.Serializable
 
+// TODO try to refactor
 interface CreateBoardUiState : Serializable {
 
     @Composable
     fun Show(
         columnScope: ColumnScope,
-        navigateToBoardScreen: () -> Unit,
+        navigateToBoardScreen: (BoardInfo) -> Unit,
         createBoardActions: CreateBoardActions
     )
 
@@ -41,7 +43,7 @@ interface CreateBoardUiState : Serializable {
         @Composable
         override fun Show(
             columnScope: ColumnScope,
-            navigateToBoardScreen: () -> Unit,
+            navigateToBoardScreen: (BoardInfo) -> Unit,
             createBoardActions: CreateBoardActions
         ) = with(columnScope) {
             var boardNameFieldValue by rememberSaveable { mutableStateOf("") }
@@ -93,17 +95,15 @@ interface CreateBoardUiState : Serializable {
         }
     }
 
-    object Success : CreateBoardUiState {
-
-        private fun readResolve(): Any = Success
+    data class Success(private val boardInfo: BoardInfo) : CreateBoardUiState {
 
         @Composable
         override fun Show(
             columnScope: ColumnScope,
-            navigateToBoardScreen: () -> Unit,
+            navigateToBoardScreen: (BoardInfo) -> Unit,
             createBoardActions: CreateBoardActions
         ) {
-            navigateToBoardScreen()
+            navigateToBoardScreen(boardInfo)
         }
     }
 

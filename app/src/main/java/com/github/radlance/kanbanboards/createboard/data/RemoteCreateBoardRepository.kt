@@ -20,8 +20,8 @@ class RemoteCreateBoardRepository @Inject constructor(
                 manageResource.string(R.string.board_with_this_already_exists)
             )
         } else try {
-            createBoardRemoteDataSource.createBoard(name)
-            CreateBoardResult.Success
+            val boardInfo = createBoardRemoteDataSource.createBoard(name)
+            CreateBoardResult.Success(boardInfo)
         } catch (e: Exception) {
             CreateBoardResult.Error(
                 message = e.message ?: manageResource.string(R.string.create_board_error)

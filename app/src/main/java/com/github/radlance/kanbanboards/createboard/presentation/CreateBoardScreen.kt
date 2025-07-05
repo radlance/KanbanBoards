@@ -21,13 +21,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateBoardsScreen(
     navigateUp: () -> Unit,
-    navigateToBoardScreen: () -> Unit,
+    navigateToBoardScreen: (BoardInfo) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateBoardViewModel = hiltViewModel()
 ) {

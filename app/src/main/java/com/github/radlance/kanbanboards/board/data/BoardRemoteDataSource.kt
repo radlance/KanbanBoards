@@ -10,19 +10,20 @@ import javax.inject.Inject
 
 interface BoardRemoteDataSource {
 
-    fun loadBoard(): Flow<BoardInfo>
+    fun loadBoard(boardId: String): Flow<BoardInfo>
 
     class Base @Inject constructor(
         private val boardsRemoteDataSource: BoardsRemoteDataSource,
         private val mapper: Board.StorageMapper<BoardInfo>
     ) : BoardRemoteDataSource {
 
-        override fun loadBoard(): Flow<BoardInfo> {
+        // TODO write separate query without boardsRemoteDataSource
+        override fun loadBoard(boardId: String): Flow<BoardInfo> {
             return merge(
                 boardsRemoteDataSource.myBoard(),
                 boardsRemoteDataSource.otherBoards()
             ).map { boards: List<Board.Storage> ->
-                boards.first().map(mapper)
+                boards.first { it.compareId(boardId) }.map(mapper)
             }
         }
     }

@@ -1,21 +1,23 @@
 package com.github.radlance.kanbanboards.createboard.domain
 
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
+
 interface CreateBoardResult {
 
     fun <T : Any> map(mapper: Mapper<T>): T
 
     interface Mapper<T : Any> {
 
-        fun mapSuccess(): T
+        fun mapSuccess(boardInfo: BoardInfo): T
 
         fun mapError(message: String): T
 
         fun mapAlreadyExists(message: String): T
     }
 
-    object Success : CreateBoardResult {
+    data class Success(private val boardInfo: BoardInfo) : CreateBoardResult {
 
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapSuccess()
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapSuccess(boardInfo)
     }
 
     data class Error(private val message: String) : CreateBoardResult {

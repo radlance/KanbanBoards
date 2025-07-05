@@ -1,11 +1,13 @@
 package com.github.radlance.kanbanboards.createboard.presentation
 
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardResult
 import javax.inject.Inject
 
 class CreateBoardResultMapper @Inject constructor() : CreateBoardResult.Mapper<CreateBoardUiState> {
 
-    override fun mapSuccess(): CreateBoardUiState = CreateBoardUiState.Success
+    override fun mapSuccess(boardInfo: BoardInfo): CreateBoardUiState =
+        CreateBoardUiState.Success(boardInfo)
 
     override fun mapError(message: String): CreateBoardUiState = CreateBoardUiState.Error(message)
 

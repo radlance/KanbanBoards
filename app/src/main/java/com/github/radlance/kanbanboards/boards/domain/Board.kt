@@ -24,7 +24,7 @@ interface Board {
 
     interface Mapper<T : Any> : StateMapper<T>, StorageMapper<T>
 
-    abstract class Storage(private val name: String) : Board {
+    abstract class Storage(private val id: String, private val name: String) : Board {
 
         fun <T : Any> map(storageMapper: StorageMapper<T>): T = mapStorage(storageMapper)
 
@@ -33,9 +33,11 @@ interface Board {
         protected abstract fun <T : Any> mapStorage(mapper: StorageMapper<T>): T
 
         fun compareName(name: String): Boolean = this.name == name
+
+        fun compareId(id: String): Boolean = this.id == id
     }
 
-    data class My(private val id: String, private val name: String) : Storage(name) {
+    data class My(private val id: String, private val name: String) : Storage(id, name) {
 
         override fun <T : Any> mapStorage(mapper: StorageMapper<T>): T = mapper.mapMyBoard(id, name)
     }
@@ -44,7 +46,7 @@ interface Board {
         private val id: String,
         private val name: String,
         private val owner: String
-    ) : Storage(name) {
+    ) : Storage(id, name) {
 
         override fun <T : Any> mapStorage(mapper: StorageMapper<T>): T = mapper.mapOtherBoard(
             id = id, name = name, owner = owner

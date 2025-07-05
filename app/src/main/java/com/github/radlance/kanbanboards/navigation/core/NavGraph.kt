@@ -8,6 +8,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.github.radlance.kanbanboards.board.presentation.BoardScreen
+import com.github.radlance.kanbanboards.board.presentation.BoardViewModel
 import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardsScreen
 import com.github.radlance.kanbanboards.login.presentation.SignInScreen
@@ -17,7 +19,8 @@ import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 fun NavGraph(
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
-    navigationViewModel: NavigationViewModel = hiltViewModel()
+    navigationViewModel: NavigationViewModel = hiltViewModel(),
+    boardViewModel: BoardViewModel = hiltViewModel()
 ) {
 
     val authorized by navigationViewModel.authorized.collectAsStateWithLifecycle()
@@ -46,7 +49,11 @@ fun NavGraph(
         composable<Boards> {
             BoardsScreen(
                 navigateToProfile = { navHostController.navigate(Profile) },
-                navigateToBoardCreation = { navHostController.navigate(CreateBoard) }
+                navigateToBoardCreation = { navHostController.navigate(CreateBoard) },
+                navigateToBoard = {
+                    boardViewModel.fetchBoard(it)
+                    navHostController.navigate(Board)
+                }
             )
         }
 
@@ -61,17 +68,19 @@ fun NavGraph(
             )
         }
 
+        //TODO решить что тут делать при навигации аналогично boardViewModel.fetchBoard(it)
         composable<CreateBoard> {
             CreateBoardsScreen(
                 navigateUp = navHostController::navigateUp,
                 navigateToBoardScreen = {
+                    boardViewModel.fetchBoard(it)
                     navHostController.navigate(Board) { popUpTo<Boards>() }
                 }
             )
         }
 
         composable<Board> {
-
+            BoardScreen(viewModel = boardViewModel)
         }
     }
 }

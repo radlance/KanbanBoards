@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.boards.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,22 +17,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
 
 interface BoardUi {
 
     @Composable
-    fun Show()
+    fun Show(navigateToBoard: (BoardInfo) -> Unit)
 
     abstract class Abstract : BoardUi {
 
+        protected abstract fun navigate(action: (BoardInfo) -> Unit)
+
         @Composable
-        override fun Show() {
+        override fun Show(navigateToBoard: (BoardInfo) -> Unit) {
             Column(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.primary),
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable { navigate(navigateToBoard) },
                 verticalArrangement = Arrangement.Center
             ) {
                 Content()
@@ -43,6 +48,10 @@ interface BoardUi {
     }
 
     data class My(private val id: String, private val name: String) : Abstract() {
+
+        override fun navigate(action: (BoardInfo) -> Unit) = action(
+            BoardInfo(id = id, name = name, isMyBoard = true)
+        )
 
         @Composable
         override fun Content() {
@@ -60,6 +69,10 @@ interface BoardUi {
         private val name: String,
         private val owner: String
     ) : Abstract() {
+
+        override fun navigate(action: (BoardInfo) -> Unit) = action(
+            BoardInfo(id = id, name = name, isMyBoard = false, owner = owner)
+        )
 
         @Composable
         override fun Content() {
@@ -87,7 +100,7 @@ interface BoardUi {
     object MyOwnBoardsTitle : BoardUi {
 
         @Composable
-        override fun Show() {
+        override fun Show(navigateToBoard: (BoardInfo) -> Unit) {
             Text(
                 text = stringResource(R.string.boards_you_own),
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -99,7 +112,7 @@ interface BoardUi {
     object NoBoardsOfMyOwnHint : BoardUi {
 
         @Composable
-        override fun Show() {
+        override fun Show(navigateToBoard: (BoardInfo) -> Unit) {
             Text(
                 text = stringResource(R.string.my_boards_hint),
                 style = MaterialTheme.typography.bodyLarge
@@ -110,7 +123,7 @@ interface BoardUi {
     object OtherBoardsTitle : BoardUi {
 
         @Composable
-        override fun Show() {
+        override fun Show(navigateToBoard: (BoardInfo) -> Unit) {
             Text(
                 text = stringResource(R.string.boards_you_are_added_to),
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -122,7 +135,7 @@ interface BoardUi {
     object HowToBeAddedToBoardHint : BoardUi {
 
         @Composable
-        override fun Show() {
+        override fun Show(navigateToBoard: (BoardInfo) -> Unit) {
             Text(
                 text = stringResource(R.string.other_boards_hint),
                 style = MaterialTheme.typography.bodyLarge

@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
 
 interface BoardsUiState {
 
@@ -28,7 +29,7 @@ interface BoardsUiState {
     fun Show(
         columnScope: ColumnScope,
         navigateToBoardCreation: () -> Unit,
-        navigateToBoard: () -> Unit
+        navigateToBoard: (BoardInfo) -> Unit
     )
 
     data class Success(private val boards: List<BoardUi>) : BoardsUiState {
@@ -37,12 +38,16 @@ interface BoardsUiState {
         override fun Show(
             columnScope: ColumnScope,
             navigateToBoardCreation: () -> Unit,
-            navigateToBoard: () -> Unit
+            navigateToBoard: (BoardInfo) -> Unit
         ) = with(columnScope) {
-            Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
                 boards.forEach {
                     Crossfade(targetState = it) { boardUi ->
-                        boardUi.Show()
+                        boardUi.Show(navigateToBoard)
                     }
                 }
             }
@@ -60,7 +65,7 @@ interface BoardsUiState {
         override fun Show(
             columnScope: ColumnScope,
             navigateToBoardCreation: () -> Unit,
-            navigateToBoard: () -> Unit
+            navigateToBoard: (BoardInfo) -> Unit
         ) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
@@ -80,7 +85,7 @@ interface BoardsUiState {
         override fun Show(
             columnScope: ColumnScope,
             navigateToBoardCreation: () -> Unit,
-            navigateToBoard: () -> Unit
+            navigateToBoard: (BoardInfo) -> Unit
         ) = with(columnScope) {
             Box(
                 modifier = Modifier

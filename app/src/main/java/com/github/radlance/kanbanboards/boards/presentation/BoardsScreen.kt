@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,6 +25,7 @@ import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 fun BoardsScreen(
     navigateToProfile: () -> Unit,
     navigateToBoardCreation: () -> Unit,
+    navigateToBoard: (BoardInfo) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardsViewModel = hiltViewModel()
 ) {
@@ -53,7 +55,7 @@ fun BoardsScreen(
             boardsUiState.Show(
                 columnScope = this@BaseColumn,
                 navigateToBoardCreation = navigateToBoardCreation,
-                navigateToBoard = {}
+                navigateToBoard = navigateToBoard
             )
         }
     }
