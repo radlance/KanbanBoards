@@ -1,0 +1,87 @@
+package com.github.radlance.kanbanboards.board.presentation
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
+import com.github.radlance.kanbanboards.board.domain.Column
+import com.github.radlance.kanbanboards.board.domain.Ticket
+import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+
+@Composable
+fun TicketItem(
+    ticket: Ticket,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+            .border(
+                width = 1.dp,
+                shape = RoundedCornerShape(8.dp),
+                color = MaterialTheme.colorScheme.secondary
+            )
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+        ) {
+            Text(
+                text = ticket.name,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            )
+            Text(
+                text = ticket.assignedMemberName,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Box(
+                modifier = Modifier
+                    .height(25.dp)
+                    .fillMaxWidth()
+                    .background(color = Color(ticket.colorHex.toColorInt()))
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TicketItemPreview() {
+    KanbanBoardsTheme {
+        TicketItem(
+            ticket = Ticket(
+                colorHex = "#EBC944",
+                id = "id",
+                name = "test ticket",
+                assignedMemberName = "some member",
+                column = Column.Todo
+            ),
+            modifier = Modifier
+                .width(250.dp)
+                .padding(12.dp)
+        )
+    }
+}
