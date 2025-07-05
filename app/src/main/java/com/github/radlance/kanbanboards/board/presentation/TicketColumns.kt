@@ -13,13 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.radlance.kanbanboards.board.domain.Column
-import com.github.radlance.kanbanboards.board.domain.Ticket
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 
 @Composable
 fun TicketColumns(
-    tickets: List<Ticket>,
+    tickets: List<TicketUi>,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -39,20 +37,20 @@ fun TicketColumns(
                 .width(250.dp)
 
             TicketColumn(
-                tickets = tickets.filter { it.column is Column.Todo },
-                columnType = Column.Todo,
+                tickets = tickets.filter { it.column is ColumnUi.Todo },
+                columnType = ColumnUi.Todo,
                 modifier = columnModifier.padding(start = 12.dp)
             )
 
             TicketColumn(
-                tickets = tickets.filter { it.column is Column.InProgress },
-                columnType = Column.InProgress,
+                tickets = tickets.filter { it.column is ColumnUi.InProgress },
+                columnType = ColumnUi.InProgress,
                 modifier = columnModifier
             )
 
             TicketColumn(
-                tickets = tickets.filter { it.column is Column.Done },
-                columnType = Column.Done,
+                tickets = tickets.filter { it.column is ColumnUi.Done },
+                columnType = ColumnUi.Done,
                 modifier = columnModifier.padding(end = 12.dp)
             )
         }
@@ -65,28 +63,28 @@ private fun TicketRowsPreview() {
     KanbanBoardsTheme {
         TicketColumns(
             tickets = listOf(
-                Ticket(
+                TicketUi(
                     colorHex = "#BFE951",
                     id = "id",
                     name = "test another ticket",
                     assignedMemberName = "some member",
-                    column = Column.Todo
+                    column = ColumnUi.Todo
                 ),
 
-                Ticket(
+                TicketUi(
                     colorHex = "#EBC944",
                     id = "id2",
                     name = "test ticket",
                     assignedMemberName = "some member",
-                    column = Column.InProgress
+                    column = ColumnUi.InProgress
                 ),
 
-                Ticket(
+                TicketUi(
                     colorHex = "#EBCAFF",
                     id = "id3",
                     name = "done ticket",
                     assignedMemberName = "some member",
-                    column = Column.Done
+                    column = ColumnUi.Done
                 )
             ),
             modifier = Modifier.padding(vertical = 15.dp)

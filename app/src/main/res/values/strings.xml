@@ -27,4 +27,6 @@
     <string name="create_board_error">Creating board error</string>
     <string name="owner">Owner: %1$s</string>
     <string name="settings_icon">settings icon</string>
+    <string name="keyboard_double_arrow_right_icon">keyboard double arrow right icon</string>
+    <string name="keyboard_double_arrow_left_icon">keyboard double arrow left icon</string>
 </resources>

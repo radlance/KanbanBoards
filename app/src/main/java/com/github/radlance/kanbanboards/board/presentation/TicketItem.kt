@@ -22,13 +22,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
-import com.github.radlance.kanbanboards.board.domain.Column
-import com.github.radlance.kanbanboards.board.domain.Ticket
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 
 @Composable
 fun TicketItem(
-    ticket: Ticket,
+    ticket: TicketUi,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -57,12 +55,31 @@ fun TicketItem(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge
             )
-            Box(
-                modifier = Modifier
-                    .height(25.dp)
-                    .fillMaxWidth()
-                    .background(color = Color(ticket.colorHex.toColorInt()))
-            )
+
+
+
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+
+                Box(modifier = Modifier.align(Alignment.CenterStart)) {
+                    ticket.column.StartContent {
+                        // TODO handle
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .height(25.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 55.dp)
+                        .background(color = Color(ticket.colorHex.toColorInt()))
+                )
+
+                Box(modifier = Modifier.align(Alignment.CenterEnd)) {
+                    ticket.column.EndContent {
+                        // TODO handle
+                    }
+                }
+            }
         }
     }
 }
@@ -72,12 +89,12 @@ fun TicketItem(
 private fun TicketItemPreview() {
     KanbanBoardsTheme {
         TicketItem(
-            ticket = Ticket(
+            ticket = TicketUi(
                 colorHex = "#EBC944",
                 id = "id",
                 name = "test ticket",
                 assignedMemberName = "some member",
-                column = Column.Todo
+                column = ColumnUi.Todo
             ),
             modifier = Modifier
                 .width(250.dp)

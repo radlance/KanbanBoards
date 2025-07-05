@@ -21,14 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.radlance.kanbanboards.board.domain.Column
-import com.github.radlance.kanbanboards.board.domain.Ticket
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 
 @Composable
 fun TicketColumn(
-    tickets: List<Ticket>,
-    columnType: Column,
+    tickets: List<TicketUi>,
+    columnType: ColumnUi,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -66,31 +64,31 @@ private fun TicketColumnPreview() {
     KanbanBoardsTheme {
         TicketColumn(
             tickets = listOf(
-                Ticket(
+                TicketUi(
                     colorHex = "#BFE951",
                     id = "id",
                     name = "test another ticket",
                     assignedMemberName = "some member",
-                    column = Column.Todo
+                    column = ColumnUi.Todo
                 ),
 
-                Ticket(
+                TicketUi(
                     colorHex = "#EBC944",
                     id = "id2",
                     name = "test ticket",
                     assignedMemberName = "some member",
-                    column = Column.Todo
+                    column = ColumnUi.Todo
                 ),
 
-                Ticket(
+                TicketUi(
                     colorHex = "#EBCAFF",
                     id = "id3",
                     name = "done ticket",
                     assignedMemberName = "some member",
-                    column = Column.Todo
+                    column = ColumnUi.Todo
                 )
             ),
-            columnType = Column.Todo,
+            columnType = ColumnUi.Todo,
             modifier = Modifier
                 .widthIn(250.dp)
                 .padding(12.dp)
