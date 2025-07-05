@@ -26,4 +26,5 @@
     <string name="board_with_this_already_exists">Board with this name already exists</string>
     <string name="create_board_error">Creating board error</string>
     <string name="owner">Owner: %1$s</string>
+    <string name="settings_icon">settings icon</string>
 </resources>

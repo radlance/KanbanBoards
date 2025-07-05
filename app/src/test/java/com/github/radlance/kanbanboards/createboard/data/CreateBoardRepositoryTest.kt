@@ -1,5 +1,6 @@
 package com.github.radlance.kanbanboards.createboard.data
 
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardRepository
@@ -83,7 +84,9 @@ class CreateBoardRepositoryTest : BaseTest() {
     @Test
     fun test_create_board_success() = runBlocking {
         assertEquals(
-            CreateBoardResult.Success,
+            CreateBoardResult.Success(
+                boardInfo = BoardInfo(id = "", name = "another one my board", isMyBoard = true)
+            ),
             repository.createBoard(name = "another one my board")
         )
 

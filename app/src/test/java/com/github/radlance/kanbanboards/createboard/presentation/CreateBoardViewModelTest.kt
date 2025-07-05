@@ -1,5 +1,6 @@
 package com.github.radlance.kanbanboards.createboard.presentation
 
+import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardResult
@@ -113,7 +114,11 @@ class CreateBoardViewModelTest : BaseTest() {
         )
         assertEquals(1, repository.createBoardCalledCount)
 
-        repository.makeExpectedCreateBoardResult(CreateBoardResult.Success)
+        repository.makeExpectedCreateBoardResult(
+            CreateBoardResult.Success(
+                BoardInfo(id = "", name = "second board", isMyBoard = true)
+            )
+        )
         viewModel.createBoard(name = "second board")
         assertEquals(4, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
@@ -121,7 +126,9 @@ class CreateBoardViewModelTest : BaseTest() {
             handle.saveCreateBoardUiStateCalledList[2]
         )
         assertEquals(
-            CreateBoardUiState.Success,
+            CreateBoardUiState.Success(
+                BoardInfo(id = "", name = "second board", isMyBoard = true)
+            ),
             handle.saveCreateBoardUiStateCalledList[3]
         )
         assertEquals(2, repository.createBoardCalledCount)
@@ -130,7 +137,13 @@ class CreateBoardViewModelTest : BaseTest() {
     private class TestCreateBoardRepository : CreateBoardRepository {
 
         var createBoardCalledCount = 0
-        private var createBoardResult: CreateBoardResult = CreateBoardResult.Success
+        private var createBoardResult: CreateBoardResult = CreateBoardResult.Success(
+            boardInfo = BoardInfo(
+                id = "",
+                name = "initial createBoardResult",
+                isMyBoard = true
+            )
+        )
 
 
         fun makeExpectedCreateBoardResult(result: CreateBoardResult) {

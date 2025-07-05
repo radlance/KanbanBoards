@@ -23,7 +23,6 @@ class BoardViewModel @Inject constructor(
 
     val boardUiState = handleBoard.boardUiState()
 
-    // TODO useCase
     fun fetchBoard(boardInfo: BoardInfo) {
         boardRepository.loadBoard(boardInfo.id).map {
             it.map(boardResultMapper)

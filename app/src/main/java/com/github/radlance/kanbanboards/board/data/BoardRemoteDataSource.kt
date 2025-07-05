@@ -1,11 +1,14 @@
 package com.github.radlance.kanbanboards.board.data
 
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
-import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
-import com.github.radlance.kanbanboards.boards.domain.Board
+import com.github.radlance.kanbanboards.boards.data.BoardEntity
+import com.github.radlance.kanbanboards.common.data.ProvideDatabase
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.getValue
+import com.google.firebase.database.snapshots
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 interface BoardRemoteDataSource {
@@ -13,18 +16,19 @@ interface BoardRemoteDataSource {
     fun loadBoard(boardId: String): Flow<BoardInfo>
 
     class Base @Inject constructor(
-        private val boardsRemoteDataSource: BoardsRemoteDataSource,
-        private val mapper: Board.StorageMapper<BoardInfo>
+        private val provideDatabase: ProvideDatabase
     ) : BoardRemoteDataSource {
 
-        // TODO write separate query without boardsRemoteDataSource
         override fun loadBoard(boardId: String): Flow<BoardInfo> {
-            return merge(
-                boardsRemoteDataSource.myBoard(),
-                boardsRemoteDataSource.otherBoards()
-            ).map { boards: List<Board.Storage> ->
-                boards.first { it.compareId(boardId) }.map(mapper)
-            }
+            val myUserId = Firebase.auth.currentUser!!.uid
+
+            return provideDatabase.database()
+                .child("boards")
+                .child(boardId).snapshots.mapNotNull {
+                    val key = it.key ?: return@mapNotNull null
+                    val entity = it.getValue<BoardEntity>() ?: return@mapNotNull null
+                    BoardInfo(id = key, name = entity.name, isMyBoard = myUserId == entity.owner)
+                }
         }
     }
 }

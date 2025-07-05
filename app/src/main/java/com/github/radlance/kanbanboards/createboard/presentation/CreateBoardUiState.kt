@@ -23,7 +23,6 @@ import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import java.io.Serializable
 
-// TODO try to refactor
 interface CreateBoardUiState : Serializable {
 
     @Composable

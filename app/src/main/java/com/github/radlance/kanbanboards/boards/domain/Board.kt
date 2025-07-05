@@ -33,8 +33,6 @@ interface Board {
         protected abstract fun <T : Any> mapStorage(mapper: StorageMapper<T>): T
 
         fun compareName(name: String): Boolean = this.name == name
-
-        fun compareId(id: String): Boolean = this.id == id
     }
 
     data class My(private val id: String, private val name: String) : Storage(id, name) {

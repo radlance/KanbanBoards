@@ -68,7 +68,6 @@ fun NavGraph(
             )
         }
 
-        //TODO решить что тут делать при навигации аналогично boardViewModel.fetchBoard(it)
         composable<CreateBoard> {
             CreateBoardsScreen(
                 navigateUp = navHostController::navigateUp,
@@ -80,7 +79,10 @@ fun NavGraph(
         }
 
         composable<Board> {
-            BoardScreen(viewModel = boardViewModel)
+            BoardScreen(
+                viewModel = boardViewModel,
+                navigateUp = { navHostController.navigate(Boards) { popUpTo<Boards>() } }
+            )
         }
     }
 }
