@@ -26,7 +26,8 @@ import com.github.radlance.kanbanboards.board.domain.BoardInfo
 interface BoardsUiState {
 
     @Composable
-    fun ColumnScope.Show(
+    fun Show(
+        columnScope: ColumnScope,
         navigateToBoardCreation: () -> Unit,
         navigateToBoard: (BoardInfo) -> Unit
     )
@@ -34,10 +35,11 @@ interface BoardsUiState {
     data class Success(private val boards: List<BoardUi>) : BoardsUiState {
 
         @Composable
-        override fun ColumnScope.Show(
+        override fun Show(
+            columnScope: ColumnScope,
             navigateToBoardCreation: () -> Unit,
             navigateToBoard: (BoardInfo) -> Unit
-        ) {
+        ) = with(columnScope) {
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -60,7 +62,8 @@ interface BoardsUiState {
     data class Error(private val message: String) : BoardsUiState {
 
         @Composable
-        override fun ColumnScope.Show(
+        override fun Show(
+            columnScope: ColumnScope,
             navigateToBoardCreation: () -> Unit,
             navigateToBoard: (BoardInfo) -> Unit
         ) {
@@ -79,10 +82,11 @@ interface BoardsUiState {
     object Loading : BoardsUiState {
 
         @Composable
-        override fun ColumnScope.Show(
+        override fun Show(
+            columnScope: ColumnScope,
             navigateToBoardCreation: () -> Unit,
             navigateToBoard: (BoardInfo) -> Unit
-        ) {
+        ) = with(columnScope) {
             Box(
                 modifier = Modifier
                     .weight(1f)
