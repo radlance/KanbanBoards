@@ -51,7 +51,7 @@ fun TicketColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(items = tickets, key = { it.id }) { ticket ->
-                    TicketItem(ticket, modifier = Modifier.fillMaxWidth())
+                    TicketItem(ticket, modifier = Modifier.fillMaxWidth().animateItem())
                 }
             }
         }

@@ -30,17 +30,17 @@ interface TicketRemoteDataSource {
                     val entity = it.getValue<TicketEntity>() ?: return@mapNotNull null
 
                     with(entity) {
-                        val column = when (column) {
+                        val column = when (columnId) {
                             "todo" -> Column.Todo
-                            "in progress" -> Column.InProgress
+                            "inProgress" -> Column.InProgress
                             else -> Column.Done
                         }
 
                         Ticket(
                             id = key,
-                            colorHex = colorHex,
-                            name = name,
-                            assignedMemberName = assignedMemberName,
+                            colorHex = color,
+                            name = title,
+                            assignedMemberName = assignee,
                             column = column
                         )
                     }
