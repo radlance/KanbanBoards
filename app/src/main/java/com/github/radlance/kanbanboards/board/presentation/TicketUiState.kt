@@ -11,20 +11,33 @@ import java.io.Serializable
 interface TicketUiState : Serializable {
 
     @Composable
-    fun Show(modifier: Modifier = Modifier)
+    fun Show(
+        onMove: (ticketId: String, column: ColumnUi) -> Unit,
+        modifier: Modifier = Modifier
+    )
 
     data class Success(private val tickets: List<TicketUi>) : TicketUiState {
 
         @Composable
-        override fun Show(modifier: Modifier) {
-            TicketBoard(tickets = tickets, modifier = modifier)
+        override fun Show(
+            onMove: (ticketId: String, column: ColumnUi) -> Unit,
+            modifier: Modifier
+        ) {
+            TicketBoard(
+                tickets = tickets,
+                onMove = onMove,
+                modifier = modifier
+            )
         }
     }
 
     data class Error(private val message: String) : TicketUiState {
 
         @Composable
-        override fun Show(modifier: Modifier) {
+        override fun Show(
+            onMove: (ticketId: String, column: ColumnUi) -> Unit,
+            modifier: Modifier
+        ) {
             Text(
                 text = message,
                 style = MaterialTheme.typography.titleLarge.copy(
@@ -40,7 +53,10 @@ interface TicketUiState : Serializable {
         private fun readResolve(): Any = Loading
 
         @Composable
-        override fun Show(modifier: Modifier) {
+        override fun Show(
+            onMove: (ticketId: String, column: ColumnUi) -> Unit,
+            modifier: Modifier
+        ) {
             CircularProgressIndicator()
         }
     }

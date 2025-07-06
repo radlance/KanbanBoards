@@ -18,6 +18,7 @@ import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 @Composable
 fun TicketBoard(
     tickets: List<TicketUi>,
+    onMove: (ticketId: String, column: ColumnUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // TODO make drag and drop
@@ -38,18 +39,21 @@ fun TicketBoard(
             TicketColumn(
                 tickets = tickets.filter { it.column is ColumnUi.Todo },
                 columnType = ColumnUi.Todo,
+                onMove = onMove,
                 modifier = columnModifier.padding(start = 12.dp)
             )
 
             TicketColumn(
                 tickets = tickets.filter { it.column is ColumnUi.InProgress },
                 columnType = ColumnUi.InProgress,
+                onMove = onMove,
                 modifier = columnModifier
             )
 
             TicketColumn(
                 tickets = tickets.filter { it.column is ColumnUi.Done },
                 columnType = ColumnUi.Done,
+                onMove = onMove,
                 modifier = columnModifier.padding(end = 12.dp)
             )
         }
@@ -86,6 +90,7 @@ private fun TicketBoardPreview() {
                     column = ColumnUi.Done
                 )
             ),
+            onMove = { _, _ -> },
             modifier = Modifier.padding(vertical = 15.dp)
         )
     }

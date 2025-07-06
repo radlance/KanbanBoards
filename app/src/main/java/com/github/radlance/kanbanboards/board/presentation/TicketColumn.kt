@@ -27,6 +27,7 @@ import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 fun TicketColumn(
     tickets: List<TicketUi>,
     columnType: ColumnUi,
+    onMove: (ticketId: String, column: ColumnUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -51,7 +52,13 @@ fun TicketColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(items = tickets, key = { it.id }) { ticket ->
-                    TicketItem(ticket, modifier = Modifier.fillMaxWidth().animateItem())
+                    TicketItem(
+                        ticket = ticket,
+                        onMove = onMove,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem()
+                    )
                 }
             }
         }
@@ -89,6 +96,7 @@ private fun TicketColumnPreview() {
                 )
             ),
             columnType = ColumnUi.Todo,
+            onMove = { _, _ -> },
             modifier = Modifier
                 .widthIn(250.dp)
                 .padding(12.dp)

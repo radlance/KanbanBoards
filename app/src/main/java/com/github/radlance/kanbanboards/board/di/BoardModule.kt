@@ -8,10 +8,12 @@ import com.github.radlance.kanbanboards.board.domain.BoardRepository
 import com.github.radlance.kanbanboards.board.domain.BoardResult
 import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.board.domain.TicketResult
+import com.github.radlance.kanbanboards.board.presentation.BoardMapperFacade
 import com.github.radlance.kanbanboards.board.presentation.BoardResultMapper
 import com.github.radlance.kanbanboards.board.presentation.BoardUiState
 import com.github.radlance.kanbanboards.board.presentation.ColumnMapper
 import com.github.radlance.kanbanboards.board.presentation.ColumnUi
+import com.github.radlance.kanbanboards.board.presentation.ColumnUiMapper
 import com.github.radlance.kanbanboards.board.presentation.HandleBoard
 import com.github.radlance.kanbanboards.board.presentation.TicketResultMapper
 import com.github.radlance.kanbanboards.board.presentation.TicketUiState
@@ -44,6 +46,12 @@ interface BoardModule {
 
     @Binds
     fun provideColumnMapper(columnMapper: ColumnMapper): Column.Mapper<ColumnUi>
+
+    @Binds
+    fun provideColumnUiMapper(columnUiMapper: ColumnUiMapper): ColumnUi.Mapper<Column>
+
+    @Binds
+    fun provideBoardMapperFacade(boardMapperFacade: BoardMapperFacade.Base): BoardMapperFacade
 }
 
 @Module

@@ -19,6 +19,17 @@ interface ColumnUi {
     @Composable
     fun EndContent(onClick: (ColumnUi) -> Unit)
 
+    fun<T: Any> map(mapper: Mapper<T>): T
+
+    interface Mapper<T: Any> {
+
+        fun mapTodo(): T
+
+        fun mapInProgress(): T
+
+        fun mapDone(): T
+    }
+
     abstract class Abstract(override val label: String) : ColumnUi {
 
         @Composable
@@ -52,6 +63,8 @@ interface ColumnUi {
         override fun StartContent(onClick: (ColumnUi) -> Unit) = Unit
 
         override fun endClick(action: (ColumnUi) -> Unit) = action(InProgress)
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapTodo()
     }
 
     object InProgress : Abstract(label = "In Progress") {
@@ -59,6 +72,8 @@ interface ColumnUi {
         override fun startClick(action: (ColumnUi) -> Unit) = action(Todo)
 
         override fun endClick(action: (ColumnUi) -> Unit) = action(Done)
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapInProgress()
     }
 
     object Done : Abstract(label = "Done") {
@@ -66,6 +81,8 @@ interface ColumnUi {
         @Composable
         override fun EndContent(onClick: (ColumnUi) -> Unit) = Unit
 
-        override fun endClick(action: (ColumnUi) -> Unit) = action(InProgress)
+        override fun startClick(action: (ColumnUi) -> Unit) = action(InProgress)
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapDone()
     }
 }

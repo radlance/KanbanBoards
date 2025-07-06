@@ -27,6 +27,7 @@ import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 @Composable
 fun TicketItem(
     ticket: TicketUi,
+    onMove: (ticketId: String, column: ColumnUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -56,14 +57,10 @@ fun TicketItem(
                 style = MaterialTheme.typography.bodyLarge
             )
 
-
-
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
 
                 Box(modifier = Modifier.align(Alignment.CenterStart)) {
-                    ticket.column.StartContent {
-                        // TODO handle
-                    }
+                    ticket.column.StartContent { onMove(ticket.id, it) }
                 }
 
                 Box(
@@ -75,9 +72,7 @@ fun TicketItem(
                 )
 
                 Box(modifier = Modifier.align(Alignment.CenterEnd)) {
-                    ticket.column.EndContent {
-                        // TODO handle
-                    }
+                    ticket.column.EndContent { onMove(ticket.id, it) }
                 }
             }
         }
@@ -96,6 +91,7 @@ private fun TicketItemPreview() {
                 assignedMemberName = "some member",
                 column = ColumnUi.Todo
             ),
+            onMove = { _, _ -> },
             modifier = Modifier
                 .width(250.dp)
                 .padding(12.dp)

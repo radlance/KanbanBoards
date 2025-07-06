@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.board.data
 
 import com.github.radlance.kanbanboards.board.domain.BoardRepository
 import com.github.radlance.kanbanboards.board.domain.BoardResult
+import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.board.domain.TicketResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -23,5 +24,9 @@ class RemoteBoardRepository @Inject constructor(
         return ticketRemoteDataSource.tickets(boardId).map {
             TicketResult.Success(it)
         }.catch { e -> TicketResult.Error(e.message!!) }
+    }
+
+    override fun moveTicket(ticketId: String, column: Column) {
+        ticketRemoteDataSource.moveTicket(ticketId, column)
     }
 }

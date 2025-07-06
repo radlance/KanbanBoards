@@ -3,8 +3,6 @@ package com.github.radlance.kanbanboards.board.presentation
 import androidx.lifecycle.viewModelScope
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.domain.BoardRepository
-import com.github.radlance.kanbanboards.board.domain.BoardResult
-import com.github.radlance.kanbanboards.board.domain.TicketResult
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +17,7 @@ import javax.inject.Inject
 class BoardViewModel @Inject constructor(
     private val boardRepository: BoardRepository,
     private val handleBoard: HandleBoard,
-    private val boardResultMapper: BoardResult.Mapper<BoardUiState>,
-    private val ticketResultMapper: TicketResult.Mapper<TicketUiState>,
+    private val facade: BoardMapperFacade,
     runAsync: RunAsync
 ) : BaseViewModel(runAsync), TicketActions {
 
@@ -30,7 +27,7 @@ class BoardViewModel @Inject constructor(
 
     fun fetchBoard(boardInfo: BoardInfo) {
         boardRepository.board(boardInfo.id).map {
-            it.map(boardResultMapper)
+            facade.mapBoardResult(it)
         }.onStart {
             handleBoard.saveBoardUiState(BoardUiState.Success(boardInfo))
         }.onEach {
@@ -40,10 +37,14 @@ class BoardViewModel @Inject constructor(
 
     override fun fetchTickets(boardId: String) {
         boardRepository.tickets(boardId).map {
-            it.map(ticketResultMapper)
+            facade.mapTicketResult(it)
         }.onEach {
             handleBoard.saveTicketUiState(it)
         }.launchIn(viewModelScope)
+    }
+
+    override fun moveTicket(ticketId: String, column: ColumnUi) {
+        boardRepository.moveTicket(ticketId, facade.mapColumnUi(column))
     }
 }
 
@@ -52,4 +53,6 @@ interface TicketActions {
     val ticketUiState: StateFlow<TicketUiState>
 
     fun fetchTickets(boardId: String)
+
+    fun moveTicket(ticketId: String, column: ColumnUi)
 }

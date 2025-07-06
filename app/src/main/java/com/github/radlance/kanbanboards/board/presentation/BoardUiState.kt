@@ -98,7 +98,12 @@ interface BoardUiState : Serializable {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    ticketUiState.Show(modifier = Modifier.weight(1f))
+                    ticketUiState.Show(
+                        onMove = { ticketId, columnId ->
+                            ticketActions.moveTicket(ticketId, columnId)
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
