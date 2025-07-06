@@ -21,14 +21,12 @@ fun TicketBoard(
     modifier: Modifier = Modifier
 ) {
     // TODO make drag and drop
-    val scrollState = rememberScrollState()
-
     Box(modifier = modifier.fillMaxWidth()) {
 
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .horizontalScroll(scrollState),
+                .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(
                 12.dp,
                 alignment = Alignment.CenterHorizontally
