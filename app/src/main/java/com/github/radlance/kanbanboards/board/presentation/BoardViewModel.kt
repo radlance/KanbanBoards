@@ -4,9 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.domain.BoardRepository
 import com.github.radlance.kanbanboards.board.domain.BoardResult
+import com.github.radlance.kanbanboards.board.domain.TicketResult
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -18,13 +20,16 @@ class BoardViewModel @Inject constructor(
     private val boardRepository: BoardRepository,
     private val handleBoard: HandleBoard,
     private val boardResultMapper: BoardResult.Mapper<BoardUiState>,
+    private val ticketResultMapper: TicketResult.Mapper<TicketUiState>,
     runAsync: RunAsync
-) : BaseViewModel(runAsync) {
+) : BaseViewModel(runAsync), TicketActions {
 
     val boardUiState = handleBoard.boardUiState()
 
+    override val ticketUiState = handleBoard.ticketUiState()
+
     fun fetchBoard(boardInfo: BoardInfo) {
-        boardRepository.loadBoard(boardInfo.id).map {
+        boardRepository.board(boardInfo.id).map {
             it.map(boardResultMapper)
         }.onStart {
             handleBoard.saveBoardUiState(BoardUiState.Success(boardInfo))
@@ -32,4 +37,19 @@ class BoardViewModel @Inject constructor(
             handleBoard.saveBoardUiState(it)
         }.launchIn(viewModelScope)
     }
+
+    override fun fetchTickets(boardId: String) {
+        boardRepository.tickets(boardId).map {
+            it.map(ticketResultMapper)
+        }.onEach {
+            handleBoard.saveTicketUiState(it)
+        }.launchIn(viewModelScope)
+    }
+}
+
+interface TicketActions {
+
+    val ticketUiState: StateFlow<TicketUiState>
+
+    fun fetchTickets(boardId: String)
 }

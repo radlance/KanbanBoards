@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.createboard.data
 
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
-import com.github.radlance.kanbanboards.boards.data.BoardEntity
+import com.github.radlance.kanbanboards.board.data.BoardEntity
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

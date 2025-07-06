@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.board.presentation
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -14,10 +15,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
@@ -26,19 +29,29 @@ import java.io.Serializable
 interface BoardUiState : Serializable {
 
     @Composable
-    fun Show(navigateUp: () -> Unit, modifier: Modifier = Modifier)
+    fun Show(
+        navigateUp: () -> Unit,
+        ticketActions: TicketActions,
+        modifier: Modifier = Modifier
+    )
 
     data class Success(private val boardInfo: BoardInfo) : BoardUiState {
 
         @OptIn(ExperimentalMaterial3Api::class)
         @Composable
-        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
+        override fun Show(
+            navigateUp: () -> Unit,
+            ticketActions: TicketActions,
+            modifier: Modifier
+        ) {
+            val ticketUiState by ticketActions.ticketUiState.collectAsStateWithLifecycle()
+
             Scaffold(
                 topBar = {
                     CenterAlignedTopAppBar(
                         title = {
                             Crossfade(targetState = boardInfo.name) { name ->
-                                Text(text = name)
+                                Text(text = name, maxLines = 2, overflow = TextOverflow.Ellipsis)
                             }
                         },
                         navigationIcon = {
@@ -62,10 +75,10 @@ interface BoardUiState : Serializable {
                 modifier = modifier
             ) { contentPadding ->
                 BaseColumn(
-                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Center,
                     modifier = Modifier.padding(contentPadding)
                 ) {
-
+                    ticketUiState.Show()
                 }
             }
         }
@@ -74,7 +87,11 @@ interface BoardUiState : Serializable {
     data class Error(private val message: String) : BoardUiState {
 
         @Composable
-        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
+        override fun Show(
+            navigateUp: () -> Unit,
+            ticketActions: TicketActions,
+            modifier: Modifier
+        ) {
             Text(
                 text = message,
                 style = MaterialTheme.typography.titleLarge.copy(
@@ -90,7 +107,11 @@ interface BoardUiState : Serializable {
         private fun readResolve(): Any = Loading
 
         @Composable
-        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
+        override fun Show(
+            navigateUp: () -> Unit,
+            ticketActions: TicketActions,
+            modifier: Modifier
+        ) {
             CircularProgressIndicator()
         }
     }

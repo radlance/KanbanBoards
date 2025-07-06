@@ -16,10 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 
 @Composable
-fun TicketColumns(
+fun TicketBoard(
     tickets: List<TicketUi>,
     modifier: Modifier = Modifier
 ) {
+    // TODO make drag and drop
     val scrollState = rememberScrollState()
 
     Box(modifier = modifier.fillMaxWidth()) {
@@ -59,9 +60,9 @@ fun TicketColumns(
 
 @Preview(showBackground = true)
 @Composable
-private fun TicketRowsPreview() {
+private fun TicketBoardPreview() {
     KanbanBoardsTheme {
-        TicketColumns(
+        TicketBoard(
             tickets = listOf(
                 TicketUi(
                     colorHex = "#BFE951",

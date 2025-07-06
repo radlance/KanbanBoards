@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.boards.data
+package com.github.radlance.kanbanboards.board.data
 
 data class BoardEntity(
     val name: String = "",

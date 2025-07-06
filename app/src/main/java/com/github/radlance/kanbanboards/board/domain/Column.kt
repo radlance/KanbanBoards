@@ -2,9 +2,30 @@ package com.github.radlance.kanbanboards.board.domain
 
 interface Column {
 
-    object Todo : Column
+    fun <T : Any> map(mapper: Mapper<T>): T
 
-    object InProgress : Column
+    interface Mapper<T : Any> {
 
-    object Done : Column
+        fun mapTodo(): T
+
+        fun mapInProgress(): T
+
+        fun mapDone(): T
+    }
+
+    object Todo : Column {
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapTodo()
+    }
+
+    object InProgress : Column {
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapInProgress()
+    }
+
+    object Done : Column {
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapDone()
+    }
+
 }
