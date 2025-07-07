@@ -1,16 +1,10 @@
 package com.github.radlance.kanbanboards.common
 
-import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
-import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
-import com.github.radlance.kanbanboards.createboard.data.CreateBoardRemoteDataSource
-import com.github.radlance.kanbanboards.login.data.AuthRemoteDataSource
-import com.github.radlance.kanbanboards.navigation.data.NavigationRemoteDataSource
-import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -84,38 +78,13 @@ abstract class BaseTest {
         }
     }
 
-    protected class TestRemoteDataSource : AuthRemoteDataSource,
-        NavigationRemoteDataSource,
-        ProfileRemoteDataSource,
-        BoardsRemoteDataSource,
-        CreateBoardRemoteDataSource {
-
-        private var userProfileEntity: UserProfileEntity? = null
-
-        val signInCalledList = mutableListOf<String>()
-        var signInException: Exception? = null
-
-        var userExistsCalledCount = 0
-        var userExists = false
-
-        var profileCalledCount = 0
-        var signOutCalledCount = 0
-
-        var boardsCalledCount = 0
-        private val boards = MutableStateFlow<List<Board.Storage>>(emptyList())
+    protected class TestBoardsRemoteDataSource : BoardsRemoteDataSource {
 
         var otherBoardsCalledCount = 0
         private val otherBoards = MutableStateFlow<List<Board.Storage>>(emptyList())
-
         private var anyBoardsException: Exception? = null
-
-        var createBoardCalledCount = 0
-
-        private var createBoardException: Exception? = null
-
-        fun setUserData(name: String, email: String) {
-            userProfileEntity = UserProfileEntity(email, name)
-        }
+        var boardsCalledCount = 0
+        private val boards = MutableStateFlow<List<Board.Storage>>(emptyList())
 
         fun makeExpectedMyBoards(myBoards: List<Board.Storage>) {
             this.boards.value = myBoards
@@ -129,29 +98,6 @@ abstract class BaseTest {
             anyBoardsException = expected
         }
 
-        fun makeExpectedCreateBoardException(expected: Exception) {
-            createBoardException = expected
-        }
-
-        override suspend fun signIn(userTokenId: String) {
-            signInCalledList.add(userTokenId)
-            signInException?.let { throw it }
-        }
-
-        override fun userExists(): Boolean {
-            userExistsCalledCount++
-            return userExists
-        }
-
-        override fun profile(): UserProfileEntity {
-            profileCalledCount++
-            return userProfileEntity!!
-        }
-
-        override fun signOut() {
-            signOutCalledCount++
-        }
-
         override fun myBoard(): Flow<List<Board.Storage>> = flow {
             boardsCalledCount++
             anyBoardsException?.let { throw it }
@@ -162,16 +108,6 @@ abstract class BaseTest {
             otherBoardsCalledCount++
             anyBoardsException?.let { throw it }
             emitAll(otherBoards)
-        }
-
-        override suspend fun createBoard(name: String): BoardInfo {
-            createBoardCalledCount++
-            createBoardException?.let { throw it }
-            return BoardInfo(
-                id = "",
-                name = name,
-                isMyBoard = true
-            )
         }
     }
 }

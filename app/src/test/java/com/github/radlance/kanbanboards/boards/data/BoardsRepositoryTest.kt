@@ -12,14 +12,14 @@ import org.junit.Test
 
 class BoardsRepositoryTest : BaseTest() {
 
-    private lateinit var remoteDataSource: TestRemoteDataSource
+    private lateinit var remoteDataSource: TestBoardsRemoteDataSource
     private lateinit var manageResource: TestManageResource
 
     private lateinit var boardsRepository: BoardsRepository
 
     @Before
     fun setup() {
-        remoteDataSource = TestRemoteDataSource()
+        remoteDataSource = TestBoardsRemoteDataSource()
         manageResource = TestManageResource()
 
         boardsRepository = RemoteBoardsRepository(

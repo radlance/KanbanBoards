@@ -13,14 +13,14 @@ import org.junit.Test
 class NavigationRepositoryTest : BaseTest() {
 
     private lateinit var dataStoreManager: TestDataStoreManager
-    private lateinit var remoteDataSource: TestRemoteDataSource
+    private lateinit var remoteDataSource: TestNavigationRemoteDataSource
 
     private lateinit var repository: NavigationRepository
 
     @Before
     fun setup() {
         dataStoreManager = TestDataStoreManager()
-        remoteDataSource = TestRemoteDataSource()
+        remoteDataSource = TestNavigationRemoteDataSource()
 
         repository = BaseNavigationRepository(
             dataStoreManager = dataStoreManager,
@@ -57,5 +57,16 @@ class NavigationRepositoryTest : BaseTest() {
         assertEquals(1, dataStoreManager.authorizedCalledCount)
         assertEquals(1, remoteDataSource.userExistsCalledCount)
         assertFalse(authorizedStatus.first())
+    }
+
+    private class TestNavigationRemoteDataSource : NavigationRemoteDataSource {
+
+        var userExistsCalledCount = 0
+        var userExists = false
+
+        override fun userExists(): Boolean {
+            userExistsCalledCount++
+            return userExists
+        }
     }
 }

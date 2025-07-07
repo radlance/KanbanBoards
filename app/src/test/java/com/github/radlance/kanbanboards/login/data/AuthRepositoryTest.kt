@@ -10,7 +10,7 @@ import org.junit.Test
 
 class AuthRepositoryTest : BaseTest() {
 
-    private lateinit var remoteDataSource: TestRemoteDataSource
+    private lateinit var remoteDataSource: TestAuthRemoteDataSource
     private lateinit var handleAuthResult: TestHandleAuthResult
     private lateinit var dataStoreManager: TestDataStoreManager
 
@@ -19,7 +19,7 @@ class AuthRepositoryTest : BaseTest() {
     @Before
     fun setup() {
 
-        remoteDataSource = TestRemoteDataSource()
+        remoteDataSource = TestAuthRemoteDataSource()
         handleAuthResult = TestHandleAuthResult()
         dataStoreManager = TestDataStoreManager()
 
@@ -60,6 +60,16 @@ class AuthRepositoryTest : BaseTest() {
         assertEquals("1234567890", remoteDataSource.signInCalledList[0])
         assertEquals(1, handleAuthResult.handleCalledCount)
         assertEquals(0, dataStoreManager.saveAuthorizedCalledList.size)
+    }
+
+    private class TestAuthRemoteDataSource : AuthRemoteDataSource {
+        val signInCalledList = mutableListOf<String>()
+        var signInException: Exception? = null
+
+        override suspend fun signIn(userTokenId: String) {
+            signInCalledList.add(userTokenId)
+            signInException?.let { throw it }
+        }
     }
 
     private class TestHandleAuthResult : HandleAuthResult {

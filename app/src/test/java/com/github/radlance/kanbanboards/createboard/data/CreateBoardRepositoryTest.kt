@@ -15,23 +15,25 @@ class CreateBoardRepositoryTest : BaseTest() {
     private lateinit var manageResource: TestManageResource
     private lateinit var repository: CreateBoardRepository
 
-    private lateinit var remoteDataSource: TestRemoteDataSource
+    private lateinit var boardsRemoteDataSource: TestBoardsRemoteDataSource
+    private lateinit var createBoardRemoteDataSource: TestCreateBoardRemoteDataSource
 
     @Before
     fun setup() {
-        remoteDataSource = TestRemoteDataSource()
+        boardsRemoteDataSource = TestBoardsRemoteDataSource()
+        createBoardRemoteDataSource = TestCreateBoardRemoteDataSource()
         manageResource = TestManageResource()
 
         repository = RemoteCreateBoardRepository(
-            boardsRemoteDataSource = remoteDataSource,
-            createBoardRemoteDataSource = remoteDataSource,
+            boardsRemoteDataSource = boardsRemoteDataSource,
+            createBoardRemoteDataSource = createBoardRemoteDataSource,
             manageResource = manageResource
         )
     }
 
     @Test
     fun test_create_board_already_exists() = runBlocking {
-        remoteDataSource.makeExpectedMyBoards(
+        boardsRemoteDataSource.makeExpectedMyBoards(
             myBoards = listOf(Board.My(id = "123", name = "my first board"))
         )
 
@@ -42,14 +44,14 @@ class CreateBoardRepositoryTest : BaseTest() {
             repository.createBoard(name = "my first board")
         )
 
-        assertEquals(0, remoteDataSource.createBoardCalledCount)
-        assertEquals(1, remoteDataSource.boardsCalledCount)
+        assertEquals(0, createBoardRemoteDataSource.createBoardCalledCount)
+        assertEquals(1, boardsRemoteDataSource.boardsCalledCount)
         assertEquals(1, manageResource.stringCalledCount)
     }
 
     @Test
     fun test_create_board_error_with_message() = runBlocking {
-        remoteDataSource.makeExpectedCreateBoardException(
+        createBoardRemoteDataSource.makeExpectedCreateBoardException(
             expected = IllegalStateException("no response")
         )
 
@@ -58,8 +60,8 @@ class CreateBoardRepositoryTest : BaseTest() {
             repository.createBoard(name = "my board")
         )
 
-        assertEquals(1, remoteDataSource.createBoardCalledCount)
-        assertEquals(1, remoteDataSource.boardsCalledCount)
+        assertEquals(1, createBoardRemoteDataSource.createBoardCalledCount)
+        assertEquals(1, boardsRemoteDataSource.boardsCalledCount)
         assertEquals(0, manageResource.stringCalledCount)
     }
 
@@ -67,7 +69,7 @@ class CreateBoardRepositoryTest : BaseTest() {
     fun test_create_board_error_without_message() = runBlocking {
         manageResource.makeExpectedAnswer(expected = "error")
 
-        remoteDataSource.makeExpectedCreateBoardException(
+        createBoardRemoteDataSource.makeExpectedCreateBoardException(
             expected = IllegalStateException()
         )
 
@@ -76,8 +78,8 @@ class CreateBoardRepositoryTest : BaseTest() {
             repository.createBoard(name = "my board")
         )
 
-        assertEquals(1, remoteDataSource.createBoardCalledCount)
-        assertEquals(1, remoteDataSource.boardsCalledCount)
+        assertEquals(1, createBoardRemoteDataSource.createBoardCalledCount)
+        assertEquals(1, boardsRemoteDataSource.boardsCalledCount)
         assertEquals(1, manageResource.stringCalledCount)
     }
 
@@ -90,7 +92,29 @@ class CreateBoardRepositoryTest : BaseTest() {
             repository.createBoard(name = "another one my board")
         )
 
-        assertEquals(1, remoteDataSource.createBoardCalledCount)
-        assertEquals(1, remoteDataSource.boardsCalledCount)
+        assertEquals(1, createBoardRemoteDataSource.createBoardCalledCount)
+        assertEquals(1, boardsRemoteDataSource.boardsCalledCount)
+    }
+
+    private class TestCreateBoardRemoteDataSource : CreateBoardRemoteDataSource {
+
+        var createBoardCalledCount = 0
+
+        private var createBoardException: Exception? = null
+
+
+        fun makeExpectedCreateBoardException(expected: Exception) {
+            createBoardException = expected
+        }
+
+        override suspend fun createBoard(name: String): BoardInfo {
+            createBoardCalledCount++
+            createBoardException?.let { throw it }
+            return BoardInfo(
+                id = "",
+                name = name,
+                isMyBoard = true
+            )
+        }
     }
 }
