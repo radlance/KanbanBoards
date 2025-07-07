@@ -4,7 +4,6 @@ import android.content.ClipData
 import androidx.compose.foundation.border
 import androidx.compose.foundation.draganddrop.dragAndDropSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -36,7 +35,7 @@ fun TicketColumn(
     onMove: (ticketId: String, column: ColumnUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Column(
         modifier = modifier.border(
             width = 1.dp,
             shape = RoundedCornerShape(12.dp),
@@ -96,6 +95,7 @@ fun TicketColumn(
                 }
             }
         }
+        Spacer(Modifier.height(10.dp))
     }
 }
 
