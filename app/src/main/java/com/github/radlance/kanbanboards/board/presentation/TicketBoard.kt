@@ -21,7 +21,6 @@ fun TicketBoard(
     onMove: (ticketId: String, column: ColumnUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // TODO make drag and drop
     Box(modifier = modifier.fillMaxWidth()) {
 
         Row(
@@ -36,21 +35,21 @@ fun TicketBoard(
             val columnModifier = Modifier
                 .width(250.dp)
 
-            TicketColumn(
+            TicketColumnWithDrop(
                 tickets = tickets.filter { it.column is ColumnUi.Todo },
                 columnType = ColumnUi.Todo,
                 onMove = onMove,
                 modifier = columnModifier.padding(start = 12.dp)
             )
 
-            TicketColumn(
+            TicketColumnWithDrop(
                 tickets = tickets.filter { it.column is ColumnUi.InProgress },
                 columnType = ColumnUi.InProgress,
                 onMove = onMove,
                 modifier = columnModifier
             )
 
-            TicketColumn(
+            TicketColumnWithDrop(
                 tickets = tickets.filter { it.column is ColumnUi.Done },
                 columnType = ColumnUi.Done,
                 onMove = onMove,

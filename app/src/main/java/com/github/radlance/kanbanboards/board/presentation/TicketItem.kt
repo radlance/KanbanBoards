@@ -37,7 +37,7 @@ fun TicketItem(
                 width = 1.dp,
                 shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.secondary
-            )
+            ).background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

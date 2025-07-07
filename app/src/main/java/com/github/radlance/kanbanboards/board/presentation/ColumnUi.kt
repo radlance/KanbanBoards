@@ -8,6 +8,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.github.radlance.kanbanboards.R
+import kotlinx.serialization.Serializable
 
 interface ColumnUi {
 
@@ -30,6 +31,7 @@ interface ColumnUi {
         fun mapDone(): T
     }
 
+    @Serializable
     abstract class Abstract(override val label: String) : ColumnUi {
 
         @Composable
@@ -57,6 +59,7 @@ interface ColumnUi {
         protected open fun endClick(action: (ColumnUi) -> Unit) = Unit
     }
 
+    @Serializable
     object Todo : Abstract(label = "To Do") {
 
         @Composable
@@ -67,6 +70,7 @@ interface ColumnUi {
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapTodo()
     }
 
+    @Serializable
     object InProgress : Abstract(label = "In Progress") {
 
         override fun startClick(action: (ColumnUi) -> Unit) = action(Todo)
@@ -76,6 +80,7 @@ interface ColumnUi {
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapInProgress()
     }
 
+    @Serializable
     object Done : Abstract(label = "Done") {
 
         @Composable

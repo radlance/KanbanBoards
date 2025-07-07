@@ -1,5 +1,8 @@
 package com.github.radlance.kanbanboards.board.presentation
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class TicketUi(
     val colorHex: String,
     val id: String,
