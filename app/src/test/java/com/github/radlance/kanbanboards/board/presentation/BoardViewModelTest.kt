@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.board
+package com.github.radlance.kanbanboards.board.presentation
 
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.domain.BoardRepository
@@ -6,17 +6,6 @@ import com.github.radlance.kanbanboards.board.domain.BoardResult
 import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.board.domain.Ticket
 import com.github.radlance.kanbanboards.board.domain.TicketResult
-import com.github.radlance.kanbanboards.board.presentation.BoardMapperFacade
-import com.github.radlance.kanbanboards.board.presentation.BoardResultMapper
-import com.github.radlance.kanbanboards.board.presentation.BoardUiState
-import com.github.radlance.kanbanboards.board.presentation.BoardViewModel
-import com.github.radlance.kanbanboards.board.presentation.ColumnMapper
-import com.github.radlance.kanbanboards.board.presentation.ColumnUi
-import com.github.radlance.kanbanboards.board.presentation.ColumnUiMapper
-import com.github.radlance.kanbanboards.board.presentation.HandleBoard
-import com.github.radlance.kanbanboards.board.presentation.TicketResultMapper
-import com.github.radlance.kanbanboards.board.presentation.TicketUi
-import com.github.radlance.kanbanboards.board.presentation.TicketUiState
 import com.github.radlance.kanbanboards.common.BaseTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.Flow
