@@ -13,12 +13,14 @@ import com.github.radlance.kanbanboards.navigation.data.NavigationRemoteDataSour
 import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 
@@ -33,7 +35,7 @@ abstract class BaseTest {
             ui.invoke(result)
         }
 
-        override fun <T> stateInViewModel(
+        override fun <T> stateInAsync(
             flow: Flow<T>,
             started: SharingStarted,
             initialValue: T,
@@ -43,6 +45,10 @@ abstract class BaseTest {
             SharingStarted.Eagerly,
             initialValue
         )
+
+        override fun <T> launchInAsync(flow: Flow<T>, coroutineScope: CoroutineScope): Job {
+            return flow.launchIn(CoroutineScope(Dispatchers.Unconfined))
+        }
     }
 
     protected class TestManageResource : ManageResource {

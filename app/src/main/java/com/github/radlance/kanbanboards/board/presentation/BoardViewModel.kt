@@ -1,13 +1,11 @@
 package com.github.radlance.kanbanboards.board.presentation
 
-import androidx.lifecycle.viewModelScope
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.domain.BoardRepository
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -32,7 +30,7 @@ class BoardViewModel @Inject constructor(
             handleBoard.saveBoardUiState(BoardUiState.Success(boardInfo))
         }.onEach {
             handleBoard.saveBoardUiState(it)
-        }.launchIn(viewModelScope)
+        }.launchInViewModel()
     }
 
     override fun fetchTickets(boardId: String) {
@@ -40,7 +38,7 @@ class BoardViewModel @Inject constructor(
             facade.mapTicketResult(it)
         }.onEach {
             handleBoard.saveTicketUiState(it)
-        }.launchIn(viewModelScope)
+        }.launchInViewModel()
     }
 
     override fun moveTicket(ticketId: String, column: ColumnUi) {
