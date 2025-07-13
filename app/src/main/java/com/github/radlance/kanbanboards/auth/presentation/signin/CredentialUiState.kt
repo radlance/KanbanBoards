@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.login.presentation
+package com.github.radlance.kanbanboards.auth.presentation.signin
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -10,18 +10,18 @@ import java.io.Serializable
 interface CredentialUiState : Serializable {
 
     @Composable
-    fun Show(signInAction: SignInAction)
+    fun Show(action: SignInCredentialAction)
 
     data class Success(private val idToken: String) : CredentialUiState {
 
         @Composable
-        override fun Show(signInAction: SignInAction) = signInAction.signIn(idToken)
+        override fun Show(action: SignInCredentialAction) = action.signInWithToken(idToken)
     }
 
     data class Error(private val manageResource: ManageResource) : CredentialUiState {
 
         @Composable
-        override fun Show(signInAction: SignInAction) {
+        override fun Show(action: SignInCredentialAction) {
             Text(
                 text = manageResource.string(R.string.error_enter_with_google),
                 color = MaterialTheme.colorScheme.error,
@@ -35,6 +35,6 @@ interface CredentialUiState : Serializable {
         private fun readResolve(): Any = Initial
 
         @Composable
-        override fun Show(signInAction: SignInAction) = Unit
+        override fun Show(action: SignInCredentialAction) = Unit
     }
 }

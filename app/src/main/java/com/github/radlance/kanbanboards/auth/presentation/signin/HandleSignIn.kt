@@ -1,6 +1,7 @@
-package com.github.radlance.kanbanboards.login.presentation
+package com.github.radlance.kanbanboards.auth.presentation.signin
 
 import androidx.lifecycle.SavedStateHandle
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
@@ -13,6 +14,8 @@ interface HandleSignIn {
     fun saveCredentialState(credentialUiState: CredentialUiState)
 
     fun credentialState(): StateFlow<CredentialUiState>
+
+    fun fieldsState(): MutableStateFlow<SignInFieldsUiState>
 
     class Base @Inject constructor(
         private val savedStateHandle: SavedStateHandle
@@ -34,9 +37,14 @@ interface HandleSignIn {
             return savedStateHandle.getStateFlow(KEY_CREDENTIAL, CredentialUiState.Initial)
         }
 
-        companion object {
-            private const val KEY_SIGN_IN = "sign in"
-            private const val KEY_CREDENTIAL = "credential"
+        override fun fieldsState(): MutableStateFlow<SignInFieldsUiState> {
+            return savedStateHandle.getMutableStateFlow(KEY_FIELDS, SignInFieldsUiState())
+        }
+
+        private companion object {
+            const val KEY_SIGN_IN = "sign in"
+            const val KEY_CREDENTIAL = "credential"
+            const val KEY_FIELDS = "sign in fields"
         }
     }
 }

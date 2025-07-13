@@ -165,7 +165,7 @@ class BoardsRepositoryTest : BaseTest() {
 
     @Test
     fun test_load_boards_throws_exception_without_message() = runBlocking {
-        manageResource.makeExpectedAnswer(expected = "error")
+        manageResource.makeExpectedString(expected = "error")
         remoteDataSource.makeExpectedBoardsException(
             expected = IllegalStateException()
         )

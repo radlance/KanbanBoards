@@ -1,6 +1,10 @@
-package com.github.radlance.kanbanboards.login.presentation
+package com.github.radlance.kanbanboards.auth.presentation
 
 import androidx.lifecycle.SavedStateHandle
+import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
+import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInFieldsUiState
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInResultUiState
 import com.github.radlance.kanbanboards.common.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -49,5 +53,10 @@ class HandleSignInTest : BaseTest() {
             CredentialUiState.Error(manageResource = manageResource),
             handleSignIn.credentialState().value
         )
+    }
+
+    @Test
+    fun test_fields_initial_state() {
+        assertEquals(SignInFieldsUiState(), handleSignIn.fieldsState().value)
     }
 }

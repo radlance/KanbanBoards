@@ -1,29 +1,23 @@
-package com.github.radlance.kanbanboards.login.data
+package com.github.radlance.kanbanboards.auth.data
 
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-interface AuthRemoteDataSource {
+interface HandleAuthRemoteDataSource {
 
-    suspend fun signIn(userTokenId: String)
+    suspend fun handle(action: suspend () -> FirebaseUser?)
 
     class Base @Inject constructor(
+        private val provideDatabase: ProvideDatabase,
         private val handle: HandleError,
-        private val provideDatabase: ProvideDatabase
-    ): AuthRemoteDataSource {
-
-        override suspend fun signIn(userTokenId: String) {
+    ): HandleAuthRemoteDataSource {
+        override suspend fun handle(action: suspend () -> FirebaseUser?) {
             try {
-                val user = Firebase.auth.signInWithCredential(
-                    GoogleAuthProvider.getCredential(userTokenId, null)
-                ).await().user
-
+                val user = action.invoke()
                 val uid = user!!.uid
                 val email = user.email!!
                 val name = user.displayName

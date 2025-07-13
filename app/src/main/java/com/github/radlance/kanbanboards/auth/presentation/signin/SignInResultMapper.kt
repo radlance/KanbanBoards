@@ -1,6 +1,6 @@
-package com.github.radlance.kanbanboards.login.presentation
+package com.github.radlance.kanbanboards.auth.presentation.signin
 
-import com.github.radlance.kanbanboards.login.domain.AuthResult
+import com.github.radlance.kanbanboards.auth.domain.AuthResult
 import javax.inject.Inject
 
 class SignInResultMapper @Inject constructor() : AuthResult.Mapper<SignInResultUiState> {

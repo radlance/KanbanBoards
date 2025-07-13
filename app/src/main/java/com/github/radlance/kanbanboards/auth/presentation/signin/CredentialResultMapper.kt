@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.login.presentation
+package com.github.radlance.kanbanboards.auth.presentation.signin
 
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import javax.inject.Inject

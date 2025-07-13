@@ -12,7 +12,7 @@ import com.github.radlance.kanbanboards.board.presentation.BoardScreen
 import com.github.radlance.kanbanboards.board.presentation.BoardViewModel
 import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardsScreen
-import com.github.radlance.kanbanboards.login.presentation.SignInScreen
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInScreen
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 
 @Composable

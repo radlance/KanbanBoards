@@ -51,7 +51,7 @@ abstract class BaseTest {
 
         private var string = ""
 
-        fun makeExpectedAnswer(expected: String) {
+        fun makeExpectedString(expected: String) {
             string = expected
         }
 

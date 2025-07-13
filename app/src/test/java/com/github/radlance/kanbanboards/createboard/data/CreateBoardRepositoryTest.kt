@@ -37,7 +37,7 @@ class CreateBoardRepositoryTest : BaseTest() {
             myBoards = listOf(Board.My(id = "123", name = "my first board"))
         )
 
-        manageResource.makeExpectedAnswer(expected = "board with this name already exists")
+        manageResource.makeExpectedString(expected = "board with this name already exists")
 
         assertEquals(
             CreateBoardResult.AlreadyExists(message = "board with this name already exists"),
@@ -67,7 +67,7 @@ class CreateBoardRepositoryTest : BaseTest() {
 
     @Test
     fun test_create_board_error_without_message() = runBlocking {
-        manageResource.makeExpectedAnswer(expected = "error")
+        manageResource.makeExpectedString(expected = "error")
 
         createBoardRemoteDataSource.makeExpectedCreateBoardException(
             expected = IllegalStateException()

@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.login.domain
+package com.github.radlance.kanbanboards.auth.domain
 
 interface AuthResult {
 

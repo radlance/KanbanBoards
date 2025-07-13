@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.login.presentation
+package com.github.radlance.kanbanboards.auth.presentation.signin
 
 import java.security.MessageDigest
 
