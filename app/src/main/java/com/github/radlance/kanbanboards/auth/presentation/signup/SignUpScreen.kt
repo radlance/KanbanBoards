@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,6 +40,7 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
+    val scrollState = rememberScrollState()
     val keyboardController = LocalSoftwareKeyboardController.current
     val fieldsUiState by viewModel.fieldsUiState.collectAsStateWithLifecycle()
     val signUpResultUiState by viewModel.authResultUiState.collectAsStateWithLifecycle()
@@ -47,7 +50,7 @@ fun SignUpScreen(
     var passwordFieldValue by rememberSaveable { mutableStateOf("") }
     var passwordConfirmFieldValue by rememberSaveable { mutableStateOf("") }
 
-    BaseColumn(modifier = modifier.safeDrawingPadding()) {
+    BaseColumn(modifier = modifier.safeDrawingPadding(), scrollState = scrollState) {
         Spacer(Modifier.weight(1f))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -107,8 +110,17 @@ fun SignUpScreen(
             }
         }
 
+        val columnModifier = if (
+            signUpResultUiState.hasSize()
+            && (scrollState.canScrollForward || scrollState.canScrollBackward)
+        ) {
+            Modifier.heightIn(min = 81.dp)
+        } else {
+            Modifier.weight(1f)
+        }
 
-        Column(modifier = Modifier.weight(1f)) {
+
+        Column(modifier = columnModifier, horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(Modifier.weight(1f))
             signUpResultUiState.Show(navigateToBoardsScreen = navigateToBoardsScreen)
             Spacer(Modifier.weight(1f))

@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
@@ -54,6 +56,7 @@ fun SignInScreen(
     val activity = LocalActivity.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     val googleAccountManager: AccountManager? = remember {
         activity?.let { AccountManager.Google(it, FormatNonce.DigestFold) }
@@ -63,7 +66,7 @@ fun SignInScreen(
     val signInResultUiState by viewModel.authResultUiState.collectAsStateWithLifecycle()
     val credentialResultUiState by viewModel.credentialResultUiState.collectAsStateWithLifecycle()
 
-    BaseColumn(modifier = modifier.safeDrawingPadding()) {
+    BaseColumn(modifier = modifier.safeDrawingPadding(), scrollState = scrollState) {
         Spacer(Modifier.weight(1f))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -96,7 +99,7 @@ fun SignInScreen(
 
             Spacer(Modifier.height(16.dp))
             Button(
-                enabled = signInResultUiState.buttonEnabled(),
+                enabled = signInResultUiState.buttonEnabled() || credentialResultUiState.buttonEnabled(),
                 onClick = {
                     viewModel.signInWithEmail(
                         email = emailFieldValue,
@@ -109,10 +112,10 @@ fun SignInScreen(
                 Text(text = stringResource(R.string.sign_in))
             }
 
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(16.dp))
 
             IconButton(
-                enabled = signInResultUiState.buttonEnabled(),
+                enabled = signInResultUiState.buttonEnabled() || credentialResultUiState.buttonEnabled(),
                 onClick = {
                     scope.launch {
                         googleAccountManager?.signIn()?.let { viewModel.createCredential(it) }
@@ -137,8 +140,21 @@ fun SignInScreen(
             }
         }
 
+        val columnModifier = if (
+            (signInResultUiState.hasSize()
+                    || credentialResultUiState.hasSize()) &&
+            (scrollState.canScrollForward
+                    || scrollState.canScrollBackward)
+        ) {
+            Modifier.heightIn(min = 81.dp)
+        } else {
+            Modifier.weight(1f)
+        }
 
-        Column(modifier = Modifier.weight(1f)) {
+        Column(
+            modifier = columnModifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Spacer(Modifier.weight(1f))
             signInResultUiState.Show(navigateToBoardsScreen)
             credentialResultUiState.Show(viewModel)

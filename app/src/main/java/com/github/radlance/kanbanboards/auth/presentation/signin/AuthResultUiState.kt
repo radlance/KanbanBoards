@@ -7,14 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
 import java.io.Serializable
 
-interface AuthResultUiState : Serializable {
+interface AuthResultUiState : Serializable, AuthUiState {
 
     @Composable
     fun Show(navigateToBoardsScreen: () -> Unit)
 
-    fun buttonEnabled(): Boolean
-
-    object Success : AuthResultUiState {
+    object Success : AuthResultUiState, BaseAuthUiState(hasSize = false, buttonEnabled = true) {
 
         private fun readResolve(): Any = Success
 
@@ -24,7 +22,9 @@ interface AuthResultUiState : Serializable {
         override fun buttonEnabled(): Boolean = true
     }
 
-    data class Error(private val message: String) : AuthResultUiState {
+    data class Error(
+        private val message: String
+    ) : AuthResultUiState, BaseAuthUiState(hasSize = true, buttonEnabled = true) {
 
         @Composable
         override fun Show(navigateToBoardsScreen: () -> Unit) {
@@ -39,7 +39,7 @@ interface AuthResultUiState : Serializable {
         override fun buttonEnabled(): Boolean = true
     }
 
-    object Loading : AuthResultUiState {
+    object Loading : AuthResultUiState, BaseAuthUiState(hasSize = true, buttonEnabled = false) {
 
         private fun readResolve(): Any = Loading
 
@@ -49,7 +49,7 @@ interface AuthResultUiState : Serializable {
         override fun buttonEnabled(): Boolean = false
     }
 
-    object Initial : AuthResultUiState {
+    object Initial : AuthResultUiState, BaseAuthUiState(hasSize = false, buttonEnabled = true) {
 
         private fun readResolve(): Any = Initial
 
