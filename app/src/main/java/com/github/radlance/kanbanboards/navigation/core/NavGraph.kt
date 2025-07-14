@@ -8,11 +8,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInScreen
+import com.github.radlance.kanbanboards.auth.presentation.signup.SignUpScreen
 import com.github.radlance.kanbanboards.board.presentation.BoardScreen
 import com.github.radlance.kanbanboards.board.presentation.BoardViewModel
 import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardsScreen
-import com.github.radlance.kanbanboards.auth.presentation.signin.SignInScreen
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 
 @Composable
@@ -36,12 +37,26 @@ fun NavGraph(
             )
         }
 
+        val navigateToBoardsScreen = {
+            navHostController.navigate(Boards) {
+                popUpTo<SignIn> { inclusive = true }
+            }
+        }
+
         composable<SignIn> {
             SignInScreen(
-                onSuccessSignIn = {
-                    navHostController.navigate(Boards) {
-                        popUpTo<SignIn> { inclusive = true }
-                    }
+                navigateToBoardsScreen = navigateToBoardsScreen,
+                navigateToSignUpScreen = {
+                    navHostController.navigate(SignUp) { popUpTo<SignIn>() }
+                }
+            )
+        }
+
+        composable<SignUp> {
+            SignUpScreen(
+                navigateToBoardsScreen = navigateToBoardsScreen,
+                navigateToSignInScreen = {
+                    navHostController.navigate(SignIn) { popUpTo<SignIn> { inclusive = true } }
                 }
             )
         }

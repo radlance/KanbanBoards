@@ -6,16 +6,19 @@ import com.github.radlance.kanbanboards.auth.data.BaseAuthRepository
 import com.github.radlance.kanbanboards.auth.data.HandleAuthRemoteDataSource
 import com.github.radlance.kanbanboards.auth.data.HandleAuthResult
 import com.github.radlance.kanbanboards.auth.domain.AuthRepository
+import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.auth.domain.SignUpRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.MatchEmail
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResultMapper
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
-import com.github.radlance.kanbanboards.auth.presentation.signin.SignInResultMapper
-import com.github.radlance.kanbanboards.auth.presentation.signin.SignInResultUiState
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
+import com.github.radlance.kanbanboards.auth.presentation.signup.HandleSignUp
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -32,7 +35,10 @@ interface AuthModule {
     fun provideHandleAuthResult(baseResult: HandleAuthResult.Base): HandleAuthResult
 
     @Binds
-    fun provideAuthRepository(authRepository: BaseAuthRepository): AuthRepository
+    fun provideSignInRepository(signInRepository: BaseAuthRepository): SignInRepository
+
+    @Binds
+    fun provideSignUpRepository(signUpRepository: BaseAuthRepository): SignUpRepository
 
     @Binds
     fun provideCredentialResultMapper(
@@ -41,8 +47,8 @@ interface AuthModule {
 
     @Binds
     fun provideSignInResultMapper(
-        signInResultMapper: SignInResultMapper
-    ): AuthResult.Mapper<SignInResultUiState>
+        authResultMapper: AuthResultMapper
+    ): AuthResult.Mapper<AuthResultUiState>
 
     @Binds
     fun provideAuthRemoteDataSource(authRemoteDataSource: AuthRemoteDataSource.Base): AuthRemoteDataSource
@@ -67,5 +73,15 @@ class SignInViewModelModule {
     @Provides
     fun provideHandleSignIn(savedStateHandle: SavedStateHandle): HandleSignIn {
         return HandleSignIn.Base(savedStateHandle)
+    }
+}
+
+@Module
+@InstallIn(ViewModelComponent::class)
+class SignUpViewModelModule {
+    @ViewModelScoped
+    @Provides
+    fun provideHandleSignUp(savedStateHandle: SavedStateHandle): HandleSignUp {
+        return HandleSignUp.Base(savedStateHandle)
     }
 }

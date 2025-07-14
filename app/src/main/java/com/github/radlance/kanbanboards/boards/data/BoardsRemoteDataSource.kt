@@ -78,7 +78,7 @@ interface BoardsRemoteDataSource {
             .child(boardId)
             .snapshots.flatMapLatest { boardSnapshot ->
                 val boardEntity = boardSnapshot.getValue<BoardEntity>()
-                if (boardEntity != null) {
+                boardEntity?.let {
                     provideDatabase.database()
                         .child("users")
                         .child(boardEntity.owner)
@@ -90,9 +90,7 @@ interface BoardsRemoteDataSource {
                                 owner = user?.email ?: return@mapNotNull null
                             )
                         }
-                } else {
-                    flowOf(null)
-                }
+                } ?: flowOf(null)
             }.filterNotNull()
     }
 }

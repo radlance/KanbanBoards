@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.auth.presentation.signin
 
-import com.github.radlance.kanbanboards.auth.domain.AuthRepository
+import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.auth.presentation.common.BaseAuthViewModel
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateSignIn
-import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,15 +12,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val signInRepository: SignInRepository,
     private val handleSignIn: HandleSignIn,
-    private val signInMapper: AuthResult.Mapper<SignInResultUiState>,
+    private val authMapper: AuthResult.Mapper<AuthResultUiState>,
     private val credentialMapper: CredentialResult.Mapper<CredentialUiState>,
     private val validateSignIn: ValidateSignIn,
     runAsync: RunAsync
-) : BaseViewModel(runAsync), SignInCredentialAction {
-
-    val signInResultUiState = handleSignIn.signInState()
+) : BaseAuthViewModel(handleSignIn, runAsync), SignInCredentialAction {
 
     val credentialResultUiState = handleSignIn.credentialState()
 
@@ -30,10 +28,10 @@ class SignInViewModel @Inject constructor(
 
     override fun signInWithToken(userTokenId: String) {
         handleSignIn.saveCredentialState(CredentialUiState.Initial)
-        handleSignIn.saveSignInState(SignInResultUiState.Loading)
+        handleSignIn.saveAuthState(AuthResultUiState.Loading)
 
-        handle(background = { authRepository.signInWithToken(userTokenId) }) { result ->
-            handleSignIn.saveSignInState(result.map(signInMapper))
+        handle(background = { signInRepository.signInWithToken(userTokenId) }) { result ->
+            handleSignIn.saveAuthState(result.map(authMapper))
         }
     }
 
@@ -53,22 +51,18 @@ class SignInViewModel @Inject constructor(
 
         with(fieldsUiState.value) {
             if (emailErrorMessage.isEmpty() && passwordErrorMessage.isEmpty()) {
-                handleSignIn.saveSignInState(SignInResultUiState.Loading)
+                handleSignIn.saveAuthState(AuthResultUiState.Loading)
 
-                handle(background = { authRepository.signInWithEmail(email, password) }) { result ->
-                    handleSignIn.saveSignInState(result.map(signInMapper))
+                handle(background = { signInRepository.signInWithEmail(email, password) }) { result ->
+                    handleSignIn.saveAuthState(result.map(authMapper))
                 }
             }
         }
     }
 
-    fun resetEmailError() {
-        fieldsUiStateMutable.update { it.copy(emailErrorMessage = "") }
-    }
+    override fun resetEmailError() = fieldsUiStateMutable.resetEmailError()
 
-    fun resetPasswordError() {
-        fieldsUiStateMutable.update { it.copy(passwordErrorMessage = "") }
-    }
+    override fun resetPasswordError() = fieldsUiStateMutable.resetPasswordError()
 }
 
 interface SignInCredentialAction {

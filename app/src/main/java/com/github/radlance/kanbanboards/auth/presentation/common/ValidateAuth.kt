@@ -43,8 +43,8 @@ interface ValidateAuth : ValidateSignIn {
 
         override fun validEmail(value: String): String = with(manageResource) {
             return when {
-                !matchEmail.match(value) -> string(id = R.string.incorrect_email_format)
                 value.isBlank() -> string(id = R.string.email_is_blank)
+                !matchEmail.match(value) -> string(id = R.string.incorrect_email_format)
                 else -> ""
             }
         }

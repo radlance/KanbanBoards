@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.auth.presentation
 
-import com.github.radlance.kanbanboards.auth.domain.AuthRepository
+import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.domain.AuthResult
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
@@ -8,8 +8,8 @@ import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResul
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInFieldsUiState
-import com.github.radlance.kanbanboards.auth.presentation.signin.SignInResultMapper
-import com.github.radlance.kanbanboards.auth.presentation.signin.SignInResultUiState
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInViewModel
 import com.github.radlance.kanbanboards.common.BaseTest
 import junit.framework.TestCase.assertEquals
@@ -21,10 +21,10 @@ import org.junit.Test
 class SignInViewModelTest : BaseTest() {
 
     private lateinit var handle: TestHandleSignIn
-    private lateinit var signInMapper: SignInResultMapper
+    private lateinit var signInMapper: AuthResultMapper
     private lateinit var credentialMapper: CredentialResultMapper
     private lateinit var manageResource: TestManageResource
-    private lateinit var authRepository: TestAuthRepository
+    private lateinit var authRepository: TestSignInRepository
     private lateinit var validateAuth: TestValidateAuth
 
     private lateinit var viewModel: SignInViewModel
@@ -32,17 +32,17 @@ class SignInViewModelTest : BaseTest() {
 
     @Before
     fun setup() {
-        authRepository = TestAuthRepository()
+        authRepository = TestSignInRepository()
         handle = TestHandleSignIn()
-        signInMapper = SignInResultMapper()
+        signInMapper = AuthResultMapper()
         manageResource = TestManageResource()
         credentialMapper = CredentialResultMapper(manageResource)
         validateAuth = TestValidateAuth()
 
         viewModel = SignInViewModel(
-            authRepository = authRepository,
+            signInRepository = authRepository,
             handleSignIn = handle,
-            signInMapper = signInMapper,
+            authMapper = signInMapper,
             credentialMapper = credentialMapper,
             runAsync = TestRunAsync(),
             validateSignIn = validateAuth
@@ -51,14 +51,14 @@ class SignInViewModelTest : BaseTest() {
 
     @Test
     fun test_initial_state() {
-        assertEquals(SignInResultUiState.Initial, viewModel.signInResultUiState.value)
+        assertEquals(AuthResultUiState.Initial, viewModel.authResultUiState.value)
         assertEquals(CredentialUiState.Initial, viewModel.credentialResultUiState.value)
         assertEquals(SignInFieldsUiState(), viewModel.fieldsUiState.value)
 
         assertEquals(1, handle.signInStateCalledCount)
         assertEquals(1, handle.credentialStateCalledCount)
         assertEquals(1, handle.fieldsStateCalledCount)
-        assertEquals(emptyList<SignInResultUiState>(), handle.saveSignInStateCalledList)
+        assertEquals(emptyList<AuthResultUiState>(), handle.saveSignInStateCalledList)
         assertEquals(emptyList<CredentialUiState>(), handle.saveCredentialStateCalledList)
     }
 
@@ -69,14 +69,14 @@ class SignInViewModelTest : BaseTest() {
         assertEquals(1, authRepository.signInWithTokenCalledList.size)
         assertEquals("1234567890", authRepository.signInWithTokenCalledList[0])
         assertEquals(2, handle.saveSignInStateCalledList.size)
-        assertEquals(SignInResultUiState.Loading, handle.saveSignInStateCalledList[0])
+        assertEquals(AuthResultUiState.Loading, handle.saveSignInStateCalledList[0])
         assertEquals(
-            SignInResultUiState.Error("no internet connection"),
+            AuthResultUiState.Error("no internet connection"),
             handle.saveSignInStateCalledList[1]
         )
         assertEquals(
-            SignInResultUiState.Error("no internet connection"),
-            viewModel.signInResultUiState.value
+            AuthResultUiState.Error("no internet connection"),
+            viewModel.authResultUiState.value
         )
 
         authRepository.signInWithTokenResult = AuthResult.Success
@@ -85,9 +85,9 @@ class SignInViewModelTest : BaseTest() {
         assertEquals(2, authRepository.signInWithTokenCalledList.size)
         assertEquals("1234567890", authRepository.signInWithTokenCalledList[1])
         assertEquals(4, handle.saveSignInStateCalledList.size)
-        assertEquals(SignInResultUiState.Loading, handle.saveSignInStateCalledList[2])
-        assertEquals(SignInResultUiState.Success, handle.saveSignInStateCalledList[3])
-        assertEquals(SignInResultUiState.Success, viewModel.signInResultUiState.value)
+        assertEquals(AuthResultUiState.Loading, handle.saveSignInStateCalledList[2])
+        assertEquals(AuthResultUiState.Success, handle.saveSignInStateCalledList[3])
+        assertEquals(AuthResultUiState.Success, viewModel.authResultUiState.value)
     }
 
     @Test
@@ -136,14 +136,14 @@ class SignInViewModelTest : BaseTest() {
         assertEquals(1, authRepository.signInWithEmailCalledList.size)
         assertEquals(Pair("test@email.com", "123456"), authRepository.signInWithEmailCalledList[0])
         assertEquals(2, handle.saveSignInStateCalledList.size)
-        assertEquals(SignInResultUiState.Loading, handle.saveSignInStateCalledList[0])
+        assertEquals(AuthResultUiState.Loading, handle.saveSignInStateCalledList[0])
         assertEquals(
-            SignInResultUiState.Error("server error"),
+            AuthResultUiState.Error("server error"),
             handle.saveSignInStateCalledList[1]
         )
         assertEquals(
-            SignInResultUiState.Error("server error"),
-            viewModel.signInResultUiState.value
+            AuthResultUiState.Error("server error"),
+            viewModel.authResultUiState.value
         )
 
         authRepository.signInWithEmailResult = AuthResult.Success
@@ -152,9 +152,9 @@ class SignInViewModelTest : BaseTest() {
         assertEquals(2, authRepository.signInWithEmailCalledList.size)
         assertEquals(Pair("test@email.com", "123456"), authRepository.signInWithEmailCalledList[1])
         assertEquals(4, handle.saveSignInStateCalledList.size)
-        assertEquals(SignInResultUiState.Loading, handle.saveSignInStateCalledList[2])
-        assertEquals(SignInResultUiState.Success, handle.saveSignInStateCalledList[3])
-        assertEquals(SignInResultUiState.Success, viewModel.signInResultUiState.value)
+        assertEquals(AuthResultUiState.Loading, handle.saveSignInStateCalledList[2])
+        assertEquals(AuthResultUiState.Success, handle.saveSignInStateCalledList[3])
+        assertEquals(AuthResultUiState.Success, viewModel.authResultUiState.value)
     }
 
     @Test
@@ -183,7 +183,7 @@ class SignInViewModelTest : BaseTest() {
         )
     }
 
-    private class TestAuthRepository : AuthRepository {
+    private class TestSignInRepository : SignInRepository {
 
         val signInWithTokenCalledList = mutableListOf<String>()
         var signInWithTokenResult: AuthResult = AuthResult.Success
@@ -204,9 +204,9 @@ class SignInViewModelTest : BaseTest() {
 
     private class TestHandleSignIn : HandleSignIn {
 
-        private var signInResultUiState =
-            MutableStateFlow<SignInResultUiState>(SignInResultUiState.Initial)
-        var saveSignInStateCalledList = mutableListOf<SignInResultUiState>()
+        private var authResultUiState =
+            MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
+        var saveSignInStateCalledList = mutableListOf<AuthResultUiState>()
         var signInStateCalledCount = 0
 
         private var credentialUiState =
@@ -217,14 +217,14 @@ class SignInViewModelTest : BaseTest() {
         private var fieldsUiState = MutableStateFlow(SignInFieldsUiState())
         var fieldsStateCalledCount = 0
 
-        override fun saveSignInState(signInResultUiState: SignInResultUiState) {
-            saveSignInStateCalledList.add(signInResultUiState)
-            this.signInResultUiState.value = signInResultUiState
+        override fun saveAuthState(authResultUiState: AuthResultUiState) {
+            saveSignInStateCalledList.add(authResultUiState)
+            this.authResultUiState.value = authResultUiState
         }
 
-        override fun signInState(): StateFlow<SignInResultUiState> {
+        override fun authState(): StateFlow<AuthResultUiState> {
             signInStateCalledCount++
-            return signInResultUiState
+            return authResultUiState
         }
 
         override fun saveCredentialState(credentialUiState: CredentialUiState) {

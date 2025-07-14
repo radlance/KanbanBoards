@@ -14,4 +14,7 @@ class BaseAuthRepository @Inject constructor(
 
     override suspend fun signInWithEmail(email: String, password: String): AuthResult =
         handleAuthResult.handle { remoteDataSource.signInWithEmail(email, password) }
+
+    override suspend fun signUp(name: String, email: String, password: String): AuthResult =
+        handleAuthResult.handle { remoteDataSource.signUp(name, email, password) }
 }

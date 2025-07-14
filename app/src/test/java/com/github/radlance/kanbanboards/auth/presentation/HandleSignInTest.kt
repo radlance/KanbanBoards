@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInFieldsUiState
-import com.github.radlance.kanbanboards.auth.presentation.signin.SignInResultUiState
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.common.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -21,15 +21,15 @@ class HandleSignInTest : BaseTest() {
 
     @Test
     fun test_sign_in_state() {
-        assertEquals(SignInResultUiState.Initial, handleSignIn.signInState().value)
-        handleSignIn.saveSignInState(SignInResultUiState.Loading)
-        assertEquals(SignInResultUiState.Loading, handleSignIn.signInState().value)
-        handleSignIn.saveSignInState(SignInResultUiState.Success)
-        assertEquals(SignInResultUiState.Success, handleSignIn.signInState().value)
-        handleSignIn.saveSignInState(SignInResultUiState.Error(message = "test message"))
+        assertEquals(AuthResultUiState.Initial, handleSignIn.authState().value)
+        handleSignIn.saveAuthState(AuthResultUiState.Loading)
+        assertEquals(AuthResultUiState.Loading, handleSignIn.authState().value)
+        handleSignIn.saveAuthState(AuthResultUiState.Success)
+        assertEquals(AuthResultUiState.Success, handleSignIn.authState().value)
+        handleSignIn.saveAuthState(AuthResultUiState.Error(message = "test message"))
         assertEquals(
-            SignInResultUiState.Error(message = "test message"),
-            handleSignIn.signInState().value
+            AuthResultUiState.Error(message = "test message"),
+            handleSignIn.authState().value
         )
     }
 

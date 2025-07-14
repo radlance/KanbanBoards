@@ -23,7 +23,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
-import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardUiState.CanCreate.Show
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,8 +60,9 @@ fun CreateBoardsScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Show(
+            createBoardUiState.Show(
                 navigateToBoardScreen = navigateToBoardScreen,
+                columnScope = this@BaseColumn,
                 createBoardActions = viewModel
             )
         }

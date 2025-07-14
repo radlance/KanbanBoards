@@ -26,9 +26,10 @@ import java.io.Serializable
 interface CreateBoardUiState : Serializable {
 
     @Composable
-    fun ColumnScope.Show(
+    fun Show(
         navigateToBoardScreen: (BoardInfo) -> Unit,
-        createBoardActions: CreateBoardActions
+        createBoardActions: CreateBoardActions,
+        columnScope: ColumnScope
     )
 
     abstract class Abstract(
@@ -39,10 +40,11 @@ interface CreateBoardUiState : Serializable {
     ) : CreateBoardUiState {
 
         @Composable
-        override fun ColumnScope.Show(
+        override fun Show(
             navigateToBoardScreen: (BoardInfo) -> Unit,
-            createBoardActions: CreateBoardActions
-        ) {
+            createBoardActions: CreateBoardActions,
+            columnScope: ColumnScope
+        ) = with(columnScope) {
             var boardNameFieldValue by rememberSaveable { mutableStateOf("") }
 
             val label = fieldErrorMessage.ifEmpty {
@@ -95,9 +97,10 @@ interface CreateBoardUiState : Serializable {
     data class Success(private val boardInfo: BoardInfo) : CreateBoardUiState {
 
         @Composable
-        override fun ColumnScope.Show(
+        override fun Show(
             navigateToBoardScreen: (BoardInfo) -> Unit,
-            createBoardActions: CreateBoardActions
+            createBoardActions: CreateBoardActions,
+            columnScope: ColumnScope
         ) {
             navigateToBoardScreen(boardInfo)
         }

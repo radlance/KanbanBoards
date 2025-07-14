@@ -15,6 +15,10 @@ object SignIn : Destination
 
 @Keep
 @Serializable
+object SignUp : Destination
+
+@Keep
+@Serializable
 object Boards : Destination
 
 @Keep

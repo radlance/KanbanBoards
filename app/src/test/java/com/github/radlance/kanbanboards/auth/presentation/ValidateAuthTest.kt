@@ -53,7 +53,7 @@ class ValidateAuthTest : BaseTest() {
 
         assertEquals("email is blank", validateAuth.validEmail(value = ""))
         assertEquals(1, manageResource.stringCalledCount)
-        assertEquals(1, matchEmail.matchCalledCount)
+        assertEquals(0, matchEmail.matchCalledCount)
     }
 
     @Test

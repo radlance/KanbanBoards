@@ -77,6 +77,40 @@ class AuthRepositoryTest : BaseTest() {
         assertEquals(1, handleAuthResult.handleCalledCount)
     }
 
+    @Test
+    fun test_sign_up_success() = runBlocking {
+        val result = repository.signUp(
+            name = "test name",
+            email = "test@email.com",
+            password = "123456"
+        )
+
+        assertEquals(AuthResult.Success, result)
+        assertEquals(1, remoteDataSource.signUpCalledList.size)
+        assertEquals(
+            Triple("test name", "test@email.com", "123456"),
+            remoteDataSource.signUpCalledList[0]
+        )
+        assertEquals(1, handleAuthResult.handleCalledCount)
+    }
+
+    @Test
+    fun test_sign_up_error() = runBlocking {
+        remoteDataSource.signUpException = IllegalStateException("some error")
+        val result = repository.signUp(
+            name = "test name",
+            email = "test@email.com",
+            password = "123456"
+        )
+        assertEquals(AuthResult.Error(message = "some error"), result)
+        assertEquals(1, remoteDataSource.signUpCalledList.size)
+        assertEquals(
+            Triple("test name", "test@email.com", "123456"),
+            remoteDataSource.signUpCalledList[0]
+        )
+        assertEquals(1, handleAuthResult.handleCalledCount)
+    }
+
     private class TestAuthRemoteDataSource : AuthRemoteDataSource {
         val signInWithTokenCalledList = mutableListOf<String>()
         var signInWithTokenException: Exception? = null
@@ -84,6 +118,8 @@ class AuthRepositoryTest : BaseTest() {
         val signInWithEmailCalledList = mutableListOf<Pair<String, String>>()
         var signInWithEmailException: Exception? = null
 
+        val signUpCalledList = mutableListOf<Triple<String, String, String>>()
+        var signUpException: Exception? = null
 
         override suspend fun signInWithToken(userTokenId: String) {
             signInWithTokenCalledList.add(userTokenId)
@@ -93,6 +129,11 @@ class AuthRepositoryTest : BaseTest() {
         override suspend fun signInWithEmail(email: String, password: String) {
             signInWithEmailCalledList.add(Pair(email, password))
             signInWithEmailException?.let { throw it }
+        }
+
+        override suspend fun signUp(name: String, email: String, password: String) {
+            signUpCalledList.add(Triple(name, email, password))
+            signUpException?.let { throw it }
         }
     }
 
