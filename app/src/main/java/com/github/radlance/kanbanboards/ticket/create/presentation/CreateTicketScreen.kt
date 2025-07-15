@@ -1,14 +1,18 @@
 package com.github.radlance.kanbanboards.ticket.create.presentation
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -33,6 +37,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -85,7 +90,11 @@ fun CreateTicketScreen(
         }
     ) { contentPadding ->
         BaseColumn(
-            modifier = modifier.padding(contentPadding),
+            modifier = modifier.padding(
+                top = contentPadding.calculateTopPadding(),
+                start = contentPadding.calculateStartPadding(layoutDirection = LayoutDirection.Ltr),
+                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+            ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
@@ -127,19 +136,22 @@ fun CreateTicketScreen(
                         }
                 )
             }
-            Box(modifier = Modifier.weight(1f)) {
-                androidx.compose.animation.AnimatedVisibility(
-                    visible = showBoardMembers,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    boardMembersUiState.Show()
-                }
+
+            androidx.compose.animation.AnimatedVisibility(
+                visible = showBoardMembers,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                boardMembersUiState.Show()
             }
 
-            Spacer(Modifier.height(10.dp))
-            Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(R.string.create_ticket))
+            val weight by animateFloatAsState(1f)
+            Spacer(Modifier.weight(weight))
+
+            Box(modifier = Modifier.safeDrawingPadding()) {
+                Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
+                    Text(text = stringResource(R.string.create_ticket))
+                }
             }
             Spacer(Modifier.height(10.dp))
         }

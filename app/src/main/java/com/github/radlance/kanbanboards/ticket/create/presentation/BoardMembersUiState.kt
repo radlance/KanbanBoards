@@ -1,7 +1,11 @@
 package com.github.radlance.kanbanboards.ticket.create.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,8 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
 import java.io.Serializable
 
@@ -32,28 +38,37 @@ interface BoardMembersUiState : Serializable {
 
         @Composable
         override fun Show() {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                item {
-                    Column {
-                        Spacer(Modifier.height(8.dp))
-                        Text(text = "Board members")
-                    }
-                }
+            val notEmpty = members.isNotEmpty()
+            Column {
+                Spacer(Modifier.height(8.dp))
 
-                items(items = members, key = { it.id }) { member ->
-                    Crossfade(targetState = member) {
-                        Box(
-                            modifier = Modifier
-                                .padding(vertical = 10.dp)
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(MaterialTheme.colorScheme.primary)
-                        ) {
-                            Text(
-                                text = it.email,
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.padding(8.dp)
-                            )
+                AnimatedVisibility(
+                    visible = notEmpty,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.height(150.dp)
+                ) {
+                    Text(text = stringResource(R.string.board_members))
+                    Spacer(Modifier.height(8.dp))
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(items = members, key = { it.id }) { member ->
+                            Crossfade(targetState = member) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .background(MaterialTheme.colorScheme.primary)
+                                ) {
+                                    Text(
+                                        text = it.email,
+                                        color = MaterialTheme.colorScheme.onPrimary,
+                                        modifier = Modifier.padding(8.dp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
