@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.boards.data
 
 import com.github.radlance.kanbanboards.board.data.BoardEntity
-import com.github.radlance.kanbanboards.board.data.OtherBoardEntity
+import com.github.radlance.kanbanboards.board.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 interface BoardsRemoteDataSource {
 
     fun myBoard(): Flow<List<Board.Storage>>
@@ -48,7 +49,6 @@ interface BoardsRemoteDataSource {
             }.catch { e -> throw IllegalStateException(e.message) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         override fun otherBoards(): Flow<List<Board.Storage>> {
             val myUserId = Firebase.auth.currentUser!!.uid
             val membersQuery = provideDatabase.database()
@@ -58,7 +58,7 @@ interface BoardsRemoteDataSource {
 
             return membersQuery.snapshots.flatMapLatest { membersSnapshot ->
                 val boardIds = membersSnapshot.children.mapNotNull {
-                    it.getValue<OtherBoardEntity>()?.boardId
+                    it.getValue<BoardMemberEntity>()?.boardId
                 }
 
                 if (boardIds.isEmpty()) {
@@ -71,7 +71,6 @@ interface BoardsRemoteDataSource {
             }.catch { e -> throw IllegalStateException(e.message) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         private fun otherBoard(boardId: String): Flow<Board.Other> = provideDatabase
             .database()
             .child("boards")

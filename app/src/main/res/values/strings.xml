@@ -51,4 +51,8 @@
     <string name="confirm_password">Confirm password</string>
     <string name="confirm_your_password">Confirm your password</string>
     <string name="show_hide_password_icon">show/hide password icon</string>
+    <string name="create_ticket">Create ticket</string>
+    <string name="title">Title</string>
+    <string name="assignee">Assignee</string>
+    <string name="description_optional">Description (optional)</string>
 </resources>

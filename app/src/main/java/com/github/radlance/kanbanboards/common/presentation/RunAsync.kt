@@ -5,6 +5,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -54,6 +55,6 @@ interface RunAsync {
         override fun <T> launchInAsync(
             flow: Flow<T>,
             coroutineScope: CoroutineScope
-        ): Job = flow.launchIn(coroutineScope)
+        ): Job = flow.flowOn(dispatchersList.io()).launchIn(coroutineScope)
     }
 }

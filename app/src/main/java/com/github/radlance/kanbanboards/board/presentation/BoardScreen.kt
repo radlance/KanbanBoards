@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun BoardScreen(
     navigateUp: () -> Unit,
+    navigateToCreateTicket: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
@@ -32,6 +33,7 @@ fun BoardScreen(
         boardUiState.Show(
             navigateUp = navigateUp,
             ticketActions = viewModel,
+            navigateToCreateTicket = navigateToCreateTicket,
             modifier = modifier.weight(1f)
         )
     }

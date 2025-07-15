@@ -9,10 +9,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
@@ -39,6 +40,7 @@ interface BoardUiState : Serializable {
     @Composable
     fun Show(
         navigateUp: () -> Unit,
+        navigateToCreateTicket: (String) -> Unit,
         ticketActions: TicketActions,
         modifier: Modifier = Modifier
     )
@@ -49,6 +51,7 @@ interface BoardUiState : Serializable {
         @Composable
         override fun Show(
             navigateUp: () -> Unit,
+            navigateToCreateTicket: (String) -> Unit,
             ticketActions: TicketActions,
             modifier: Modifier
         ) {
@@ -62,6 +65,11 @@ interface BoardUiState : Serializable {
             val ticketUiState by ticketActions.ticketUiState.collectAsStateWithLifecycle()
 
             Scaffold(
+                floatingActionButton = {
+                    FloatingActionButton(onClick = { navigateToCreateTicket(boardInfo.id) }) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "add ticket")
+                    }
+                },
                 topBar = {
                     CenterAlignedTopAppBar(
                         title = {
@@ -79,13 +87,14 @@ interface BoardUiState : Serializable {
                         },
                         actions = {
                             if (boardInfo.isMyBoard) {
-                                Icon(
-                                    imageVector = Icons.Default.Settings,
-                                    contentDescription = stringResource(R.string.settings_icon)
-                                )
+                                IconButton(onClick = {}) {
+                                    Icon(
+                                        imageVector = Icons.Default.Settings,
+                                        contentDescription = stringResource(R.string.settings_icon)
+                                    )
+                                }
                             }
-                        },
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        }
                     )
                 },
                 modifier = modifier
@@ -114,6 +123,7 @@ interface BoardUiState : Serializable {
         @Composable
         override fun Show(
             navigateUp: () -> Unit,
+            navigateToCreateTicket: (String) -> Unit,
             ticketActions: TicketActions,
             modifier: Modifier
         ) {
@@ -134,6 +144,7 @@ interface BoardUiState : Serializable {
         @Composable
         override fun Show(
             navigateUp: () -> Unit,
+            navigateToCreateTicket: (String) -> Unit,
             ticketActions: TicketActions,
             modifier: Modifier
         ) {

@@ -15,13 +15,16 @@ import com.github.radlance.kanbanboards.board.presentation.BoardViewModel
 import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardsScreen
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
+import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketScreen
+import com.github.radlance.kanbanboards.ticket.create.presentation.TicketViewModel
 
 @Composable
 fun NavGraph(
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
     navigationViewModel: NavigationViewModel = hiltViewModel(),
-    boardViewModel: BoardViewModel = hiltViewModel()
+    boardViewModel: BoardViewModel = hiltViewModel(),
+    ticketViewModel: TicketViewModel = hiltViewModel()
 ) {
 
     val authorized by navigationViewModel.authorized.collectAsStateWithLifecycle()
@@ -96,7 +99,18 @@ fun NavGraph(
         composable<Board> {
             BoardScreen(
                 viewModel = boardViewModel,
-                navigateUp = { navHostController.navigate(Boards) { popUpTo<Boards>() } }
+                navigateUp = { navHostController.navigate(Boards) { popUpTo<Boards>() } },
+                navigateToCreateTicket = {
+                    ticketViewModel.fetchBoardMembers(it)
+                    navHostController.navigate(CreateTicket)
+                }
+            )
+        }
+
+        composable<CreateTicket> {
+            CreateTicketScreen(
+                navigateUp = navHostController::navigateUp,
+                viewModel = ticketViewModel
             )
         }
     }

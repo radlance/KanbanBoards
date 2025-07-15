@@ -5,7 +5,7 @@ data class BoardEntity(
     val owner: String = ""
 )
 
-data class OtherBoardEntity(
+data class BoardMemberEntity(
     val memberId: String = "",
     val boardId: String  = ""
 )

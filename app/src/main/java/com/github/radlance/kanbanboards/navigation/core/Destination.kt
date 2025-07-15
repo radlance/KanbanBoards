@@ -32,3 +32,7 @@ object CreateBoard : Destination
 @Keep
 @Serializable
 object Board : Destination
+
+@Keep
+@Serializable
+object CreateTicket: Destination

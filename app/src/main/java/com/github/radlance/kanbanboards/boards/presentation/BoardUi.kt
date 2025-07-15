@@ -3,6 +3,7 @@ package com.github.radlance.kanbanboards.boards.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,14 +31,13 @@ interface BoardUi {
 
         @Composable
         override fun Show(navigateToBoard: (BoardInfo) -> Unit) {
-            Column(
+            Box(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
                     .background(MaterialTheme.colorScheme.primary)
-                    .clickable { navigate(navigateToBoard) },
-                verticalArrangement = Arrangement.Center
+                    .clickable { navigate(navigateToBoard) }
             ) {
                 Content()
             }
