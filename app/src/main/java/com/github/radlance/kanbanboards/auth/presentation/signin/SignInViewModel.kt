@@ -19,9 +19,9 @@ class SignInViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseSignInViewModel(authMapper, handleSignIn, runAsync), SignInCredentialAction {
 
-    val credentialResultUiState = handleSignIn.credentialState()
+    val credentialResultUiState = handleSignIn.credentialState
 
-    private val fieldsUiStateMutable = handleSignIn.fieldsState()
+    private val fieldsUiStateMutable = handleSignIn.fieldsState
 
     val fieldsUiState get() = fieldsUiStateMutable.asStateFlow()
 

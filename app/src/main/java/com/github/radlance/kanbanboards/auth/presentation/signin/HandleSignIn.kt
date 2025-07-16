@@ -1,39 +1,32 @@
 package com.github.radlance.kanbanboards.auth.presentation.signin
 
-import androidx.lifecycle.SavedStateHandle
 import com.github.radlance.kanbanboards.auth.presentation.common.BaseHandle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 interface HandleSignIn : BaseHandle {
 
     fun saveCredentialState(credentialUiState: CredentialUiState)
 
-    fun credentialState(): StateFlow<CredentialUiState>
+    val credentialState: StateFlow<CredentialUiState>
 
-    fun fieldsState(): MutableStateFlow<SignInFieldsUiState>
+    val fieldsState: MutableStateFlow<SignInFieldsUiState>
 
-    class Base @Inject constructor(
-        savedStateHandle: SavedStateHandle
-    ) : HandleSignIn, BaseHandle.Abstract(savedStateHandle, KEY_AUTH) {
+    class Base @Inject constructor() : HandleSignIn, BaseHandle.Abstract() {
+
+        private val credentialStateFlowMutable =
+            MutableStateFlow<CredentialUiState>(CredentialUiState.Initial)
+
+        private val fieldsStateMutable = MutableStateFlow(SignInFieldsUiState())
 
         override fun saveCredentialState(credentialUiState: CredentialUiState) {
-            savedStateHandle[KEY_CREDENTIAL] = credentialUiState
+            credentialStateFlowMutable.value = credentialUiState
         }
 
-        override fun credentialState(): StateFlow<CredentialUiState> {
-            return savedStateHandle.getStateFlow(KEY_CREDENTIAL, CredentialUiState.Initial)
-        }
+        override val credentialState = credentialStateFlowMutable.asStateFlow()
 
-        override fun fieldsState(): MutableStateFlow<SignInFieldsUiState> {
-            return savedStateHandle.getMutableStateFlow(KEY_FIELDS, SignInFieldsUiState())
-        }
-
-        private companion object {
-            const val KEY_AUTH = "auth"
-            const val KEY_CREDENTIAL = "credential"
-            const val KEY_FIELDS = "sign in fields"
-        }
+        override val fieldsState = fieldsStateMutable
     }
 }

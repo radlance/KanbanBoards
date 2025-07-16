@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.board.di
 
-import androidx.lifecycle.SavedStateHandle
 import com.github.radlance.kanbanboards.board.data.BoardRemoteDataSource
 import com.github.radlance.kanbanboards.board.data.RemoteBoardRepository
 import com.github.radlance.kanbanboards.board.data.TicketRemoteDataSource
@@ -19,10 +18,7 @@ import com.github.radlance.kanbanboards.board.presentation.TicketResultMapper
 import com.github.radlance.kanbanboards.board.presentation.TicketUiState
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -52,15 +48,7 @@ interface BoardModule {
 
     @Binds
     fun provideBoardMapperFacade(boardMapperFacade: BoardMapperFacade.Base): BoardMapperFacade
-}
 
-@Module
-@InstallIn(ViewModelComponent::class)
-class BoardViewModelModule {
-
-    @ViewModelScoped
-    @Provides
-    fun provideHandleBoard(savedStateHandle: SavedStateHandle): HandleBoard {
-        return HandleBoard.Base(savedStateHandle)
-    }
+    @Binds
+    fun provideHandleBoard(handleBoard: HandleBoard.Base): HandleBoard
 }

@@ -20,7 +20,7 @@ class SignUpViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseAuthViewModel(handleSignUp, runAsync) {
 
-    private val fieldsUiStateMutable = handleSignUp.fieldsState()
+    private val fieldsUiStateMutable = handleSignUp.fieldsState
 
     val fieldsUiState get() = fieldsUiStateMutable.asStateFlow()
 

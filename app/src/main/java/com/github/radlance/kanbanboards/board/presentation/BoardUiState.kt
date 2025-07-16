@@ -33,9 +33,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
-import java.io.Serializable
 
-interface BoardUiState : Serializable {
+interface BoardUiState {
 
     @Composable
     fun Show(
@@ -139,16 +138,12 @@ interface BoardUiState : Serializable {
 
     object Loading : BoardUiState {
 
-        private fun readResolve(): Any = Loading
-
         @Composable
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String) -> Unit,
             ticketActions: TicketActions,
             modifier: Modifier
-        ) {
-            CircularProgressIndicator()
-        }
+        ) = CircularProgressIndicator()
     }
 }

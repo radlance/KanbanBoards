@@ -17,7 +17,7 @@ class TicketViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseViewModel(runAsync) {
 
-    val boardMembersUiState = handleTicket.boardMembersUiState()
+    val boardMembersUiState = handleTicket.boardMembersUiState
 
     fun fetchBoardMembers(boardId: String) {
         ticketRepository.boardMembers(boardId).map {

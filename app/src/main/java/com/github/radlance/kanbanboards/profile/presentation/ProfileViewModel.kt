@@ -16,7 +16,7 @@ class ProfileViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseViewModel(runAsync) {
 
-    val profileUiState = handleProfile.profileUiState().onStart {
+    val profileUiState = handleProfile.profileUiState.onStart {
         handleProfile.saveProfileUiState(ProfileUiState.Loading)
 
         handle(background = profileRepository::profile) {

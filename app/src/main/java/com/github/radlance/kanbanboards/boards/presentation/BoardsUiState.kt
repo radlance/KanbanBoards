@@ -22,9 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
-import java.io.Serializable
 
-interface BoardsUiState : Serializable {
+interface BoardsUiState {
 
     @Composable
     fun Show(
@@ -81,8 +80,6 @@ interface BoardsUiState : Serializable {
     }
 
     object Loading : BoardsUiState {
-
-        private fun readResolve(): Any = Loading
 
         @Composable
         override fun Show(

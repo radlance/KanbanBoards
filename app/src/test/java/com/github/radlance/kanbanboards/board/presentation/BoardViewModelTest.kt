@@ -214,32 +214,34 @@ class BoardViewModelTest : BaseTest() {
 
     private class TestHandleBoard : HandleBoard {
 
-        private val boardUiState = MutableStateFlow<BoardUiState>(BoardUiState.Loading)
+        private val boardUiStateMutable = MutableStateFlow<BoardUiState>(BoardUiState.Loading)
         var boardUiStateCalledCount = 0
         var saveBoardUiStateCalledList = mutableListOf<BoardUiState>()
 
-        private val ticketUiState = MutableStateFlow<TicketUiState>(TicketUiState.Loading)
+        private val ticketUiStateMutable = MutableStateFlow<TicketUiState>(TicketUiState.Loading)
         var ticketUiStateCalledCount = 0
         var saveTicketUiStateCalledList = mutableListOf<TicketUiState>()
 
-        override fun boardUiState(): StateFlow<BoardUiState> {
+        override val boardUiState: StateFlow<BoardUiState>
+            get() {
             boardUiStateCalledCount++
-            return boardUiState
+                return boardUiStateMutable
         }
 
         override fun saveBoardUiState(boardUiState: BoardUiState) {
             saveBoardUiStateCalledList.add(boardUiState)
-            this.boardUiState.value = boardUiState
+            this.boardUiStateMutable.value = boardUiState
         }
 
-        override fun ticketUiState(): StateFlow<TicketUiState> {
+        override val ticketUiState: StateFlow<TicketUiState>
+            get() {
             ticketUiStateCalledCount++
-            return ticketUiState
+                return ticketUiStateMutable
         }
 
         override fun saveTicketUiState(ticketUiState: TicketUiState) {
             saveTicketUiStateCalledList.add(ticketUiState)
-            this.ticketUiState.value = ticketUiState
+            this.ticketUiStateMutable.value = ticketUiState
         }
     }
 }

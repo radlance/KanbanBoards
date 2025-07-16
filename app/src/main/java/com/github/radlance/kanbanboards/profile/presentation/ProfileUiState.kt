@@ -11,9 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.R
-import java.io.Serializable
 
-interface ProfileUiState : Serializable {
+interface ProfileUiState {
 
     @Composable
     fun Show()
@@ -40,17 +39,11 @@ interface ProfileUiState : Serializable {
 
     object Loading : ProfileUiState {
 
-        private fun readResolve(): Any = Loading
-
         @Composable
-        override fun Show() {
-            CircularProgressIndicator()
-        }
+        override fun Show() = CircularProgressIndicator()
     }
 
     object Initial : ProfileUiState {
-
-        private fun readResolve(): Any = Initial
 
         @Composable
         override fun Show() = Unit

@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,15 +18,15 @@ class BoardViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseViewModel(runAsync), TicketActions {
 
-    val boardUiState = handleBoard.boardUiState()
+    val boardUiState = handleBoard.boardUiState
 
-    override val ticketUiState = handleBoard.ticketUiState()
+    override val ticketUiState = handleBoard.ticketUiState
 
     fun fetchBoard(boardInfo: BoardInfo) {
+        handleBoard.saveBoardUiState(BoardUiState.Success(boardInfo))
+
         boardRepository.board(boardInfo.id).map {
             facade.mapBoardResult(it)
-        }.onStart {
-            handleBoard.saveBoardUiState(BoardUiState.Success(boardInfo))
         }.onEach {
             handleBoard.saveBoardUiState(it)
         }.launchInViewModel()

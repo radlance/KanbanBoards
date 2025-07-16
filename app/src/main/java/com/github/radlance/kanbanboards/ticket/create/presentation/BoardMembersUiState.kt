@@ -10,9 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
-import java.io.Serializable
 
-interface BoardMembersUiState : Serializable {
+interface BoardMembersUiState {
 
     @Composable
     fun Show(modifier: Modifier = Modifier)
@@ -42,8 +41,6 @@ interface BoardMembersUiState : Serializable {
     }
 
     object Loading : BoardMembersUiState {
-
-        private fun readResolve(): Any = Loading
 
         @Composable
         override fun Show(modifier: Modifier) {

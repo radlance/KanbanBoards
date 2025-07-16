@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.ticket.create.di
 
-import androidx.lifecycle.SavedStateHandle
 import com.github.radlance.kanbanboards.ticket.create.data.RemoteTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.data.TicketRemoteDataSource
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
@@ -10,10 +9,7 @@ import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersU
 import com.github.radlance.kanbanboards.ticket.create.presentation.HandleTicket
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -32,15 +28,7 @@ interface TicketModule {
     fun provideBoardMembersResultMapper(
         boardMembersResultMapper: BoardMembersResultMapper
     ): BoardMembersResult.Mapper<BoardMembersUiState>
-}
 
-@Module
-@InstallIn(ViewModelComponent::class)
-class TicketViewModelModule {
-
-    @ViewModelScoped
-    @Provides
-    fun provideHandleTicket(savedStateHandle: SavedStateHandle): HandleTicket {
-        return HandleTicket.Base(savedStateHandle)
-    }
+    @Binds
+    fun provideHandleTicket(handleTicket: HandleTicket.Base): HandleTicket
 }

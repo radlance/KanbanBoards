@@ -6,9 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.core.ManageResource
-import java.io.Serializable
 
-interface CredentialUiState : Serializable, AuthUiState {
+interface CredentialUiState : AuthUiState {
 
     @Composable
     fun Show(action: SignInCredentialAction)
@@ -37,8 +36,6 @@ interface CredentialUiState : Serializable, AuthUiState {
     }
 
     object Initial : CredentialUiState, BaseAuthUiState(hasSize = false, buttonEnabled = true) {
-
-        private fun readResolve(): Any = Initial
 
         @Composable
         override fun Show(action: SignInCredentialAction) = Unit

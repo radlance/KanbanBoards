@@ -1,29 +1,26 @@
 package com.github.radlance.kanbanboards.createboard.presentation
 
-import androidx.lifecycle.SavedStateHandle
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 interface HandleCreateBoard {
 
-    fun createBoardUiState(): StateFlow<CreateBoardUiState>
+    val createBoardUiState: StateFlow<CreateBoardUiState>
 
     fun saveCreateBoardUiState(boardUiState: CreateBoardUiState)
 
-    class Base @Inject constructor(
-        private val savedStateHandle: SavedStateHandle
-    ) : HandleCreateBoard {
+    class Base @Inject constructor() : HandleCreateBoard {
 
-        override fun createBoardUiState(): StateFlow<CreateBoardUiState> {
-            return savedStateHandle.getStateFlow(KEY_CREATE_BOARD, CreateBoardUiState.CanNotCreate)
-        }
+        private val createBoardUiStateMutable = MutableStateFlow<CreateBoardUiState>(
+            CreateBoardUiState.CanNotCreate
+        )
+
+        override val createBoardUiState = createBoardUiStateMutable.asStateFlow()
 
         override fun saveCreateBoardUiState(boardUiState: CreateBoardUiState) {
-            savedStateHandle[KEY_CREATE_BOARD] = boardUiState
-        }
-
-        companion object {
-            private const val KEY_CREATE_BOARD = "create board"
+            createBoardUiStateMutable.value = boardUiState
         }
     }
 }

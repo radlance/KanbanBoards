@@ -1,15 +1,15 @@
 package com.github.radlance.kanbanboards.auth.presentation
 
-import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResultMapper
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInFieldsUiState
-import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
-import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInViewModel
 import com.github.radlance.kanbanboards.common.BaseTest
 import junit.framework.TestCase.assertEquals
@@ -222,7 +222,8 @@ class SignInViewModelTest : BaseTest() {
             this.authResultUiState.value = authResultUiState
         }
 
-        override fun authState(): StateFlow<AuthResultUiState> {
+        override val authState: StateFlow<AuthResultUiState>
+            get() {
             signInStateCalledCount++
             return authResultUiState
         }
@@ -232,12 +233,14 @@ class SignInViewModelTest : BaseTest() {
             this.credentialUiState.value = credentialUiState
         }
 
-        override fun credentialState(): StateFlow<CredentialUiState> {
+        override val credentialState: StateFlow<CredentialUiState>
+            get() {
             credentialStateCalledCount++
             return credentialUiState
         }
 
-        override fun fieldsState(): MutableStateFlow<SignInFieldsUiState> {
+        override val fieldsState: MutableStateFlow<SignInFieldsUiState>
+            get() {
             fieldsStateCalledCount++
             return fieldsUiState
         }

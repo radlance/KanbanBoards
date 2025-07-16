@@ -32,7 +32,7 @@ abstract class BaseAuthViewModel(
         }
     }
 
-    val authResultUiState = baseHandle.authState()
+    val authResultUiState = baseHandle.authState
 
 
     abstract fun resetEmailError()

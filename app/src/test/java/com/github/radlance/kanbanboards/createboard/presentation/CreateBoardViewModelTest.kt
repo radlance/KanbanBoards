@@ -163,7 +163,8 @@ class CreateBoardViewModelTest : BaseTest() {
         private var boardUiState =
             MutableStateFlow<CreateBoardUiState>(CreateBoardUiState.CanNotCreate)
 
-        override fun createBoardUiState(): StateFlow<CreateBoardUiState> {
+        override val createBoardUiState: StateFlow<CreateBoardUiState>
+            get() {
             createBoardUiStateCalledCount++
             return boardUiState
         }

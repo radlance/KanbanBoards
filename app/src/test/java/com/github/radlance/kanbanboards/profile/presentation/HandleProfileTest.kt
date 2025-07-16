@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.profile.presentation
 
-import androidx.lifecycle.SavedStateHandle
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -11,16 +10,14 @@ class HandleProfileTest {
 
     @Before
     fun setup() {
-        handleProfile = HandleProfile.Base(
-            savedStateHandle = SavedStateHandle()
-        )
+        handleProfile = HandleProfile.Base()
     }
 
     @Test
     fun test_profile_ui_state() {
-        assertEquals(ProfileUiState.Initial, handleProfile.profileUiState().value)
+        assertEquals(ProfileUiState.Initial, handleProfile.profileUiState.value)
         handleProfile.saveProfileUiState(ProfileUiState.Loading)
-        assertEquals(ProfileUiState.Loading, handleProfile.profileUiState().value)
+        assertEquals(ProfileUiState.Loading, handleProfile.profileUiState.value)
 
         handleProfile.saveProfileUiState(
             ProfileUiState.Base(
@@ -34,7 +31,7 @@ class HandleProfileTest {
                 name = "name",
                 email = "email@example.com"
             ),
-            handleProfile.profileUiState().value
+            handleProfile.profileUiState.value
         )
     }
 }

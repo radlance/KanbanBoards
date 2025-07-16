@@ -15,7 +15,7 @@ class CreateBoardViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseViewModel(runAsync), CreateBoardActions {
 
-    val createBoardUiState = handleCreateBoard.createBoardUiState()
+    val createBoardUiState = handleCreateBoard.createBoardUiState
 
     override fun checkBoard(name: String) {
         handleCreateBoard.saveCreateBoardUiState(

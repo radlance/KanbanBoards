@@ -21,9 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
-import java.io.Serializable
 
-interface CreateBoardUiState : Serializable {
+interface CreateBoardUiState {
 
     @Composable
     fun Show(
@@ -110,20 +109,11 @@ interface CreateBoardUiState : Serializable {
         enabled = true, fieldErrorMessage = message
     )
 
-    object CanCreate : Abstract(enabled = true) {
+    object CanCreate : Abstract(enabled = true)
 
-        private fun readResolve(): Any = CanCreate
-    }
+    object CanNotCreate : Abstract(enabled = false)
 
-    object CanNotCreate : Abstract(enabled = false) {
-
-        private fun readResolve(): Any = CanNotCreate
-    }
-
-    object Loading : Abstract(enabled = false, loading = true) {
-
-        private fun readResolve(): Any = Loading
-    }
+    object Loading : Abstract(enabled = false, loading = true)
 
     data class Error(private val message: String) : Abstract(
         enabled = true, createErrorMessage = message

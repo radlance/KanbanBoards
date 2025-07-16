@@ -6,9 +6,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import java.io.Serializable
 
-interface TicketUiState : Serializable {
+interface TicketUiState {
 
     @Composable
     fun Show(
@@ -49,8 +48,6 @@ interface TicketUiState : Serializable {
     }
 
     object Loading : TicketUiState {
-
-        private fun readResolve(): Any = Loading
 
         @Composable
         override fun Show(

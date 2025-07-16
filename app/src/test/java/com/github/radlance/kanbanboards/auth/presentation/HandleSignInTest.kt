@@ -1,10 +1,9 @@
 package com.github.radlance.kanbanboards.auth.presentation
 
-import androidx.lifecycle.SavedStateHandle
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInFieldsUiState
-import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.common.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -16,20 +15,20 @@ class HandleSignInTest : BaseTest() {
 
     @Before
     fun setup() {
-        handleSignIn = HandleSignIn.Base(SavedStateHandle())
+        handleSignIn = HandleSignIn.Base()
     }
 
     @Test
     fun test_sign_in_state() {
-        assertEquals(AuthResultUiState.Initial, handleSignIn.authState().value)
+        assertEquals(AuthResultUiState.Initial, handleSignIn.authState.value)
         handleSignIn.saveAuthState(AuthResultUiState.Loading)
-        assertEquals(AuthResultUiState.Loading, handleSignIn.authState().value)
+        assertEquals(AuthResultUiState.Loading, handleSignIn.authState.value)
         handleSignIn.saveAuthState(AuthResultUiState.Success)
-        assertEquals(AuthResultUiState.Success, handleSignIn.authState().value)
+        assertEquals(AuthResultUiState.Success, handleSignIn.authState.value)
         handleSignIn.saveAuthState(AuthResultUiState.Error(message = "test message"))
         assertEquals(
             AuthResultUiState.Error(message = "test message"),
-            handleSignIn.authState().value
+            handleSignIn.authState.value
         )
     }
 
@@ -37,12 +36,12 @@ class HandleSignInTest : BaseTest() {
     fun test_credential_state() {
         val manageResource = TestManageResource()
 
-        assertEquals(CredentialUiState.Initial, handleSignIn.credentialState().value)
+        assertEquals(CredentialUiState.Initial, handleSignIn.credentialState.value)
         handleSignIn.saveCredentialState(CredentialUiState.Success(idToken = "123456789"))
 
         assertEquals(
             CredentialUiState.Success(idToken = "123456789"),
-            handleSignIn.credentialState().value
+            handleSignIn.credentialState.value
         )
 
         handleSignIn.saveCredentialState(
@@ -51,12 +50,12 @@ class HandleSignInTest : BaseTest() {
 
         assertEquals(
             CredentialUiState.Error(manageResource = manageResource),
-            handleSignIn.credentialState().value
+            handleSignIn.credentialState.value
         )
     }
 
     @Test
     fun test_fields_initial_state() {
-        assertEquals(SignInFieldsUiState(), handleSignIn.fieldsState().value)
+        assertEquals(SignInFieldsUiState(), handleSignIn.fieldsState.value)
     }
 }

@@ -1,27 +1,26 @@
 package com.github.radlance.kanbanboards.ticket.create.presentation
 
-import androidx.lifecycle.SavedStateHandle
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 interface HandleTicket {
 
-    fun boardMembersUiState(): StateFlow<BoardMembersUiState>
+    val boardMembersUiState: StateFlow<BoardMembersUiState>
 
     fun saveBoardMembersUiState(boardMembersUiState: BoardMembersUiState)
 
-    class Base @Inject constructor(private val savedStateHandle: SavedStateHandle) : HandleTicket {
+    class Base @Inject constructor() : HandleTicket {
 
-        override fun boardMembersUiState(): StateFlow<BoardMembersUiState> {
-            return savedStateHandle.getStateFlow(KEY_MEMBERS, BoardMembersUiState.Loading)
-        }
+        private val boardMembersUiStateMutable = MutableStateFlow<BoardMembersUiState>(
+            BoardMembersUiState.Loading
+        )
+
+        override val boardMembersUiState: StateFlow<BoardMembersUiState> get() = boardMembersUiStateMutable.asStateFlow()
 
         override fun saveBoardMembersUiState(boardMembersUiState: BoardMembersUiState) {
-            savedStateHandle[KEY_MEMBERS] = boardMembersUiState
-        }
-
-        companion object {
-            private const val KEY_MEMBERS = "members"
+            boardMembersUiStateMutable.value = boardMembersUiState
         }
     }
 }

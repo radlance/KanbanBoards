@@ -5,16 +5,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
-import java.io.Serializable
 
-interface AuthResultUiState : Serializable, AuthUiState {
+interface AuthResultUiState : AuthUiState {
 
     @Composable
     fun Show(navigateToBoardsScreen: () -> Unit)
 
     object Success : AuthResultUiState, BaseAuthUiState(hasSize = false, buttonEnabled = true) {
-
-        private fun readResolve(): Any = Success
 
         @Composable
         override fun Show(navigateToBoardsScreen: () -> Unit) = navigateToBoardsScreen()
@@ -41,8 +38,6 @@ interface AuthResultUiState : Serializable, AuthUiState {
 
     object Loading : AuthResultUiState, BaseAuthUiState(hasSize = true, buttonEnabled = false) {
 
-        private fun readResolve(): Any = Loading
-
         @Composable
         override fun Show(navigateToBoardsScreen: () -> Unit) = CircularProgressIndicator()
 
@@ -50,8 +45,6 @@ interface AuthResultUiState : Serializable, AuthUiState {
     }
 
     object Initial : AuthResultUiState, BaseAuthUiState(hasSize = false, buttonEnabled = true) {
-
-        private fun readResolve(): Any = Initial
 
         @Composable
         override fun Show(navigateToBoardsScreen: () -> Unit) = Unit

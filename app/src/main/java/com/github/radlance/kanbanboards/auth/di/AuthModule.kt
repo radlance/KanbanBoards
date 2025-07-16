@@ -1,30 +1,25 @@
 package com.github.radlance.kanbanboards.auth.di
 
-import androidx.lifecycle.SavedStateHandle
 import com.github.radlance.kanbanboards.auth.data.AuthRemoteDataSource
 import com.github.radlance.kanbanboards.auth.data.BaseAuthRepository
 import com.github.radlance.kanbanboards.auth.data.HandleAuthRemoteDataSource
 import com.github.radlance.kanbanboards.auth.data.HandleAuthResult
-import com.github.radlance.kanbanboards.auth.domain.AuthRepository
-import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.domain.SignUpRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.MatchEmail
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateSignIn
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
+import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResultMapper
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
-import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
-import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signup.HandleSignUp
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -63,25 +58,10 @@ interface AuthModule {
 
     @Binds
     fun provideMatchEmail(matchEmail: MatchEmail.Base): MatchEmail
-}
 
-@Module
-@InstallIn(ViewModelComponent::class)
-class SignInViewModelModule {
+    @Binds
+    fun provideHandleSignIn(handleSignIn: HandleSignIn.Base): HandleSignIn
 
-    @ViewModelScoped
-    @Provides
-    fun provideHandleSignIn(savedStateHandle: SavedStateHandle): HandleSignIn {
-        return HandleSignIn.Base(savedStateHandle)
-    }
-}
-
-@Module
-@InstallIn(ViewModelComponent::class)
-class SignUpViewModelModule {
-    @ViewModelScoped
-    @Provides
-    fun provideHandleSignUp(savedStateHandle: SavedStateHandle): HandleSignUp {
-        return HandleSignUp.Base(savedStateHandle)
-    }
+    @Binds
+    fun provideHandleSignUp(handleSignUp: HandleSignUp.Base): HandleSignUp
 }

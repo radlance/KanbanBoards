@@ -71,17 +71,18 @@ class ProfileViewModelTest : BaseTest() {
 
     private class TestHandleProfile : HandleProfile {
 
-        private val profileUiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Initial)
+        private val profileUiStateMutable = MutableStateFlow<ProfileUiState>(ProfileUiState.Initial)
         var profileUiStateCalledCount = 0
         val saveProfileUiStateCalledList = mutableListOf<ProfileUiState>()
 
-        override fun profileUiState(): StateFlow<ProfileUiState> {
+        override val profileUiState: StateFlow<ProfileUiState>
+            get() {
             profileUiStateCalledCount++
-            return profileUiState
+                return profileUiStateMutable
         }
 
         override fun saveProfileUiState(profileUiState: ProfileUiState) {
-            this.profileUiState.value = profileUiState
+            this.profileUiStateMutable.value = profileUiState
             saveProfileUiStateCalledList.add(profileUiState)
         }
     }

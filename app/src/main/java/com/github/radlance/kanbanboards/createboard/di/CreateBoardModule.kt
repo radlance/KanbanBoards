@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.createboard.di
 
-import androidx.lifecycle.SavedStateHandle
 import com.github.radlance.kanbanboards.createboard.data.CreateBoardRemoteDataSource
 import com.github.radlance.kanbanboards.createboard.data.RemoteCreateBoardRepository
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardRepository
@@ -10,10 +9,7 @@ import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardUiSt
 import com.github.radlance.kanbanboards.createboard.presentation.HandleCreateBoard
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -28,15 +24,7 @@ interface CreateBoardModule {
 
     @Binds
     fun provideCreateBoardsClodDataSource(createBoardRemoteDataSource: CreateBoardRemoteDataSource.Base): CreateBoardRemoteDataSource
-}
 
-@Module
-@InstallIn(ViewModelComponent::class)
-class CreateBoardViewModelModule {
-
-    @ViewModelScoped
-    @Provides
-    fun provideHandleCreateBoard(savedStateHandle: SavedStateHandle): HandleCreateBoard {
-        return HandleCreateBoard.Base(savedStateHandle)
-    }
+    @Binds
+    fun provideHandleCreateBoard(handleCreateBoard: HandleCreateBoard.Base): HandleCreateBoard
 }

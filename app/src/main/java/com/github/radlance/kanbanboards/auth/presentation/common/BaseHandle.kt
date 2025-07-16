@@ -1,25 +1,24 @@
 package com.github.radlance.kanbanboards.auth.presentation.common
 
-import androidx.lifecycle.SavedStateHandle
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 interface BaseHandle {
 
     fun saveAuthState(authResultUiState: AuthResultUiState)
 
-    fun authState(): StateFlow<AuthResultUiState>
+    val authState: StateFlow<AuthResultUiState>
 
-    abstract class Abstract(
-        protected val savedStateHandle: SavedStateHandle,
-        private val authKey: String
-    ) : BaseHandle {
+    abstract class Abstract : BaseHandle {
+
+        private val stateFlow = MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
+
         override fun saveAuthState(authResultUiState: AuthResultUiState) {
-            savedStateHandle[authKey] = authResultUiState
+            stateFlow.value = authResultUiState
         }
 
-        override fun authState(): StateFlow<AuthResultUiState> {
-            return savedStateHandle.getStateFlow(authKey, AuthResultUiState.Initial)
-        }
+        override val authState = stateFlow.asStateFlow()
     }
 }
