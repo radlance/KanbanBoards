@@ -56,4 +56,6 @@
     <string name="assignee">Assignee</string>
     <string name="description_optional">Description (optional)</string>
     <string name="board_members">Board members</string>
+    <string name="search_icon">Search icon</string>
+    <string name="search">Search…</string>
 </resources>
