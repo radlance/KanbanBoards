@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.auth.data
 
 import com.github.radlance.kanbanboards.auth.domain.AuthRepository
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import javax.inject.Inject
 
 class BaseAuthRepository @Inject constructor(
@@ -9,12 +9,12 @@ class BaseAuthRepository @Inject constructor(
     private val handleAuthResult: HandleAuthResult
 ) : AuthRepository {
 
-    override suspend fun signInWithToken(userIdToken: String): AuthResult =
+    override suspend fun signInWithToken(userIdToken: String): UnitResult =
         handleAuthResult.handle { remoteDataSource.signInWithToken(userIdToken) }
 
-    override suspend fun signInWithEmail(email: String, password: String): AuthResult =
+    override suspend fun signInWithEmail(email: String, password: String): UnitResult =
         handleAuthResult.handle { remoteDataSource.signInWithEmail(email, password) }
 
-    override suspend fun signUp(name: String, email: String, password: String): AuthResult =
+    override suspend fun signUp(name: String, email: String, password: String): UnitResult =
         handleAuthResult.handle { remoteDataSource.signUp(name, email, password) }
 }

@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.auth.presentation
 
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
@@ -64,7 +64,7 @@ class SignInViewModelTest : BaseTest() {
 
     @Test
     fun test_sign_in_with_token() {
-        authRepository.signInWithTokenResult = AuthResult.Error(message = "no internet connection")
+        authRepository.signInWithTokenResult = UnitResult.Error(message = "no internet connection")
         viewModel.signInWithToken(userTokenId = "1234567890")
         assertEquals(1, authRepository.signInWithTokenCalledList.size)
         assertEquals("1234567890", authRepository.signInWithTokenCalledList[0])
@@ -79,7 +79,7 @@ class SignInViewModelTest : BaseTest() {
             viewModel.authResultUiState.value
         )
 
-        authRepository.signInWithTokenResult = AuthResult.Success
+        authRepository.signInWithTokenResult = UnitResult.Success
         viewModel.signInWithToken(userTokenId = "1234567890")
 
         assertEquals(2, authRepository.signInWithTokenCalledList.size)
@@ -131,7 +131,7 @@ class SignInViewModelTest : BaseTest() {
 
     @Test
     fun test_sign_in() {
-        authRepository.signInWithEmailResult = AuthResult.Error(message = "server error")
+        authRepository.signInWithEmailResult = UnitResult.Error(message = "server error")
         viewModel.signInWithEmail(email = "test@email.com", password = "123456")
         assertEquals(1, authRepository.signInWithEmailCalledList.size)
         assertEquals(Pair("test@email.com", "123456"), authRepository.signInWithEmailCalledList[0])
@@ -146,7 +146,7 @@ class SignInViewModelTest : BaseTest() {
             viewModel.authResultUiState.value
         )
 
-        authRepository.signInWithEmailResult = AuthResult.Success
+        authRepository.signInWithEmailResult = UnitResult.Success
 
         viewModel.signInWithEmail(email = "test@email.com", password = "123456")
         assertEquals(2, authRepository.signInWithEmailCalledList.size)
@@ -186,17 +186,17 @@ class SignInViewModelTest : BaseTest() {
     private class TestSignInRepository : SignInRepository {
 
         val signInWithTokenCalledList = mutableListOf<String>()
-        var signInWithTokenResult: AuthResult = AuthResult.Success
+        var signInWithTokenResult: UnitResult = UnitResult.Success
 
         val signInWithEmailCalledList = mutableListOf<Pair<String, String>>()
-        var signInWithEmailResult: AuthResult = AuthResult.Success
+        var signInWithEmailResult: UnitResult = UnitResult.Success
 
-        override suspend fun signInWithToken(userIdToken: String): AuthResult {
+        override suspend fun signInWithToken(userIdToken: String): UnitResult {
             signInWithTokenCalledList.add(userIdToken)
             return signInWithTokenResult
         }
 
-        override suspend fun signInWithEmail(email: String, password: String): AuthResult {
+        override suspend fun signInWithEmail(email: String, password: String): UnitResult {
             signInWithEmailCalledList.add(Pair(email, password))
             return signInWithEmailResult
         }

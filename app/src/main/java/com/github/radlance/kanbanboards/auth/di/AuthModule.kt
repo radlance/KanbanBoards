@@ -4,7 +4,7 @@ import com.github.radlance.kanbanboards.auth.data.AuthRemoteDataSource
 import com.github.radlance.kanbanboards.auth.data.BaseAuthRepository
 import com.github.radlance.kanbanboards.auth.data.HandleAuthRemoteDataSource
 import com.github.radlance.kanbanboards.auth.data.HandleAuthResult
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.domain.SignUpRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.MatchEmail
@@ -43,7 +43,7 @@ interface AuthModule {
     @Binds
     fun provideSignInResultMapper(
         authResultMapper: AuthResultMapper
-    ): AuthResult.Mapper<AuthResultUiState>
+    ): UnitResult.Mapper<AuthResultUiState>
 
     @Binds
     fun provideAuthRemoteDataSource(authRemoteDataSource: AuthRemoteDataSource.Base): AuthRemoteDataSource

@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInScreen
 import com.github.radlance.kanbanboards.auth.presentation.signup.SignUpScreen
 import com.github.radlance.kanbanboards.board.presentation.BoardScreen
@@ -102,14 +103,18 @@ fun NavGraph(
                 navigateUp = { navHostController.navigate(Boards) { popUpTo<Boards>() } },
                 navigateToCreateTicket = {
                     ticketViewModel.fetchBoardMembers(it)
-                    navHostController.navigate(CreateTicket)
+                    navHostController.navigate(CreateTicket(it))
                 }
             )
         }
 
         composable<CreateTicket> {
+
+            val args = it.toRoute<CreateTicket>()
+
             CreateTicketScreen(
                 navigateUp = navHostController::navigateUp,
+                boardId = args.boardId,
                 viewModel = ticketViewModel
             )
         }

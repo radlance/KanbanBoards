@@ -1,16 +1,16 @@
-package com.github.radlance.kanbanboards.auth.presentation.signin
+package com.github.radlance.kanbanboards.common.presentation
 
-interface AuthUiState {
+interface UnitUiState {
 
     fun buttonEnabled(): Boolean
 
     fun hasSize(): Boolean
 }
 
-abstract class BaseAuthUiState(
+abstract class AbstractUnitUiState(
     private val hasSize: Boolean,
     private val buttonEnabled: Boolean
-) : AuthUiState {
+) : UnitUiState {
 
     override fun buttonEnabled(): Boolean = buttonEnabled
 

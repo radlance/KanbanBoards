@@ -2,7 +2,6 @@ package com.github.radlance.kanbanboards.ticket.create.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +18,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.AlertDialogDefaults
@@ -46,9 +46,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
@@ -56,7 +58,10 @@ import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTicketContent(
+    boardId: String,
     members: List<BoardMember>,
+    ticketActions: TicketActions,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedColorIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -65,6 +70,9 @@ fun CreateTicketContent(
     var descriptionFieldValue by rememberSaveable { mutableStateOf("") }
 
     var expanded by rememberSaveable { mutableStateOf(false) }
+    val createTicketUiState by ticketActions.createTicketUiState.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val ticketColors = remember {
         listOf(
@@ -157,7 +165,8 @@ fun CreateTicketContent(
 
     BaseColumn(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        scrollState = scrollState
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(18.dp),
@@ -208,11 +217,36 @@ fun CreateTicketContent(
             }
         }
 
-        val weight by animateFloatAsState(1f)
-        Spacer(Modifier.weight(weight))
+        val boxModifier = if (
+            (createTicketUiState.hasSize()
+                    || createTicketUiState.hasSize()) &&
+            (scrollState.canScrollForward
+                    || scrollState.canScrollBackward)
+        ) {
+            Modifier.heightIn(min = 81.dp)
+        } else {
+            Modifier.weight(1f)
+        }
+
+        Box(modifier = boxModifier, contentAlignment = Alignment.Center) {
+            createTicketUiState.Show(navigateUp)
+        }
 
         Box(modifier = Modifier.safeDrawingPadding()) {
-            Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = {
+                    keyboardController?.hide()
+                    ticketActions.createTicket(
+                        boardId = boardId,
+                        title = titleFieldValue,
+                        color = ticketColors[selectedColorIndex].hex(),
+                        description = descriptionFieldValue,
+                        assignee = members.find { it.id == selectedAssigneeId }?.id ?: ""
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = titleFieldValue.length >= 3 && createTicketUiState.buttonEnabled()
+            ) {
                 Text(text = stringResource(R.string.create_ticket))
             }
         }

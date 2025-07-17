@@ -40,7 +40,7 @@ interface BoardUiState {
     fun Show(
         navigateUp: () -> Unit,
         navigateToCreateTicket: (String) -> Unit,
-        ticketActions: TicketActions,
+        boardTicketActions: BoardTicketActions,
         modifier: Modifier = Modifier
     )
 
@@ -51,17 +51,17 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String) -> Unit,
-            ticketActions: TicketActions,
+            boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
             var fetchedTickets by rememberSaveable { mutableStateOf(false) }
 
             if (!fetchedTickets) {
-                ticketActions.fetchTickets(boardId = boardInfo.id)
+                boardTicketActions.fetchTickets(boardId = boardInfo.id)
                 fetchedTickets = true
             }
 
-            val ticketUiState by ticketActions.ticketUiState.collectAsStateWithLifecycle()
+            val ticketUiState by boardTicketActions.ticketUiState.collectAsStateWithLifecycle()
 
             Scaffold(
                 floatingActionButton = {
@@ -108,7 +108,7 @@ interface BoardUiState {
                 ) {
                     ticketUiState.Show(
                         onMove = { ticketId, columnId ->
-                            ticketActions.moveTicket(ticketId, columnId)
+                            boardTicketActions.moveTicket(ticketId, columnId)
                         },
                         modifier = Modifier.weight(1f)
                     )
@@ -123,7 +123,7 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String) -> Unit,
-            ticketActions: TicketActions,
+            boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
             Text(
@@ -142,7 +142,7 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String) -> Unit,
-            ticketActions: TicketActions,
+            boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) = CircularProgressIndicator()
     }

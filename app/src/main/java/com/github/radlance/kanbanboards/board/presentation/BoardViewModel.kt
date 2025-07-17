@@ -16,7 +16,7 @@ class BoardViewModel @Inject constructor(
     private val handleBoard: HandleBoard,
     private val facade: BoardMapperFacade,
     runAsync: RunAsync
-) : BaseViewModel(runAsync), TicketActions {
+) : BaseViewModel(runAsync), BoardTicketActions {
 
     val boardUiState = handleBoard.boardUiState
 
@@ -45,7 +45,7 @@ class BoardViewModel @Inject constructor(
     }
 }
 
-interface TicketActions {
+interface BoardTicketActions {
 
     val ticketUiState: StateFlow<TicketUiState>
 

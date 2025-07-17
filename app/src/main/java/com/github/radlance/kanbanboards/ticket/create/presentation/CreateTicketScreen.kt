@@ -26,6 +26,7 @@ import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 @Composable
 fun CreateTicketScreen(
     navigateUp: () -> Unit,
+    boardId: String,
     modifier: Modifier = Modifier,
     viewModel: TicketViewModel = hiltViewModel()
 ) {
@@ -49,6 +50,12 @@ fun CreateTicketScreen(
         }
     ) { contentPadding ->
         boardMembersUiState.Show(
+            boardId = boardId,
+            ticketActions = viewModel,
+            navigateUp = {
+                navigateUp()
+                viewModel.clearCreateTicketUiState()
+            },
             modifier = modifier.padding(
                 top = contentPadding.calculateTopPadding(),
                 start = contentPadding.calculateStartPadding(layoutDirection = LayoutDirection.Ltr),
@@ -63,7 +70,8 @@ fun CreateTicketScreen(
 private fun CreateTicketScreenPreview() {
     KanbanBoardsTheme {
         CreateTicketScreen(
-            navigateUp = {}
+            navigateUp = {},
+            boardId = ""
         )
     }
 }

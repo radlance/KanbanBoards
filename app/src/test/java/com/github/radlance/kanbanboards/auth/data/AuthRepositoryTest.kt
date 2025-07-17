@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.auth.data
 
 import com.github.radlance.kanbanboards.auth.domain.AuthRepository
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.BaseTest
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -37,7 +37,7 @@ class AuthRepositoryTest : BaseTest() {
     @Test
     fun test_sign_in_with_token_success(): Unit = runBlocking {
         val result = repository.signInWithToken(userIdToken = "1234567890")
-        assertEquals(AuthResult.Success, result)
+        assertEquals(UnitResult.Success, result)
 
         assertEquals(1, remoteDataSource.signInWithTokenCalledList.size)
         assertEquals("1234567890", remoteDataSource.signInWithTokenCalledList[0])
@@ -49,7 +49,7 @@ class AuthRepositoryTest : BaseTest() {
     fun test_sign_in_with_token_error() = runBlocking {
         remoteDataSource.signInWithTokenException = IllegalStateException("something went wrong")
         val result = repository.signInWithToken(userIdToken = "1234567890")
-        assertEquals(AuthResult.Error(message = "something went wrong"), result)
+        assertEquals(UnitResult.Error(message = "something went wrong"), result)
 
         assertEquals(1, remoteDataSource.signInWithTokenCalledList.size)
         assertEquals("1234567890", remoteDataSource.signInWithTokenCalledList[0])
@@ -59,7 +59,7 @@ class AuthRepositoryTest : BaseTest() {
     @Test
     fun test_sign_in_with_email_success() = runBlocking {
         val result = repository.signInWithEmail(email = "test@email.com", password = "123456")
-        assertEquals(AuthResult.Success, result)
+        assertEquals(UnitResult.Success, result)
 
         assertEquals(1, remoteDataSource.signInWithEmailCalledList.size)
         assertEquals(Pair("test@email.com", "123456"), remoteDataSource.signInWithEmailCalledList[0])
@@ -70,7 +70,7 @@ class AuthRepositoryTest : BaseTest() {
     fun test_sign_in_with_email_error() = runBlocking {
         remoteDataSource.signInWithEmailException = IllegalStateException("test error")
         val result = repository.signInWithEmail(email = "test@email.com", password = "123456")
-        assertEquals(AuthResult.Error(message = "test error"), result)
+        assertEquals(UnitResult.Error(message = "test error"), result)
 
         assertEquals(1, remoteDataSource.signInWithEmailCalledList.size)
         assertEquals(Pair("test@email.com", "123456"), remoteDataSource.signInWithEmailCalledList[0])
@@ -85,7 +85,7 @@ class AuthRepositoryTest : BaseTest() {
             password = "123456"
         )
 
-        assertEquals(AuthResult.Success, result)
+        assertEquals(UnitResult.Success, result)
         assertEquals(1, remoteDataSource.signUpCalledList.size)
         assertEquals(
             Triple("test name", "test@email.com", "123456"),
@@ -102,7 +102,7 @@ class AuthRepositoryTest : BaseTest() {
             email = "test@email.com",
             password = "123456"
         )
-        assertEquals(AuthResult.Error(message = "some error"), result)
+        assertEquals(UnitResult.Error(message = "some error"), result)
         assertEquals(1, remoteDataSource.signUpCalledList.size)
         assertEquals(
             Triple("test name", "test@email.com", "123456"),
@@ -141,13 +141,13 @@ class AuthRepositoryTest : BaseTest() {
 
         var handleCalledCount = 0
 
-        override suspend fun handle(action: suspend () -> Unit): AuthResult {
+        override suspend fun handle(action: suspend () -> Unit): UnitResult {
             handleCalledCount++
             return try {
                 action.invoke()
-                AuthResult.Success
+                UnitResult.Success
             } catch (e: Exception) {
-                AuthResult.Error(e.message ?: "")
+                UnitResult.Error(e.message ?: "")
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.auth.presentation.signin
 
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateSignIn
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
@@ -15,7 +15,7 @@ class SignInViewModel @Inject constructor(
     private val credentialMapper: CredentialResult.Mapper<CredentialUiState>,
     private val validateSignIn: ValidateSignIn,
     handleSignIn: HandleSignIn,
-    authMapper: AuthResult.Mapper<AuthResultUiState>,
+    authMapper: UnitResult.Mapper<AuthResultUiState>,
     runAsync: RunAsync
 ) : BaseSignInViewModel(authMapper, handleSignIn, runAsync), SignInCredentialAction {
 

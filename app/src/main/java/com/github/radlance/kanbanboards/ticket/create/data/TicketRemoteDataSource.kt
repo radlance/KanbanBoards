@@ -1,9 +1,12 @@
 package com.github.radlance.kanbanboards.ticket.create.data
 
 import com.github.radlance.kanbanboards.board.data.BoardMemberEntity
+import com.github.radlance.kanbanboards.board.data.TicketEntity
+import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
+import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import com.google.firebase.database.getValue
 import com.google.firebase.database.snapshots
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,14 +16,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 interface TicketRemoteDataSource {
 
     fun boardMembers(boardId: String): Flow<List<BoardMember>>
 
+    suspend fun createTicket(newTicket: NewTicket)
+
     class Base @Inject constructor(
-        private val provideDatabase: ProvideDatabase
+        private val provideDatabase: ProvideDatabase,
+        private val handleError: HandleError
     ) : TicketRemoteDataSource {
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -43,6 +50,25 @@ interface TicketRemoteDataSource {
                     ) { boards: Array<BoardMember> -> boards.toList() }
                 }
             }.catch { e -> throw IllegalStateException(e.message) }
+        }
+
+        override suspend fun createTicket(newTicket: NewTicket) {
+            try {
+                val reference = provideDatabase.database().child("tickets").push()
+                with(newTicket) {
+                    reference.setValue(
+                        TicketEntity(
+                            boardId = boardId,
+                            color = colorHex,
+                            title = name,
+                            assignee = assignedMemberName,
+                            columnId = "todo"
+                        )
+                    ).await()
+                }
+            } catch (e: Exception) {
+                handleError.handle(e)
+            }
         }
 
         private fun boardMember(memberId: String): Flow<BoardMember> = provideDatabase

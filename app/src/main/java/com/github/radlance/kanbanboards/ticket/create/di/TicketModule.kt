@@ -1,12 +1,16 @@
 package com.github.radlance.kanbanboards.ticket.create.di
 
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.create.data.RemoteTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.data.TicketRemoteDataSource
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.domain.TicketRepository
 import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersResultMapper
 import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersUiState
+import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketMapper
+import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketUiState
 import com.github.radlance.kanbanboards.ticket.create.presentation.HandleTicket
+import com.github.radlance.kanbanboards.ticket.create.presentation.TicketMapperFacade
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -31,4 +35,12 @@ interface TicketModule {
 
     @Binds
     fun provideHandleTicket(handleTicket: HandleTicket.Base): HandleTicket
+
+    @Binds
+    fun provideCreateTicketMapper(
+        createTicketMapper: CreateTicketMapper
+    ): UnitResult.Mapper<CreateTicketUiState>
+
+    @Binds
+    fun provideTicketMapperFacade(ticketMapperFacade: TicketMapperFacade.Base): TicketMapperFacade
 }

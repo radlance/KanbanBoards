@@ -32,7 +32,7 @@ fun BoardScreen(
     ) {
         boardUiState.Show(
             navigateUp = navigateUp,
-            ticketActions = viewModel,
+            boardTicketActions = viewModel,
             navigateToCreateTicket = navigateToCreateTicket,
             modifier = modifier.weight(1f)
         )

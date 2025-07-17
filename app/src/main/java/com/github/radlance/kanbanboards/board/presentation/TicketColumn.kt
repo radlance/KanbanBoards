@@ -25,11 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
 
 @Composable
 fun TicketColumn(
+    json: Json,
     tickets: List<TicketUi>,
     columnType: ColumnUi,
     onMove: (ticketId: String, column: ColumnUi) -> Unit,
@@ -62,29 +61,7 @@ fun TicketColumn(
                         onMove = onMove,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .animateItem()
                             .dragAndDropSource { _ ->
-                                val json = Json {
-                                    serializersModule = SerializersModule {
-                                        polymorphic(ColumnUi::class) {
-                                            subclass(
-                                                ColumnUi.Todo::class,
-                                                ColumnUi.Todo.serializer()
-                                            )
-
-                                            subclass(
-                                                ColumnUi.InProgress::class,
-                                                ColumnUi.InProgress.serializer()
-                                            )
-
-                                            subclass(
-                                                ColumnUi.Done::class,
-                                                ColumnUi.Done.serializer()
-                                            )
-                                        }
-                                    }
-                                }
-
                                 DragAndDropTransferData(
                                     ClipData.newPlainText(
                                         "ticket", json.encodeToString(ticket)
@@ -131,6 +108,7 @@ private fun TicketColumnPreview() {
             ),
             columnType = ColumnUi.Todo,
             onMove = { _, _ -> },
+            json = Json,
             modifier = Modifier
                 .widthIn(250.dp)
                 .padding(12.dp)

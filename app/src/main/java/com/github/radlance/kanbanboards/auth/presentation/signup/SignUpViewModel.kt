@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.auth.presentation.signup
 
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.auth.domain.SignUpRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.BaseAuthViewModel
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val signUpRepository: SignUpRepository,
     private val handleSignUp: HandleSignUp,
-    private val authMapper: AuthResult.Mapper<AuthResultUiState>,
+    private val authMapper: UnitResult.Mapper<AuthResultUiState>,
     private val validateAuth: ValidateAuth,
     runAsync: RunAsync
 ) : BaseAuthViewModel(handleSignUp, runAsync) {

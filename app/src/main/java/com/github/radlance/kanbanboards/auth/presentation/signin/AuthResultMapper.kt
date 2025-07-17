@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.auth.presentation.signin
 
-import com.github.radlance.kanbanboards.auth.domain.AuthResult
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import javax.inject.Inject
 
-class AuthResultMapper @Inject constructor() : AuthResult.Mapper<AuthResultUiState> {
+class AuthResultMapper @Inject constructor() : UnitResult.Mapper<AuthResultUiState> {
 
     override fun mapSuccess(): AuthResultUiState = AuthResultUiState.Success
 

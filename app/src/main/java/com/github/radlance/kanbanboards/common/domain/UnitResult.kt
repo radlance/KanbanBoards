@@ -1,6 +1,6 @@
-package com.github.radlance.kanbanboards.auth.domain
+package com.github.radlance.kanbanboards.common.domain
 
-interface AuthResult {
+interface UnitResult {
 
     fun <T : Any> map(mapper: Mapper<T>): T
 
@@ -11,12 +11,12 @@ interface AuthResult {
         fun mapError(message: String): T
     }
 
-    object Success : AuthResult {
+    object Success : UnitResult {
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapSuccess()
     }
 
-    data class Error(private val message: String) : AuthResult {
+    data class Error(private val message: String) : UnitResult {
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapError(message)
     }

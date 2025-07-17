@@ -34,6 +34,7 @@ fun TicketColumnWithDrop(
         tickets = tickets,
         columnType = columnType,
         onMove = onMove,
+        json = json,
         modifier = modifier.dragAndDropTarget(
             shouldStartDragAndDrop = { event ->
                 event.mimeTypes().contains(ClipDescription.MIMETYPE_TEXT_PLAIN)

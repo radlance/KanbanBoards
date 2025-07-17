@@ -6,15 +6,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.core.ManageResource
+import com.github.radlance.kanbanboards.common.presentation.UnitUiState
+import com.github.radlance.kanbanboards.common.presentation.AbstractUnitUiState
 
-interface CredentialUiState : AuthUiState {
+interface CredentialUiState : UnitUiState {
 
     @Composable
     fun Show(action: SignInCredentialAction)
 
     data class Success(
         private val idToken: String
-    ) : CredentialUiState, BaseAuthUiState(hasSize = false, buttonEnabled = true) {
+    ) : CredentialUiState, AbstractUnitUiState(hasSize = false, buttonEnabled = true) {
 
         @Composable
         override fun Show(action: SignInCredentialAction) = action.signInWithToken(idToken)
@@ -22,7 +24,7 @@ interface CredentialUiState : AuthUiState {
 
     data class Error(
         private val manageResource: ManageResource
-    ) : CredentialUiState, BaseAuthUiState(hasSize = true, buttonEnabled = true) {
+    ) : CredentialUiState, AbstractUnitUiState(hasSize = true, buttonEnabled = true) {
 
         @Composable
         override fun Show(action: SignInCredentialAction) {
@@ -35,7 +37,7 @@ interface CredentialUiState : AuthUiState {
         }
     }
 
-    object Initial : CredentialUiState, BaseAuthUiState(hasSize = false, buttonEnabled = true) {
+    object Initial : CredentialUiState, AbstractUnitUiState(hasSize = false, buttonEnabled = true) {
 
         @Composable
         override fun Show(action: SignInCredentialAction) = Unit

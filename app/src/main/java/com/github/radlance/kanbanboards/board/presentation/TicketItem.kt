@@ -37,7 +37,8 @@ fun TicketItem(
                 width = 1.dp,
                 shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.secondary
-            ).background(MaterialTheme.colorScheme.background)
+            )
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,6 +70,7 @@ fun TicketItem(
                         .fillMaxWidth()
                         .padding(horizontal = 55.dp)
                         .background(color = Color(ticket.colorHex.toColorInt()))
+
                 )
 
                 Box(modifier = Modifier.align(Alignment.CenterEnd)) {

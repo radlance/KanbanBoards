@@ -29,7 +29,7 @@ interface HandleAuthRemoteDataSource {
                     .await()
 
             } catch (e: Exception) {
-                throw handle.handle(e)
+                handle.handle(e)
             }
         }
     }
