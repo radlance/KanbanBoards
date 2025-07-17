@@ -57,6 +57,7 @@ interface TicketRemoteDataSource {
                                     id = key,
                                     colorHex = entity.color,
                                     name = entity.title,
+                                    description = entity.description,
                                     assignedMemberName = userEntity?.name ?: "",
                                     column = column
                                 )

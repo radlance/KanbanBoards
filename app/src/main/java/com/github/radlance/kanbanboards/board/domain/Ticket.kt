@@ -4,6 +4,7 @@ data class Ticket(
     val id: String,
     val colorHex: String,
     val name: String,
+    val description: String,
     val assignedMemberName: String,
     val column: Column
 )

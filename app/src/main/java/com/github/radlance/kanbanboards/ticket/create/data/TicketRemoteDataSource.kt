@@ -61,6 +61,7 @@ interface TicketRemoteDataSource {
                             boardId = boardId,
                             color = colorHex,
                             title = name,
+                            description = description,
                             assignee = assignedMemberName,
                             columnId = "todo"
                         )

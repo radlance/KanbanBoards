@@ -49,6 +49,7 @@ class TicketViewModel @Inject constructor(
             boardId = boardId,
             colorHex = color,
             name = title,
+            description = description,
             assignedMemberName = assignee
         )
 

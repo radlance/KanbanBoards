@@ -4,5 +4,6 @@ data class NewTicket(
     val boardId: String,
     val colorHex: String,
     val name: String,
+    val description: String,
     val assignedMemberName: String
 )
