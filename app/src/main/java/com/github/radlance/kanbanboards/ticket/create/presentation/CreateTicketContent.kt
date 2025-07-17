@@ -106,7 +106,7 @@ fun CreateTicketContent(
             }
 
             val filteredMembers = remember(members, searchFieldValue) {
-                members.filter { it.name.contains(searchFieldValue, ignoreCase = true) }
+                members.filter { it.email.contains(searchFieldValue, ignoreCase = true) }
             }
 
             Column(modifier = Modifier.padding(30.dp)) {
@@ -150,7 +150,7 @@ fun CreateTicketContent(
                                         MaterialTheme.colorScheme.primary
                                     } else LocalTextStyle.current.color
                                 )
-                                Text(text = member.name, fontSize = 16.sp, color = color)
+                                Text(text = member.email, fontSize = 16.sp, color = color)
                             }
                         )
 
@@ -199,7 +199,7 @@ fun CreateTicketContent(
                     modifier = Modifier
                         .fillMaxWidth(),
                     readOnly = true,
-                    value = members.find { it.id == selectedAssigneeId }?.name ?: "",
+                    value = members.find { it.id == selectedAssigneeId }?.email ?: "",
                     onValueChange = {},
                     singleLine = true,
                     placeholder = { Text(text = stringResource(R.string.assignee)) },
