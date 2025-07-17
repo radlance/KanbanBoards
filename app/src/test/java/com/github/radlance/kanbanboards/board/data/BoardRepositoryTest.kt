@@ -72,6 +72,7 @@ class BoardRepositoryTest : BaseTest() {
                     colorHex = "#EAAEEE",
                     name = "ticketName",
                     assignedMemberName = "member",
+                    description = "ticketDescription",
                     column = Column.Todo
                 )
             )
@@ -85,6 +86,7 @@ class BoardRepositoryTest : BaseTest() {
                         colorHex = "#EAAEEE",
                         name = "ticketName",
                         assignedMemberName = "member",
+                        description = "ticketDescription",
                         column = Column.Todo
                     )
                 )

@@ -104,6 +104,7 @@ class BoardViewModelTest : BaseTest() {
                         colorHex = "#FFFFFF",
                         name = "test ticket name",
                         assignedMemberName = "test user",
+                        description = "test description",
                         column = Column.Todo
                     ),
 
@@ -111,6 +112,7 @@ class BoardViewModelTest : BaseTest() {
                         id = "second ticket id",
                         colorHex = "#FAEEFF",
                         name = "test task",
+                        description = "test",
                         assignedMemberName = "",
                         column = Column.InProgress
                     ),
@@ -119,6 +121,7 @@ class BoardViewModelTest : BaseTest() {
                         id = "id",
                         colorHex = "#000000",
                         name = "first task",
+                        description = "",
                         assignedMemberName = "another user",
                         column = Column.Done
                     )
