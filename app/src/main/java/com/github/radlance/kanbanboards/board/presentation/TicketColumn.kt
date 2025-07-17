@@ -17,6 +17,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropTransferData
@@ -56,18 +61,28 @@ fun TicketColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(items = tickets, key = { it.id }) { ticket ->
+                    var show by remember { mutableStateOf(false) }
+
+                    LaunchedEffect(Unit) {
+                        show = true
+                    }
+
+                    val dragModifier = if (show) {
+                        Modifier.dragAndDropSource { _ ->
+                            DragAndDropTransferData(
+                                ClipData.newPlainText("ticket", json.encodeToString(ticket))
+                            )
+                        }
+                    } else Modifier
+
                     TicketItem(
                         ticket = ticket,
                         onMove = onMove,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .dragAndDropSource { _ ->
-                                DragAndDropTransferData(
-                                    ClipData.newPlainText(
-                                        "ticket", json.encodeToString(ticket)
-                                    )
-                                )
-                            }
+                            .animateItem()
+                            .then(dragModifier)
+
                     )
                 }
             }
