@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -33,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
+import com.github.radlance.kanbanboards.common.presentation.BackButton
 
 interface BoardUiState {
 
@@ -76,14 +76,7 @@ interface BoardUiState {
                                 Text(text = name, maxLines = 2, overflow = TextOverflow.Ellipsis)
                             }
                         },
-                        navigationIcon = {
-                            IconButton(onClick = navigateUp) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                    contentDescription = stringResource(R.string.navigate_up)
-                                )
-                            }
-                        },
+                        navigationIcon = { BackButton(navigateUp) },
                         actions = {
                             if (boardInfo.isMyBoard) {
                                 IconButton(onClick = {}) {

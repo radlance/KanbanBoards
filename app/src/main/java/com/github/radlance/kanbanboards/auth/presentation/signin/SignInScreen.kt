@@ -174,7 +174,10 @@ fun SignInScreen(
                     modifier = Modifier.clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(),
-                        onClick = navigateToSignUpScreen
+                        onClick = {
+                            keyboardController?.hide()
+                            navigateToSignUpScreen()
+                        }
                     )
                 )
             }
