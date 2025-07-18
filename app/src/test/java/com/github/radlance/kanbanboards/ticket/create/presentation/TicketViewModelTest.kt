@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.ticket.create
+package com.github.radlance.kanbanboards.ticket.create.presentation
 
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.UnitResult
@@ -6,14 +6,6 @@ import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import com.github.radlance.kanbanboards.ticket.create.domain.TicketRepository
-import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersResultMapper
-import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersUiState
-import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketMapper
-import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketUiState
-import com.github.radlance.kanbanboards.ticket.create.presentation.FormatTime
-import com.github.radlance.kanbanboards.ticket.create.presentation.HandleTicket
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketMapperFacade
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
