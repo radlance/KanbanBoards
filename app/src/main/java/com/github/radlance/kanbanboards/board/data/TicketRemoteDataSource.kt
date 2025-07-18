@@ -108,7 +108,7 @@ interface TicketRemoteDataSource {
                             color = colorHex,
                             title = name,
                             description = description,
-                            assignee = assignedMemberName,
+                            assignee = assignedMemberId,
                             columnId = "todo",
                             creationDate = creationDate.toString()
                         )

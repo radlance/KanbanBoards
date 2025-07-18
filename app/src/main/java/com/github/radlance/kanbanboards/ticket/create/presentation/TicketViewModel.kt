@@ -37,7 +37,7 @@ class TicketViewModel @Inject constructor(
         title: String,
         color: String,
         description: String,
-        assignee: String
+        assigneeId: String
     ) {
 
         handleTicket.saveCreateTicketUiState(CreateTicketUiState.Loading)
@@ -47,7 +47,7 @@ class TicketViewModel @Inject constructor(
             colorHex = color,
             name = title,
             description = description,
-            assignedMemberName = assignee,
+            assignedMemberId = assigneeId,
             creationDate = formatTime.now()
         )
 
@@ -71,7 +71,7 @@ interface TicketActions {
         title: String,
         color: String,
         description: String,
-        assignee: String
+        assigneeId: String
     )
 
     fun clearCreateTicketUiState()

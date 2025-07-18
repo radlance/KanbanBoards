@@ -7,6 +7,6 @@ data class NewTicket(
     val colorHex: String,
     val name: String,
     val description: String,
-    val assignedMemberName: String,
+    val assignedMemberId: String,
     val creationDate: LocalDateTime
 )

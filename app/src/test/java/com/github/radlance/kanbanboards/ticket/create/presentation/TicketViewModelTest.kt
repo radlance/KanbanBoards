@@ -114,7 +114,7 @@ class TicketViewModelTest : BaseTest() {
             title = "title1",
             color = "#000000",
             description = "description1",
-            assignee = "assignee1"
+            assigneeId = "assignee1"
         )
         assertEquals(
             CreateTicketUiState.Error(message = "create ticket error"),
@@ -127,7 +127,7 @@ class TicketViewModelTest : BaseTest() {
                 colorHex = "#000000",
                 name = "title1",
                 description = "description1",
-                assignedMemberName = "assignee1",
+                assignedMemberId = "assignee1",
                 creationDate = LocalDateTime.of(2025, 1, 1, 1, 1)
             ),
             repository.createTicketCalledList[0]
@@ -151,7 +151,7 @@ class TicketViewModelTest : BaseTest() {
             title = "title2",
             color = "#000000",
             description = "description2",
-            assignee = "assignee2"
+            assigneeId = "assignee2"
         )
         assertEquals(
             CreateTicketUiState.Success,
@@ -164,7 +164,7 @@ class TicketViewModelTest : BaseTest() {
                 colorHex = "#000000",
                 name = "title2",
                 description = "description2",
-                assignedMemberName = "assignee2",
+                assignedMemberId = "assignee2",
                 creationDate = LocalDateTime.of(2025, 1, 1, 1, 30)
             ),
             repository.createTicketCalledList[1]

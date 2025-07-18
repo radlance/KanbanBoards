@@ -241,7 +241,7 @@ fun CreateTicketContent(
                         title = titleFieldValue,
                         color = ticketColors[selectedColorIndex].hex(),
                         description = descriptionFieldValue,
-                        assignee = members.find { it.id == selectedAssigneeId }?.id ?: ""
+                        assigneeId = members.find { it.id == selectedAssigneeId }?.id ?: ""
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
