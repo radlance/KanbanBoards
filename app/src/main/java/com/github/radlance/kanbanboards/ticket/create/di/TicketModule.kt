@@ -8,6 +8,7 @@ import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersR
 import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersUiState
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketMapper
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketUiState
+import com.github.radlance.kanbanboards.ticket.create.presentation.FormatTime
 import com.github.radlance.kanbanboards.ticket.create.presentation.HandleTicket
 import com.github.radlance.kanbanboards.ticket.create.presentation.TicketMapperFacade
 import dagger.Binds
@@ -37,4 +38,7 @@ interface TicketModule {
 
     @Binds
     fun provideTicketMapperFacade(ticketMapperFacade: TicketMapperFacade.Base): TicketMapperFacade
+
+    @Binds
+    fun provideFormatTime(formatTime: FormatTime.Base): FormatTime
 }

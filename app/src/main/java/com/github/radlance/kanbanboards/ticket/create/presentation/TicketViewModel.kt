@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.ticket.create.presentation
 
-import androidx.lifecycle.viewModelScope
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
@@ -9,8 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +15,7 @@ class TicketViewModel @Inject constructor(
     private val ticketRepository: TicketRepository,
     private val ticketMapperFacade: TicketMapperFacade,
     private val handleTicket: HandleTicket,
+    private val formatTime: FormatTime,
     runAsync: RunAsync
 ) : BaseViewModel(runAsync), TicketActions {
 
@@ -42,9 +40,7 @@ class TicketViewModel @Inject constructor(
         assignee: String
     ) {
 
-        viewModelScope.launch {
-            handleTicket.saveCreateTicketUiState(CreateTicketUiState.Loading)
-        }
+        handleTicket.saveCreateTicketUiState(CreateTicketUiState.Loading)
 
         val newTicket = NewTicket(
             boardId = boardId,
@@ -52,13 +48,11 @@ class TicketViewModel @Inject constructor(
             name = title,
             description = description,
             assignedMemberName = assignee,
-            creationDate = LocalDateTime.now()
+            creationDate = formatTime.now()
         )
 
         handle(background = { ticketRepository.createTicket(newTicket) }) {
-            viewModelScope.launch {
-                handleTicket.saveCreateTicketUiState(ticketMapperFacade.mapCreateTicketResult(it))
-            }
+            handleTicket.saveCreateTicketUiState(ticketMapperFacade.mapCreateTicketResult(it))
         }
     }
 

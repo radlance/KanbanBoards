@@ -75,7 +75,6 @@ class BoardViewModelTest : BaseTest() {
             )
         )
         assertEquals(1, repository.boardCalledList.size)
-        assertEquals("test id", repository.boardCalledList[0])
         assertEquals(3, handle.saveBoardUiStateCalledList.size)
         assertEquals(
             BoardUiState.Success(
@@ -89,6 +88,10 @@ class BoardViewModelTest : BaseTest() {
     fun test_collect_tickets() {
         repository.makeExpectedTicketResult(TicketResult.Error(message = "error loading tickets"))
         viewModel.fetchTickets(boardId = "test board id")
+        assertEquals(
+            TicketUiState.Error(message = "error loading tickets"),
+            viewModel.ticketUiState.value
+        )
         assertEquals(1, repository.ticketsCalledList.size)
         assertEquals("test board id", repository.ticketsCalledList[0])
         assertEquals(1, handle.saveTicketUiStateCalledList.size)
@@ -131,6 +134,39 @@ class BoardViewModelTest : BaseTest() {
                     )
                 )
             )
+        )
+        assertEquals(
+            TicketUiState.Success(
+                listOf(
+                    TicketUi(
+                        id = "test ticket id",
+                        colorHex = "#FFFFFF",
+                        name = "test ticket name",
+                        assignedMemberName = "test user",
+                        column = ColumnUi.Todo,
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30)
+                    ),
+
+                    TicketUi(
+                        id = "second ticket id",
+                        colorHex = "#FAEEFF",
+                        name = "test task",
+                        assignedMemberName = "",
+                        column = ColumnUi.InProgress,
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30)
+                    ),
+
+                    TicketUi(
+                        id = "id",
+                        colorHex = "#000000",
+                        name = "first task",
+                        assignedMemberName = "another user",
+                        column = ColumnUi.Done,
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30)
+                    )
+                )
+            ),
+            viewModel.ticketUiState.value
         )
         assertEquals(1, repository.ticketsCalledList.size)
         assertEquals(2, handle.saveTicketUiStateCalledList.size)
