@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.board.presentation
 
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import junit.framework.TestCase.assertEquals
+import kotlinx.datetime.LocalDateTime
 import org.junit.Before
 import org.junit.Test
 
@@ -58,7 +59,8 @@ class HandleBoardTest {
                         colorHex = "#AAAAAA",
                         name = "name1",
                         assignedMemberName = "user",
-                        column = ColumnUi.InProgress
+                        column = ColumnUi.InProgress,
+                        creationDate = LocalDateTime(2024, 1, 10, 5, 50)
                     )
                 )
             )
@@ -71,7 +73,8 @@ class HandleBoardTest {
                         colorHex = "#AAAAAA",
                         name = "name1",
                         assignedMemberName = "user",
-                        column = ColumnUi.InProgress
+                        column = ColumnUi.InProgress,
+                        creationDate = LocalDateTime(2024, 1, 10, 5, 50)
                     )
                 )
             ),

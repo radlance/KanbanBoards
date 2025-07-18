@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.junit.Before
 import org.junit.Test
+import java.time.LocalDateTime
 
 class BoardViewModelTest : BaseTest() {
 
@@ -105,7 +106,8 @@ class BoardViewModelTest : BaseTest() {
                         name = "test ticket name",
                         assignedMemberName = "test user",
                         description = "test description",
-                        column = Column.Todo
+                        column = Column.Todo,
+                        creationDate = LocalDateTime.of(2024, 6, 18, 6, 30)
                     ),
 
                     Ticket(
@@ -114,7 +116,8 @@ class BoardViewModelTest : BaseTest() {
                         name = "test task",
                         description = "test",
                         assignedMemberName = "",
-                        column = Column.InProgress
+                        column = Column.InProgress,
+                        creationDate = LocalDateTime.of(2024, 5, 18, 6, 30)
                     ),
 
                     Ticket(
@@ -123,7 +126,8 @@ class BoardViewModelTest : BaseTest() {
                         name = "first task",
                         description = "",
                         assignedMemberName = "another user",
-                        column = Column.Done
+                        column = Column.Done,
+                        creationDate = LocalDateTime.of(2024, 4, 18, 6, 30)
                     )
                 )
             )
@@ -138,7 +142,8 @@ class BoardViewModelTest : BaseTest() {
                         colorHex = "#FFFFFF",
                         name = "test ticket name",
                         assignedMemberName = "test user",
-                        column = ColumnUi.Todo
+                        column = ColumnUi.Todo,
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30)
                     ),
 
                     TicketUi(
@@ -146,7 +151,8 @@ class BoardViewModelTest : BaseTest() {
                         colorHex = "#FAEEFF",
                         name = "test task",
                         assignedMemberName = "",
-                        column = ColumnUi.InProgress
+                        column = ColumnUi.InProgress,
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30)
                     ),
 
                     TicketUi(
@@ -154,7 +160,8 @@ class BoardViewModelTest : BaseTest() {
                         colorHex = "#000000",
                         name = "first task",
                         assignedMemberName = "another user",
-                        column = ColumnUi.Done
+                        column = ColumnUi.Done,
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30)
                     )
                 )
             ),
