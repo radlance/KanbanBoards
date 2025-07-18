@@ -1,6 +1,8 @@
 package com.github.radlance.kanbanboards.ticket.create.data
 
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.board.data.BoardRemoteDataSource
+import com.github.radlance.kanbanboards.board.data.TicketRemoteDataSource
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
@@ -12,12 +14,13 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RemoteTicketRepository @Inject constructor(
+    private val boardRemoteDataSource: BoardRemoteDataSource,
     private val ticketRemoteDataSource: TicketRemoteDataSource,
     private val manageResource: ManageResource
 ) : TicketRepository {
 
     override fun boardMembers(boardId: String): Flow<BoardMembersResult> {
-        return ticketRemoteDataSource.boardMembers(boardId).map {
+        return boardRemoteDataSource.boardMembers(boardId).map {
             BoardMembersResult.Success(it)
         }.catch { e -> BoardMembersResult.Error(e.message!!) }
     }

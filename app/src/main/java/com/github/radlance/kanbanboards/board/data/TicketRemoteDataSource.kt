@@ -2,8 +2,10 @@ package com.github.radlance.kanbanboards.board.data
 
 import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.board.domain.Ticket
+import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
+import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import com.google.firebase.database.getValue
 import com.google.firebase.database.snapshots
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -22,8 +25,11 @@ interface TicketRemoteDataSource {
 
     fun moveTicket(ticketId: String, column: Column)
 
+    suspend fun createTicket(newTicket: NewTicket)
+
     class Base @Inject constructor(
-        private val provideDatabase: ProvideDatabase
+        private val provideDatabase: ProvideDatabase,
+        private val handleError: HandleError
     ) : TicketRemoteDataSource {
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -90,6 +96,27 @@ interface TicketRemoteDataSource {
                 .child(ticketId)
                 .child("columnId")
                 .setValue(columnLabel)
+        }
+
+        override suspend fun createTicket(newTicket: NewTicket) {
+            try {
+                val reference = provideDatabase.database().child("tickets").push()
+                with(newTicket) {
+                    reference.setValue(
+                        TicketEntity(
+                            boardId = boardId,
+                            color = colorHex,
+                            title = name,
+                            description = description,
+                            assignee = assignedMemberName,
+                            columnId = "todo",
+                            creationDate = creationDate.toString()
+                        )
+                    ).await()
+                }
+            } catch (e: Exception) {
+                handleError.handle(e)
+            }
         }
     }
 }
