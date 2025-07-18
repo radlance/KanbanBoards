@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.Json
 
 @Composable
@@ -102,7 +103,8 @@ private fun TicketColumnPreview() {
                     id = "id",
                     name = "test another ticket",
                     assignedMemberName = "some member",
-                    column = ColumnUi.Todo
+                    column = ColumnUi.Todo,
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1)
                 ),
 
                 TicketUi(
@@ -110,7 +112,8 @@ private fun TicketColumnPreview() {
                     id = "id2",
                     name = "test ticket",
                     assignedMemberName = "some member",
-                    column = ColumnUi.Todo
+                    column = ColumnUi.Todo,
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1)
                 ),
 
                 TicketUi(
@@ -118,7 +121,8 @@ private fun TicketColumnPreview() {
                     id = "id3",
                     name = "done ticket",
                     assignedMemberName = "some member",
-                    column = ColumnUi.Todo
+                    column = ColumnUi.Todo,
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1)
                 )
             ),
             columnType = ColumnUi.Todo,

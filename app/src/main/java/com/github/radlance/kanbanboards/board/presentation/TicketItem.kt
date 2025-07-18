@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun TicketItem(
@@ -91,7 +92,8 @@ private fun TicketItemPreview() {
                 id = "id",
                 name = "test ticket",
                 assignedMemberName = "some member",
-                column = ColumnUi.Todo
+                column = ColumnUi.Todo,
+                creationDate = LocalDateTime(1, 1, 1, 1, 1)
             ),
             onMove = { _, _ -> },
             modifier = Modifier

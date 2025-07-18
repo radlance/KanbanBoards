@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun TicketBoard(
@@ -35,22 +36,24 @@ fun TicketBoard(
             val columnModifier = Modifier
                 .width(250.dp)
 
+            val sortedTickets = tickets.sortedBy { it.creationDate }
+
             TicketColumnWithDrop(
-                tickets = tickets.filter { it.column is ColumnUi.Todo },
+                tickets = sortedTickets.filter { it.column is ColumnUi.Todo },
                 columnType = ColumnUi.Todo,
                 onMove = onMove,
                 modifier = columnModifier.padding(start = 12.dp)
             )
 
             TicketColumnWithDrop(
-                tickets = tickets.filter { it.column is ColumnUi.InProgress },
+                tickets = sortedTickets.filter { it.column is ColumnUi.InProgress },
                 columnType = ColumnUi.InProgress,
                 onMove = onMove,
                 modifier = columnModifier
             )
 
             TicketColumnWithDrop(
-                tickets = tickets.filter { it.column is ColumnUi.Done },
+                tickets = sortedTickets.filter { it.column is ColumnUi.Done },
                 columnType = ColumnUi.Done,
                 onMove = onMove,
                 modifier = columnModifier.padding(end = 12.dp)
@@ -70,6 +73,7 @@ private fun TicketBoardPreview() {
                     id = "id",
                     name = "test another ticket",
                     assignedMemberName = "some member",
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     column = ColumnUi.Todo
                 ),
 
@@ -78,6 +82,7 @@ private fun TicketBoardPreview() {
                     id = "id2",
                     name = "test ticket",
                     assignedMemberName = "some member",
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     column = ColumnUi.InProgress
                 ),
 
@@ -86,6 +91,7 @@ private fun TicketBoardPreview() {
                     id = "id3",
                     name = "done ticket",
                     assignedMemberName = "some member",
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     column = ColumnUi.Done
                 )
             ),

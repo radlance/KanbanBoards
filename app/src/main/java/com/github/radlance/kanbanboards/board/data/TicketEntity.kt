@@ -6,5 +6,6 @@ data class TicketEntity(
     val title: String = "",
     val description: String = "",
     val assignee: String = "",
-    val columnId: String = ""
+    val columnId: String = "",
+    val creationDate: String = ""
 )

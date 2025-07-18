@@ -63,7 +63,8 @@ interface TicketRemoteDataSource {
                             title = name,
                             description = description,
                             assignee = assignedMemberName,
-                            columnId = "todo"
+                            columnId = "todo",
+                            creationDate = creationDate.toString()
                         )
                     ).await()
                 }

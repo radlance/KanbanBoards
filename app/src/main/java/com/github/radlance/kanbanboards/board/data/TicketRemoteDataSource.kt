@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 interface TicketRemoteDataSource {
@@ -53,14 +54,17 @@ interface TicketRemoteDataSource {
                                     else -> throw IllegalStateException("unknown column type")
                                 }
 
-                                Ticket(
-                                    id = key,
-                                    colorHex = entity.color,
-                                    name = entity.title,
-                                    description = entity.description,
-                                    assignedMemberName = userEntity?.name ?: "",
-                                    column = column
-                                )
+                                with(entity) {
+                                    Ticket(
+                                        id = key,
+                                        colorHex = color,
+                                        name = title,
+                                        description = description,
+                                        assignedMemberName = userEntity?.name ?: "",
+                                        column = column,
+                                        creationDate = LocalDateTime.parse(creationDate)
+                                    )
+                                }
                             }
                 }
 

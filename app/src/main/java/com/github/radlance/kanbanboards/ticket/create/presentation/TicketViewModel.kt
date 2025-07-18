@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,7 +51,8 @@ class TicketViewModel @Inject constructor(
             colorHex = color,
             name = title,
             description = description,
-            assignedMemberName = assignee
+            assignedMemberName = assignee,
+            creationDate = LocalDateTime.now()
         )
 
         handle(background = { ticketRepository.createTicket(newTicket) }) {
