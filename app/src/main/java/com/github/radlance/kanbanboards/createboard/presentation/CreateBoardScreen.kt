@@ -52,7 +52,8 @@ fun CreateBoardsScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            createBoardUiState.Show(
+            createBoardUiState.nameFieldUiState.Show(
+                createBoardFieldsUiState = createBoardUiState,
                 navigateToBoardScreen = navigateToBoardScreen,
                 columnScope = this@BaseColumn,
                 createBoardActions = viewModel

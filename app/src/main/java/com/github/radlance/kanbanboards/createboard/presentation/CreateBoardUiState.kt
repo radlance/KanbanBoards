@@ -8,6 +8,7 @@ interface CreateBoardUiState {
 
     @Composable
     fun Show(
+        createBoardFieldsUiState: CreateBoardFieldsUiState,
         navigateToBoardScreen: (BoardInfo) -> Unit,
         createBoardActions: CreateBoardActions,
         columnScope: ColumnScope
@@ -16,12 +17,13 @@ interface CreateBoardUiState {
     abstract class Abstract(
         private val enabled: Boolean,
         private val loading: Boolean = false,
-        private val fieldErrorMessage: String = "",
+        private val nameFieldErrorMessage: String = "",
         private val createErrorMessage: String = ""
     ) : CreateBoardUiState {
 
         @Composable
         override fun Show(
+            createBoardFieldsUiState: CreateBoardFieldsUiState,
             navigateToBoardScreen: (BoardInfo) -> Unit,
             createBoardActions: CreateBoardActions,
             columnScope: ColumnScope
@@ -29,8 +31,9 @@ interface CreateBoardUiState {
             columnScope = columnScope,
             enabled = enabled,
             loading = loading,
-            fieldErrorMessage = fieldErrorMessage,
+            nameFieldErrorMessage = nameFieldErrorMessage,
             createErrorMessage = createErrorMessage,
+            searchFieldErrorMessage = createBoardFieldsUiState.searchFieldErrorMessage,
             createBoardActions = createBoardActions
         )
     }
@@ -39,16 +42,18 @@ interface CreateBoardUiState {
 
         @Composable
         override fun Show(
+            createBoardFieldsUiState: CreateBoardFieldsUiState,
             navigateToBoardScreen: (BoardInfo) -> Unit,
             createBoardActions: CreateBoardActions,
             columnScope: ColumnScope
         ) {
             navigateToBoardScreen(boardInfo)
+            createBoardActions.resetBoardUiState()
         }
     }
 
     data class AlreadyExists(private val message: String) : Abstract(
-        enabled = true, fieldErrorMessage = message
+        enabled = true, nameFieldErrorMessage = message
     )
 
     object CanCreate : Abstract(enabled = true)

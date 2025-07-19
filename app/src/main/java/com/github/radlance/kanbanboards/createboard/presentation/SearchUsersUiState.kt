@@ -25,16 +25,25 @@ interface SearchUsersUiState {
     @Composable
     fun Show(
         searchFieldValue: String,
-        checkActions: CheckActions,
+        usersActions: UsersActions,
         columnScope: ColumnScope
     )
 
-    class Success(private val users: List<CreateUserUi>) : SearchUsersUiState {
+    fun users(): List<CreateUserUi>
+
+    abstract class Abstract : SearchUsersUiState {
+
+        override fun users(): List<CreateUserUi> = emptyList()
+    }
+
+    class Success(private val users: List<CreateUserUi>) : Abstract() {
+
+        override fun users(): List<CreateUserUi> = users.filter { it.checked }
 
         @Composable
         override fun Show(
             searchFieldValue: String,
-            checkActions: CheckActions,
+            usersActions: UsersActions,
             columnScope: ColumnScope
         ) = with(columnScope) {
             val filteredUsers = if (searchFieldValue.isEmpty()) {
@@ -69,7 +78,8 @@ interface SearchUsersUiState {
                         Checkbox(
                             checked = user.checked,
                             onCheckedChange = {
-                                checkActions.switch(userId = user.id, users = users)
+                                usersActions.switch(userId = user.id, users = users)
+                                usersActions.clearSearchField()
                             }
                         )
                     }
@@ -78,12 +88,12 @@ interface SearchUsersUiState {
         }
     }
 
-    class Error(private val message: String) : SearchUsersUiState {
+    class Error(private val message: String) : Abstract() {
 
         @Composable
         override fun Show(
             searchFieldValue: String,
-            checkActions: CheckActions,
+            usersActions: UsersActions,
             columnScope: ColumnScope
         ) = with(columnScope) {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
@@ -93,11 +103,11 @@ interface SearchUsersUiState {
     }
 
 
-    object Loading : SearchUsersUiState {
+    object Loading : Abstract() {
         @Composable
         override fun Show(
             searchFieldValue: String,
-            checkActions: CheckActions,
+            usersActions: UsersActions,
             columnScope: ColumnScope
         ) = with(columnScope) {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {

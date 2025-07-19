@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,7 +31,8 @@ fun CreateBoardContent(
     columnScope: ColumnScope,
     enabled: Boolean,
     loading: Boolean,
-    fieldErrorMessage: String,
+    nameFieldErrorMessage: String,
+    searchFieldErrorMessage: String,
     createErrorMessage: String,
     createBoardActions: CreateBoardActions
 ) = with(columnScope) {
@@ -45,11 +47,11 @@ fun CreateBoardContent(
             createBoardActions.checkBoard(it)
         },
         singleLine = true,
-        isError = fieldErrorMessage.isNotEmpty(),
+        isError = nameFieldErrorMessage.isNotEmpty(),
         placeholder = { Text(text = stringResource(R.string.at_least_3_symbol)) },
         label = {
             Text(
-                text = fieldErrorMessage.ifEmpty {
+                text = nameFieldErrorMessage.ifEmpty {
                     stringResource(R.string.board_name)
                 }
             )
@@ -61,11 +63,15 @@ fun CreateBoardContent(
 
     OutlinedTextField(
         value = searchFieldValue,
-        onValueChange = { searchFieldValue = it },
+        onValueChange = {
+            searchFieldValue = it
+            createBoardActions.clearSearchField()
+        },
         singleLine = true,
         placeholder = {
             Text(text = stringResource(R.string.enter_email))
         },
+        isError = searchFieldErrorMessage.isNotEmpty(),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Search,
@@ -73,13 +79,17 @@ fun CreateBoardContent(
             )
         },
         label = {
-            Text(text = stringResource(R.string.search_users))
+            Text(
+                text = searchFieldErrorMessage.ifEmpty {
+                    stringResource(R.string.search_users)
+                }
+            )
         },
         modifier = Modifier.fillMaxWidth()
     )
 
     searchUsersUiState.Show(
-        checkActions = createBoardActions,
+        usersActions = createBoardActions,
         columnScope = this,
         searchFieldValue = searchFieldValue
     )
@@ -99,8 +109,15 @@ fun CreateBoardContent(
         if (loading) {
             CircularProgressIndicator()
         } else {
+            val keyboardController = LocalSoftwareKeyboardController.current
             Button(
-                onClick = { createBoardActions.createBoard(boardNameFieldValue) },
+                onClick = {
+                    createBoardActions.createBoard(
+                        boardNameFieldValue,
+                        boardMembers = searchUsersUiState.users()
+                    )
+                    keyboardController?.hide()
+                },
                 enabled = enabled,
                 modifier = Modifier.fillMaxWidth()
             ) {

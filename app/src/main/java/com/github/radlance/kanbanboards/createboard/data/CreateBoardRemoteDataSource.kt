@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.createboard.data
 
 import com.github.radlance.kanbanboards.board.data.BoardEntity
+import com.github.radlance.kanbanboards.board.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 interface CreateBoardRemoteDataSource {
 
-    suspend fun createBoard(name: String): BoardInfo
+    suspend fun createBoard(name: String, memberIds: List<String>): BoardInfo
 
     fun users(): Flow<List<User>>
 
@@ -29,12 +30,18 @@ interface CreateBoardRemoteDataSource {
         private val handleError: HandleError
     ) : CreateBoardRemoteDataSource {
 
-        override suspend fun createBoard(name: String): BoardInfo {
+        override suspend fun createBoard(name: String, memberIds: List<String>): BoardInfo {
             return try {
                 val myUid = Firebase.auth.currentUser!!.uid
-                val reference = provideDatabase.database().child("boards").push()
-                reference.setValue(BoardEntity(name = name, owner = myUid)).await()
-                BoardInfo(id = reference.key!!, name = name, isMyBoard = true)
+                val boardsReference = provideDatabase.database().child("boards").push()
+                boardsReference.setValue(BoardEntity(name = name, owner = myUid)).await()
+                val membersReference = provideDatabase.database().child("boards-members").push()
+                memberIds.forEach { memberId ->
+                    membersReference.setValue(
+                        BoardMemberEntity(memberId = memberId, boardId = boardsReference.key!!)
+                    ).await()
+                }
+                BoardInfo(id = boardsReference.key!!, name = name, isMyBoard = true)
             } catch (e: Exception) {
                 handleError.handle(e)
             }
@@ -42,11 +49,14 @@ interface CreateBoardRemoteDataSource {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         override fun users(): Flow<List<User>> {
+            val currentUserId = Firebase.auth.currentUser!!.uid
             val usersQuery = provideDatabase.database()
                 .child("users")
 
             return usersQuery.snapshots.flatMapLatest { usersSnapshot ->
-                val userIds = usersSnapshot.children.mapNotNull { it.key }
+                val userIds = usersSnapshot.children.mapNotNull {
+                    it.key
+                }.filter { it != currentUserId }
                 if (userIds.isEmpty()) {
                     flowOf(emptyList())
                 } else {
