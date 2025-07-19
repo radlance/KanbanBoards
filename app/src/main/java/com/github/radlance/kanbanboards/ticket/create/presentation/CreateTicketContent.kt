@@ -52,14 +52,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTicketContent(
     boardId: String,
-    members: List<BoardMember>,
+    members: List<User>,
     ticketActions: TicketActions,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier

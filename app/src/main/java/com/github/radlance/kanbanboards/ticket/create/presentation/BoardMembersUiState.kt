@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
+import com.github.radlance.kanbanboards.common.domain.User
 
 interface BoardMembersUiState {
 
@@ -19,7 +19,7 @@ interface BoardMembersUiState {
         modifier: Modifier = Modifier
     )
 
-    data class Success(private val members: List<BoardMember>) : BoardMembersUiState {
+    data class Success(private val members: List<User>) : BoardMembersUiState {
 
         @Composable
         override fun Show(

@@ -58,4 +58,6 @@
     <string name="board_members">Board members</string>
     <string name="search_icon">Search icon</string>
     <string name="search">Search…</string>
+    <string name="search_users">Search users</string>
+    <string name="enter_email">Enter email address</string>
 </resources>

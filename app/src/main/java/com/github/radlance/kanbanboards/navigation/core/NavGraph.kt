@@ -14,6 +14,7 @@ import com.github.radlance.kanbanboards.auth.presentation.signup.SignUpScreen
 import com.github.radlance.kanbanboards.board.presentation.BoardScreen
 import com.github.radlance.kanbanboards.board.presentation.BoardViewModel
 import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
+import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardViewModel
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardsScreen
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketScreen
@@ -25,7 +26,8 @@ fun NavGraph(
     modifier: Modifier = Modifier,
     navigationViewModel: NavigationViewModel = hiltViewModel(),
     boardViewModel: BoardViewModel = hiltViewModel(),
-    ticketViewModel: TicketViewModel = hiltViewModel()
+    ticketViewModel: TicketViewModel = hiltViewModel(),
+    createBoardViewModel: CreateBoardViewModel = hiltViewModel()
 ) {
 
     val authorized by navigationViewModel.authorized.collectAsStateWithLifecycle()
@@ -68,7 +70,10 @@ fun NavGraph(
         composable<Boards> {
             BoardsScreen(
                 navigateToProfile = { navHostController.navigate(Profile) },
-                navigateToBoardCreation = { navHostController.navigate(CreateBoard) },
+                navigateToBoardCreation = {
+                    navHostController.navigate(CreateBoard)
+                    createBoardViewModel.fetchUsers()
+                },
                 navigateToBoard = {
                     boardViewModel.fetchBoard(it)
                     navHostController.navigate(Board)
@@ -93,7 +98,8 @@ fun NavGraph(
                 navigateToBoardScreen = {
                     boardViewModel.fetchBoard(it)
                     navHostController.navigate(Board) { popUpTo<Boards>() }
-                }
+                },
+                viewModel = createBoardViewModel
             )
         }
 

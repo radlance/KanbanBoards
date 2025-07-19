@@ -2,7 +2,7 @@ package com.github.radlance.kanbanboards.ticket.create.presentation
 
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.UnitResult
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
+import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import com.github.radlance.kanbanboards.ticket.create.domain.TicketRepository
@@ -69,7 +69,7 @@ class TicketViewModelTest : BaseTest() {
         repository.makeExpectedBoardMembersResult(
             BoardMembersResult.Success(
                 members = listOf(
-                    BoardMember(
+                    User(
                         id = "boardMemberId",
                         email = "test@gmail.com",
                         name = "name"
@@ -80,7 +80,7 @@ class TicketViewModelTest : BaseTest() {
         assertEquals(
             BoardMembersUiState.Success(
                 members = listOf(
-                    BoardMember(
+                    User(
                         id = "boardMemberId",
                         email = "test@gmail.com",
                         name = "name"
@@ -94,7 +94,7 @@ class TicketViewModelTest : BaseTest() {
         assertEquals(
             BoardMembersUiState.Success(
                 members = listOf(
-                    BoardMember(
+                    User(
                         id = "boardMemberId",
                         email = "test@gmail.com",
                         name = "name"

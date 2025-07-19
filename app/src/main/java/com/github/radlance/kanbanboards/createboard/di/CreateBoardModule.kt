@@ -4,9 +4,13 @@ import com.github.radlance.kanbanboards.createboard.data.CreateBoardRemoteDataSo
 import com.github.radlance.kanbanboards.createboard.data.RemoteCreateBoardRepository
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardResult
+import com.github.radlance.kanbanboards.createboard.domain.SearchUsersResult
+import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardMapperFacade
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardResultMapper
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardUiState
 import com.github.radlance.kanbanboards.createboard.presentation.HandleCreateBoard
+import com.github.radlance.kanbanboards.createboard.presentation.SearchUsersResultMapper
+import com.github.radlance.kanbanboards.createboard.presentation.SearchUsersUiState
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,4 +31,10 @@ interface CreateBoardModule {
 
     @Binds
     fun provideHandleCreateBoard(handleCreateBoard: HandleCreateBoard.Base): HandleCreateBoard
+
+    @Binds
+    fun provideSearchUsersMapper(searchUsersResultMapper: SearchUsersResultMapper): SearchUsersResult.Mapper<SearchUsersUiState>
+
+    @Binds
+    fun provideCreateBoardMapperFacade(createBoardMapperFacade: CreateBoardMapperFacade.Base): CreateBoardMapperFacade
 }

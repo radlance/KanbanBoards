@@ -10,7 +10,7 @@ import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
+import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -139,10 +139,10 @@ abstract class BaseTest {
 
         private var boardMembersException: Exception? = null
         val boardMembersCalledList = mutableListOf<String>()
-        private val boardMembers = MutableStateFlow<List<BoardMember>>(emptyList())
+        private val boardMembers = MutableStateFlow<List<User>>(emptyList())
 
-        fun makeExpectedBoardMembers(boardMembers: List<BoardMember>) {
-            this.boardMembers.value = boardMembers
+        fun makeExpectedBoardMembers(users: List<User>) {
+            this.boardMembers.value = users
         }
 
         fun makeExpectedBoardMembersException(exception: Exception) {
@@ -156,7 +156,7 @@ abstract class BaseTest {
             emitAll(boardInfo)
         }
 
-        override fun boardMembers(boardId: String): Flow<List<BoardMember>> = flow {
+        override fun boardMembers(boardId: String): Flow<List<User>> = flow {
             boardMembersCalledList.add(boardId)
             boardMembersException?.let { throw it }
             emitAll(boardMembers)

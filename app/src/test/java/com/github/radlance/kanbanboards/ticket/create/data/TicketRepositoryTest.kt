@@ -2,7 +2,7 @@ package com.github.radlance.kanbanboards.ticket.create.data
 
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.UnitResult
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
+import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import com.github.radlance.kanbanboards.ticket.create.domain.TicketRepository
@@ -106,8 +106,8 @@ class TicketRepositoryTest : BaseTest() {
     @Test
     fun test_board_members_success() = runBlocking {
         boardRemoteDataSource.makeExpectedBoardMembers(
-            boardMembers = listOf(
-                BoardMember(
+            users = listOf(
+                User(
                     id = "test id",
                     email = "test@gmail.com",
                     name = "test name"
@@ -117,7 +117,7 @@ class TicketRepositoryTest : BaseTest() {
         assertEquals(
             BoardMembersResult.Success(
                 listOf(
-                    BoardMember(
+                    User(
                         id = "test id",
                         email = "test@gmail.com",
                         name = "test name"

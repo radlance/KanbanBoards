@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.create.presentation
 
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
+import com.github.radlance.kanbanboards.common.domain.User
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -31,7 +31,7 @@ class HandleTicketTest {
         handle.saveBoardMembersUiState(
             BoardMembersUiState.Success(
                 members = listOf(
-                    BoardMember(
+                    User(
                         id = "1",
                         email = "test@gmail.com",
                         name = "name"
@@ -42,7 +42,7 @@ class HandleTicketTest {
         assertEquals(
             BoardMembersUiState.Success(
                 members = listOf(
-                    BoardMember(
+                    User(
                         id = "1",
                         email = "test@gmail.com",
                         name = "name"

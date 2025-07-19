@@ -2,8 +2,8 @@ package com.github.radlance.kanbanboards.board.data
 
 import com.github.radlance.kanbanboards.board.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
-import com.github.radlance.kanbanboards.common.data.UserProfileEntity
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMember
+import com.github.radlance.kanbanboards.common.data.UsersRemoteDataSource
+import com.github.radlance.kanbanboards.common.domain.User
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.getValue
 import com.google.firebase.database.snapshots
@@ -21,10 +21,11 @@ interface BoardRemoteDataSource {
 
     fun loadBoard(boardId: String): Flow<BoardInfo>
 
-    fun boardMembers(boardId: String): Flow<List<BoardMember>>
+    fun boardMembers(boardId: String): Flow<List<User>>
 
     class Base @Inject constructor(
-        private val provideDatabase: ProvideDatabase
+        private val provideDatabase: ProvideDatabase,
+        private val usersRemoteDataSource: UsersRemoteDataSource
     ) : BoardRemoteDataSource {
 
         override fun loadBoard(boardId: String): Flow<BoardInfo> {
@@ -40,7 +41,7 @@ interface BoardRemoteDataSource {
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
-        override fun boardMembers(boardId: String): Flow<List<BoardMember>> {
+        override fun boardMembers(boardId: String): Flow<List<User>> {
             val membersQuery = provideDatabase.database()
                 .child("boards-members")
                 .orderByChild("boardId")
@@ -55,21 +56,10 @@ interface BoardRemoteDataSource {
                     flowOf(emptyList())
                 } else {
                     combine(
-                        memberIds.map { memberId -> boardMember(memberId) }
-                    ) { boards: Array<BoardMember> -> boards.toList() }
+                        memberIds.map { memberId -> usersRemoteDataSource.user(memberId) }
+                    ) { users: Array<User> -> users.toList() }
                 }
             }.catch { e -> throw IllegalStateException(e.message) }
         }
-
-        private fun boardMember(memberId: String): Flow<BoardMember> = provideDatabase
-            .database()
-            .child("users")
-            .child(memberId)
-            .snapshots.mapNotNull { memberSnapshot ->
-                val userProfileEntity = memberSnapshot.getValue<UserProfileEntity>()
-                with(userProfileEntity ?: return@mapNotNull null) {
-                    BoardMember(id = memberId, email = email, name = name ?: "")
-                }
-            }
     }
 }

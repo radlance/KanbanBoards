@@ -5,7 +5,11 @@ import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.createboard.domain.CreateBoardResult
+import com.github.radlance.kanbanboards.createboard.domain.SearchUsersResult
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RemoteCreateBoardRepository @Inject constructor(
@@ -26,6 +30,14 @@ class RemoteCreateBoardRepository @Inject constructor(
             CreateBoardResult.Error(
                 message = e.message ?: manageResource.string(R.string.create_board_error)
             )
+        }
+    }
+
+    override fun users(): Flow<SearchUsersResult> {
+        return createBoardRemoteDataSource.users().map {
+            SearchUsersResult.Success(it)
+        }.catch { e ->
+            SearchUsersResult.Error(message = e.message!!)
         }
     }
 }
