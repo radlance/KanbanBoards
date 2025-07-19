@@ -138,7 +138,8 @@ interface BoardUi {
         override fun Show(navigateToBoard: (BoardInfo) -> Unit) {
             Text(
                 text = stringResource(R.string.other_boards_hint),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(bottom = 10.dp)
             )
         }
     }

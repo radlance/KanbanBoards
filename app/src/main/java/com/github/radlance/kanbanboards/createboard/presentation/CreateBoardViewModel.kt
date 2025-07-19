@@ -39,7 +39,7 @@ class CreateBoardViewModel @Inject constructor(
         if (boardMembers.isEmpty()) {
             handleCreateBoard.createBoardUiState.update { currentState ->
                 currentState.copy(
-                    searchFieldErrorMessage = manageResource.string(R.string.at_least_one_user_on_the_board)
+                    searchFieldErrorMessage = manageResource.string(R.string.add_at_least_one_user)
                 )
             }
 
