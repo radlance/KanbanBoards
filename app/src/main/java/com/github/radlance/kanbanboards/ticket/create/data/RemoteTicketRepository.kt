@@ -19,8 +19,8 @@ class RemoteTicketRepository @Inject constructor(
     private val manageResource: ManageResource
 ) : TicketRepository {
 
-    override fun boardMembers(boardId: String): Flow<BoardMembersResult> {
-        return boardRemoteDataSource.boardMembers(boardId).map {
+    override fun boardMembers(boardId: String, ownerId: String): Flow<BoardMembersResult> {
+        return boardRemoteDataSource.boardMembers(boardId, ownerId).map {
             BoardMembersResult.Success(it)
         }.catch { e -> BoardMembersResult.Error(e.message!!) }
     }

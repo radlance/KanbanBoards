@@ -107,7 +107,7 @@ fun CreateTicketContent(
 
             val filteredMembers = remember(members, searchFieldValue) {
                 members.filter { it.email.contains(searchFieldValue, ignoreCase = true) }
-            }
+            }.sortedBy { it.email }
 
             Column(modifier = Modifier.padding(30.dp)) {
                 AnimatedVisibility(members.size > 5) {

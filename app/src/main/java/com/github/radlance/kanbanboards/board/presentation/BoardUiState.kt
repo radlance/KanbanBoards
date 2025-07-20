@@ -39,7 +39,7 @@ interface BoardUiState {
     @Composable
     fun Show(
         navigateUp: () -> Unit,
-        navigateToCreateTicket: (String) -> Unit,
+        navigateToCreateTicket: (String, String) -> Unit,
         boardTicketActions: BoardTicketActions,
         modifier: Modifier = Modifier
     )
@@ -50,7 +50,7 @@ interface BoardUiState {
         @Composable
         override fun Show(
             navigateUp: () -> Unit,
-            navigateToCreateTicket: (String) -> Unit,
+            navigateToCreateTicket: (String, String) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -65,7 +65,9 @@ interface BoardUiState {
 
             Scaffold(
                 floatingActionButton = {
-                    FloatingActionButton(onClick = { navigateToCreateTicket(boardInfo.id) }) {
+                    FloatingActionButton(
+                        onClick = { navigateToCreateTicket(boardInfo.id, boardInfo.owner) }
+                    ) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = "add ticket")
                     }
                 },
@@ -115,7 +117,7 @@ interface BoardUiState {
         @Composable
         override fun Show(
             navigateUp: () -> Unit,
-            navigateToCreateTicket: (String) -> Unit,
+            navigateToCreateTicket: (String, String) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -134,7 +136,7 @@ interface BoardUiState {
         @Composable
         override fun Show(
             navigateUp: () -> Unit,
-            navigateToCreateTicket: (String) -> Unit,
+            navigateToCreateTicket: (String, String) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) = CircularProgressIndicator()
