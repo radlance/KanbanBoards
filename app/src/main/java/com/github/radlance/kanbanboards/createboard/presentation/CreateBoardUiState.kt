@@ -8,7 +8,6 @@ interface CreateBoardUiState {
 
     @Composable
     fun Show(
-        createBoardFieldsUiState: CreateBoardFieldsUiState,
         navigateToBoardScreen: (BoardInfo) -> Unit,
         createBoardActions: CreateBoardActions,
         columnScope: ColumnScope
@@ -23,7 +22,6 @@ interface CreateBoardUiState {
 
         @Composable
         override fun Show(
-            createBoardFieldsUiState: CreateBoardFieldsUiState,
             navigateToBoardScreen: (BoardInfo) -> Unit,
             createBoardActions: CreateBoardActions,
             columnScope: ColumnScope
@@ -33,7 +31,6 @@ interface CreateBoardUiState {
             loading = loading,
             nameFieldErrorMessage = nameFieldErrorMessage,
             createErrorMessage = createErrorMessage,
-            searchFieldErrorMessage = createBoardFieldsUiState.searchFieldErrorMessage,
             createBoardActions = createBoardActions
         )
     }
@@ -42,7 +39,6 @@ interface CreateBoardUiState {
 
         @Composable
         override fun Show(
-            createBoardFieldsUiState: CreateBoardFieldsUiState,
             navigateToBoardScreen: (BoardInfo) -> Unit,
             createBoardActions: CreateBoardActions,
             columnScope: ColumnScope

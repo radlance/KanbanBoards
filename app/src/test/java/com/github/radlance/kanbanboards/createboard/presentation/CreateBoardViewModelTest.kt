@@ -17,7 +17,6 @@ class CreateBoardViewModelTest : BaseTest() {
 
     private lateinit var repository: TestCreateBoardRepository
     private lateinit var handle: TestHandleCreateBoard
-    private lateinit var manageResource: TestManageResource
 
     private lateinit var viewModel: CreateBoardViewModel
 
@@ -25,7 +24,6 @@ class CreateBoardViewModelTest : BaseTest() {
     fun setup() {
         repository = TestCreateBoardRepository()
         handle = TestHandleCreateBoard()
-        manageResource = TestManageResource()
 
         viewModel = CreateBoardViewModel(
             createBoardRepository = repository,
@@ -34,67 +32,47 @@ class CreateBoardViewModelTest : BaseTest() {
                 createBoardMapper = CreateBoardResultMapper(),
                 searchUsersMapper = SearchUsersResultMapper()
             ),
-            manageResource = manageResource,
             runAsync = TestRunAsync()
         )
     }
 
     @Test
     fun test_initial_state() {
-        assertEquals(
-            CreateBoardUiState.CanNotCreate,
-            viewModel.createBoardUiState.value.nameFieldUiState
-        )
-        assertEquals("", viewModel.createBoardUiState.value.searchFieldErrorMessage)
+        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
         assertEquals(1, handle.createBoardUiStateCalledCount)
-        assertEquals(SearchUsersUiState.Loading, viewModel.searchUsersUiState.value)
-        assertEquals(1, handle.searchUsersUiStateCalledCount)
     }
 
     @Test
     fun test_check_board_short_name() {
         viewModel.checkBoard(name = "go")
+        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
+        assertEquals(1, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanNotCreate,
-            viewModel.createBoardUiState.value.nameFieldUiState
+            handle.saveCreateBoardUiStateCalledList[0]
         )
-        assertEquals(2, handle.createBoardUiStateCalledCount)
+        assertEquals(1, handle.createBoardUiStateCalledCount)
 
         viewModel.checkBoard(name = "  it    ")
+        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
+        assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanNotCreate,
-            viewModel.createBoardUiState.value.nameFieldUiState
+            handle.saveCreateBoardUiStateCalledList[1]
         )
-        assertEquals(3, handle.createBoardUiStateCalledCount)
+        assertEquals(1, handle.createBoardUiStateCalledCount)
     }
 
     @Test
     fun test_check_board_valid_name() {
         viewModel.checkBoard(name = "test name")
+        assertEquals(CreateBoardUiState.CanCreate, viewModel.createBoardUiState.value)
+        assertEquals(1, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanCreate,
-            viewModel.createBoardUiState.value.nameFieldUiState
+            handle.saveCreateBoardUiStateCalledList[0]
         )
-        assertEquals(2, handle.createBoardUiStateCalledCount)
-    }
-
-    @Test
-    fun test_crate_board_without_members() {
-        manageResource.makeExpectedString(expected = "no board members")
-        viewModel.createBoard(
-            name = "test name",
-            boardMembers = emptyList()
-        )
-        assertEquals(
-            CreateBoardUiState.CanNotCreate,
-            viewModel.createBoardUiState.value.nameFieldUiState
-        )
-        assertEquals(
-            "no board members",
-            viewModel.createBoardUiState.value.searchFieldErrorMessage
-        )
-        assertEquals(1, manageResource.stringCalledCount)
-        assertEquals(0, repository.createBoardCalledCount)
+        assertEquals(1, handle.createBoardUiStateCalledCount)
     }
 
     @Test
@@ -102,16 +80,20 @@ class CreateBoardViewModelTest : BaseTest() {
         repository.makeExpectedCreateBoardResult(
             CreateBoardResult.AlreadyExists(message = "board already exists")
         )
-        viewModel.createBoard(
-            name = "first board",
-            boardMembers = listOf(
-                CreateUserUi(id = "id", name = "name", email = "email", checked = true)
-            )
-        )
+        viewModel.createBoard(name = "first board", boardMembers = emptyList())
 
         assertEquals(
             CreateBoardUiState.AlreadyExists(message = "board already exists"),
-            viewModel.createBoardUiState.value.nameFieldUiState
+            viewModel.createBoardUiState.value
+        )
+        assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
+        assertEquals(
+            CreateBoardUiState.Loading,
+            handle.saveCreateBoardUiStateCalledList[0]
+        )
+        assertEquals(
+            CreateBoardUiState.AlreadyExists(message = "board already exists"),
+            handle.saveCreateBoardUiStateCalledList[1]
         )
         assertEquals(1, repository.createBoardCalledCount)
     }
@@ -121,17 +103,21 @@ class CreateBoardViewModelTest : BaseTest() {
         repository.makeExpectedCreateBoardResult(
             CreateBoardResult.Error(message = "no internet connection")
         )
-        viewModel.createBoard(
-            name = "new board",
-            boardMembers = listOf(
-                CreateUserUi(id = "id", name = "name", email = "email", checked = true)
-            )
+        viewModel.createBoard(name = "new board", boardMembers = emptyList())
+        assertEquals(
+            CreateBoardUiState.Error(message = "no internet connection"),
+            viewModel.createBoardUiState.value
+        )
+
+        assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
+        assertEquals(
+            CreateBoardUiState.Loading,
+            handle.saveCreateBoardUiStateCalledList[0]
         )
         assertEquals(
             CreateBoardUiState.Error(message = "no internet connection"),
-            viewModel.createBoardUiState.value.nameFieldUiState
+            handle.saveCreateBoardUiStateCalledList[1]
         )
-
         assertEquals(1, repository.createBoardCalledCount)
 
         repository.makeExpectedCreateBoardResult(
@@ -139,11 +125,17 @@ class CreateBoardViewModelTest : BaseTest() {
                 BoardInfo(id = "", name = "second board", isMyBoard = true)
             )
         )
-        viewModel.createBoard(
-            name = "second board",
-            boardMembers = listOf(
-                CreateUserUi(id = "id2", name = "name2", email = "email2", checked = true)
-            )
+        viewModel.createBoard(name = "second board", boardMembers = emptyList())
+        assertEquals(4, handle.saveCreateBoardUiStateCalledList.size)
+        assertEquals(
+            CreateBoardUiState.Loading,
+            handle.saveCreateBoardUiStateCalledList[2]
+        )
+        assertEquals(
+            CreateBoardUiState.Success(
+                BoardInfo(id = "", name = "second board", isMyBoard = true)
+            ),
+            handle.saveCreateBoardUiStateCalledList[3]
         )
         assertEquals(2, repository.createBoardCalledCount)
     }
@@ -205,14 +197,14 @@ class CreateBoardViewModelTest : BaseTest() {
 
         assertEquals(
             CreateBoardUiState.AlreadyExists(message = "board already exists"),
-            viewModel.createBoardUiState.value.nameFieldUiState
+            viewModel.createBoardUiState.value
         )
 
         viewModel.resetBoardUiState()
 
         assertEquals(
             CreateBoardUiState.CanNotCreate,
-            viewModel.createBoardUiState.value.nameFieldUiState
+            viewModel.createBoardUiState.value
         )
     }
 
@@ -276,24 +268,6 @@ class CreateBoardViewModelTest : BaseTest() {
         )
     }
 
-    @Test
-    fun test_clear_search_field_error() {
-        manageResource.makeExpectedString(expected = "no board members")
-        viewModel.createBoard(
-            name = "test name",
-            boardMembers = emptyList()
-        )
-        assertEquals(
-            "no board members",
-            viewModel.createBoardUiState.value.searchFieldErrorMessage
-        )
-        viewModel.clearSearchFieldError()
-        assertEquals(
-            "",
-            viewModel.createBoardUiState.value.searchFieldErrorMessage
-        )
-    }
-
     private class TestCreateBoardRepository : CreateBoardRepository {
 
         var createBoardCalledCount = 0
@@ -305,14 +279,14 @@ class CreateBoardViewModelTest : BaseTest() {
             )
         )
 
-        fun makeExpectedCreateBoardResult(result: CreateBoardResult) {
-            createBoardResult = result
-        }
-
         var usersCalledCount = 0
         private val searchUsersResult = MutableStateFlow<SearchUsersResult>(
             SearchUsersResult.Error("initial state")
         )
+
+        fun makeExpectedCreateBoardResult(result: CreateBoardResult) {
+            createBoardResult = result
+        }
 
         fun makeExpectedSearchUsersResult(searchUsersResult: SearchUsersResult) {
             this.searchUsersResult.value = searchUsersResult
@@ -332,16 +306,23 @@ class CreateBoardViewModelTest : BaseTest() {
     private class TestHandleCreateBoard : HandleCreateBoard {
 
         var createBoardUiStateCalledCount = 0
-        private var boardUiState = MutableStateFlow(CreateBoardFieldsUiState())
+        val saveCreateBoardUiStateCalledList = mutableListOf<CreateBoardUiState>()
+        private var boardUiState =
+            MutableStateFlow<CreateBoardUiState>(CreateBoardUiState.CanNotCreate)
 
         var searchUsersUiStateCalledCount = 0
         val saveSearchUsersUiStateCalledList = mutableListOf<SearchUsersUiState>()
         private var usersUiState = MutableStateFlow<SearchUsersUiState>(SearchUsersUiState.Loading)
 
-        override val createBoardUiState: MutableStateFlow<CreateBoardFieldsUiState>
+        override val createBoardUiState: StateFlow<CreateBoardUiState>
             get() {
-            createBoardUiStateCalledCount++
-            return boardUiState
+                createBoardUiStateCalledCount++
+                return boardUiState
+            }
+
+        override fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState) {
+            saveCreateBoardUiStateCalledList.add(createBoardUiState)
+            this.boardUiState.value = createBoardUiState
         }
 
         override val searchUsersUiState: StateFlow<SearchUsersUiState>

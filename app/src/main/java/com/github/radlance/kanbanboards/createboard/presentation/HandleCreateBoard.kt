@@ -7,7 +7,9 @@ import javax.inject.Inject
 
 interface HandleCreateBoard {
 
-    val createBoardUiState: MutableStateFlow<CreateBoardFieldsUiState>
+    val createBoardUiState: StateFlow<CreateBoardUiState>
+
+    fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState)
 
     val searchUsersUiState: StateFlow<SearchUsersUiState>
 
@@ -15,13 +17,20 @@ interface HandleCreateBoard {
 
     class Base @Inject constructor() : HandleCreateBoard {
 
-        private val createBoardUiStateMutable = MutableStateFlow(CreateBoardFieldsUiState())
+        private val createBoardUiStateMutable = MutableStateFlow<CreateBoardUiState>(
+            CreateBoardUiState.CanNotCreate
+        )
 
         private val searchUsersUiStateMutable = MutableStateFlow<SearchUsersUiState>(
             SearchUsersUiState.Loading
         )
 
-        override val createBoardUiState: MutableStateFlow<CreateBoardFieldsUiState> = createBoardUiStateMutable
+        override val createBoardUiState: StateFlow<CreateBoardUiState>
+            get() = createBoardUiStateMutable.asStateFlow()
+
+        override fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState) {
+            createBoardUiStateMutable.value = createBoardUiState
+        }
 
         override val searchUsersUiState = searchUsersUiStateMutable.asStateFlow()
 

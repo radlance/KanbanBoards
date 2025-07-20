@@ -32,7 +32,6 @@ fun CreateBoardContent(
     enabled: Boolean,
     loading: Boolean,
     nameFieldErrorMessage: String,
-    searchFieldErrorMessage: String,
     createErrorMessage: String,
     createBoardActions: CreateBoardActions
 ) = with(columnScope) {
@@ -63,15 +62,11 @@ fun CreateBoardContent(
 
     OutlinedTextField(
         value = searchFieldValue,
-        onValueChange = {
-            searchFieldValue = it
-            createBoardActions.clearSearchFieldError()
-        },
+        onValueChange = { searchFieldValue = it },
         singleLine = true,
         placeholder = {
             Text(text = stringResource(R.string.enter_email))
         },
-        isError = searchFieldErrorMessage.isNotEmpty(),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Search,
@@ -80,9 +75,8 @@ fun CreateBoardContent(
         },
         label = {
             Text(
-                text = searchFieldErrorMessage.ifEmpty {
-                    stringResource(R.string.search_users)
-                }
+                text = stringResource(R.string.search_users)
+
             )
         },
         modifier = Modifier.fillMaxWidth()

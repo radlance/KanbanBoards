@@ -79,7 +79,6 @@ interface SearchUsersUiState {
                             checked = user.checked,
                             onCheckedChange = {
                                 usersActions.switch(userId = user.id, users = users)
-                                usersActions.clearSearchFieldError()
                             }
                         )
                     }
