@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
@@ -48,17 +47,19 @@ interface BoardRemoteDataSource {
                 .equalTo(boardId)
 
             return membersQuery.snapshots.flatMapLatest { membersSnapshot ->
-                val memberIds = membersSnapshot.children.mapNotNull {
-                    it.getValue<BoardMemberEntity>()?.memberId
+                val memberIds = buildList {
+                    add(Firebase.auth.currentUser!!.uid)
+                    addAll(
+                        membersSnapshot.children.mapNotNull {
+                            it.getValue<BoardMemberEntity>()?.memberId
+                        }
+                    )
                 }
 
-                if (memberIds.isEmpty()) {
-                    flowOf(emptyList())
-                } else {
-                    combine(
-                        memberIds.map { memberId -> usersRemoteDataSource.user(memberId) }
-                    ) { users: Array<User> -> users.toList() }
-                }
+                combine(
+                    memberIds.map { memberId -> usersRemoteDataSource.user(memberId) }
+                ) { users: Array<User> -> users.toList() }
+
             }.catch { e -> throw IllegalStateException(e.message) }
         }
     }
