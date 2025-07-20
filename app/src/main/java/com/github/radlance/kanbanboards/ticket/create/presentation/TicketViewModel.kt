@@ -24,8 +24,8 @@ class TicketViewModel @Inject constructor(
     override val createTicketUiState: StateFlow<CreateTicketUiState>
         get() = handleTicket.createTicketUiState
 
-    fun fetchBoardMembers(boardId: String) {
-        ticketRepository.boardMembers(boardId).map {
+    fun fetchBoardMembers(boardId: String, ownerId: String) {
+        ticketRepository.boardMembers(boardId, ownerId).map {
             ticketMapperFacade.mapBoardMembersResult(it)
         }.onEach {
             handleTicket.saveBoardMembersUiState(it)

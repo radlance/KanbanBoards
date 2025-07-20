@@ -107,9 +107,9 @@ fun NavGraph(
             BoardScreen(
                 viewModel = boardViewModel,
                 navigateUp = { navHostController.navigate(Boards) { popUpTo<Boards>() } },
-                navigateToCreateTicket = {
-                    ticketViewModel.fetchBoardMembers(it)
-                    navHostController.navigate(CreateTicket(it))
+                navigateToCreateTicket = { boardId, ownerId ->
+                    ticketViewModel.fetchBoardMembers(boardId, ownerId)
+                    navHostController.navigate(CreateTicket(boardId))
                 }
             )
         }

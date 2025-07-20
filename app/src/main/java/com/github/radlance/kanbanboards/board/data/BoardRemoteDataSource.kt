@@ -20,7 +20,7 @@ interface BoardRemoteDataSource {
 
     fun loadBoard(boardId: String): Flow<BoardInfo>
 
-    fun boardMembers(boardId: String): Flow<List<User>>
+    fun boardMembers(boardId: String, ownerId: String): Flow<List<User>>
 
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase,
@@ -35,12 +35,17 @@ interface BoardRemoteDataSource {
                 .child(boardId).snapshots.mapNotNull {
                     val key = it.key ?: return@mapNotNull null
                     val entity = it.getValue<BoardEntity>() ?: return@mapNotNull null
-                    BoardInfo(id = key, name = entity.name, isMyBoard = myUserId == entity.owner)
+                    BoardInfo(
+                        id = key,
+                        name = entity.name,
+                        isMyBoard = myUserId == entity.owner,
+                        owner = entity.owner
+                    )
                 }.catch { e -> throw IllegalStateException(e.message) }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
-        override fun boardMembers(boardId: String): Flow<List<User>> {
+        override fun boardMembers(boardId: String, ownerId: String): Flow<List<User>> {
             val membersQuery = provideDatabase.database()
                 .child("boards-members")
                 .orderByChild("boardId")
@@ -48,7 +53,7 @@ interface BoardRemoteDataSource {
 
             return membersQuery.snapshots.flatMapLatest { membersSnapshot ->
                 val memberIds = buildList {
-                    add(Firebase.auth.currentUser!!.uid)
+                    add(ownerId)
                     addAll(
                         membersSnapshot.children.mapNotNull {
                             it.getValue<BoardMemberEntity>()?.memberId
