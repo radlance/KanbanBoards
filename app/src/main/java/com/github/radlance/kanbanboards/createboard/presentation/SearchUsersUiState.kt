@@ -36,7 +36,7 @@ interface SearchUsersUiState {
         override fun users(): List<CreateUserUi> = emptyList()
     }
 
-    class Success(private val users: List<CreateUserUi>) : Abstract() {
+    data class Success(private val users: List<CreateUserUi>) : Abstract() {
 
         override fun users(): List<CreateUserUi> = users.filter { it.checked }
 
@@ -79,7 +79,7 @@ interface SearchUsersUiState {
                             checked = user.checked,
                             onCheckedChange = {
                                 usersActions.switch(userId = user.id, users = users)
-                                usersActions.clearSearchField()
+                                usersActions.clearSearchFieldError()
                             }
                         )
                     }
@@ -88,7 +88,7 @@ interface SearchUsersUiState {
         }
     }
 
-    class Error(private val message: String) : Abstract() {
+    data class Error(private val message: String) : Abstract() {
 
         @Composable
         override fun Show(

@@ -74,7 +74,7 @@ class CreateBoardViewModel @Inject constructor(
         handleCreateBoard.saveSearchUsersUiState(SearchUsersUiState.Success(users = updatedUsers))
     }
 
-    override fun clearSearchField() {
+    override fun clearSearchFieldError() {
         handleCreateBoard.createBoardUiState.update { currentState ->
             currentState.copy(searchFieldErrorMessage = "")
         }
@@ -85,7 +85,7 @@ interface UsersActions {
 
     fun switch(userId: String, users: List<CreateUserUi>)
 
-    fun clearSearchField()
+    fun clearSearchFieldError()
 }
 
 interface CreateBoardActions : UsersActions {

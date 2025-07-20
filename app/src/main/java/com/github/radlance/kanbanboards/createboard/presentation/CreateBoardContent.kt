@@ -65,7 +65,7 @@ fun CreateBoardContent(
         value = searchFieldValue,
         onValueChange = {
             searchFieldValue = it
-            createBoardActions.clearSearchField()
+            createBoardActions.clearSearchFieldError()
         },
         singleLine = true,
         placeholder = {
