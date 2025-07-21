@@ -20,6 +20,7 @@ import kotlinx.datetime.LocalDateTime
 fun TicketBoard(
     tickets: List<TicketUi>,
     onMove: (ticketId: String, column: ColumnUi) -> Unit,
+    navigateToTicketInfo: (TicketUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
@@ -42,6 +43,7 @@ fun TicketBoard(
                 tickets = sortedTickets.filter { it.column is ColumnUi.Todo },
                 columnType = ColumnUi.Todo,
                 onMove = onMove,
+                navigateToTicketInfo = navigateToTicketInfo,
                 modifier = columnModifier.padding(start = 12.dp)
             )
 
@@ -49,6 +51,7 @@ fun TicketBoard(
                 tickets = sortedTickets.filter { it.column is ColumnUi.InProgress },
                 columnType = ColumnUi.InProgress,
                 onMove = onMove,
+                navigateToTicketInfo = navigateToTicketInfo,
                 modifier = columnModifier
             )
 
@@ -56,6 +59,7 @@ fun TicketBoard(
                 tickets = sortedTickets.filter { it.column is ColumnUi.Done },
                 columnType = ColumnUi.Done,
                 onMove = onMove,
+                navigateToTicketInfo = navigateToTicketInfo,
                 modifier = columnModifier.padding(end = 12.dp)
             )
         }
@@ -74,7 +78,8 @@ private fun TicketBoardPreview() {
                     name = "test another ticket",
                     assignedMemberName = "some member",
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
-                    column = ColumnUi.Todo
+                    column = ColumnUi.Todo,
+                    description = ""
                 ),
 
                 TicketUi(
@@ -83,7 +88,8 @@ private fun TicketBoardPreview() {
                     name = "test ticket",
                     assignedMemberName = "some member",
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
-                    column = ColumnUi.InProgress
+                    column = ColumnUi.InProgress,
+                    description = ""
                 ),
 
                 TicketUi(
@@ -92,10 +98,12 @@ private fun TicketBoardPreview() {
                     name = "done ticket",
                     assignedMemberName = "some member",
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
-                    column = ColumnUi.Done
+                    column = ColumnUi.Done,
+                    description = ""
                 )
             ),
             onMove = { _, _ -> },
+            navigateToTicketInfo = {},
             modifier = Modifier.padding(vertical = 15.dp)
         )
     }

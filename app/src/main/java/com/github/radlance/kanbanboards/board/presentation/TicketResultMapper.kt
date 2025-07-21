@@ -17,6 +17,7 @@ class TicketResultMapper @Inject constructor(
                     colorHex = colorHex,
                     id = id,
                     name = name,
+                    description = description,
                     assignedMemberName = assignedMemberName,
                     column = column.map(mapper),
                     creationDate = creationDate.toKotlinLocalDateTime()

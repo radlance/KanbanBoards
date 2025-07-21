@@ -15,11 +15,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 interface TicketRemoteDataSource {
+
+    fun ticket(ticketId: String): Flow<Ticket>
 
     fun tickets(boardId: String): Flow<List<Ticket>>
 
@@ -27,12 +30,34 @@ interface TicketRemoteDataSource {
 
     suspend fun createTicket(newTicket: NewTicket)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase,
         private val handleError: HandleError
     ) : TicketRemoteDataSource {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
+        override fun ticket(ticketId: String): Flow<Ticket> {
+            val ticketQuery = provideDatabase.database()
+                .child("tickets")
+                .child(ticketId)
+            return ticketQuery.snapshots.mapNotNull { ticketSnapshot ->
+                val entity = ticketSnapshot.getValue<TicketEntity>()
+                entity?.let {
+                    with(entity) {
+                        Ticket(
+                            id = ticketSnapshot.key ?: return@mapNotNull null,
+                            colorHex = color,
+                            name = title,
+                            description = description,
+                            assignedMemberName = assignee,
+                            column = columnType(entity),
+                            creationDate = LocalDateTime.parse(creationDate)
+                        )
+                    }
+                }
+            }
+        }
+
         override fun tickets(boardId: String): Flow<List<Ticket>> {
             val ticketsQuery = provideDatabase.database()
                 .child("tickets")
@@ -53,12 +78,7 @@ interface TicketRemoteDataSource {
                             .map { userSnapshot ->
                                 val userEntity = userSnapshot.getValue<UserProfileEntity>()
 
-                                val column = when (entity.columnId) {
-                                    "todo" -> Column.Todo
-                                    "inProgress" -> Column.InProgress
-                                    "done" -> Column.Done
-                                    else -> throw IllegalStateException("unknown column type")
-                                }
+                                val column = columnType(entity)
 
                                 with(entity) {
                                     Ticket(
@@ -117,6 +137,13 @@ interface TicketRemoteDataSource {
             } catch (e: Exception) {
                 handleError.handle(e)
             }
+        }
+
+        private fun columnType(entity: TicketEntity) = when (entity.columnId) {
+            "todo" -> Column.Todo
+            "inProgress" -> Column.InProgress
+            "done" -> Column.Done
+            else -> throw IllegalStateException("unknown column type")
         }
     }
 }

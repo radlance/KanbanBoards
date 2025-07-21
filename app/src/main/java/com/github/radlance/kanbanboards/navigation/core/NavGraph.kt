@@ -19,6 +19,8 @@ import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardsScr
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.TicketViewModel
+import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoScreen
+import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoViewModel
 
 @Composable
 fun NavGraph(
@@ -27,7 +29,8 @@ fun NavGraph(
     navigationViewModel: NavigationViewModel = hiltViewModel(),
     boardViewModel: BoardViewModel = hiltViewModel(),
     ticketViewModel: TicketViewModel = hiltViewModel(),
-    createBoardViewModel: CreateBoardViewModel = hiltViewModel()
+    createBoardViewModel: CreateBoardViewModel = hiltViewModel(),
+    ticketInfoViewModel: TicketInfoViewModel = hiltViewModel()
 ) {
 
     val authorized by navigationViewModel.authorized.collectAsStateWithLifecycle()
@@ -110,6 +113,10 @@ fun NavGraph(
                 navigateToCreateTicket = { boardId, ownerId ->
                     ticketViewModel.fetchBoardMembers(boardId, ownerId)
                     navHostController.navigate(CreateTicket(boardId))
+                },
+                navigateToTicketInfo = {
+                    ticketInfoViewModel.fetchTicket(it)
+                    navHostController.navigate(TicketInfo)
                 }
             )
         }
@@ -122,6 +129,13 @@ fun NavGraph(
                 navigateUp = navHostController::navigateUp,
                 boardId = args.boardId,
                 viewModel = ticketViewModel
+            )
+        }
+
+        composable<TicketInfo> {
+            TicketInfoScreen(
+                navigateUp = navHostController::navigateUp,
+                viewModel = ticketInfoViewModel
             )
         }
     }

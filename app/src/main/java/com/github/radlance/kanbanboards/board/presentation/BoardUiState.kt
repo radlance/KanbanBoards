@@ -40,6 +40,7 @@ interface BoardUiState {
     fun Show(
         navigateUp: () -> Unit,
         navigateToCreateTicket: (String, String) -> Unit,
+        navigateToTicketInfo: (TicketUi) -> Unit,
         boardTicketActions: BoardTicketActions,
         modifier: Modifier = Modifier
     )
@@ -51,6 +52,7 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
+            navigateToTicketInfo: (TicketUi) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -105,6 +107,7 @@ interface BoardUiState {
                         onMove = { ticketId, columnId ->
                             boardTicketActions.moveTicket(ticketId, columnId)
                         },
+                        navigateToTicketInfo = navigateToTicketInfo,
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -118,6 +121,7 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
+            navigateToTicketInfo: (TicketUi) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -137,6 +141,7 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
+            navigateToTicketInfo: (TicketUi) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) = CircularProgressIndicator()

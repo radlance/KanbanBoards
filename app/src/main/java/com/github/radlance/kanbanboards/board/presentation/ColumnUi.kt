@@ -1,12 +1,22 @@
 package com.github.radlance.kanbanboards.board.presentation
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowLeft
-import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
+import androidx.compose.material.icons.rounded.KeyboardDoubleArrowRight
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.R
 import kotlinx.serialization.Serializable
 
@@ -35,23 +45,32 @@ interface ColumnUi {
     abstract class Abstract(override val label: String) : ColumnUi {
 
         @Composable
-        override fun EndContent(onClick: (ColumnUi) -> Unit) {
-            IconButton(onClick = { endClick(onClick) }) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardDoubleArrowRight,
-                    contentDescription = stringResource(R.string.keyboard_double_arrow_right_icon)
+        private fun Modifier.iconModifier(onClick: () -> Unit): Modifier =
+            border(width = 1.dp, shape = CircleShape, color = MaterialTheme.colorScheme.secondary)
+                .padding(5.dp)
+                .clip(CircleShape)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(),
+                    onClick = onClick
                 )
-            }
+
+        @Composable
+        override fun EndContent(onClick: (ColumnUi) -> Unit) {
+            Icon(
+                imageVector = Icons.Rounded.KeyboardDoubleArrowRight,
+                contentDescription = stringResource(R.string.keyboard_double_arrow_right_icon),
+                modifier = Modifier.iconModifier { endClick(onClick) }
+            )
         }
 
         @Composable
         override fun StartContent(onClick: (ColumnUi) -> Unit) {
-            IconButton(onClick = { startClick(onClick) }) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardDoubleArrowLeft,
-                    contentDescription = stringResource(R.string.keyboard_double_arrow_left_icon)
-                )
-            }
+            Icon(
+                imageVector = Icons.Default.KeyboardDoubleArrowLeft,
+                contentDescription = stringResource(R.string.keyboard_double_arrow_left_icon),
+                modifier = Modifier.iconModifier { startClick(onClick) }
+            )
         }
 
         protected open fun startClick(action: (ColumnUi) -> Unit) = Unit

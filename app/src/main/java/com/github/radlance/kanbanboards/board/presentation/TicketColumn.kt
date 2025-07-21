@@ -38,6 +38,7 @@ fun TicketColumn(
     tickets: List<TicketUi>,
     columnType: ColumnUi,
     onMove: (ticketId: String, column: ColumnUi) -> Unit,
+    navigateToTicketInfo: (TicketUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -79,11 +80,11 @@ fun TicketColumn(
                     TicketItem(
                         ticket = ticket,
                         onMove = onMove,
+                        navigateToTicketInfo = navigateToTicketInfo,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateItem()
                             .then(dragModifier)
-
                     )
                 }
             }
@@ -104,7 +105,8 @@ private fun TicketColumnPreview() {
                     name = "test another ticket",
                     assignedMemberName = "some member",
                     column = ColumnUi.Todo,
-                    creationDate = LocalDateTime(1, 1, 1, 1, 1)
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1),
+                    description = ""
                 ),
 
                 TicketUi(
@@ -113,7 +115,8 @@ private fun TicketColumnPreview() {
                     name = "test ticket",
                     assignedMemberName = "some member",
                     column = ColumnUi.Todo,
-                    creationDate = LocalDateTime(1, 1, 1, 1, 1)
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1),
+                    description = ""
                 ),
 
                 TicketUi(
@@ -122,12 +125,14 @@ private fun TicketColumnPreview() {
                     name = "done ticket",
                     assignedMemberName = "some member",
                     column = ColumnUi.Todo,
-                    creationDate = LocalDateTime(1, 1, 1, 1, 1)
+                    creationDate = LocalDateTime(1, 1, 1, 1, 1),
+                    description = ""
                 )
             ),
             columnType = ColumnUi.Todo,
             onMove = { _, _ -> },
             json = Json,
+            navigateToTicketInfo = {},
             modifier = Modifier
                 .widthIn(250.dp)
                 .padding(12.dp)

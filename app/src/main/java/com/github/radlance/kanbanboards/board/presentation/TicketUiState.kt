@@ -12,6 +12,7 @@ interface TicketUiState {
     @Composable
     fun Show(
         onMove: (ticketId: String, column: ColumnUi) -> Unit,
+        navigateToTicketInfo: (TicketUi) -> Unit,
         modifier: Modifier = Modifier
     )
 
@@ -20,11 +21,13 @@ interface TicketUiState {
         @Composable
         override fun Show(
             onMove: (ticketId: String, column: ColumnUi) -> Unit,
+            navigateToTicketInfo: (TicketUi) -> Unit,
             modifier: Modifier
         ) {
             TicketBoard(
                 tickets = tickets,
                 onMove = onMove,
+                navigateToTicketInfo = navigateToTicketInfo,
                 modifier = modifier
             )
         }
@@ -35,6 +38,7 @@ interface TicketUiState {
         @Composable
         override fun Show(
             onMove: (ticketId: String, column: ColumnUi) -> Unit,
+            navigateToTicketInfo: (TicketUi) -> Unit,
             modifier: Modifier
         ) {
             Text(
@@ -52,6 +56,7 @@ interface TicketUiState {
         @Composable
         override fun Show(
             onMove: (ticketId: String, column: ColumnUi) -> Unit,
+            navigateToTicketInfo: (TicketUi) -> Unit,
             modifier: Modifier
         ) {
             CircularProgressIndicator()

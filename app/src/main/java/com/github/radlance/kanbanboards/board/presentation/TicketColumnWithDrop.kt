@@ -18,6 +18,7 @@ fun TicketColumnWithDrop(
     tickets: List<TicketUi>,
     columnType: ColumnUi,
     onMove: (ticketId: String, column: ColumnUi) -> Unit,
+    navigateToTicketInfo: (TicketUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val json = Json {
@@ -35,6 +36,7 @@ fun TicketColumnWithDrop(
         columnType = columnType,
         onMove = onMove,
         json = json,
+        navigateToTicketInfo = navigateToTicketInfo,
         modifier = modifier.dragAndDropTarget(
             shouldStartDragAndDrop = { event ->
                 event.mimeTypes().contains(ClipDescription.MIMETYPE_TEXT_PLAIN)
