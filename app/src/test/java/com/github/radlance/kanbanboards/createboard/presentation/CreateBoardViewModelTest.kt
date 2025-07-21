@@ -141,7 +141,7 @@ class CreateBoardViewModelTest : BaseTest() {
     }
 
     @Test
-    fun test_collect_uses() {
+    fun test_collect_users() {
         repository.makeExpectedSearchUsersResult(SearchUsersResult.Error("server error"))
         viewModel.fetchUsers()
         assertEquals(SearchUsersUiState.Error("server error"), viewModel.searchUsersUiState.value)

@@ -9,8 +9,8 @@ import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
-import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.common.domain.User
+import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
 
 abstract class BaseTest {
     protected class TestRunAsync : RunAsync {
@@ -173,6 +174,20 @@ abstract class BaseTest {
         private var createTicketException: Exception? = null
         val createTicketCalledList = mutableListOf<NewTicket>()
 
+        private val ticket = MutableStateFlow(
+            Ticket(
+                id = "initial id",
+                colorHex = "initial color",
+                name = "initial name",
+                description = "initial description",
+                assignedMemberName = "initial assignee",
+                column = Column.Todo,
+                creationDate = LocalDateTime.of(2025, 4, 4, 4, 4)
+            )
+        )
+        private var ticketException: Exception? = null
+        val ticketCalledList = mutableListOf<String>()
+
         fun makeExpectedTickets(tickets: List<Ticket>) {
             this.tickets.value = tickets
         }
@@ -185,8 +200,14 @@ abstract class BaseTest {
             createTicketException = exception
         }
 
-        override fun ticket(ticketId: String): Flow<Ticket> {
-            TODO("Not yet implemented")
+        fun makeExpectedTicketException(exception: Exception) {
+            ticketException = exception
+        }
+
+        override fun ticket(ticketId: String): Flow<Ticket> = flow {
+            ticketCalledList.add(ticketId)
+            ticketException?.let { throw it }
+            emitAll(ticket.map { it.copy(id = ticketId) })
         }
 
         override fun tickets(boardId: String): Flow<List<Ticket>> = flow {
