@@ -4,33 +4,20 @@ interface TicketColor {
 
     fun hex(): String
 
-    object Yellow : TicketColor {
+    abstract class Abstract(private val color: String) : TicketColor {
 
-        override fun hex(): String = "#FFFF00"
+        override fun hex(): String = color
     }
 
-    object Orange : TicketColor {
+    object Yellow : Abstract("#FFFF00")
 
-        override fun hex(): String = "#FFA500"
-    }
+    object Orange : Abstract("#FFA500")
 
-    object Purple : TicketColor {
+    object Purple : Abstract("#A020F0")
 
-        override fun hex(): String = "#A020F0"
-    }
+    object Red : Abstract("#FF0000")
 
-    object Red : TicketColor {
+    object Green : Abstract("#008000")
 
-        override fun hex(): String = "#FF0000"
-    }
-
-    object Green : TicketColor {
-
-        override fun hex(): String = "#008000"
-    }
-
-    object Blue : TicketColor {
-
-        override fun hex(): String = "#0000FF"
-    }
+    object Blue : Abstract("#0000FF")
 }
