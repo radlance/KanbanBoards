@@ -33,7 +33,8 @@ interface TicketRemoteDataSource {
     @OptIn(ExperimentalCoroutinesApi::class)
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase,
-        private val handleError: HandleError
+        private val handleError: HandleError,
+        private val columnMapper: ColumnTypeMapper
     ) : TicketRemoteDataSource {
 
         override fun ticket(ticketId: String): Flow<Ticket> {
@@ -104,18 +105,11 @@ interface TicketRemoteDataSource {
 
         override fun moveTicket(ticketId: String, column: Column) {
 
-            val columnLabel = when (column) {
-                is Column.Todo -> "todo"
-                is Column.InProgress -> "inProgress"
-                is Column.Done -> "done"
-                else -> throw IllegalStateException("unknown column type")
-            }
-
             provideDatabase.database()
                 .child("tickets")
                 .child(ticketId)
                 .child("columnId")
-                .setValue(columnLabel)
+                .setValue(column.map(columnMapper))
         }
 
         override suspend fun createTicket(newTicket: NewTicket) {

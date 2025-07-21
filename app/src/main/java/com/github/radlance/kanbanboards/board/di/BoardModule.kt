@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.board.di
 
 import com.github.radlance.kanbanboards.board.data.BoardRemoteDataSource
+import com.github.radlance.kanbanboards.board.data.ColumnTypeMapper
 import com.github.radlance.kanbanboards.board.data.RemoteBoardRepository
 import com.github.radlance.kanbanboards.board.data.TicketRemoteDataSource
 import com.github.radlance.kanbanboards.board.domain.BoardRepository
@@ -51,4 +52,7 @@ interface BoardModule {
 
     @Binds
     fun provideHandleBoard(handleBoard: HandleBoard.Base): HandleBoard
+
+    @Binds
+    fun provideColumnTypeMapper(columnTypeMapper: ColumnTypeMapper): Column.Mapper<String>
 }
