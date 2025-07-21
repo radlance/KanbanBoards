@@ -138,7 +138,7 @@ abstract class BaseTest {
         }
 
         private var boardMembersException: Exception? = null
-        val boardMembersCalledList = mutableListOf<String>()
+        val boardMembersCalledList = mutableListOf<Pair<String, String>>()
         private val boardMembers = MutableStateFlow<List<User>>(emptyList())
 
         fun makeExpectedBoardMembers(users: List<User>) {
@@ -156,8 +156,8 @@ abstract class BaseTest {
             emitAll(boardInfo)
         }
 
-        override fun boardMembers(boardId: String): Flow<List<User>> = flow {
-            boardMembersCalledList.add(boardId)
+        override fun boardMembers(boardId: String, ownerId: String): Flow<List<User>> = flow {
+            boardMembersCalledList.add(Pair(boardId, ownerId))
             boardMembersException?.let { throw it }
             emitAll(boardMembers)
         }
@@ -183,6 +183,10 @@ abstract class BaseTest {
 
         fun makeExpectedCreateTicketException(exception: Exception) {
             createTicketException = exception
+        }
+
+        override fun ticket(ticketId: String): Flow<Ticket> {
+            TODO("Not yet implemented")
         }
 
         override fun tickets(boardId: String): Flow<List<Ticket>> = flow {

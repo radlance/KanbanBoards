@@ -124,10 +124,11 @@ class TicketRepositoryTest : BaseTest() {
                     )
                 )
             ),
-            repository.boardMembers(boardId = "test board id").first()
+            repository.boardMembers(boardId = "test board id", ownerId = "test owner id").first()
         )
         assertEquals(1, boardRemoteDataSource.boardMembersCalledList.size)
-        assertEquals("test board id", boardRemoteDataSource.boardMembersCalledList[0])
+        assertEquals("test board id", boardRemoteDataSource.boardMembersCalledList[0].first)
+        assertEquals("test owner id", boardRemoteDataSource.boardMembersCalledList[0].second)
     }
 
     @Test
@@ -136,7 +137,7 @@ class TicketRepositoryTest : BaseTest() {
             IllegalStateException("some another error")
         )
 
-        val actual = repository.boardMembers(boardId = "test board id").toList()
+        val actual = repository.boardMembers(boardId = "test board id", ownerId = "test owner id").toList()
         assertEquals(0, actual.size)
     }
 }

@@ -142,6 +142,7 @@ class BoardViewModelTest : BaseTest() {
                         id = "test ticket id",
                         colorHex = "#FFFFFF",
                         name = "test ticket name",
+                        description = "test description",
                         assignedMemberName = "test user",
                         column = ColumnUi.Todo,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30)
@@ -151,6 +152,7 @@ class BoardViewModelTest : BaseTest() {
                         id = "second ticket id",
                         colorHex = "#FAEEFF",
                         name = "test task",
+                        description = "test",
                         assignedMemberName = "",
                         column = ColumnUi.InProgress,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30)
@@ -160,6 +162,7 @@ class BoardViewModelTest : BaseTest() {
                         id = "id",
                         colorHex = "#000000",
                         name = "first task",
+                        description = "",
                         assignedMemberName = "another user",
                         column = ColumnUi.Done,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30)
@@ -177,6 +180,7 @@ class BoardViewModelTest : BaseTest() {
                         id = "test ticket id",
                         colorHex = "#FFFFFF",
                         name = "test ticket name",
+                        description = "test description",
                         assignedMemberName = "test user",
                         column = ColumnUi.Todo,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30)
@@ -186,6 +190,7 @@ class BoardViewModelTest : BaseTest() {
                         id = "second ticket id",
                         colorHex = "#FAEEFF",
                         name = "test task",
+                        description = "test",
                         assignedMemberName = "",
                         column = ColumnUi.InProgress,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30)
@@ -195,6 +200,7 @@ class BoardViewModelTest : BaseTest() {
                         id = "id",
                         colorHex = "#000000",
                         name = "first task",
+                        description = "",
                         assignedMemberName = "another user",
                         column = ColumnUi.Done,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30)

@@ -53,13 +53,14 @@ class TicketViewModelTest : BaseTest() {
         repository.makeExpectedBoardMembersResult(
             BoardMembersResult.Error(message = "board members error")
         )
-        viewModel.fetchBoardMembers(boardId = "test board id")
+        viewModel.fetchBoardMembers(boardId = "test board id", ownerId = "test owner id")
         assertEquals(
             BoardMembersUiState.Error(message = "board members error"),
             viewModel.boardMembersUiState.value
         )
         assertEquals(1, repository.boardMembersCalledList.size)
-        assertEquals("test board id", repository.boardMembersCalledList[0])
+        assertEquals("test board id", repository.boardMembersCalledList[0].first)
+        assertEquals("test owner id", repository.boardMembersCalledList[0].second)
         assertEquals(1, handle.saveBoardMembersUiStateCalledList.size)
         assertEquals(
             BoardMembersUiState.Error(message = "board members error"),
@@ -202,7 +203,7 @@ class TicketViewModelTest : BaseTest() {
 
     private class TestTicketRepository : TicketRepository {
 
-        val boardMembersCalledList = mutableListOf<String>()
+        val boardMembersCalledList = mutableListOf<Pair<String, String>>()
         private val boardMembersResult = MutableStateFlow<BoardMembersResult>(
             BoardMembersResult.Success(members = emptyList())
         )
@@ -217,8 +218,8 @@ class TicketViewModelTest : BaseTest() {
             this.createTicketResult = createTicketResult
         }
 
-        override fun boardMembers(boardId: String): Flow<BoardMembersResult> {
-            boardMembersCalledList.add(boardId)
+        override fun boardMembers(boardId: String, ownerId: String): Flow<BoardMembersResult> {
+            boardMembersCalledList.add(Pair(boardId, ownerId))
             return boardMembersResult
         }
 

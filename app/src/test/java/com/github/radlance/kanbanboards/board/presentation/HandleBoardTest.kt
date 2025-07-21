@@ -58,6 +58,7 @@ class HandleBoardTest {
                         id = "id1",
                         colorHex = "#AAAAAA",
                         name = "name1",
+                        description = "description1",
                         assignedMemberName = "user",
                         column = ColumnUi.InProgress,
                         creationDate = LocalDateTime(2024, 1, 10, 5, 50)
@@ -72,6 +73,7 @@ class HandleBoardTest {
                         id = "id1",
                         colorHex = "#AAAAAA",
                         name = "name1",
+                        description = "description1",
                         assignedMemberName = "user",
                         column = ColumnUi.InProgress,
                         creationDate = LocalDateTime(2024, 1, 10, 5, 50)
