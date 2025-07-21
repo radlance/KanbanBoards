@@ -61,4 +61,8 @@
     <string name="search_users">Search users</string>
     <string name="enter_email">Enter email address</string>
     <string name="more">More</string>
+    <string name="ticket_info">Ticket info</string>
+    <string name="navigate_to_edit_ticket">Navigate to edit ticket</string>
+    <string name="no_assigned_member">No assigned member</string>
+    <string name="description">Description</string>
 </resources>

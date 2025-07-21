@@ -12,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -41,21 +42,30 @@ interface TicketRemoteDataSource {
             val ticketQuery = provideDatabase.database()
                 .child("tickets")
                 .child(ticketId)
-            return ticketQuery.snapshots.mapNotNull { ticketSnapshot ->
-                val entity = ticketSnapshot.getValue<TicketEntity>()
-                entity?.let {
-                    with(entity) {
-                        Ticket(
-                            id = ticketSnapshot.key ?: return@mapNotNull null,
-                            colorHex = color,
-                            name = title,
-                            description = description,
-                            assignedMemberName = assignee,
-                            column = columnType(entity),
-                            creationDate = LocalDateTime.parse(creationDate)
-                        )
+            return ticketQuery.snapshots.flatMapLatest { ticketSnapshot ->
+                val entity =
+                    ticketSnapshot.getValue<TicketEntity>() ?: return@flatMapLatest emptyFlow()
+
+                provideDatabase.database()
+                    .child("users")
+                    .child(entity.assignee)
+                    .snapshots.mapNotNull { userSnapshot ->
+                        val userEntity = userSnapshot.getValue<UserProfileEntity>()
+
+                        val column = columnType(entity)
+
+                        with(entity) {
+                            Ticket(
+                                id = ticketSnapshot.key ?: return@mapNotNull null,
+                                colorHex = color,
+                                name = title,
+                                description = description,
+                                assignedMemberName = userEntity?.name ?: "",
+                                column = column,
+                                creationDate = LocalDateTime.parse(creationDate)
+                            )
+                        }
                     }
-                }
             }
         }
 

@@ -165,7 +165,6 @@ fun CreateTicketContent(
 
     BaseColumn(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
         scrollState = scrollState
     ) {
         Column(

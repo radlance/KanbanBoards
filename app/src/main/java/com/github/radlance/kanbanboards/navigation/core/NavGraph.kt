@@ -1,7 +1,11 @@
 package com.github.radlance.kanbanboards.navigation.core
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -135,8 +139,15 @@ fun NavGraph(
         composable<TicketInfo> {
             TicketInfoScreen(
                 navigateUp = navHostController::navigateUp,
+                navigateToEditTicket = { navHostController.navigate(EditTicket) },
                 viewModel = ticketInfoViewModel
             )
+        }
+
+        composable<EditTicket> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "Edit ticket screen")
+            }
         }
     }
 }
