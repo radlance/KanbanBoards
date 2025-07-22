@@ -53,10 +53,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
+import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 import com.github.radlance.kanbanboards.ticket.create.presentation.TicketColor
 import com.github.radlance.kanbanboards.ticket.create.presentation.TicketColorsRow
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,6 +72,9 @@ fun TicketScreen(
     initialTitleFieldValue: String = "",
     initialSelectedAssigneeId: String = "",
     initialDescriptionFieldValue: String = "",
+    ticketId: String = "",
+    column: Column = Column.Todo,
+    creationDate: LocalDateTime = LocalDateTime.now(),
     @StringRes buttonLabelId: Int
 ) {
 
@@ -249,11 +254,14 @@ fun TicketScreen(
                 onClick = {
                     keyboardController?.hide()
                     ticketActions.action(
+                        ticketId = ticketId,
                         boardId = boardId,
                         title = titleFieldValue,
                         color = ticketColors[selectedColorIndex],
                         description = descriptionFieldValue,
-                        assigneeId = members.find { it.id == selectedAssigneeId }?.id ?: ""
+                        assigneeId = members.find { it.id == selectedAssigneeId }?.id ?: "",
+                        column = column,
+                        creationDate = creationDate
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),

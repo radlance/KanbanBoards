@@ -6,6 +6,7 @@ import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
+import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import com.google.firebase.database.getValue
 import com.google.firebase.database.snapshots
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,6 +31,8 @@ interface TicketRemoteDataSource {
     fun moveTicket(ticketId: String, column: Column)
 
     suspend fun createTicket(newTicket: NewTicket)
+
+    suspend fun editTicket(ticket: EditTicket)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     class Base @Inject constructor(
@@ -140,6 +143,31 @@ interface TicketRemoteDataSource {
                         )
                     ).await()
                 }
+            } catch (e: Exception) {
+                handleError.handle(e)
+            }
+        }
+
+        override suspend fun editTicket(ticket: EditTicket) {
+            try {
+                val ticketReference = provideDatabase.database()
+                    .child("tickets")
+                    .child(ticket.id)
+
+                ticketReference.setValue(
+                    with(ticket) {
+                        TicketEntity(
+                            boardId = boardId,
+                            color = colorHex,
+                            title = name,
+                            description = description,
+                            assignee = assignedMemberId,
+                            columnId = column.map(columnMapper),
+                            creationDate = creationDate.toString()
+                        )
+                    }
+                ).await()
+
             } catch (e: Exception) {
                 handleError.handle(e)
             }

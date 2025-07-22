@@ -34,18 +34,23 @@ interface BoardMembersUiStateEdit {
             navigateUp: () -> Unit,
             modifier: Modifier
         ) {
-            TicketScreen(
-                boardId = boardId,
-                members = members,
-                ticketActions = ticketActions,
-                navigateUp = navigateUp,
-                selectedColor = ticket.colorHex,
-                initialTitleFieldValue = ticket.name,
-                initialSelectedAssigneeId = ticket.assignedMemberId,
-                initialDescriptionFieldValue = ticket.description,
-                buttonLabelId = R.string.edit_ticket,
-                modifier = modifier
-            )
+            with(ticket) {
+                TicketScreen(
+                    boardId = boardId,
+                    members = members,
+                    ticketActions = ticketActions,
+                    navigateUp = navigateUp,
+                    selectedColor = colorHex,
+                    initialTitleFieldValue = name,
+                    initialSelectedAssigneeId = assignedMemberId,
+                    initialDescriptionFieldValue = description,
+                    ticketId = id,
+                    column = column,
+                    creationDate = creationDate,
+                    buttonLabelId = R.string.edit_ticket,
+                    modifier = modifier
+                )
+            }
         }
     }
 

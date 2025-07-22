@@ -25,7 +25,10 @@ fun EditTicketScreen(
         ticketInfoUiState.Show(
             editTicketViewModel = viewModel,
             boardId = boardId,
-            navigateUp = navigateUp,
+            navigateUp = {
+                navigateUp()
+                viewModel.clearCreateTicketUiState()
+            },
             modifier = ticketModifier
         )
     }

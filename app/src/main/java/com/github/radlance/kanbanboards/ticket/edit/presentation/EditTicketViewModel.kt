@@ -1,11 +1,15 @@
 package com.github.radlance.kanbanboards.ticket.edit.presentation
 
+import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketViewModel
+import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
+import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,13 +25,31 @@ class EditTicketViewModel @Inject constructor(
     val boardMembersUiState = handleEditTicket.boardMembersUiState
 
     override fun action(
+        ticketId: String,
         boardId: String,
+        column: Column,
         title: String,
         color: String,
         description: String,
-        assigneeId: String
+        assigneeId: String,
+        creationDate: LocalDateTime
     ) {
-        TODO("Not yet implemented")
+        handleEditTicket.saveTicketUiState(TicketUiState.Loading)
+
+        val newTicket = EditTicket(
+            colorHex = color,
+            name = title,
+            description = description,
+            assignedMemberId = assigneeId,
+            id = ticketId,
+            boardId = boardId,
+            column = column,
+            creationDate = creationDate
+        )
+
+        handle(background = { editTicketRepository.editTicket(newTicket) }) {
+            handleEditTicket.saveTicketUiState(editTicketMapperFacade.mapTicketResult(it))
+        }
     }
 
     override fun fetchBoardMembers(boardId: String, ownerId: String) {

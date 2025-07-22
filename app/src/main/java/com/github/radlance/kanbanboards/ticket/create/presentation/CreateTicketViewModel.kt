@@ -1,5 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.create.presentation
 
+import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketViewModel
 import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
@@ -7,6 +8,7 @@ import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,11 +31,14 @@ class CreateTicketViewModel @Inject constructor(
     }
 
     override fun action(
+        ticketId: String,
         boardId: String,
+        column: Column,
         title: String,
         color: String,
         description: String,
-        assigneeId: String
+        assigneeId: String,
+        creationDate: LocalDateTime
     ) {
 
         handleTicket.saveTicketUiState(TicketUiState.Loading)
@@ -48,7 +53,7 @@ class CreateTicketViewModel @Inject constructor(
         )
 
         handle(background = { createTicketRepository.createTicket(newTicket) }) {
-            handleTicket.saveTicketUiState(createTicketMapperFacade.mapCreateTicketResult(it))
+            handleTicket.saveTicketUiState(createTicketMapperFacade.mapTicketResult(it))
         }
     }
 }
