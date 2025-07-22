@@ -6,10 +6,8 @@ import com.github.radlance.kanbanboards.board.presentation.ColumnUi
 import com.github.radlance.kanbanboards.board.presentation.ColumnUiMapper
 import com.github.radlance.kanbanboards.board.presentation.TicketUi
 import com.github.radlance.kanbanboards.common.BaseTest
-import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.datetime.LocalDateTime
@@ -139,35 +137,6 @@ class TicketInfoViewModelTest : BaseTest() {
             ),
             handle.saveTicketInfoUiStateCalledList[2]
         )
-    }
-
-    private class TestTicketInfoRepository : TicketInfoRepository {
-
-        private val ticketInfoResult = MutableStateFlow<TicketInfoResult>(
-            TicketInfoResult.Success(
-                Ticket(
-                    id = "initial id",
-                    colorHex = "initial color",
-                    name = "initial name",
-                    description = "initial description",
-                    assignedMemberName = "initial assignee member name",
-                    column = Column.Todo,
-                    creationDate = java.time.LocalDateTime.of(2025, 1, 1, 1, 1),
-                    assignedMemberId = "initial assigned member id"
-                )
-            )
-        )
-
-        val ticketCalledList = mutableListOf<String>()
-
-        fun makeExpectedTicketInfoResult(ticketInfoResult: TicketInfoResult) {
-            this.ticketInfoResult.value = ticketInfoResult
-        }
-
-        override fun ticket(ticketId: String): Flow<TicketInfoResult> {
-            ticketCalledList.add(ticketId)
-            return ticketInfoResult
-        }
     }
 
     private class TestHandleTicketInfo : HandleTicketInfo {

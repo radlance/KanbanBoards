@@ -9,10 +9,17 @@ import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
+import com.github.radlance.kanbanboards.ticket.common.presentation.HandleTicket
+import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
+import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
+import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
+import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository
+import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -190,6 +197,9 @@ abstract class BaseTest {
         private var ticketException: Exception? = null
         val ticketCalledList = mutableListOf<String>()
 
+        private var editTicketException: Exception? = null
+        val editTicketCalledList = mutableListOf<EditTicket>()
+
         fun makeExpectedTickets(tickets: List<Ticket>) {
             this.tickets.value = tickets
         }
@@ -204,6 +214,10 @@ abstract class BaseTest {
 
         fun makeExpectedTicketException(exception: Exception) {
             ticketException = exception
+        }
+
+        fun makeExpectedEditTicketException(exception: Exception) {
+            editTicketException = exception
         }
 
         override fun ticket(ticketId: String): Flow<Ticket> = flow {
@@ -228,7 +242,84 @@ abstract class BaseTest {
         }
 
         override suspend fun editTicket(ticket: EditTicket) {
-            TODO("Not yet implemented")
+            editTicketCalledList.add(ticket)
+            editTicketException?.let { throw it }
+        }
+    }
+
+    protected class TestTicketRepository : CreateTicketRepository {
+
+        val boardMembersCalledList = mutableListOf<Pair<String, String>>()
+        private val boardMembersResult = MutableStateFlow<BoardMembersResult>(
+            BoardMembersResult.Success(members = emptyList())
+        )
+
+        fun makeExpectedBoardMembersResult(boardMembersResult: BoardMembersResult) {
+            this.boardMembersResult.value = boardMembersResult
+        }
+
+        val createTicketCalledList = mutableListOf<NewTicket>()
+        private var createTicketResult: UnitResult = UnitResult.Success
+        fun makeExpectedCreateTicketResult(createTicketResult: UnitResult) {
+            this.createTicketResult = createTicketResult
+        }
+
+        override fun boardMembers(boardId: String, ownerId: String): Flow<BoardMembersResult> {
+            boardMembersCalledList.add(Pair(boardId, ownerId))
+            return boardMembersResult
+        }
+
+        override suspend fun createTicket(newTicket: NewTicket): UnitResult {
+            createTicketCalledList.add(newTicket)
+            return createTicketResult
+        }
+    }
+
+    protected class TestTicketInfoRepository : TicketInfoRepository {
+
+        private val ticketInfoResult = MutableStateFlow<TicketInfoResult>(
+            TicketInfoResult.Success(
+                Ticket(
+                    id = "initial id",
+                    colorHex = "initial color",
+                    name = "initial name",
+                    description = "initial description",
+                    assignedMemberName = "initial assignee member name",
+                    column = Column.Todo,
+                    creationDate = LocalDateTime.of(2025, 1, 1, 1, 1),
+                    assignedMemberId = "initial assigned member id"
+                )
+            )
+        )
+
+        val ticketCalledList = mutableListOf<String>()
+
+        fun makeExpectedTicketInfoResult(ticketInfoResult: TicketInfoResult) {
+            this.ticketInfoResult.value = ticketInfoResult
+        }
+
+        override fun ticket(ticketId: String): Flow<TicketInfoResult> {
+            ticketCalledList.add(ticketId)
+            return ticketInfoResult
+        }
+    }
+
+    protected class TestBaseHandleTicket : HandleTicket {
+        var ticketUiStateCalledCount = 0
+        val saveCreateTicketUiStateCalledList = mutableListOf<TicketUiState>()
+
+        private val createTicketUiStateMutable =
+            MutableStateFlow<TicketUiState>(TicketUiState.Initial)
+
+        override val ticketUiState: StateFlow<TicketUiState>
+            get() {
+                ticketUiStateCalledCount++
+                return createTicketUiStateMutable
+            }
+
+        override fun saveTicketUiState(ticketUiState: TicketUiState) {
+            saveCreateTicketUiStateCalledList.add(ticketUiState)
+            createTicketUiStateMutable.value = ticketUiState
         }
     }
 }

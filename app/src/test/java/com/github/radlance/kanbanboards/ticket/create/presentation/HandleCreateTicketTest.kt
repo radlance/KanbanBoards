@@ -5,7 +5,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class HandleTicketTest {
+class HandleCreateTicketTest {
 
     private lateinit var handle: HandleCreateTicket
 
@@ -15,7 +15,7 @@ class HandleTicketTest {
     }
 
     @Test
-    fun test_create_ticket_state() {
+    fun test_ticket_state() {
         assertEquals(TicketUiState.Initial, handle.ticketUiState.value)
         handle.saveTicketUiState(TicketUiState.Loading)
         assertEquals(TicketUiState.Loading, handle.ticketUiState.value)

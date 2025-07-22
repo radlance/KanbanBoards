@@ -5,10 +5,8 @@ import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
-import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.junit.Before
@@ -18,7 +16,8 @@ import java.time.LocalDateTime
 class TicketViewModelTest : BaseTest() {
 
     private lateinit var repository: TestTicketRepository
-    private lateinit var handle: TestHandleTicket
+    private lateinit var baseHandle: TestBaseHandleTicket
+    private lateinit var handleCreateTicket: TestHandleCreateTicket
     private lateinit var formatTime: TestFormatTime
 
     private lateinit var viewModel: CreateTicketViewModel
@@ -26,7 +25,8 @@ class TicketViewModelTest : BaseTest() {
     @Before
     fun setup() {
         repository = TestTicketRepository()
-        handle = TestHandleTicket()
+        baseHandle = TestBaseHandleTicket()
+        handleCreateTicket = TestHandleCreateTicket(baseHandle)
         formatTime = TestFormatTime()
 
         viewModel = CreateTicketViewModel(
@@ -35,7 +35,7 @@ class TicketViewModelTest : BaseTest() {
                 boardMembersMapper = BoardMembersResultMapper(),
                 createTicketMapper = CreateTicketMapper()
             ),
-            handleTicket = handle,
+            handleTicket = handleCreateTicket,
             formatTime = formatTime,
             runAsync = TestRunAsync()
         )
@@ -45,8 +45,8 @@ class TicketViewModelTest : BaseTest() {
     fun test_initial_state() {
         assertEquals(BoardMembersUiStateCreate.Loading, viewModel.boardMembersUiState.value)
         assertEquals(TicketUiState.Initial, viewModel.ticketUiState.value)
-        assertEquals(1, handle.boardMembersUiStateCalledCount)
-        assertEquals(1, handle.createTicketUiStateCalledCount)
+        assertEquals(1, handleCreateTicket.boardMembersUiStateCalledCount)
+        assertEquals(1, baseHandle.ticketUiStateCalledCount)
     }
 
     @Test
@@ -62,10 +62,10 @@ class TicketViewModelTest : BaseTest() {
         assertEquals(1, repository.boardMembersCalledList.size)
         assertEquals("test board id", repository.boardMembersCalledList[0].first)
         assertEquals("test owner id", repository.boardMembersCalledList[0].second)
-        assertEquals(1, handle.saveBoardMembersUiStateCalledList.size)
+        assertEquals(1, handleCreateTicket.saveBoardMembersUiStateCalledList.size)
         assertEquals(
             BoardMembersUiStateCreate.Error(message = "board members error"),
-            handle.saveBoardMembersUiStateCalledList[0]
+            handleCreateTicket.saveBoardMembersUiStateCalledList[0]
         )
 
         repository.makeExpectedBoardMembersResult(
@@ -92,7 +92,7 @@ class TicketViewModelTest : BaseTest() {
             viewModel.boardMembersUiState.value
         )
         assertEquals(1, repository.boardMembersCalledList.size)
-        assertEquals(2, handle.saveBoardMembersUiStateCalledList.size)
+        assertEquals(2, handleCreateTicket.saveBoardMembersUiStateCalledList.size)
         assertEquals(
             BoardMembersUiStateCreate.Success(
                 members = listOf(
@@ -103,7 +103,7 @@ class TicketViewModelTest : BaseTest() {
                     )
                 )
             ),
-            handle.saveBoardMembersUiStateCalledList[1]
+            handleCreateTicket.saveBoardMembersUiStateCalledList[1]
         )
     }
 
@@ -137,16 +137,16 @@ class TicketViewModelTest : BaseTest() {
             ),
             repository.createTicketCalledList[0]
         )
-        assertEquals(2, handle.saveCreateTicketUiStateCalledList.size)
+        assertEquals(2, baseHandle.saveCreateTicketUiStateCalledList.size)
 
         assertEquals(
             TicketUiState.Loading,
-            handle.saveCreateTicketUiStateCalledList[0]
+            baseHandle.saveCreateTicketUiStateCalledList[0]
         )
 
         assertEquals(
             TicketUiState.Error(message = "create ticket error"),
-            handle.saveCreateTicketUiStateCalledList[1]
+            baseHandle.saveCreateTicketUiStateCalledList[1]
         )
 
         formatTime.makeExpectedTime(LocalDateTime.of(2025, 1, 1, 1, 30))
@@ -177,75 +177,44 @@ class TicketViewModelTest : BaseTest() {
             ),
             repository.createTicketCalledList[1]
         )
-        assertEquals(4, handle.saveCreateTicketUiStateCalledList.size)
+        assertEquals(4, baseHandle.saveCreateTicketUiStateCalledList.size)
         assertEquals(
             TicketUiState.Loading,
-            handle.saveCreateTicketUiStateCalledList[2]
+            baseHandle.saveCreateTicketUiStateCalledList[2]
         )
         assertEquals(
             TicketUiState.Success,
-            handle.saveCreateTicketUiStateCalledList[3]
+            baseHandle.saveCreateTicketUiStateCalledList[3]
         )
     }
 
     @Test
     fun test_clear_create_ticket_ui_state() {
         repository.makeExpectedCreateTicketResult(UnitResult.Success)
-        handle.saveTicketUiState(TicketUiState.Success)
+        handleCreateTicket.saveTicketUiState(TicketUiState.Success)
         assertEquals(
             TicketUiState.Success,
             viewModel.ticketUiState.value
         )
-        assertEquals(1, handle.saveCreateTicketUiStateCalledList.size)
-        assertEquals(TicketUiState.Success, handle.saveCreateTicketUiStateCalledList[0])
+        assertEquals(1, baseHandle.saveCreateTicketUiStateCalledList.size)
+        assertEquals(TicketUiState.Success, baseHandle.saveCreateTicketUiStateCalledList[0])
 
         viewModel.clearCreateTicketUiState()
         assertEquals(
             TicketUiState.Initial,
             viewModel.ticketUiState.value
         )
-        assertEquals(2, handle.saveCreateTicketUiStateCalledList.size)
-        assertEquals(TicketUiState.Initial, handle.saveCreateTicketUiStateCalledList[1])
+        assertEquals(2, baseHandle.saveCreateTicketUiStateCalledList.size)
+        assertEquals(TicketUiState.Initial, baseHandle.saveCreateTicketUiStateCalledList[1])
     }
 
-    private class TestTicketRepository : CreateTicketRepository {
-
-        val boardMembersCalledList = mutableListOf<Pair<String, String>>()
-        private val boardMembersResult = MutableStateFlow<BoardMembersResult>(
-            BoardMembersResult.Success(members = emptyList())
-        )
-
-        fun makeExpectedBoardMembersResult(boardMembersResult: BoardMembersResult) {
-            this.boardMembersResult.value = boardMembersResult
-        }
-
-        val createTicketCalledList = mutableListOf<NewTicket>()
-        private var createTicketResult: UnitResult = UnitResult.Success
-        fun makeExpectedCreateTicketResult(createTicketResult: UnitResult) {
-            this.createTicketResult = createTicketResult
-        }
-
-        override fun boardMembers(boardId: String, ownerId: String): Flow<BoardMembersResult> {
-            boardMembersCalledList.add(Pair(boardId, ownerId))
-            return boardMembersResult
-        }
-
-        override suspend fun createTicket(newTicket: NewTicket): UnitResult {
-            createTicketCalledList.add(newTicket)
-            return createTicketResult
-        }
-    }
-
-    private class TestHandleTicket : HandleCreateTicket {
+    private class TestHandleCreateTicket(
+        private val testBaseHandleTicket: TestBaseHandleTicket
+    ) : HandleCreateTicket {
         private val boardMembersUiStateMutable =
             MutableStateFlow<BoardMembersUiStateCreate>(BoardMembersUiStateCreate.Loading)
         var boardMembersUiStateCalledCount = 0
         val saveBoardMembersUiStateCalledList = mutableListOf<BoardMembersUiStateCreate>()
-
-        private val createTicketUiStateMutable =
-            MutableStateFlow<TicketUiState>(TicketUiState.Initial)
-        var createTicketUiStateCalledCount = 0
-        val saveCreateTicketUiStateCalledList = mutableListOf<TicketUiState>()
 
         override val boardMembersUiState: StateFlow<BoardMembersUiStateCreate>
             get() {
@@ -259,14 +228,10 @@ class TicketViewModelTest : BaseTest() {
         }
 
         override val ticketUiState: StateFlow<TicketUiState>
-            get() {
-                createTicketUiStateCalledCount++
-                return createTicketUiStateMutable
-            }
+            get() = testBaseHandleTicket.ticketUiState
 
         override fun saveTicketUiState(ticketUiState: TicketUiState) {
-            saveCreateTicketUiStateCalledList.add(ticketUiState)
-            createTicketUiStateMutable.value = ticketUiState
+            testBaseHandleTicket.saveTicketUiState(ticketUiState)
         }
     }
 
