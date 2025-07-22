@@ -65,4 +65,5 @@
     <string name="navigate_to_edit_ticket">Navigate to edit ticket</string>
     <string name="no_assigned_member">No assigned member</string>
     <string name="description">Description</string>
+    <string name="edit_ticket">Edit ticket</string>
 </resources>

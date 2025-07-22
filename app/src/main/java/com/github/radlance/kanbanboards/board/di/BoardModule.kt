@@ -16,7 +16,7 @@ import com.github.radlance.kanbanboards.board.presentation.ColumnUi
 import com.github.radlance.kanbanboards.board.presentation.ColumnUiMapper
 import com.github.radlance.kanbanboards.board.presentation.HandleBoard
 import com.github.radlance.kanbanboards.board.presentation.TicketResultMapper
-import com.github.radlance.kanbanboards.board.presentation.TicketUiState
+import com.github.radlance.kanbanboards.board.presentation.TicketBoardUiState
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -39,7 +39,7 @@ interface BoardModule {
     fun provideTicketDataSource(ticketRemoteDataSource: TicketRemoteDataSource.Base): TicketRemoteDataSource
 
     @Binds
-    fun provideTicketResultMapper(ticketResultMapper: TicketResultMapper): TicketResult.Mapper<TicketUiState>
+    fun provideTicketResultMapper(ticketResultMapper: TicketResultMapper): TicketResult.Mapper<TicketBoardUiState>
 
     @Binds
     fun provideColumnMapper(columnMapper: ColumnMapper): Column.Mapper<ColumnUi>

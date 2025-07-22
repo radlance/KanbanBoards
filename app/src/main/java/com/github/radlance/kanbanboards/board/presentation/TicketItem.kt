@@ -135,6 +135,7 @@ private fun TicketItemPreview() {
                 id = "id",
                 name = "test ticket",
                 assignedMemberName = "some member",
+                assignedMemberId = "1",
                 column = ColumnUi.Todo,
                 description = "",
                 creationDate = LocalDateTime(1, 1, 1, 1, 1)

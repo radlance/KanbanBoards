@@ -58,7 +58,7 @@ fun TicketInfoScreen(
         },
         modifier = modifier
     ) { contentPadding ->
-        ticketInfoUiState.Show(navigateUp, modifier = Modifier.padding(contentPadding))
+        ticketInfoUiState.Show(modifier = Modifier.padding(contentPadding))
     }
 }
 

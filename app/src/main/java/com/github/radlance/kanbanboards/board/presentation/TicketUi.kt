@@ -10,6 +10,7 @@ data class TicketUi(
     val name: String,
     val description: String,
     val assignedMemberName: String,
+    val assignedMemberId: String,
     val column: ColumnUi,
     val creationDate: LocalDateTime
 )

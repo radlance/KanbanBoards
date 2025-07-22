@@ -1,16 +1,16 @@
 package com.github.radlance.kanbanboards.ticket.create.di
 
 import com.github.radlance.kanbanboards.common.domain.UnitResult
-import com.github.radlance.kanbanboards.ticket.create.data.RemoteTicketRepository
+import com.github.radlance.kanbanboards.ticket.create.data.RemoteCreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
-import com.github.radlance.kanbanboards.ticket.create.domain.TicketRepository
+import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersResultMapper
-import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersUiState
+import com.github.radlance.kanbanboards.ticket.create.presentation.BoardMembersUiStateCreate
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketMapper
-import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketUiState
+import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketMapperFacade
 import com.github.radlance.kanbanboards.ticket.create.presentation.FormatTime
-import com.github.radlance.kanbanboards.ticket.create.presentation.HandleTicket
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketMapperFacade
+import com.github.radlance.kanbanboards.ticket.create.presentation.HandleAddTicket
+import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,23 +21,23 @@ import dagger.hilt.components.SingletonComponent
 interface TicketModule {
 
     @Binds
-    fun provideTicketRepository(ticketRepository: RemoteTicketRepository): TicketRepository
+    fun provideTicketRepository(ticketRepository: RemoteCreateTicketRepository): CreateTicketRepository
 
     @Binds
     fun provideBoardMembersResultMapper(
         boardMembersResultMapper: BoardMembersResultMapper
-    ): BoardMembersResult.Mapper<BoardMembersUiState>
+    ): BoardMembersResult.Mapper<BoardMembersUiStateCreate>
 
     @Binds
-    fun provideHandleTicket(handleTicket: HandleTicket.Base): HandleTicket
+    fun provideHandleAddTicket(handleAddTicket: HandleAddTicket.Base): HandleAddTicket
 
     @Binds
     fun provideCreateTicketMapper(
         createTicketMapper: CreateTicketMapper
-    ): UnitResult.Mapper<CreateTicketUiState>
+    ): UnitResult.Mapper<TicketUiState>
 
     @Binds
-    fun provideTicketMapperFacade(ticketMapperFacade: TicketMapperFacade.Base): TicketMapperFacade
+    fun provideTicketMapperFacade(createTicketMapperFacade: CreateTicketMapperFacade.Base): CreateTicketMapperFacade
 
     @Binds
     fun provideFormatTime(formatTime: FormatTime.Base): FormatTime

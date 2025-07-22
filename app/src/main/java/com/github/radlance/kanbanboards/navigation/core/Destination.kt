@@ -39,8 +39,8 @@ data class CreateTicket(val boardId: String): Destination
 
 @Keep
 @Serializable
-object TicketInfo : Destination
+data class TicketInfo(val ticketId: String, val boardId: String) : Destination
 
 @Keep
 @Serializable
-object EditTicket : Destination
+data class EditTicket(val boardId: String) : Destination

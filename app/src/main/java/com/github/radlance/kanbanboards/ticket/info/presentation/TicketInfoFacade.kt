@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.ticket.info.presentation
 
 import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.board.presentation.ColumnUi
+import com.github.radlance.kanbanboards.ticket.edit.presentation.TicketInfoEditUiState
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import javax.inject.Inject
 
@@ -11,9 +12,12 @@ interface TicketInfoFacade {
 
     fun mapColumnUi(columnUi: ColumnUi): Column
 
+    fun mapTicketInfoUiState(ticketInfoUiState: TicketInfoUiState): TicketInfoEditUiState
+
     class Base @Inject constructor(
         private val ticketInfoMapper: TicketInfoResult.Mapper<TicketInfoUiState>,
         private val columnUiMapper: ColumnUi.Mapper<Column>,
+        private val ticketInfoUiMapper: TicketInfoUiState.Mapper<TicketInfoEditUiState>
     ) : TicketInfoFacade {
 
         override fun mapTicketInfoResult(ticketInfoResult: TicketInfoResult): TicketInfoUiState {
@@ -22,6 +26,10 @@ interface TicketInfoFacade {
 
         override fun mapColumnUi(columnUi: ColumnUi): Column {
             return columnUi.map(columnUiMapper)
+        }
+
+        override fun mapTicketInfoUiState(ticketInfoUiState: TicketInfoUiState): TicketInfoEditUiState {
+            return ticketInfoUiState.map(ticketInfoUiMapper)
         }
     }
 }

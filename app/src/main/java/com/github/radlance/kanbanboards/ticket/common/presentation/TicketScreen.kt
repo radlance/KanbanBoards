@@ -1,5 +1,6 @@
-package com.github.radlance.kanbanboards.ticket.create.presentation
+package com.github.radlance.kanbanboards.ticket.common.presentation
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -54,25 +55,23 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
+import com.github.radlance.kanbanboards.ticket.create.presentation.TicketColor
+import com.github.radlance.kanbanboards.ticket.create.presentation.TicketColorsRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateTicketContent(
+fun TicketScreen(
     boardId: String,
     members: List<User>,
     ticketActions: TicketActions,
     navigateUp: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedColor: String = "",
+    initialTitleFieldValue: String = "",
+    initialSelectedAssigneeId: String = "",
+    initialDescriptionFieldValue: String = "",
+    @StringRes buttonLabelId: Int
 ) {
-    var selectedColorIndex by rememberSaveable { mutableIntStateOf(0) }
-    var titleFieldValue by rememberSaveable { mutableStateOf("") }
-    var selectedAssigneeId by rememberSaveable { mutableStateOf("") }
-    var descriptionFieldValue by rememberSaveable { mutableStateOf("") }
-
-    var expanded by rememberSaveable { mutableStateOf(false) }
-    val createTicketUiState by ticketActions.createTicketUiState.collectAsStateWithLifecycle()
-    val scrollState = rememberScrollState()
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     val ticketColors = remember {
         listOf(
@@ -82,8 +81,22 @@ fun CreateTicketContent(
             TicketColor.Red,
             TicketColor.Green,
             TicketColor.Blue
+        ).map { it.hex() }
+    }
+
+    var selectedColorIndex by rememberSaveable {
+        mutableIntStateOf(
+            if (selectedColor.isEmpty()) 0 else ticketColors.indexOf(selectedColor)
         )
     }
+    var titleFieldValue by rememberSaveable { mutableStateOf(initialTitleFieldValue) }
+    var selectedAssigneeId by rememberSaveable { mutableStateOf(initialSelectedAssigneeId) }
+    var descriptionFieldValue by rememberSaveable { mutableStateOf(initialDescriptionFieldValue) }
+
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val createTicketUiState by ticketActions.ticketUiState.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     if (expanded) {
         var searchFieldValue by rememberSaveable { mutableStateOf("") }
@@ -235,10 +248,10 @@ fun CreateTicketContent(
             Button(
                 onClick = {
                     keyboardController?.hide()
-                    ticketActions.createTicket(
+                    ticketActions.action(
                         boardId = boardId,
                         title = titleFieldValue,
-                        color = ticketColors[selectedColorIndex].hex(),
+                        color = ticketColors[selectedColorIndex],
                         description = descriptionFieldValue,
                         assigneeId = members.find { it.id == selectedAssigneeId }?.id ?: ""
                     )
@@ -246,7 +259,7 @@ fun CreateTicketContent(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = titleFieldValue.length >= 3 && createTicketUiState.buttonEnabled()
             ) {
-                Text(text = stringResource(R.string.create_ticket))
+                Text(text = stringResource(buttonLabelId))
             }
         }
         Spacer(Modifier.height(10.dp))

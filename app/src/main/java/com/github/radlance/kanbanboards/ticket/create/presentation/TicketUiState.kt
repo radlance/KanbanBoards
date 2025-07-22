@@ -6,13 +6,13 @@ import com.github.radlance.kanbanboards.common.presentation.AbstractUnitUiState
 import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.common.presentation.UnitUiState
 
-interface CreateTicketUiState : UnitUiState {
+interface TicketUiState : UnitUiState {
 
     @Composable
     fun Show(navigateUp: () -> Unit)
 
     object Success : AbstractUnitUiState(hasSize = false, buttonEnabled = true),
-        CreateTicketUiState {
+        TicketUiState {
 
         @Composable
         override fun Show(navigateUp: () -> Unit) {
@@ -22,21 +22,21 @@ interface CreateTicketUiState : UnitUiState {
 
     data class Error(
         private val message: String
-    ) : AbstractUnitUiState(hasSize = true, buttonEnabled = true), CreateTicketUiState {
+    ) : AbstractUnitUiState(hasSize = true, buttonEnabled = true), TicketUiState {
 
         @Composable
         override fun Show(navigateUp: () -> Unit) = ErrorMessage(message)
     }
 
     object Loading : AbstractUnitUiState(hasSize = true, buttonEnabled = false),
-        CreateTicketUiState {
+        TicketUiState {
 
         @Composable
         override fun Show(navigateUp: () -> Unit) = CircularProgressIndicator()
     }
 
     object Initial : AbstractUnitUiState(hasSize = false, buttonEnabled = true),
-        CreateTicketUiState {
+        TicketUiState {
 
         @Composable
         override fun Show(navigateUp: () -> Unit) = Unit

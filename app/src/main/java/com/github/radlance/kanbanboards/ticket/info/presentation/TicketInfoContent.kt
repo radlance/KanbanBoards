@@ -20,17 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.board.domain.Ticket
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
-import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
-import java.time.LocalDateTime
 
 @Composable
 fun TicketInfoContent(
@@ -86,23 +81,5 @@ fun TicketInfoContent(
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun TicketInfoContentPreview() {
-    KanbanBoardsTheme {
-        TicketInfoContent(
-            ticket = Ticket(
-                id = "123",
-                colorHex = "#FF0000",
-                name = LoremIpsum(words = 5).values.joinToString(),
-                LoremIpsum(words = 20).values.joinToString(),
-                assignedMemberName = "person1",
-                column = Column.InProgress,
-                creationDate = LocalDateTime.of(2024, 1, 1, 1, 1)
-            )
-        )
     }
 }

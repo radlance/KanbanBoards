@@ -61,6 +61,7 @@ interface TicketRemoteDataSource {
                                 name = title,
                                 description = description,
                                 assignedMemberName = userEntity?.name ?: "",
+                                assignedMemberId = entity.assignee,
                                 column = column,
                                 creationDate = LocalDateTime.parse(creationDate)
                             )
@@ -98,6 +99,7 @@ interface TicketRemoteDataSource {
                                         name = title,
                                         description = description,
                                         assignedMemberName = userEntity?.name ?: "",
+                                        assignedMemberId = entity.assignee,
                                         column = column,
                                         creationDate = LocalDateTime.parse(creationDate)
                                     )

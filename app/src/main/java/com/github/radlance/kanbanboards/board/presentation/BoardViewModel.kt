@@ -21,7 +21,7 @@ class BoardViewModel @Inject constructor(
 
     val boardUiState = handleBoard.boardUiState
 
-    override val ticketUiState = handleBoard.ticketUiState
+    override val ticketBoardUiState = handleBoard.ticketBoardUiState
 
     fun fetchBoard(boardInfo: BoardInfo) {
         boardRepository.board(boardInfo.id).map {
@@ -46,7 +46,7 @@ class BoardViewModel @Inject constructor(
 
 interface BoardTicketActions {
 
-    val ticketUiState: StateFlow<TicketUiState>
+    val ticketBoardUiState: StateFlow<TicketBoardUiState>
 
     fun fetchTickets(boardId: String)
 

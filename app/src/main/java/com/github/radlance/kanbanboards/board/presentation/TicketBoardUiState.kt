@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 
-interface TicketUiState {
+interface TicketBoardUiState {
 
     @Composable
     fun Show(
@@ -16,7 +16,7 @@ interface TicketUiState {
         modifier: Modifier = Modifier
     )
 
-    data class Success(private val tickets: List<TicketUi>) : TicketUiState {
+    data class Success(private val tickets: List<TicketUi>) : TicketBoardUiState {
 
         @Composable
         override fun Show(
@@ -33,7 +33,7 @@ interface TicketUiState {
         }
     }
 
-    data class Error(private val message: String) : TicketUiState {
+    data class Error(private val message: String) : TicketBoardUiState {
 
         @Composable
         override fun Show(
@@ -51,7 +51,7 @@ interface TicketUiState {
         }
     }
 
-    object Loading : TicketUiState {
+    object Loading : TicketBoardUiState {
 
         @Composable
         override fun Show(

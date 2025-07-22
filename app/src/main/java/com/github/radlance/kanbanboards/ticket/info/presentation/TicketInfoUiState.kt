@@ -11,16 +11,26 @@ import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
 interface TicketInfoUiState {
 
+    fun <T: Any> map(mapper: Mapper<T>): T
+
+    interface Mapper<T: Any> {
+
+        fun mapSuccess(ticket: Ticket): T
+
+        fun mapError(message: String): T
+
+        fun mapLoading(): T
+    }
+
     @Composable
-    fun Show(
-        navigateUp: () -> Unit,
-        modifier: Modifier = Modifier
-    )
+    fun Show(modifier: Modifier = Modifier)
 
     data class Success(private val ticket: Ticket) : TicketInfoUiState {
 
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapSuccess(ticket)
+
         @Composable
-        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
+        override fun Show(modifier: Modifier) {
 
             TicketInfoContent(ticket = ticket, modifier = modifier)
         }
@@ -28,8 +38,10 @@ interface TicketInfoUiState {
 
     data class Error(private val message: String) : TicketInfoUiState {
 
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapError(message)
+
         @Composable
-        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
+        override fun Show(modifier: Modifier) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 ErrorMessage(message)
             }
@@ -38,8 +50,10 @@ interface TicketInfoUiState {
 
     object Loading : TicketInfoUiState {
 
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapLoading()
+
         @Composable
-        override fun Show(navigateUp: () -> Unit, modifier: Modifier) {
+        override fun Show(modifier: Modifier) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }

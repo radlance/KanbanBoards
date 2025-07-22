@@ -1,0 +1,54 @@
+package com.github.radlance.kanbanboards.ticket.create.presentation
+
+import com.github.radlance.kanbanboards.common.presentation.RunAsync
+import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketViewModel
+import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
+import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
+
+@HiltViewModel
+class CreateTicketViewModel @Inject constructor(
+    private val createTicketRepository: CreateTicketRepository,
+    private val createTicketMapperFacade: CreateTicketMapperFacade,
+    private val handleTicket: HandleAddTicket,
+    private val formatTime: FormatTime,
+    runAsync: RunAsync
+) : BaseTicketViewModel(handleTicket, runAsync) {
+
+    val boardMembersUiState = handleTicket.boardMembersUiState
+
+    override fun fetchBoardMembers(boardId: String, ownerId: String) {
+        createTicketRepository.boardMembers(boardId, ownerId).map {
+            createTicketMapperFacade.mapBoardMembersResult(it)
+        }.onEach {
+            handleTicket.saveBoardMembersUiState(it)
+        }.launchInViewModel()
+    }
+
+    override fun action(
+        boardId: String,
+        title: String,
+        color: String,
+        description: String,
+        assigneeId: String
+    ) {
+
+        handleTicket.saveTicketUiState(TicketUiState.Loading)
+
+        val newTicket = NewTicket(
+            boardId = boardId,
+            colorHex = color,
+            name = title,
+            description = description,
+            assignedMemberId = assigneeId,
+            creationDate = formatTime.now()
+        )
+
+        handle(background = { createTicketRepository.createTicket(newTicket) }) {
+            handleTicket.saveTicketUiState(createTicketMapperFacade.mapCreateTicketResult(it))
+        }
+    }
+}

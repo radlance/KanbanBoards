@@ -30,7 +30,7 @@ import androidx.core.graphics.toColorInt
 
 @Composable
 fun TicketColorsRow(
-    colors: List<TicketColor>,
+    colors: List<String>,
     selectedColorIndex: Int,
     onColorClick: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -48,7 +48,7 @@ fun TicketColorsRow(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(Color(color.hex().toColorInt()))
+                    .background(Color(color.toColorInt()))
                     .border(
                         width = 1.dp,
                         color = MaterialTheme.colorScheme.secondary,

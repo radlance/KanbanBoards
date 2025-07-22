@@ -11,14 +11,14 @@ interface HandleBoard {
 
     fun saveBoardUiState(boardUiState: BoardUiState)
 
-    val ticketUiState: StateFlow<TicketUiState>
+    val ticketBoardUiState: StateFlow<TicketBoardUiState>
 
-    fun saveTicketUiState(ticketUiState: TicketUiState)
+    fun saveTicketUiState(ticketBoardUiState: TicketBoardUiState)
 
     class Base @Inject constructor() : HandleBoard {
 
         private val boardUiStateMutable = MutableStateFlow<BoardUiState>(BoardUiState.Loading)
-        private val ticketUiStateMutable = MutableStateFlow<TicketUiState>(TicketUiState.Loading)
+        private val ticketBoardUiStateMutable = MutableStateFlow<TicketBoardUiState>(TicketBoardUiState.Loading)
 
         override val boardUiState get() = boardUiStateMutable.asStateFlow()
 
@@ -26,11 +26,11 @@ interface HandleBoard {
             boardUiStateMutable.value = boardUiState
         }
 
-        override val ticketUiState get() = ticketUiStateMutable.asStateFlow()
+        override val ticketBoardUiState get() = ticketBoardUiStateMutable.asStateFlow()
 
 
-        override fun saveTicketUiState(ticketUiState: TicketUiState) {
-            ticketUiStateMutable.value = ticketUiState
+        override fun saveTicketUiState(ticketBoardUiState: TicketBoardUiState) {
+            ticketBoardUiStateMutable.value = ticketBoardUiState
         }
     }
 }

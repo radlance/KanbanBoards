@@ -40,7 +40,7 @@ interface BoardUiState {
     fun Show(
         navigateUp: () -> Unit,
         navigateToCreateTicket: (String, String) -> Unit,
-        navigateToTicketInfo: (TicketUi) -> Unit,
+        navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
         boardTicketActions: BoardTicketActions,
         modifier: Modifier = Modifier
     )
@@ -52,7 +52,7 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
-            navigateToTicketInfo: (TicketUi) -> Unit,
+            navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -63,7 +63,7 @@ interface BoardUiState {
                 fetchedTickets = true
             }
 
-            val ticketUiState by boardTicketActions.ticketUiState.collectAsStateWithLifecycle()
+            val ticketUiState by boardTicketActions.ticketBoardUiState.collectAsStateWithLifecycle()
 
             Scaffold(
                 floatingActionButton = {
@@ -107,7 +107,9 @@ interface BoardUiState {
                         onMove = { ticketId, columnId ->
                             boardTicketActions.moveTicket(ticketId, columnId)
                         },
-                        navigateToTicketInfo = navigateToTicketInfo,
+                        navigateToTicketInfo = { ticketUi ->
+                            navigateToTicketInfo(ticketUi, boardInfo.id, boardInfo.owner)
+                        },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -121,7 +123,7 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
-            navigateToTicketInfo: (TicketUi) -> Unit,
+            navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -141,7 +143,7 @@ interface BoardUiState {
         override fun Show(
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
-            navigateToTicketInfo: (TicketUi) -> Unit,
+            navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) = CircularProgressIndicator()

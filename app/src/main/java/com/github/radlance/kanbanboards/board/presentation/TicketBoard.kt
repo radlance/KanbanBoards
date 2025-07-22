@@ -77,6 +77,7 @@ private fun TicketBoardPreview() {
                     id = "id",
                     name = "test another ticket",
                     assignedMemberName = "some member",
+                    assignedMemberId = "1",
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     column = ColumnUi.Todo,
                     description = ""
@@ -87,6 +88,7 @@ private fun TicketBoardPreview() {
                     id = "id2",
                     name = "test ticket",
                     assignedMemberName = "some member",
+                    assignedMemberId = "1",
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     column = ColumnUi.InProgress,
                     description = ""
@@ -97,6 +99,7 @@ private fun TicketBoardPreview() {
                     id = "id3",
                     name = "done ticket",
                     assignedMemberName = "some member",
+                    assignedMemberId = "1",
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     column = ColumnUi.Done,
                     description = ""

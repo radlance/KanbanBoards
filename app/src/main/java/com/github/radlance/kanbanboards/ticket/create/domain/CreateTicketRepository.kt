@@ -1,11 +1,9 @@
 package com.github.radlance.kanbanboards.ticket.create.domain
 
 import com.github.radlance.kanbanboards.common.domain.UnitResult
-import kotlinx.coroutines.flow.Flow
+import com.github.radlance.kanbanboards.ticket.common.domain.TicketRepository
 
-interface TicketRepository {
-
-    fun boardMembers(boardId: String, ownerId: String): Flow<BoardMembersResult>
+interface CreateTicketRepository : TicketRepository {
 
     suspend fun createTicket(newTicket: NewTicket): UnitResult
 }

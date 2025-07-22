@@ -9,20 +9,20 @@ interface BoardMapperFacade {
 
     fun mapBoardResult(result: BoardResult): BoardUiState
 
-    fun mapTicketResult(result: TicketResult): TicketUiState
+    fun mapTicketResult(result: TicketResult): TicketBoardUiState
 
     fun mapColumnUi(column: ColumnUi): Column
 
     class Base @Inject constructor(
         private val boardResultMapper: BoardResult.Mapper<BoardUiState>,
-        private val ticketResultMapper: TicketResult.Mapper<TicketUiState>,
+        private val ticketResultMapper: TicketResult.Mapper<TicketBoardUiState>,
         private val columnUiMapper: ColumnUi.Mapper<Column>
     ) : BoardMapperFacade {
         override fun mapBoardResult(result: BoardResult): BoardUiState {
             return result.map(boardResultMapper)
         }
 
-        override fun mapTicketResult(result: TicketResult): TicketUiState {
+        override fun mapTicketResult(result: TicketResult): TicketBoardUiState {
             return result.map(ticketResultMapper)
         }
 

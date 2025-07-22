@@ -8,6 +8,7 @@ data class Ticket(
     val name: String,
     val description: String,
     val assignedMemberName: String,
+    val assignedMemberId: String,
     val column: Column,
     val creationDate: LocalDateTime
 )

@@ -5,25 +5,16 @@ import com.github.radlance.kanbanboards.board.data.BoardRemoteDataSource
 import com.github.radlance.kanbanboards.board.data.TicketRemoteDataSource
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.domain.UnitResult
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
+import com.github.radlance.kanbanboards.ticket.common.data.BaseTicketRepository
+import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
-import com.github.radlance.kanbanboards.ticket.create.domain.TicketRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class RemoteTicketRepository @Inject constructor(
-    private val boardRemoteDataSource: BoardRemoteDataSource,
+class RemoteCreateTicketRepository @Inject constructor(
     private val ticketRemoteDataSource: TicketRemoteDataSource,
-    private val manageResource: ManageResource
-) : TicketRepository {
-
-    override fun boardMembers(boardId: String, ownerId: String): Flow<BoardMembersResult> {
-        return boardRemoteDataSource.boardMembers(boardId, ownerId).map {
-            BoardMembersResult.Success(it)
-        }.catch { e -> BoardMembersResult.Error(e.message!!) }
-    }
+    private val manageResource: ManageResource,
+    boardRemoteDataSource: BoardRemoteDataSource
+) : BaseTicketRepository(boardRemoteDataSource), CreateTicketRepository {
 
     override suspend fun createTicket(newTicket: NewTicket): UnitResult {
         return try {

@@ -104,6 +104,7 @@ private fun TicketColumnPreview() {
                     id = "id",
                     name = "test another ticket",
                     assignedMemberName = "some member",
+                    assignedMemberId = "1",
                     column = ColumnUi.Todo,
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     description = ""
@@ -114,6 +115,7 @@ private fun TicketColumnPreview() {
                     id = "id2",
                     name = "test ticket",
                     assignedMemberName = "some member",
+                    assignedMemberId = "1",
                     column = ColumnUi.Todo,
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     description = ""
@@ -124,6 +126,7 @@ private fun TicketColumnPreview() {
                     id = "id3",
                     name = "done ticket",
                     assignedMemberName = "some member",
+                    assignedMemberId = "1",
                     column = ColumnUi.Todo,
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     description = ""

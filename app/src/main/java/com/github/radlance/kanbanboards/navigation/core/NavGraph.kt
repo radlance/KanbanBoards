@@ -1,11 +1,7 @@
 package com.github.radlance.kanbanboards.navigation.core
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,7 +18,9 @@ import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardView
 import com.github.radlance.kanbanboards.createboard.presentation.CreateBoardsScreen
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketScreen
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketViewModel
+import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketViewModel
+import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketScreen
+import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketViewModel
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoScreen
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoViewModel
 
@@ -32,9 +30,10 @@ fun NavGraph(
     modifier: Modifier = Modifier,
     navigationViewModel: NavigationViewModel = hiltViewModel(),
     boardViewModel: BoardViewModel = hiltViewModel(),
-    ticketViewModel: TicketViewModel = hiltViewModel(),
+    createTicketViewModel: CreateTicketViewModel = hiltViewModel(),
     createBoardViewModel: CreateBoardViewModel = hiltViewModel(),
-    ticketInfoViewModel: TicketInfoViewModel = hiltViewModel()
+    ticketInfoViewModel: TicketInfoViewModel = hiltViewModel(),
+    editTicketViewModel: EditTicketViewModel = hiltViewModel()
 ) {
 
     val authorized by navigationViewModel.authorized.collectAsStateWithLifecycle()
@@ -115,12 +114,13 @@ fun NavGraph(
                 viewModel = boardViewModel,
                 navigateUp = { navHostController.navigate(Boards) { popUpTo<Boards>() } },
                 navigateToCreateTicket = { boardId, ownerId ->
-                    ticketViewModel.fetchBoardMembers(boardId, ownerId)
+                    createTicketViewModel.fetchBoardMembers(boardId, ownerId)
                     navHostController.navigate(CreateTicket(boardId))
                 },
-                navigateToTicketInfo = {
-                    ticketInfoViewModel.fetchTicket(it)
-                    navHostController.navigate(TicketInfo)
+                navigateToTicketInfo = { ticketUi, boardId, ownerId ->
+                    editTicketViewModel.fetchBoardMembers(boardId, ownerId)
+                    ticketInfoViewModel.fetchTicket(ticketUi)
+                    navHostController.navigate(TicketInfo(ticketUi.id, boardId))
                 }
             )
         }
@@ -132,22 +132,30 @@ fun NavGraph(
             CreateTicketScreen(
                 navigateUp = navHostController::navigateUp,
                 boardId = args.boardId,
-                viewModel = ticketViewModel
+                viewModel = createTicketViewModel
             )
         }
 
         composable<TicketInfo> {
+            val args = it.toRoute<TicketInfo>()
+
             TicketInfoScreen(
                 navigateUp = navHostController::navigateUp,
-                navigateToEditTicket = { navHostController.navigate(EditTicket) },
+                navigateToEditTicket = {
+                    editTicketViewModel.fetchTicket(args.ticketId)
+                    navHostController.navigate(EditTicket(args.boardId))
+                },
                 viewModel = ticketInfoViewModel
             )
         }
 
         composable<EditTicket> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "Edit ticket screen")
-            }
+            val args = it.toRoute<EditTicket>()
+            EditTicketScreen(
+                navigateUp = navHostController::navigateUp,
+                boardId = args.boardId,
+                viewModel = editTicketViewModel
+            )
         }
     }
 }

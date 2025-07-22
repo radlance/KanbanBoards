@@ -33,6 +33,7 @@ class TicketInfoViewModel @Inject constructor(
                     name = name,
                     description = description,
                     assignedMemberName = assignedMemberName,
+                    assignedMemberId = assignedMemberId,
                     column = facade.mapColumnUi(column),
                     creationDate = creationDate.toJavaLocalDateTime()
                 )

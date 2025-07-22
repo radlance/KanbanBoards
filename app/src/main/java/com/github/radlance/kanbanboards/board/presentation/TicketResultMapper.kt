@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class TicketResultMapper @Inject constructor(
     private val mapper: Column.Mapper<ColumnUi>
-) : TicketResult.Mapper<TicketUiState> {
+) : TicketResult.Mapper<TicketBoardUiState> {
 
-    override fun mapSuccess(tickets: List<Ticket>): TicketUiState = TicketUiState.Success(
+    override fun mapSuccess(tickets: List<Ticket>): TicketBoardUiState = TicketBoardUiState.Success(
         tickets.map { ticket ->
             with(ticket) {
                 TicketUi(
@@ -19,6 +19,7 @@ class TicketResultMapper @Inject constructor(
                     name = name,
                     description = description,
                     assignedMemberName = assignedMemberName,
+                    assignedMemberId = assignedMemberId,
                     column = column.map(mapper),
                     creationDate = creationDate.toKotlinLocalDateTime()
                 )
@@ -26,5 +27,5 @@ class TicketResultMapper @Inject constructor(
         }
     )
 
-    override fun mapError(message: String): TicketUiState = TicketUiState.Error(message)
+    override fun mapError(message: String): TicketBoardUiState = TicketBoardUiState.Error(message)
 }
