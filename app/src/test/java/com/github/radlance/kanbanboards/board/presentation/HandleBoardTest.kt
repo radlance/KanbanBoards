@@ -45,14 +45,14 @@ class HandleBoardTest {
 
     @Test
     fun test_ticket_ui_state() {
-        assertEquals(TicketUiState.Loading, handleBoard.ticketUiState.value)
-        handleBoard.saveTicketUiState(TicketUiState.Error(message = "ticket error"))
+        assertEquals(TicketBoardUiState.Loading, handleBoard.ticketBoardUiState.value)
+        handleBoard.saveTicketUiState(TicketBoardUiState.Error(message = "ticket error"))
         assertEquals(
-            TicketUiState.Error(message = "ticket error"),
-            handleBoard.ticketUiState.value
+            TicketBoardUiState.Error(message = "ticket error"),
+            handleBoard.ticketBoardUiState.value
         )
         handleBoard.saveTicketUiState(
-            TicketUiState.Success(
+            TicketBoardUiState.Success(
                 tickets = listOf(
                     TicketUi(
                         id = "id1",
@@ -61,13 +61,14 @@ class HandleBoardTest {
                         description = "description1",
                         assignedMemberName = "user",
                         column = ColumnUi.InProgress,
-                        creationDate = LocalDateTime(2024, 1, 10, 5, 50)
+                        creationDate = LocalDateTime(2024, 1, 10, 5, 50),
+                        assignedMemberId = "assigned member id1"
                     )
                 )
             )
         )
         assertEquals(
-            TicketUiState.Success(
+            TicketBoardUiState.Success(
                 tickets = listOf(
                     TicketUi(
                         id = "id1",
@@ -76,11 +77,12 @@ class HandleBoardTest {
                         description = "description1",
                         assignedMemberName = "user",
                         column = ColumnUi.InProgress,
-                        creationDate = LocalDateTime(2024, 1, 10, 5, 50)
+                        creationDate = LocalDateTime(2024, 1, 10, 5, 50),
+                        assignedMemberId = "assigned member id1"
                     )
                 )
             ),
-            handleBoard.ticketUiState.value
+            handleBoard.ticketBoardUiState.value
         )
     }
 }

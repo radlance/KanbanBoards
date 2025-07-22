@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-interface HandleAddTicket : HandleTicket {
+interface HandleCreateTicket : HandleTicket {
 
     val boardMembersUiState: StateFlow<BoardMembersUiStateCreate>
 
     fun saveBoardMembersUiState(boardMembersUiStateCreate: BoardMembersUiStateCreate)
 
-    class Base @Inject constructor() : BaseHandleTicket(), HandleAddTicket {
+    class Base @Inject constructor() : BaseHandleTicket(), HandleCreateTicket {
 
         private val boardMembersUiStateMutable = MutableStateFlow<BoardMembersUiStateCreate>(
             BoardMembersUiStateCreate.Loading

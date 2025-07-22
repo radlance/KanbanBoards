@@ -38,7 +38,8 @@ class TicketInfoRepositoryTest : BaseTest() {
                     description = "initial description",
                     assignedMemberName = "initial assignee",
                     column = Column.Todo,
-                    creationDate = LocalDateTime.of(2025, 4, 4, 4, 4)
+                    creationDate = LocalDateTime.of(2025, 4, 4, 4, 4),
+                    assignedMemberId = "initial assigned member id"
                 )
             ),
             ticket.first()

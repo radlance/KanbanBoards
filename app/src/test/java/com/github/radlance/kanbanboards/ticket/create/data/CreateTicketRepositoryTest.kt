@@ -4,8 +4,8 @@ import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
+import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
-import com.github.radlance.kanbanboards.ticket.create.domain.TicketRepository
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
@@ -14,13 +14,13 @@ import org.junit.Before
 import org.junit.Test
 import java.time.LocalDateTime
 
-class TicketRepositoryTest : BaseTest() {
+class CreateTicketRepositoryTest : BaseTest() {
 
     private lateinit var boardRemoteDataSource: TestBoardRemoteDataSource
     private lateinit var ticketRemoteDataSource: TestTicketRemoteDataSource
     private lateinit var manageResource: TestManageResource
 
-    private lateinit var repository: TicketRepository
+    private lateinit var repository: CreateTicketRepository
 
     @Before
     fun setup() {
@@ -28,7 +28,7 @@ class TicketRepositoryTest : BaseTest() {
         ticketRemoteDataSource = TestTicketRemoteDataSource()
         manageResource = TestManageResource()
 
-        repository = RemoteTicketRepository(
+        repository = RemoteCreateTicketRepository(
             boardRemoteDataSource = boardRemoteDataSource,
             ticketRemoteDataSource = ticketRemoteDataSource,
             manageResource = manageResource

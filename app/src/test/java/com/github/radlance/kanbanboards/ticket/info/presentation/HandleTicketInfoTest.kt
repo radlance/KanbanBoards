@@ -28,7 +28,8 @@ class HandleTicketInfoTest {
                     description = "testDescription",
                     assignedMemberName = "testAssignedMemberName",
                     column = Column.Todo,
-                    creationDate = LocalDateTime.of(2025, 5, 5, 5, 5)
+                    creationDate = LocalDateTime.of(2025, 5, 5, 5, 5),
+                    assignedMemberId = "testAssignedMemberId"
                 )
             )
         )
@@ -41,7 +42,8 @@ class HandleTicketInfoTest {
                     description = "testDescription",
                     assignedMemberName = "testAssignedMemberName",
                     column = Column.Todo,
-                    creationDate = LocalDateTime.of(2025, 5, 5, 5, 5)
+                    creationDate = LocalDateTime.of(2025, 5, 5, 5, 5),
+                    assignedMemberId = "testAssignedMemberId"
                 )
             ),
             handle.ticketInfoUiState.value

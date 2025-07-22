@@ -12,6 +12,7 @@ import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
+import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -182,7 +183,8 @@ abstract class BaseTest {
                 description = "initial description",
                 assignedMemberName = "initial assignee",
                 column = Column.Todo,
-                creationDate = LocalDateTime.of(2025, 4, 4, 4, 4)
+                creationDate = LocalDateTime.of(2025, 4, 4, 4, 4),
+                assignedMemberId = "initial assigned member id"
             )
         )
         private var ticketException: Exception? = null
@@ -223,6 +225,10 @@ abstract class BaseTest {
         override suspend fun createTicket(newTicket: NewTicket) {
             createTicketCalledList.add(newTicket)
             createTicketException?.let { throw it }
+        }
+
+        override suspend fun editTicket(ticket: EditTicket) {
+            TODO("Not yet implemented")
         }
     }
 }

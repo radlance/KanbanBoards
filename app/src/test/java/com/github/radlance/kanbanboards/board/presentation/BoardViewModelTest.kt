@@ -45,7 +45,7 @@ class BoardViewModelTest : BaseTest() {
         assertEquals(1, handle.boardUiStateCalledCount)
         assertEquals(0, handle.saveBoardUiStateCalledList.size)
 
-        assertEquals(TicketUiState.Loading, viewModel.ticketUiState.value)
+        assertEquals(TicketBoardUiState.Loading, viewModel.ticketBoardUiState.value)
         assertEquals(1, handle.ticketUiStateCalledCount)
         assertEquals(0, handle.saveTicketUiStateCalledList.size)
     }
@@ -89,14 +89,14 @@ class BoardViewModelTest : BaseTest() {
         repository.makeExpectedTicketResult(TicketResult.Error(message = "error loading tickets"))
         viewModel.fetchTickets(boardId = "test board id")
         assertEquals(
-            TicketUiState.Error(message = "error loading tickets"),
-            viewModel.ticketUiState.value
+            TicketBoardUiState.Error(message = "error loading tickets"),
+            viewModel.ticketBoardUiState.value
         )
         assertEquals(1, repository.ticketsCalledList.size)
         assertEquals("test board id", repository.ticketsCalledList[0])
         assertEquals(1, handle.saveTicketUiStateCalledList.size)
         assertEquals(
-            TicketUiState.Error(message = "error loading tickets"),
+            TicketBoardUiState.Error(message = "error loading tickets"),
             handle.saveTicketUiStateCalledList[0]
         )
 
@@ -110,7 +110,8 @@ class BoardViewModelTest : BaseTest() {
                         assignedMemberName = "test user",
                         description = "test description",
                         column = Column.Todo,
-                        creationDate = LocalDateTime.of(2024, 6, 18, 6, 30)
+                        creationDate = LocalDateTime.of(2024, 6, 18, 6, 30),
+                        assignedMemberId = "test assigned member id"
                     ),
 
                     Ticket(
@@ -120,7 +121,8 @@ class BoardViewModelTest : BaseTest() {
                         description = "test",
                         assignedMemberName = "",
                         column = Column.InProgress,
-                        creationDate = LocalDateTime.of(2024, 5, 18, 6, 30)
+                        creationDate = LocalDateTime.of(2024, 5, 18, 6, 30),
+                        assignedMemberId = "test assigned member id2"
                     ),
 
                     Ticket(
@@ -130,13 +132,14 @@ class BoardViewModelTest : BaseTest() {
                         description = "",
                         assignedMemberName = "another user",
                         column = Column.Done,
-                        creationDate = LocalDateTime.of(2024, 4, 18, 6, 30)
+                        creationDate = LocalDateTime.of(2024, 4, 18, 6, 30),
+                        assignedMemberId = "test assigned member id3"
                     )
                 )
             )
         )
         assertEquals(
-            TicketUiState.Success(
+            TicketBoardUiState.Success(
                 listOf(
                     TicketUi(
                         id = "test ticket id",
@@ -145,7 +148,8 @@ class BoardViewModelTest : BaseTest() {
                         description = "test description",
                         assignedMemberName = "test user",
                         column = ColumnUi.Todo,
-                        creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30)
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30),
+                        assignedMemberId = "test assigned member id"
                     ),
 
                     TicketUi(
@@ -155,7 +159,8 @@ class BoardViewModelTest : BaseTest() {
                         description = "test",
                         assignedMemberName = "",
                         column = ColumnUi.InProgress,
-                        creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30)
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30),
+                        assignedMemberId = "test assigned member id2"
                     ),
 
                     TicketUi(
@@ -165,16 +170,17 @@ class BoardViewModelTest : BaseTest() {
                         description = "",
                         assignedMemberName = "another user",
                         column = ColumnUi.Done,
-                        creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30)
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30),
+                        assignedMemberId = "test assigned member id3"
                     )
                 )
             ),
-            viewModel.ticketUiState.value
+            viewModel.ticketBoardUiState.value
         )
         assertEquals(1, repository.ticketsCalledList.size)
         assertEquals(2, handle.saveTicketUiStateCalledList.size)
         assertEquals(
-            TicketUiState.Success(
+            TicketBoardUiState.Success(
                 listOf(
                     TicketUi(
                         id = "test ticket id",
@@ -183,7 +189,8 @@ class BoardViewModelTest : BaseTest() {
                         description = "test description",
                         assignedMemberName = "test user",
                         column = ColumnUi.Todo,
-                        creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30)
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30),
+                        assignedMemberId = "test assigned member id"
                     ),
 
                     TicketUi(
@@ -193,7 +200,8 @@ class BoardViewModelTest : BaseTest() {
                         description = "test",
                         assignedMemberName = "",
                         column = ColumnUi.InProgress,
-                        creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30)
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30),
+                        assignedMemberId = "test assigned member id2"
                     ),
 
                     TicketUi(
@@ -203,7 +211,8 @@ class BoardViewModelTest : BaseTest() {
                         description = "",
                         assignedMemberName = "another user",
                         column = ColumnUi.Done,
-                        creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30)
+                        creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30),
+                        assignedMemberId = "test assigned member id3"
                     )
                 )
             ),
@@ -270,9 +279,10 @@ class BoardViewModelTest : BaseTest() {
         var boardUiStateCalledCount = 0
         var saveBoardUiStateCalledList = mutableListOf<BoardUiState>()
 
-        private val ticketUiStateMutable = MutableStateFlow<TicketUiState>(TicketUiState.Loading)
+        private val ticketUiStateMutable =
+            MutableStateFlow<TicketBoardUiState>(TicketBoardUiState.Loading)
         var ticketUiStateCalledCount = 0
-        var saveTicketUiStateCalledList = mutableListOf<TicketUiState>()
+        var saveTicketUiStateCalledList = mutableListOf<TicketBoardUiState>()
 
         override val boardUiState: StateFlow<BoardUiState>
             get() {
@@ -285,15 +295,15 @@ class BoardViewModelTest : BaseTest() {
             this.boardUiStateMutable.value = boardUiState
         }
 
-        override val ticketUiState: StateFlow<TicketUiState>
+        override val ticketBoardUiState: StateFlow<TicketBoardUiState>
             get() {
-            ticketUiStateCalledCount++
+                ticketUiStateCalledCount++
                 return ticketUiStateMutable
-        }
+            }
 
-        override fun saveTicketUiState(ticketUiState: TicketUiState) {
-            saveTicketUiStateCalledList.add(ticketUiState)
-            this.ticketUiStateMutable.value = ticketUiState
+        override fun saveTicketUiState(ticketBoardUiState: TicketBoardUiState) {
+            saveTicketUiStateCalledList.add(ticketBoardUiState)
+            this.ticketUiStateMutable.value = ticketBoardUiState
         }
     }
 }

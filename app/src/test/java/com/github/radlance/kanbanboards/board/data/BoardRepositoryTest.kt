@@ -69,7 +69,8 @@ class BoardRepositoryTest : BaseTest() {
                     assignedMemberName = "member",
                     description = "ticketDescription",
                     column = Column.Todo,
-                    creationDate = LocalDateTime.of(2025, 7, 18, 6, 30)
+                    creationDate = LocalDateTime.of(2025, 7, 18, 6, 30),
+                    assignedMemberId = "assignedMemberId"
                 )
             )
         )
@@ -84,7 +85,8 @@ class BoardRepositoryTest : BaseTest() {
                         assignedMemberName = "member",
                         description = "ticketDescription",
                         column = Column.Todo,
-                        creationDate = LocalDateTime.of(2025, 7, 18, 6, 30)
+                        creationDate = LocalDateTime.of(2025, 7, 18, 6, 30),
+                        assignedMemberId = "assignedMemberId"
                     )
                 )
             ),

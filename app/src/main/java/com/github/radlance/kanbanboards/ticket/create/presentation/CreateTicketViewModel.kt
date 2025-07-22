@@ -15,7 +15,7 @@ import javax.inject.Inject
 class CreateTicketViewModel @Inject constructor(
     private val createTicketRepository: CreateTicketRepository,
     private val createTicketMapperFacade: CreateTicketMapperFacade,
-    private val handleTicket: HandleAddTicket,
+    private val handleTicket: HandleCreateTicket,
     private val formatTime: FormatTime,
     runAsync: RunAsync
 ) : BaseTicketViewModel(handleTicket, runAsync) {

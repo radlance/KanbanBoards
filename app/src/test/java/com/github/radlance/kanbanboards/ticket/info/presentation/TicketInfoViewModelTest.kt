@@ -12,6 +12,7 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.datetime.LocalDateTime
 import org.junit.Before
 import org.junit.Test
 
@@ -57,13 +58,14 @@ class TicketInfoViewModelTest : BaseTest() {
                 description = "test description",
                 assignedMemberName = "test assignee member name",
                 column = ColumnUi.InProgress,
-                creationDate = kotlinx.datetime.LocalDateTime(
+                creationDate = LocalDateTime(
                     year = 2025,
                     month = 1,
                     day = 1,
                     hour = 1,
                     minute = 1
-                )
+                ),
+                assignedMemberId = "test assigned member id"
             )
         )
         assertEquals(1, repository.ticketCalledList.size)
@@ -84,7 +86,8 @@ class TicketInfoViewModelTest : BaseTest() {
                         1,
                         1,
                         1
-                    )
+                    ),
+                    assignedMemberId = "test assigned member id"
                 )
             ),
             handle.saveTicketInfoUiStateCalledList[0]
@@ -108,7 +111,8 @@ class TicketInfoViewModelTest : BaseTest() {
                         2,
                         2,
                         2
-                    )
+                    ),
+                    assignedMemberId = "success assigned member id"
                 )
             )
         )
@@ -129,7 +133,8 @@ class TicketInfoViewModelTest : BaseTest() {
                         2,
                         2,
                         2
-                    )
+                    ),
+                    assignedMemberId = "success assigned member id"
                 )
             ),
             handle.saveTicketInfoUiStateCalledList[2]
@@ -147,7 +152,8 @@ class TicketInfoViewModelTest : BaseTest() {
                     description = "initial description",
                     assignedMemberName = "initial assignee member name",
                     column = Column.Todo,
-                    creationDate = java.time.LocalDateTime.of(2025, 1, 1, 1, 1)
+                    creationDate = java.time.LocalDateTime.of(2025, 1, 1, 1, 1),
+                    assignedMemberId = "initial assigned member id"
                 )
             )
         )

@@ -7,29 +7,29 @@ import org.junit.Test
 
 class HandleTicketTest {
 
-    private lateinit var handle: HandleTicket
+    private lateinit var handle: HandleCreateTicket
 
     @Before
     fun setup() {
-        handle = HandleTicket.Base()
+        handle = HandleCreateTicket.Base()
     }
 
     @Test
     fun test_create_ticket_state() {
-        assertEquals(CreateTicketUiState.Initial, handle.createTicketUiState.value)
-        handle.saveCreateTicketUiState(CreateTicketUiState.Loading)
-        assertEquals(CreateTicketUiState.Loading, handle.createTicketUiState.value)
-        handle.saveCreateTicketUiState(CreateTicketUiState.Success)
-        assertEquals(CreateTicketUiState.Success, handle.createTicketUiState.value)
-        handle.saveCreateTicketUiState(CreateTicketUiState.Error("error message"))
-        assertEquals(CreateTicketUiState.Error("error message"), handle.createTicketUiState.value)
+        assertEquals(TicketUiState.Initial, handle.ticketUiState.value)
+        handle.saveTicketUiState(TicketUiState.Loading)
+        assertEquals(TicketUiState.Loading, handle.ticketUiState.value)
+        handle.saveTicketUiState(TicketUiState.Success)
+        assertEquals(TicketUiState.Success, handle.ticketUiState.value)
+        handle.saveTicketUiState(TicketUiState.Error("error message"))
+        assertEquals(TicketUiState.Error("error message"), handle.ticketUiState.value)
     }
 
     @Test
     fun test_board_members_state() {
-        assertEquals(BoardMembersUiState.Loading, handle.boardMembersUiState.value)
+        assertEquals(BoardMembersUiStateCreate.Loading, handle.boardMembersUiState.value)
         handle.saveBoardMembersUiState(
-            BoardMembersUiState.Success(
+            BoardMembersUiStateCreate.Success(
                 members = listOf(
                     User(
                         id = "1",
@@ -40,7 +40,7 @@ class HandleTicketTest {
             )
         )
         assertEquals(
-            BoardMembersUiState.Success(
+            BoardMembersUiStateCreate.Success(
                 members = listOf(
                     User(
                         id = "1",
@@ -51,7 +51,7 @@ class HandleTicketTest {
             ),
             handle.boardMembersUiState.value
         )
-        handle.saveBoardMembersUiState(BoardMembersUiState.Error("error message"))
-        assertEquals(BoardMembersUiState.Error("error message"), handle.boardMembersUiState.value)
+        handle.saveBoardMembersUiState(BoardMembersUiStateCreate.Error("error message"))
+        assertEquals(BoardMembersUiStateCreate.Error("error message"), handle.boardMembersUiState.value)
     }
 }
