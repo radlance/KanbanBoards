@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.edit.presentation
 
-import com.github.radlance.kanbanboards.board.domain.Column
-import com.github.radlance.kanbanboards.board.domain.Ticket
+import com.github.radlance.kanbanboards.board.core.domain.Column
+import com.github.radlance.kanbanboards.board.core.domain.Ticket
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User

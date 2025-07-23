@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.info.data
 
-import com.github.radlance.kanbanboards.board.data.TicketRemoteDataSource
+import com.github.radlance.kanbanboards.board.core.data.TicketRemoteDataSource
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import kotlinx.coroutines.flow.Flow

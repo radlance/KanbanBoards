@@ -1,10 +1,10 @@
 package com.github.radlance.kanbanboards.ticket.info.presentation
 
-import com.github.radlance.kanbanboards.board.domain.Column
-import com.github.radlance.kanbanboards.board.domain.Ticket
-import com.github.radlance.kanbanboards.board.presentation.ColumnUi
-import com.github.radlance.kanbanboards.board.presentation.ColumnUiMapper
-import com.github.radlance.kanbanboards.board.presentation.TicketUi
+import com.github.radlance.kanbanboards.board.core.domain.Column
+import com.github.radlance.kanbanboards.board.core.domain.Ticket
+import com.github.radlance.kanbanboards.board.core.presentation.ColumnUi
+import com.github.radlance.kanbanboards.board.core.presentation.ColumnUiMapper
+import com.github.radlance.kanbanboards.board.core.presentation.TicketUi
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import junit.framework.TestCase.assertEquals

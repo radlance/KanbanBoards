@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.info.presentation
 
-import com.github.radlance.kanbanboards.board.domain.Ticket
-import com.github.radlance.kanbanboards.board.presentation.TicketUi
+import com.github.radlance.kanbanboards.board.core.domain.Ticket
+import com.github.radlance.kanbanboards.board.core.presentation.TicketUi
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository

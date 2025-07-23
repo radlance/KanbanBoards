@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.info.domain
 
-import com.github.radlance.kanbanboards.board.domain.Ticket
+import com.github.radlance.kanbanboards.board.core.domain.Ticket
 
 interface TicketInfoResult {
 

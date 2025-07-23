@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.edit.data
 
-import com.github.radlance.kanbanboards.board.data.BoardRemoteDataSource
-import com.github.radlance.kanbanboards.board.data.TicketRemoteDataSource
+import com.github.radlance.kanbanboards.board.core.data.BoardRemoteDataSource
+import com.github.radlance.kanbanboards.board.core.data.TicketRemoteDataSource
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.common.data.BaseTicketRepository
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket

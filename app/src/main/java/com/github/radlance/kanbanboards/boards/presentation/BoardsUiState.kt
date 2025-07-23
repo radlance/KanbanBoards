@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.domain.BoardInfo
+import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 
 interface BoardsUiState {
 

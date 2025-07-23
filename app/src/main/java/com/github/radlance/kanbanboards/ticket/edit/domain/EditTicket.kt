@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.edit.domain
 
-import com.github.radlance.kanbanboards.board.domain.Column
+import com.github.radlance.kanbanboards.board.core.domain.Column
 import java.time.LocalDateTime
 
 data class EditTicket(

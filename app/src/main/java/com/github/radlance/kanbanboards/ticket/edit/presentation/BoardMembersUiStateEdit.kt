@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.domain.Ticket
+import com.github.radlance.kanbanboards.board.core.domain.Ticket
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketActions

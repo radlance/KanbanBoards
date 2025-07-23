@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.info.presentation
 
-import com.github.radlance.kanbanboards.board.domain.Column
-import com.github.radlance.kanbanboards.board.presentation.ColumnUi
+import com.github.radlance.kanbanboards.board.core.domain.Column
+import com.github.radlance.kanbanboards.board.core.presentation.ColumnUi
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import javax.inject.Inject
 

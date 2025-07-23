@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.domain.Ticket
+import com.github.radlance.kanbanboards.board.core.domain.Ticket
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 
 @Composable

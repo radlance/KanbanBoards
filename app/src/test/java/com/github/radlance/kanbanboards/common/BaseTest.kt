@@ -1,10 +1,10 @@
 package com.github.radlance.kanbanboards.common
 
-import com.github.radlance.kanbanboards.board.data.BoardRemoteDataSource
-import com.github.radlance.kanbanboards.board.data.TicketRemoteDataSource
-import com.github.radlance.kanbanboards.board.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.domain.Column
-import com.github.radlance.kanbanboards.board.domain.Ticket
+import com.github.radlance.kanbanboards.board.core.data.BoardRemoteDataSource
+import com.github.radlance.kanbanboards.board.core.data.TicketRemoteDataSource
+import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
+import com.github.radlance.kanbanboards.board.core.domain.Column
+import com.github.radlance.kanbanboards.board.core.domain.Ticket
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource

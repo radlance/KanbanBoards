@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.edit.data
 
-import com.github.radlance.kanbanboards.board.domain.Column
+import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
