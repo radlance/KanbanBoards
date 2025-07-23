@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.board.presentation
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +20,6 @@ fun BoardScreen(
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
-    BackHandler(onBack = navigateUp)
     val boardUiState by viewModel.boardUiState.collectAsStateWithLifecycle()
 
     Column(

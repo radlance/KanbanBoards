@@ -1,5 +1,15 @@
 package com.github.radlance.kanbanboards.navigation.core
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -41,6 +51,18 @@ fun NavGraph(
     NavHost(
         navController = navHostController,
         startDestination = Splash,
+        enterTransition = {
+            sharedXTransitionIn(initial = { (it * INITIAL_OFFSET).toInt() })
+        },
+        exitTransition = {
+            sharedXTransitionOut(target = { -(it * INITIAL_OFFSET).toInt() })
+        },
+        popEnterTransition = {
+            sharedXTransitionIn(initial = { -(it * INITIAL_OFFSET).toInt() })
+        },
+        popExitTransition = {
+            sharedXTransitionOut(target = { -(it * INITIAL_OFFSET).toInt() })
+        },
         modifier = modifier
     ) {
         composable<Splash> {
@@ -91,7 +113,7 @@ fun NavGraph(
             ProfileScreen(
                 navigateToLoginScreen = {
                     navHostController.navigate(SignIn) {
-                        popUpTo<SignIn>()
+                        popUpTo<Boards> { inclusive = true }
                     }
                 },
                 navigateUp = navHostController::navigateUp
@@ -112,7 +134,7 @@ fun NavGraph(
         composable<Board> {
             BoardScreen(
                 viewModel = boardViewModel,
-                navigateUp = { navHostController.navigate(Boards) { popUpTo<Boards>() } },
+                navigateUp = navHostController::navigateUp,
                 navigateToCreateTicket = { boardId, ownerId ->
                     createTicketViewModel.fetchBoardMembers(boardId, ownerId)
                     navHostController.navigate(CreateTicket(boardId))
@@ -162,3 +184,48 @@ fun NavGraph(
         }
     }
 }
+
+private fun sharedXTransitionIn(
+    initial: (fullWidth: Int) -> Int,
+    durationMillis: Int = NAVIGATION_TIME,
+): EnterTransition {
+    val outgoingDuration = (durationMillis * OFFSET_LIMIT).toInt()
+    val incomingDuration = durationMillis - outgoingDuration
+
+    return slideInHorizontally(
+        animationSpec = tween(
+            durationMillis = durationMillis,
+            easing = FastOutSlowInEasing
+        ), initialOffsetX = initial
+    ) + fadeIn(
+        animationSpec = tween(
+            durationMillis = incomingDuration,
+            delayMillis = outgoingDuration,
+            easing = LinearOutSlowInEasing
+        )
+    )
+}
+
+fun sharedXTransitionOut(
+    target: (fullWidth: Int) -> Int,
+    durationMillis: Int = NAVIGATION_TIME,
+): ExitTransition {
+    val outgoingDuration = (durationMillis * OFFSET_LIMIT).toInt()
+
+    return slideOutHorizontally(
+        animationSpec = tween(
+            durationMillis = durationMillis,
+            easing = FastOutSlowInEasing
+        ), targetOffsetX = target
+    ) + fadeOut(
+        animationSpec = tween(
+            durationMillis = outgoingDuration,
+            delayMillis = 0,
+            easing = FastOutLinearInEasing
+        )
+    )
+}
+
+private const val NAVIGATION_TIME: Int = 300
+private const val INITIAL_OFFSET = 0.175f
+private const val OFFSET_LIMIT = 0.4f
