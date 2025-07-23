@@ -1,5 +1,6 @@
 package com.github.radlance.kanbanboards.board.data
 
+import android.util.Log
 import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.board.domain.Ticket
 import com.github.radlance.kanbanboards.common.data.HandleError
@@ -13,7 +14,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 interface TicketRemoteDataSource {
 
-    fun ticket(ticketId: String): Flow<Ticket>
+    fun ticket(ticketId: String): Flow<Ticket?>
 
     fun tickets(boardId: String): Flow<List<Ticket>>
 
@@ -34,6 +34,8 @@ interface TicketRemoteDataSource {
 
     suspend fun editTicket(ticket: EditTicket)
 
+    suspend fun deleteTicket(ticketId: String)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase,
@@ -41,35 +43,41 @@ interface TicketRemoteDataSource {
         private val columnMapper: ColumnTypeMapper
     ) : TicketRemoteDataSource {
 
-        override fun ticket(ticketId: String): Flow<Ticket> {
+        override fun ticket(ticketId: String): Flow<Ticket?> {
             val ticketQuery = provideDatabase.database()
                 .child("tickets")
                 .child(ticketId)
             return ticketQuery.snapshots.flatMapLatest { ticketSnapshot ->
                 val entity =
-                    ticketSnapshot.getValue<TicketEntity>() ?: return@flatMapLatest emptyFlow()
+                    ticketSnapshot.getValue<TicketEntity>()
 
-                provideDatabase.database()
-                    .child("users")
-                    .child(entity.assignee)
-                    .snapshots.mapNotNull { userSnapshot ->
-                        val userEntity = userSnapshot.getValue<UserProfileEntity>()
+                if (entity == null) {
+                    flowOf(null)
+                } else {
+                    provideDatabase.database()
+                        .child("users")
+                        .child(entity.assignee)
+                        .snapshots.mapNotNull { userSnapshot ->
+                            Log.d("TicketRemoteDataSource", userSnapshot.toString())
+                            val userEntity = userSnapshot.getValue<UserProfileEntity>()
 
-                        val column = columnType(entity)
+                            val column = columnType(entity)
 
-                        with(entity) {
-                            Ticket(
-                                id = ticketSnapshot.key ?: return@mapNotNull null,
-                                colorHex = color,
-                                name = title,
-                                description = description,
-                                assignedMemberName = userEntity?.name ?: "",
-                                assignedMemberId = entity.assignee,
-                                column = column,
-                                creationDate = LocalDateTime.parse(creationDate)
-                            )
+                            with(entity) {
+                                Ticket(
+                                    id = ticketSnapshot.key ?: return@mapNotNull null,
+                                    colorHex = color,
+                                    name = title,
+                                    description = description,
+                                    assignedMemberName = userEntity?.name ?: "",
+                                    assignedMemberId = entity.assignee,
+                                    column = column,
+                                    creationDate = LocalDateTime.parse(creationDate)
+                                )
+                            }
                         }
-                    }
+                }
+
             }
         }
 
@@ -168,6 +176,18 @@ interface TicketRemoteDataSource {
                     }
                 ).await()
 
+            } catch (e: Exception) {
+                handleError.handle(e)
+            }
+        }
+
+        override suspend fun deleteTicket(ticketId: String) {
+            try {
+                provideDatabase.database()
+                    .child("tickets")
+                    .child(ticketId)
+                    .removeValue()
+                    .await()
             } catch (e: Exception) {
                 handleError.handle(e)
             }

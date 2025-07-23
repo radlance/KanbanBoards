@@ -3,7 +3,7 @@ package com.github.radlance.kanbanboards.ticket.edit.presentation
 import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketViewModel
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +23,8 @@ class EditTicketViewModel @Inject constructor(
     val ticketInfoUiState = handleEditTicket.ticketInfoEditUiState
 
     val boardMembersUiState = handleEditTicket.boardMembersUiState
+
+    val deleteTicketUiState = handleEditTicket.deleteTicketUiState
 
     override fun action(
         ticketId: String,
@@ -66,5 +68,15 @@ class EditTicketViewModel @Inject constructor(
         }.onEach {
             handleEditTicket.saveTicketInfoEditUiState(it)
         }.launchInViewModel()
+    }
+
+    fun deleteTicket(ticketId: String) {
+        handle(background = { editTicketRepository.deleteTicket(ticketId) }) {
+            handleEditTicket.saveDeleteTicketUiState(editTicketMapperFacade.mapDeleteTicket(it))
+        }
+    }
+
+    fun clearDeleteTicketUiState() {
+        handleEditTicket.saveDeleteTicketUiState(DeleteTicketUiState.Initial)
     }
 }

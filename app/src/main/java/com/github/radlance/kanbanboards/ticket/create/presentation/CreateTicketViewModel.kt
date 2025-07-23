@@ -3,6 +3,7 @@ package com.github.radlance.kanbanboards.ticket.create.presentation
 import com.github.radlance.kanbanboards.board.domain.Column
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketViewModel
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import dagger.hilt.android.lifecycle.HiltViewModel

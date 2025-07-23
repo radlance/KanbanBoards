@@ -99,7 +99,7 @@ fun TicketScreen(
     var descriptionFieldValue by rememberSaveable { mutableStateOf(initialDescriptionFieldValue) }
 
     var expanded by rememberSaveable { mutableStateOf(false) }
-    val createTicketUiState by ticketActions.ticketUiState.collectAsStateWithLifecycle()
+    val ticketUiState by ticketActions.ticketUiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -235,8 +235,8 @@ fun TicketScreen(
         }
 
         val boxModifier = if (
-            (createTicketUiState.hasSize()
-                    || createTicketUiState.hasSize()) &&
+            (ticketUiState.hasSize()
+                    || ticketUiState.hasSize()) &&
             (scrollState.canScrollForward
                     || scrollState.canScrollBackward)
         ) {
@@ -246,7 +246,7 @@ fun TicketScreen(
         }
 
         Box(modifier = boxModifier, contentAlignment = Alignment.Center) {
-            createTicketUiState.Show(navigateUp)
+            ticketUiState.Show(navigateUp)
         }
 
         Box(modifier = Modifier.safeDrawingPadding()) {
@@ -265,7 +265,7 @@ fun TicketScreen(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = titleFieldValue.length >= 3 && createTicketUiState.buttonEnabled()
+                enabled = titleFieldValue.length >= 3 && ticketUiState.buttonEnabled()
             ) {
                 Text(text = stringResource(buttonLabelId))
             }

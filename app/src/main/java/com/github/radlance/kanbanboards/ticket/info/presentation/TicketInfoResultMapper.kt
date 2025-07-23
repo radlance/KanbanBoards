@@ -9,4 +9,6 @@ class TicketInfoResultMapper @Inject constructor(): TicketInfoResult.Mapper<Tick
     override fun mapSuccess(ticket: Ticket): TicketInfoUiState = TicketInfoUiState.Success(ticket)
 
     override fun mapError(message: String): TicketInfoUiState = TicketInfoUiState.Error(message)
+
+    override fun mapNotExists(): TicketInfoUiState = TicketInfoUiState.NotExists
 }

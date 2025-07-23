@@ -17,6 +17,10 @@ interface HandleEditTicket : HandleTicket {
 
     fun saveTicketInfoEditUiState(ticketInfoEditUiState: TicketInfoEditUiState)
 
+    val deleteTicketUiState: StateFlow<DeleteTicketUiState>
+
+    fun saveDeleteTicketUiState(deleteTicketUiState: DeleteTicketUiState)
+
     class Base @Inject constructor(): BaseHandleTicket(), HandleEditTicket {
 
         private val boardMembersUiStateMutable = MutableStateFlow<BoardMembersUiStateEdit>(
@@ -25,6 +29,10 @@ interface HandleEditTicket : HandleTicket {
 
         private val ticketInfoEditUiStateMutable = MutableStateFlow<TicketInfoEditUiState>(
             TicketInfoEditUiState.Loading
+        )
+
+        private val deleteTicketUiStateMutable = MutableStateFlow<DeleteTicketUiState>(
+            DeleteTicketUiState.Initial
         )
 
         override val boardMembersUiState: StateFlow<BoardMembersUiStateEdit>
@@ -39,6 +47,13 @@ interface HandleEditTicket : HandleTicket {
 
         override fun saveTicketInfoEditUiState(ticketInfoEditUiState: TicketInfoEditUiState) {
             ticketInfoEditUiStateMutable.value = ticketInfoEditUiState
+        }
+
+        override val deleteTicketUiState: StateFlow<DeleteTicketUiState>
+            get() = deleteTicketUiStateMutable.asStateFlow()
+
+        override fun saveDeleteTicketUiState(deleteTicketUiState: DeleteTicketUiState) {
+            deleteTicketUiStateMutable.value = deleteTicketUiState
         }
     }
 }

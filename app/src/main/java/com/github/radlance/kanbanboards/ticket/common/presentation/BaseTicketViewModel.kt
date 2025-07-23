@@ -2,7 +2,6 @@ package com.github.radlance.kanbanboards.ticket.common.presentation
 
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
 import kotlinx.coroutines.flow.StateFlow
 
 abstract class BaseTicketViewModel(

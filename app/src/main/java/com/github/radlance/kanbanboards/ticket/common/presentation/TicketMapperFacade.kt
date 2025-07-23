@@ -1,10 +1,8 @@
 package com.github.radlance.kanbanboards.ticket.common.presentation
 
 import com.github.radlance.kanbanboards.common.domain.UnitResult
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
 
 interface TicketMapperFacade {
-
 
     fun mapTicketResult(unitResult: UnitResult): TicketUiState
 }

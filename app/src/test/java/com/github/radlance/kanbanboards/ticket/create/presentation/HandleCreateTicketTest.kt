@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.create.presentation
 
 import com.github.radlance.kanbanboards.common.domain.User
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

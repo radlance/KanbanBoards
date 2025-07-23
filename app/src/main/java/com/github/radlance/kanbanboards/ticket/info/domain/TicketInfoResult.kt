@@ -11,6 +11,8 @@ interface TicketInfoResult {
         fun mapSuccess(ticket: Ticket): T
 
         fun mapError(message: String): T
+
+        fun mapNotExists(): T
     }
 
     data class Success(private val ticket: Ticket) : TicketInfoResult {
@@ -21,5 +23,10 @@ interface TicketInfoResult {
     data class Error(private val message: String) : TicketInfoResult {
 
         override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapError(message)
+    }
+
+    object NotExists : TicketInfoResult {
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapNotExists()
     }
 }

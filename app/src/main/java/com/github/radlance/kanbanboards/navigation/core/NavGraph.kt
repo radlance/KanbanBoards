@@ -154,6 +154,9 @@ fun NavGraph(
             EditTicketScreen(
                 navigateUp = navHostController::navigateUp,
                 boardId = args.boardId,
+                navigateToBoard = {
+                    navHostController.popBackStack(route = Board, inclusive = false)
+                },
                 viewModel = editTicketViewModel
             )
         }

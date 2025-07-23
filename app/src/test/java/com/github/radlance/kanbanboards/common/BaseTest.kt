@@ -16,7 +16,7 @@ import com.github.radlance.kanbanboards.ticket.common.presentation.HandleTicket
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult

@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.ticket.create.presentation
+package com.github.radlance.kanbanboards.ticket.common.presentation
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable

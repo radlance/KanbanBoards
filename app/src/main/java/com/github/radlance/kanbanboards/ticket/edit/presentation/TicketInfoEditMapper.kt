@@ -6,10 +6,9 @@ import javax.inject.Inject
 
 class TicketInfoEditMapper @Inject constructor() : TicketInfoResult.Mapper<TicketInfoEditUiState> {
 
-    override fun mapSuccess(ticket: Ticket): TicketInfoEditUiState =
-        TicketInfoEditUiState.Success(ticket)
+    override fun mapSuccess(ticket: Ticket) = TicketInfoEditUiState.Success(ticket)
 
+    override fun mapError(message: String) = TicketInfoEditUiState.Error(message)
 
-    override fun mapError(message: String): TicketInfoEditUiState =
-        TicketInfoEditUiState.Error(message)
+    override fun mapNotExists(): TicketInfoEditUiState = TicketInfoEditUiState.NotExists
 }

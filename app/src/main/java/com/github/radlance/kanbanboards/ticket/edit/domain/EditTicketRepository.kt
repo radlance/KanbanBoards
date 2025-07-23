@@ -7,4 +7,6 @@ import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository
 interface EditTicketRepository : TicketRepository, TicketInfoRepository {
 
     suspend fun editTicket(ticket: EditTicket): UnitResult
+
+    suspend fun deleteTicket(ticketId: String): UnitResult
 }

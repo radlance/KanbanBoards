@@ -7,7 +7,7 @@ import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketMapper
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
@@ -46,7 +46,7 @@ class EditTicketViewModelTest : BaseTest() {
             editTicketMapperFacade = EditTicketMapperFacade.Base(
                 boardMembersMapper = BoardMembersEditMapper(),
                 ticketInfoUiMapper = TicketInfoEditMapper(),
-                createTicketMapper = CreateTicketMapper()
+                ticketMapper = CreateTicketMapper()
             ),
             handleEditTicket = handle,
             runAsync = TestRunAsync()

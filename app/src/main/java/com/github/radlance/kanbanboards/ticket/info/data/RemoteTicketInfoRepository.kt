@@ -13,8 +13,8 @@ class RemoteTicketInfoRepository @Inject constructor(
 ) : TicketInfoRepository {
 
     override fun ticket(ticketId: String): Flow<TicketInfoResult> {
-        return ticketRemoteDataSource.ticket(ticketId).map {
-            TicketInfoResult.Success(it)
+        return ticketRemoteDataSource.ticket(ticketId).map { ticket ->
+            ticket?.let { TicketInfoResult.Success(it) } ?: TicketInfoResult.NotExists
         }.catch { e -> TicketInfoResult.Error(e.message!!) }
     }
 }

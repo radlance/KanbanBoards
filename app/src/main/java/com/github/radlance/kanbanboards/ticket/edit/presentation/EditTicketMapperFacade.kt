@@ -4,7 +4,7 @@ import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketMapperFacade
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketMapperFacade
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
-import com.github.radlance.kanbanboards.ticket.create.presentation.TicketUiState
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import javax.inject.Inject
 
@@ -14,11 +14,14 @@ interface EditTicketMapperFacade : TicketMapperFacade {
 
     fun mapTicketInfoResult(ticketInfoResult: TicketInfoResult): TicketInfoEditUiState
 
+    fun mapDeleteTicket(deleteTicketResult: UnitResult): DeleteTicketUiState
+
     class Base @Inject constructor(
         private val boardMembersMapper: BoardMembersResult.Mapper<BoardMembersUiStateEdit>,
         private val ticketInfoUiMapper: TicketInfoResult.Mapper<TicketInfoEditUiState>,
-        createTicketMapper: UnitResult.Mapper<TicketUiState>
-    ) : BaseTicketMapperFacade(createTicketMapper), EditTicketMapperFacade {
+        private val deleteTicketMapper: UnitResult.Mapper<DeleteTicketUiState>,
+        ticketMapper: UnitResult.Mapper<TicketUiState>
+    ) : BaseTicketMapperFacade(ticketMapper), EditTicketMapperFacade {
 
         override fun mapBoardMembersResult(boardMembersResult: BoardMembersResult): BoardMembersUiStateEdit {
             return boardMembersResult.map(boardMembersMapper)
@@ -26,6 +29,10 @@ interface EditTicketMapperFacade : TicketMapperFacade {
 
         override fun mapTicketInfoResult(ticketInfoResult: TicketInfoResult): TicketInfoEditUiState {
             return ticketInfoResult.map(ticketInfoUiMapper)
+        }
+
+        override fun mapDeleteTicket(deleteTicketResult: UnitResult): DeleteTicketUiState {
+            return deleteTicketResult.map(deleteTicketMapper)
         }
     }
 }
