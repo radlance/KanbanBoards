@@ -137,6 +137,10 @@ class TicketInfoViewModelTest : BaseTest() {
             ),
             handle.saveTicketInfoUiStateCalledList[2]
         )
+        repository.makeExpectedTicketInfoResult(TicketInfoResult.NotExists)
+        assertEquals(1, repository.ticketCalledList.size)
+        assertEquals(4, handle.saveTicketInfoUiStateCalledList.size)
+        assertEquals(TicketInfoUiState.NotExists, handle.saveTicketInfoUiStateCalledList[3])
     }
 
     private class TestHandleTicketInfo : HandleTicketInfo {

@@ -5,9 +5,9 @@ import com.github.radlance.kanbanboards.board.domain.Ticket
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketMapper
-import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
@@ -46,7 +46,8 @@ class EditTicketViewModelTest : BaseTest() {
             editTicketMapperFacade = EditTicketMapperFacade.Base(
                 boardMembersMapper = BoardMembersEditMapper(),
                 ticketInfoUiMapper = TicketInfoEditMapper(),
-                ticketMapper = CreateTicketMapper()
+                ticketMapper = CreateTicketMapper(),
+                deleteTicketMapper = DeleteTicketMapper()
             ),
             handleEditTicket = handle,
             runAsync = TestRunAsync()
@@ -58,6 +59,7 @@ class EditTicketViewModelTest : BaseTest() {
         assertEquals(BoardMembersUiStateEdit.Loading, viewModel.boardMembersUiState.value)
         assertEquals(TicketUiState.Initial, viewModel.ticketUiState.value)
         assertEquals(TicketInfoEditUiState.Loading, viewModel.ticketInfoUiState.value)
+        assertEquals(DeleteTicketUiState.Initial, viewModel.deleteTicketUiState.value)
         assertEquals(1, handle.boardMembersUiStateCalledCount)
         assertEquals(1, baseHandle.ticketUiStateCalledCount)
         assertEquals(1, handle.ticketInfoEditUiStateCalledCount)
@@ -178,6 +180,10 @@ class EditTicketViewModelTest : BaseTest() {
             ),
             handle.saveTicketInfoEditUiStateCalledList[1]
         )
+        ticketInfoRepository.makeExpectedTicketInfoResult(TicketInfoResult.NotExists)
+        assertEquals(1, ticketInfoRepository.ticketCalledList.size)
+        assertEquals(3, handle.saveTicketInfoEditUiStateCalledList.size)
+        assertEquals(TicketInfoEditUiState.NotExists, handle.saveTicketInfoEditUiStateCalledList[2])
     }
 
     @Test
@@ -263,6 +269,52 @@ class EditTicketViewModelTest : BaseTest() {
         )
     }
 
+    @Test
+    fun test_collect_delete_ticket_ui_state() {
+        repository.makeExpectedDeleteTicketResult(UnitResult.Error(message = "create ticket error"))
+        viewModel.deleteTicket(ticketId = "123")
+        assertEquals(
+            DeleteTicketUiState.Error(message = "create ticket error"),
+            viewModel.deleteTicketUiState.value
+        )
+        assertEquals(1, repository.deleteTicketCalledList.size)
+        assertEquals("123", repository.deleteTicketCalledList[0])
+        assertEquals(1, handle.saveDeleteTicketUiStateCalledList.size)
+        assertEquals(
+            DeleteTicketUiState.Error(message = "create ticket error"),
+            handle.saveDeleteTicketUiStateCalledList[0]
+        )
+
+        repository.makeExpectedDeleteTicketResult(UnitResult.Success)
+        viewModel.deleteTicket(ticketId = "321")
+        assertEquals(
+            DeleteTicketUiState.Success,
+            viewModel.deleteTicketUiState.value
+        )
+        assertEquals(2, repository.deleteTicketCalledList.size)
+        assertEquals("321", repository.deleteTicketCalledList[1])
+        assertEquals(2, handle.saveDeleteTicketUiStateCalledList.size)
+        assertEquals(
+            DeleteTicketUiState.Success,
+            handle.saveDeleteTicketUiStateCalledList[1]
+        )
+    }
+
+    @Test
+    fun test_clear_delete_ticket_ui_state() {
+        repository.makeExpectedDeleteTicketResult(UnitResult.Error(message = "delete ticket error"))
+        viewModel.deleteTicket(ticketId = "123")
+        assertEquals(
+            DeleteTicketUiState.Error(message = "delete ticket error"),
+            viewModel.deleteTicketUiState.value
+        )
+        viewModel.clearDeleteTicketUiState()
+        assertEquals(
+            DeleteTicketUiState.Initial,
+            viewModel.deleteTicketUiState.value
+        )
+    }
+
     private class TestEditTicketRepository(
         private val ticketRepository: TestTicketRepository,
         private val ticketInfoRepository: TestTicketInfoRepository
@@ -271,13 +323,25 @@ class EditTicketViewModelTest : BaseTest() {
         val editTicketCalledList = mutableListOf<EditTicket>()
         private var editTicketResult: UnitResult = UnitResult.Error(message = "initial result")
 
+        val deleteTicketCalledList = mutableListOf<String>()
+        private var deleteTicketResult: UnitResult = UnitResult.Error(message = "initial result")
+
         fun makeExpectedEditTicketResult(editTicketResult: UnitResult) {
             this.editTicketResult = editTicketResult
+        }
+
+        fun makeExpectedDeleteTicketResult(deleteTicketResult: UnitResult) {
+            this.deleteTicketResult = deleteTicketResult
         }
 
         override suspend fun editTicket(ticket: EditTicket): UnitResult {
             editTicketCalledList.add(ticket)
             return editTicketResult
+        }
+
+        override suspend fun deleteTicket(ticketId: String): UnitResult {
+            deleteTicketCalledList.add(ticketId)
+            return deleteTicketResult
         }
 
         override fun boardMembers(boardId: String, ownerId: String): Flow<BoardMembersResult> {
@@ -305,6 +369,13 @@ class EditTicketViewModelTest : BaseTest() {
         )
         val saveTicketInfoEditUiStateCalledList = mutableListOf<TicketInfoEditUiState>()
 
+        var deleteTicketUiStateCalledCount = 0
+        private val deleteTicketUiStateMutable = MutableStateFlow<DeleteTicketUiState>(
+            DeleteTicketUiState.Initial
+        )
+        val saveDeleteTicketUiStateCalledList = mutableListOf<DeleteTicketUiState>()
+
+
         override val ticketUiState: StateFlow<TicketUiState>
             get() = testBaseHandleTicket.ticketUiState
 
@@ -328,6 +399,17 @@ class EditTicketViewModelTest : BaseTest() {
         override fun saveTicketInfoEditUiState(ticketInfoEditUiState: TicketInfoEditUiState) {
             saveTicketInfoEditUiStateCalledList.add(ticketInfoEditUiState)
             ticketInfoEditUiStateMutable.value = ticketInfoEditUiState
+        }
+
+        override val deleteTicketUiState: StateFlow<DeleteTicketUiState>
+            get() {
+                deleteTicketUiStateCalledCount++
+                return deleteTicketUiStateMutable
+            }
+
+        override fun saveDeleteTicketUiState(deleteTicketUiState: DeleteTicketUiState) {
+            saveDeleteTicketUiStateCalledList.add(deleteTicketUiState)
+            deleteTicketUiStateMutable.value = deleteTicketUiState
         }
 
         override fun saveTicketUiState(ticketUiState: TicketUiState) {

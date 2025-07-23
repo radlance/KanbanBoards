@@ -52,7 +52,15 @@ class TicketInfoRepositoryTest : BaseTest() {
     fun test_ticket_error() = runBlocking {
         remoteDataSource.makeExpectedTicketException(IllegalStateException("server exception"))
         val actual = repository.ticket(ticketId = "stub").toList()
-
+        assertEquals(1, remoteDataSource.ticketCalledList.size)
+        assertEquals("stub", remoteDataSource.ticketCalledList[0])
         assertEquals(emptyList<TicketInfoResult>(), actual)
+    }
+
+    @Test
+    fun test_ticket_not_exists() = runBlocking {
+        remoteDataSource.makeExpectedTicket(null)
+        val actual = repository.ticket(ticketId = "0").first()
+        assertEquals(TicketInfoResult.NotExists, actual)
     }
 }

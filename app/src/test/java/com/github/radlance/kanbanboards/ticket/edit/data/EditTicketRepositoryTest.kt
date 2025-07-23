@@ -30,7 +30,7 @@ class EditTicketRepositoryTest : BaseTest() {
         repository = RemoteEditTicketRepository(
             ticketInfoRepository = ticketInfoRepository,
             ticketRemoteDataSource = ticketRemoteDataSource,
-            manageResource = manageResource,
+            handleUnitResult = HandleUnitResult.Base(manageResource),
             boardRemoteDataSource = boardRemoteDataSource
         )
     }
@@ -68,7 +68,7 @@ class EditTicketRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun test_create_ticket_error_with_message() = runBlocking {
+    fun test_edit_ticket_error_with_message() = runBlocking {
         ticketRemoteDataSource.makeExpectedEditTicketException(
             IllegalStateException("some error")
         )
@@ -85,6 +85,20 @@ class EditTicketRepositoryTest : BaseTest() {
             )
         )
         assertEquals(UnitResult.Error(message = "some error"), actual)
+        assertEquals(1, ticketRemoteDataSource.editTicketCalledList.size)
+        assertEquals(
+            EditTicket(
+                boardId = "edited boardId2",
+                colorHex = "#111111",
+                name = "edited name2",
+                description = "edited description2",
+                assignedMemberId = "edited assignee id2",
+                creationDate = LocalDateTime.of(2023, 2, 2, 2, 2),
+                id = "edited id2",
+                column = Column.Todo
+            ),
+            ticketRemoteDataSource.editTicketCalledList[0]
+        )
         assertEquals(0, manageResource.stringCalledCount)
     }
 
@@ -107,6 +121,45 @@ class EditTicketRepositoryTest : BaseTest() {
             )
         )
         assertEquals(UnitResult.Error(message = "create ticket error"), actual)
+        assertEquals(1, ticketRemoteDataSource.editTicketCalledList.size)
+        assertEquals(
+            EditTicket(
+                boardId = "edited boardId2",
+                colorHex = "#111111",
+                name = "edited name2",
+                description = "edited description2",
+                assignedMemberId = "edited assignee id2",
+                creationDate = LocalDateTime.of(2023, 2, 2, 2, 2),
+                id = "edited id2",
+                column = Column.Todo
+            ),
+            ticketRemoteDataSource.editTicketCalledList[0]
+        )
+        assertEquals(1, manageResource.stringCalledCount)
+    }
+
+    @Test
+    fun test_delete_ticket_error_with_message() = runBlocking {
+        ticketRemoteDataSource.makeExpectedDeleteTicketException(
+            IllegalStateException("some error")
+        )
+        val actual = repository.deleteTicket(ticketId = "123")
+        assertEquals(UnitResult.Error(message = "some error"), actual)
+        assertEquals(1, ticketRemoteDataSource.deleteTicketCalledList.size)
+        assertEquals("123", ticketRemoteDataSource.deleteTicketCalledList[0])
+        assertEquals(0, manageResource.stringCalledCount)
+    }
+
+    @Test
+    fun test_delete_ticket_error_without_message() = runBlocking {
+        manageResource.makeExpectedString(expected = "create ticket error")
+        ticketRemoteDataSource.makeExpectedDeleteTicketException(
+            IllegalStateException()
+        )
+        val actual = repository.deleteTicket(ticketId = "000")
+        assertEquals(UnitResult.Error(message = "create ticket error"), actual)
+        assertEquals(1, ticketRemoteDataSource.deleteTicketCalledList.size)
+        assertEquals("000", ticketRemoteDataSource.deleteTicketCalledList[0])
         assertEquals(1, manageResource.stringCalledCount)
     }
 }

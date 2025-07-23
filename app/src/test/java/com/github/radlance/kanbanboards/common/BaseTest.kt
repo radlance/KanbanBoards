@@ -13,10 +13,10 @@ import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.common.presentation.HandleTicket
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
-import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -182,7 +183,7 @@ abstract class BaseTest {
         private var createTicketException: Exception? = null
         val createTicketCalledList = mutableListOf<NewTicket>()
 
-        private val ticket = MutableStateFlow(
+        private val ticket = MutableStateFlow<Ticket?>(
             Ticket(
                 id = "initial id",
                 colorHex = "initial color",
@@ -200,8 +201,15 @@ abstract class BaseTest {
         private var editTicketException: Exception? = null
         val editTicketCalledList = mutableListOf<EditTicket>()
 
+        private var deleteTicketException: Exception? = null
+        val deleteTicketCalledList = mutableListOf<String>()
+
         fun makeExpectedTickets(tickets: List<Ticket>) {
             this.tickets.value = tickets
+        }
+
+        fun makeExpectedTicket(ticket: Ticket?) {
+            this.ticket.value = ticket
         }
 
         fun makeExpectedTicketsException(exception: Exception) {
@@ -220,10 +228,20 @@ abstract class BaseTest {
             editTicketException = exception
         }
 
-        override fun ticket(ticketId: String): Flow<Ticket> = flow {
+        fun makeExpectedDeleteTicketException(exception: Exception) {
+            deleteTicketException = exception
+        }
+
+        override fun ticket(ticketId: String): Flow<Ticket?> = flow {
             ticketCalledList.add(ticketId)
             ticketException?.let { throw it }
-            emitAll(ticket.map { it.copy(id = ticketId) })
+            emitAll(
+                if (ticket.value == null) {
+                    flowOf(null)
+                } else {
+                    ticket.map { it!!.copy(id = ticketId) }
+                }
+            )
         }
 
         override fun tickets(boardId: String): Flow<List<Ticket>> = flow {
@@ -244,6 +262,11 @@ abstract class BaseTest {
         override suspend fun editTicket(ticket: EditTicket) {
             editTicketCalledList.add(ticket)
             editTicketException?.let { throw it }
+        }
+
+        override suspend fun deleteTicket(ticketId: String) {
+            deleteTicketCalledList.add(ticketId)
+            deleteTicketException?.let { throw it }
         }
     }
 
