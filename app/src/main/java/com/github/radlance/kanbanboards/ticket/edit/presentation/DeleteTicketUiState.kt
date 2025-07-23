@@ -8,20 +8,18 @@ import androidx.compose.ui.platform.LocalContext
 interface DeleteTicketUiState {
 
     @Composable
-    fun Show(navigateToBoard: () -> Unit)
+    fun Show()
 
     object Success : DeleteTicketUiState {
 
         @Composable
-        override fun Show(navigateToBoard: () -> Unit) {
-            navigateToBoard()
-        }
+        override fun Show() = Unit
     }
 
     data class Error(private val message: String) : DeleteTicketUiState {
 
         @Composable
-        override fun Show(navigateToBoard: () -> Unit) {
+        override fun Show() {
 
             val context = LocalContext.current
 
@@ -34,6 +32,6 @@ interface DeleteTicketUiState {
     object Initial : DeleteTicketUiState {
 
         @Composable
-        override fun Show(navigateToBoard: () -> Unit) = Unit
+        override fun Show() = Unit
     }
 }

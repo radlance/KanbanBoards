@@ -55,12 +55,7 @@ interface TicketInfoEditUiState {
             val boardMembersUiState by viewModel.boardMembersUiState.collectAsStateWithLifecycle()
             var showAlertDialog by rememberSaveable { mutableStateOf(false) }
 
-            deleteTicketUiState.Show(
-                navigateToBoard = {
-                    navigateToBoard()
-                    viewModel.clearDeleteTicketUiState()
-                }
-            )
+            deleteTicketUiState.Show()
 
             if (showAlertDialog) {
                 AlertDialog(
