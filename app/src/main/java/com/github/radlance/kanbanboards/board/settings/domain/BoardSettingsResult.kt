@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.board.settings.domain
 
-import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.domain.User
 
 interface BoardSettingsResult {
@@ -9,20 +8,17 @@ interface BoardSettingsResult {
 
     interface Mapper<T : Any> {
 
-        fun mapSuccess(users: List<User>, members: List<User>, board: BoardInfo): T
+        fun mapSuccess(users: List<User>, members: List<User>): T
 
         fun mapError(message: String): T
     }
 
     data class Success(
         private val users: List<User>,
-        private val members: List<User>,
-        private val board: BoardInfo
+        private val members: List<User>
     ) : BoardSettingsResult {
 
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapSuccess(
-            users, members, board
-        )
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapSuccess(users, members)
     }
 
     data class Error(private val message: String) : BoardSettingsResult {

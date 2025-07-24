@@ -11,13 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 
 @Composable
 fun BoardScreen(
     navigateUp: () -> Unit,
     navigateToCreateTicket: (String, String) -> Unit,
     navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
-    navigateToBoardSettings: () -> Unit,
+    navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {

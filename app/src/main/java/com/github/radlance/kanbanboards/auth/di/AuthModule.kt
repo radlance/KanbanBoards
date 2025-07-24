@@ -50,6 +50,7 @@ interface AuthModule {
 
     @Binds
     fun provideHandleAuthRemoteDataSource(handle: HandleAuthRemoteDataSource.Base): HandleAuthRemoteDataSource
+
     @Binds
     fun provideValidateAuth(validateAuth: ValidateAuth.Base): ValidateAuth
 

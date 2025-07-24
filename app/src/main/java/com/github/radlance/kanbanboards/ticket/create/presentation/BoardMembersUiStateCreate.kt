@@ -10,6 +10,7 @@ import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketActions
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketScaffold
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketScreen
 
 interface BoardMembersUiStateCreate {
@@ -31,15 +32,19 @@ interface BoardMembersUiStateCreate {
             navigateUp: () -> Unit,
             modifier: Modifier
         ) {
-
-            TicketScreen(
-                boardId = boardId,
-                members = members,
-                ticketActions = ticketActions,
+            TicketScaffold(
                 navigateUp = navigateUp,
-                buttonLabelId = R.string.create_ticket,
-                modifier = modifier
-            )
+                titleResId = R.string.create_ticket
+            ) { ticketModifier ->
+                TicketScreen(
+                    boardId = boardId,
+                    members = members,
+                    ticketActions = ticketActions,
+                    navigateUp = navigateUp,
+                    buttonLabelId = R.string.create_ticket,
+                    modifier = ticketModifier
+                )
+            }
         }
     }
 

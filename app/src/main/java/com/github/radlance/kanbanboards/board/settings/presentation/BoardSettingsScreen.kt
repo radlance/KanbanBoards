@@ -8,8 +8,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun BoardSettingsScreen(
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardSettingsViewModel = hiltViewModel()
 ) {
-    val boardSettingsUiState by viewModel.boardSettingsUiState.collectAsStateWithLifecycle()
+    val boardUiState by viewModel.boardUiState.collectAsStateWithLifecycle()
+
+    boardUiState.Show(modifier = modifier, navigateUp = navigateUp, boardSettingsAction = viewModel)
 }

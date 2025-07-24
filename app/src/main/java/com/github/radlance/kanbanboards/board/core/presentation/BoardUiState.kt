@@ -41,7 +41,7 @@ interface BoardUiState {
         navigateUp: () -> Unit,
         navigateToCreateTicket: (String, String) -> Unit,
         navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
-        navigateToBoardSettings: () -> Unit,
+        navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
         boardTicketActions: BoardTicketActions,
         modifier: Modifier = Modifier
     )
@@ -54,7 +54,7 @@ interface BoardUiState {
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
-            navigateToBoardSettings: () -> Unit,
+            navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -85,7 +85,7 @@ interface BoardUiState {
                         navigationIcon = { BackButton(navigateUp) },
                         actions = {
                             if (boardInfo.isMyBoard) {
-                                IconButton(onClick = {}) {
+                                IconButton(onClick = { navigateToBoardSettings(boardInfo) }) {
                                     Icon(
                                         imageVector = Icons.Default.Settings,
                                         contentDescription = stringResource(R.string.settings_icon)
@@ -126,7 +126,7 @@ interface BoardUiState {
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
-            navigateToBoardSettings: () -> Unit,
+            navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -147,7 +147,7 @@ interface BoardUiState {
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
-            navigateToBoardSettings: () -> Unit,
+            navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) = CircularProgressIndicator()

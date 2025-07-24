@@ -7,21 +7,35 @@ import javax.inject.Inject
 
 interface HandleBoardSettings {
 
+    val settingsBoardUiState: StateFlow<SettingsBoardUiState>
+
+    fun saveSettingsBoardUiState(settingsBoardUiState: SettingsBoardUiState)
+
     val boardSettingsUiState: StateFlow<BoardSettingsUiState>
 
-    fun saveBoardSettingsUiState(searchUsersUiState: BoardSettingsUiState)
+    fun saveBoardSettingsUiState(boardSettingsUiState: BoardSettingsUiState)
 
     class Base @Inject constructor() : HandleBoardSettings {
 
-        private val searchUsersUiStateMutable = MutableStateFlow<BoardSettingsUiState>(
-            BoardSettingsUiState.Loading
+        private val settingsBoardUiStateMutable = MutableStateFlow<SettingsBoardUiState>(
+            SettingsBoardUiState.Loading
         )
 
-        override val boardSettingsUiState: StateFlow<BoardSettingsUiState>
-            get() = searchUsersUiStateMutable.asStateFlow()
+        private val boardSettingsUiStateMutable = MutableStateFlow<BoardSettingsUiState>(
+            BoardSettingsUiState.Loading
+        )
+        override val settingsBoardUiState: StateFlow<SettingsBoardUiState>
+            get() = settingsBoardUiStateMutable.asStateFlow()
 
-        override fun saveBoardSettingsUiState(searchUsersUiState: BoardSettingsUiState) {
-            searchUsersUiStateMutable.value = searchUsersUiState
+        override fun saveSettingsBoardUiState(settingsBoardUiState: SettingsBoardUiState) {
+            settingsBoardUiStateMutable.value = settingsBoardUiState
+        }
+
+        override val boardSettingsUiState: StateFlow<BoardSettingsUiState>
+            get() = boardSettingsUiStateMutable.asStateFlow()
+
+        override fun saveBoardSettingsUiState(boardSettingsUiState: BoardSettingsUiState) {
+            boardSettingsUiStateMutable.value = boardSettingsUiState
         }
     }
 }

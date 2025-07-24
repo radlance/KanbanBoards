@@ -25,6 +25,8 @@ import com.github.radlance.kanbanboards.board.core.presentation.BoardScreen
 import com.github.radlance.kanbanboards.board.core.presentation.BoardViewModel
 import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardViewModel
 import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardsScreen
+import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsScreen
+import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsViewModel
 import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketScreen
@@ -43,7 +45,8 @@ fun NavGraph(
     createTicketViewModel: CreateTicketViewModel = hiltViewModel(),
     createBoardViewModel: CreateBoardViewModel = hiltViewModel(),
     ticketInfoViewModel: TicketInfoViewModel = hiltViewModel(),
-    editTicketViewModel: EditTicketViewModel = hiltViewModel()
+    editTicketViewModel: EditTicketViewModel = hiltViewModel(),
+    boardSettingsViewModel: BoardSettingsViewModel = hiltViewModel()
 ) {
 
     val authorized by navigationViewModel.authorized.collectAsStateWithLifecycle()
@@ -144,7 +147,12 @@ fun NavGraph(
                     ticketInfoViewModel.fetchTicket(ticketUi)
                     navHostController.navigate(TicketInfo(ticketUi.id, boardId))
                 },
-                navigateToBoardSettings = {
+                navigateToBoardSettings = { boardInfo ->
+                    boardSettingsViewModel.fetchBoard(boardInfo)
+                    boardSettingsViewModel.fetchBoardSettings(
+                        boardId = boardInfo.id,
+                        ownerId = boardInfo.owner
+                    )
                     navHostController.navigate(BoardSettings)
                 }
             )
@@ -187,7 +195,10 @@ fun NavGraph(
         }
 
         composable<BoardSettings> {
-
+            BoardSettingsScreen(
+                navigateUp = navHostController::navigateUp,
+                viewModel = boardSettingsViewModel
+            )
         }
     }
 }

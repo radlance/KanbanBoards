@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.board.core.data
 
-import android.util.Log
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.Ticket
 import com.github.radlance.kanbanboards.common.data.HandleError
@@ -58,7 +57,6 @@ interface TicketRemoteDataSource {
                         .child("users")
                         .child(entity.assignee)
                         .snapshots.mapNotNull { userSnapshot ->
-                            Log.d("TicketRemoteDataSource", userSnapshot.toString())
                             val userEntity = userSnapshot.getValue<UserProfileEntity>()
 
                             val column = columnType(entity)

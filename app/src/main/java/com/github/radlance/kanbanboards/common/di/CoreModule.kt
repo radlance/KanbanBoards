@@ -8,7 +8,9 @@ import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
+import com.github.radlance.kanbanboards.common.data.RemoteUsersRepository
 import com.github.radlance.kanbanboards.common.data.UsersRemoteDataSource
+import com.github.radlance.kanbanboards.common.domain.UsersRepository
 import com.github.radlance.kanbanboards.common.presentation.DispatchersList
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.Module
@@ -63,6 +65,12 @@ class CoreModule {
     fun provideUsersRemoteDataSource(
         provideDatabase: ProvideDatabase
     ): UsersRemoteDataSource = UsersRemoteDataSource.Base(provideDatabase)
+
+    @Provides
+    @Singleton
+    fun provideUsersRepository(usersRemoteDataSource: UsersRemoteDataSource): UsersRepository {
+        return RemoteUsersRepository(usersRemoteDataSource)
+    }
 
     companion object {
         private val Context.datastore by preferencesDataStore("settings")
