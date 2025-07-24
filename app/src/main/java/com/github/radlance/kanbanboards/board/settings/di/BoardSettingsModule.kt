@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.board.settings.di
 
 import com.github.radlance.kanbanboards.board.core.domain.BoardResult
+import com.github.radlance.kanbanboards.board.settings.data.BoardSettingsRemoteDataSource
 import com.github.radlance.kanbanboards.board.settings.data.RemoteBoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
@@ -33,4 +34,7 @@ interface BoardSettingsModule {
 
     @Binds
     fun provideHandleBoardSettings(handleBoardSettings: HandleBoardSettings.Base): HandleBoardSettings
+
+    @Binds
+    fun provideBoardSettingsRemoteDataSource(boardSettingsRemoteDataSource: BoardSettingsRemoteDataSource.Base): BoardSettingsRemoteDataSource
 }

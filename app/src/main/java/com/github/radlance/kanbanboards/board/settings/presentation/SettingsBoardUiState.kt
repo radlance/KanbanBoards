@@ -72,6 +72,7 @@ interface SettingsBoardUiState {
                 ) {
                     boardSettingsUiState.Show(
                         boardInfo = boardInfo,
+                        boardSettingsMembersAction = boardSettingsAction,
                         modifier = Modifier.weight(1f)
                     )
                 }

@@ -7,5 +7,9 @@ interface BoardSettingsRepository {
 
     fun board(boardId: String): Flow<BoardResult>
 
-    fun boardSettings(boardId: String, ownerId: String): Flow<BoardSettingsResult>
+    fun boardSettings(boardId: String): Flow<BoardSettingsResult>
+
+    suspend fun addUserToBoard(boardId: String, userId: String)
+
+    suspend fun deleteUserFromBoard(boardMemberId: String)
 }

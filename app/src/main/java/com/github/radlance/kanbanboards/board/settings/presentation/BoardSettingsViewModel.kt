@@ -33,16 +33,32 @@ class BoardSettingsViewModel @Inject constructor(
         }.launchInViewModel()
     }
 
-    fun fetchBoardSettings(boardId: String, ownerId: String) {
-        boardSettingsRepository.boardSettings(boardId, ownerId).map {
+    fun fetchBoardSettings(boardId: String) {
+        boardSettingsRepository.boardSettings(boardId).map {
             facade.mapBoardSettingsResult(it)
         }.onEach {
             handleBoardSettings.saveBoardSettingsUiState(it)
         }.launchInViewModel()
     }
+
+    override fun addUserToBoard(boardId: String, userId: String) {
+        handle(background = { boardSettingsRepository.addUserToBoard(boardId, userId) }, ui = {})
+    }
+
+    override fun deleteUserFromBoard(boardMemberId: String) {
+        handle(background = { boardSettingsRepository.deleteUserFromBoard(boardMemberId) }, ui = {})
+
+    }
 }
 
-interface BoardSettingsAction {
+interface BoardSettingsAction : BoardSettingsMembersAction {
 
     val boardSettingsUiState: StateFlow<BoardSettingsUiState>
+}
+
+interface BoardSettingsMembersAction {
+
+    fun addUserToBoard(boardId: String, userId: String)
+
+    fun deleteUserFromBoard(boardMemberId: String)
 }

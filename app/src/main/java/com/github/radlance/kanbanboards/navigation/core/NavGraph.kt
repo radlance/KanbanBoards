@@ -149,10 +149,7 @@ fun NavGraph(
                 },
                 navigateToBoardSettings = { boardInfo ->
                     boardSettingsViewModel.fetchBoard(boardInfo)
-                    boardSettingsViewModel.fetchBoardSettings(
-                        boardId = boardInfo.id,
-                        ownerId = boardInfo.owner
-                    )
+                    boardSettingsViewModel.fetchBoardSettings(boardId = boardInfo.id)
                     navHostController.navigate(BoardSettings)
                 }
             )

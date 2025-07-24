@@ -12,20 +12,29 @@ import javax.inject.Inject
 
 class RemoteBoardSettingsRepository @Inject constructor(
     private val usersRemoteDataSource: UsersRemoteDataSource,
-    private val boardRepository: BoardRepository
+    private val boardRepository: BoardRepository,
+    private val boardSettingsRemoteDataSource: BoardSettingsRemoteDataSource
 ) : BoardSettingsRepository {
 
     override fun board(boardId: String): Flow<BoardResult> = boardRepository.board(boardId)
 
-    override fun boardSettings(boardId: String, ownerId: String): Flow<BoardSettingsResult> {
+    override fun boardSettings(boardId: String): Flow<BoardSettingsResult> {
         return combine(
             usersRemoteDataSource.users(),
-            usersRemoteDataSource.boardMembers(boardId, ownerId)
+            boardSettingsRemoteDataSource.boardMembers(boardId)
         ) { users, members ->
             BoardSettingsResult.Success(
                 users = users,
                 members = members
             )
         }.catch { e -> BoardSettingsResult.Error(e.message!!) }
+    }
+
+    override suspend fun addUserToBoard(boardId: String, userId: String) {
+        boardSettingsRemoteDataSource.addUserToBoard(boardId, userId)
+    }
+
+    override suspend fun deleteUserFromBoard(boardMemberId: String) {
+        boardSettingsRemoteDataSource.deleteUserFromBoard(boardMemberId)
     }
 }

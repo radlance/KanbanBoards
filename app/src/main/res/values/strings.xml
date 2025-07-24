@@ -73,4 +73,8 @@
     <string name="delete_ticket_error">Delete ticket error</string>
     <string name="ticket_deleted">Ticket deleted!</string>
     <string name="named_settings">\"%1$s\" settings</string>
+    <string name="add_user_to_board">Add user to board</string>
+    <string name="found_users">Found users</string>
+    <string name="add_status">add status</string>
+    <string name="there_are_no_board_members_yet">There are no board members yet</string>
 </resources>
