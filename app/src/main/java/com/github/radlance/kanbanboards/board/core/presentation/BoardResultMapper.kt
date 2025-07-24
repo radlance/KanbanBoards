@@ -9,4 +9,6 @@ class BoardResultMapper @Inject constructor() : BoardResult.Mapper<BoardUiState>
     override fun mapSuccess(boardInfo: BoardInfo): BoardUiState = BoardUiState.Success(boardInfo)
 
     override fun mapError(message: String): BoardUiState = BoardUiState.Error(message)
+
+    override fun mapNotExists(): BoardUiState = BoardUiState.NotExists
 }

@@ -9,4 +9,6 @@ class SettingsBoardMapper @Inject constructor() : BoardResult.Mapper<SettingsBoa
     override fun mapSuccess(boardInfo: BoardInfo) = SettingsBoardUiState.Success(boardInfo)
 
     override fun mapError(message: String) = SettingsBoardUiState.Error(message)
+
+    override fun mapNotExists(): SettingsBoardUiState = SettingsBoardUiState.NotExists
 }

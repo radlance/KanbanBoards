@@ -77,4 +77,5 @@
     <string name="found_users">Found users</string>
     <string name="add_status">add status</string>
     <string name="there_are_no_board_members_yet">There are no board members yet</string>
+    <string name="you_have_been_removed_from_board">You have been removed from the board</string>
 </resources>

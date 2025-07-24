@@ -1,5 +1,6 @@
 package com.github.radlance.kanbanboards.board.core.presentation
 
+import android.widget.Toast
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,12 +21,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -42,6 +45,7 @@ interface BoardUiState {
         navigateToCreateTicket: (String, String) -> Unit,
         navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
         navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
+        navigateToBoardsScreen: () -> Unit,
         boardTicketActions: BoardTicketActions,
         modifier: Modifier = Modifier
     )
@@ -55,6 +59,7 @@ interface BoardUiState {
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
             navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
+            navigateToBoardsScreen: () -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -127,6 +132,7 @@ interface BoardUiState {
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
             navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
+            navigateToBoardsScreen: () -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -148,8 +154,34 @@ interface BoardUiState {
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
             navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
+            navigateToBoardsScreen: () -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) = CircularProgressIndicator()
+    }
+
+    object NotExists : BoardUiState {
+
+        @Composable
+        override fun Show(
+            navigateUp: () -> Unit,
+            navigateToCreateTicket: (String, String) -> Unit,
+            navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
+            navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
+            navigateToBoardsScreen: () -> Unit,
+            boardTicketActions: BoardTicketActions,
+            modifier: Modifier
+        ) {
+            val context = LocalContext.current
+
+            LaunchedEffect(Unit) {
+                navigateToBoardsScreen()
+                Toast.makeText(
+                    context,
+                    R.string.you_have_been_removed_from_board,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }

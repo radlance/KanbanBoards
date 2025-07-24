@@ -19,6 +19,7 @@ fun BoardScreen(
     navigateToCreateTicket: (String, String) -> Unit,
     navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
     navigateToBoardSettings: (boardInfo: BoardInfo) -> Unit,
+    navigateToBoardsScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
@@ -37,6 +38,7 @@ fun BoardScreen(
             navigateToCreateTicket = navigateToCreateTicket,
             navigateToTicketInfo = navigateToTicketInfo,
             navigateToBoardSettings = navigateToBoardSettings,
+            navigateToBoardsScreen = navigateToBoardsScreen,
             modifier = modifier.weight(1f)
         )
     }

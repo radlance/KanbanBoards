@@ -15,8 +15,8 @@ class RemoteBoardRepository @Inject constructor(
 ) : BoardRepository {
 
     override fun board(boardId: String): Flow<BoardResult> {
-        return boardRemoteDataSource.board(boardId).map {
-            BoardResult.Success(it)
+        return boardRemoteDataSource.board(boardId).map { boardInfo ->
+            boardInfo?.let { BoardResult.Success(it) } ?: BoardResult.NotExists
         }.catch { e -> BoardResult.Error(e.message!!) }
     }
 

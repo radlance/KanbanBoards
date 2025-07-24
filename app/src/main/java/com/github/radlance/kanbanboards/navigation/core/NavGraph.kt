@@ -151,6 +151,9 @@ fun NavGraph(
                     boardSettingsViewModel.fetchBoard(boardInfo)
                     boardSettingsViewModel.fetchBoardSettings(boardId = boardInfo.id)
                     navHostController.navigate(BoardSettings)
+                },
+                navigateToBoardsScreen = {
+                    navHostController.popBackStack(Boards, inclusive = false)
                 }
             )
         }
@@ -194,6 +197,9 @@ fun NavGraph(
         composable<BoardSettings> {
             BoardSettingsScreen(
                 navigateUp = navHostController::navigateUp,
+                navigateToBoardsScreen = {
+                    navHostController.popBackStack(Boards, inclusive = false)
+                },
                 viewModel = boardSettingsViewModel
             )
         }
