@@ -3,18 +3,18 @@ package com.github.radlance.kanbanboards.board.create.data
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardResult
-import com.github.radlance.kanbanboards.board.create.domain.SearchUsersResult
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.common.core.ManageResource
+import com.github.radlance.kanbanboards.common.domain.SearchUsersResult
+import com.github.radlance.kanbanboards.common.domain.UsersRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RemoteCreateBoardRepository @Inject constructor(
     private val boardsRemoteDataSource: BoardsRemoteDataSource,
     private val createBoardRemoteDataSource: CreateBoardRemoteDataSource,
+    private val usersRepository: UsersRepository,
     private val manageResource: ManageResource
 ) : CreateBoardRepository {
 
@@ -33,11 +33,5 @@ class RemoteCreateBoardRepository @Inject constructor(
         }
     }
 
-    override fun users(): Flow<SearchUsersResult> {
-        return createBoardRemoteDataSource.users().map {
-            SearchUsersResult.Success(it)
-        }.catch { e ->
-            SearchUsersResult.Error(message = e.message!!)
-        }
-    }
+    override fun users(): Flow<SearchUsersResult> = usersRepository.users()
 }

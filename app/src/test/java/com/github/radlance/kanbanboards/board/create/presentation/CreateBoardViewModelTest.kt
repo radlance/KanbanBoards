@@ -3,8 +3,8 @@ package com.github.radlance.kanbanboards.board.create.presentation
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardResult
-import com.github.radlance.kanbanboards.board.create.domain.SearchUsersResult
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.domain.SearchUsersResult
 import com.github.radlance.kanbanboards.common.domain.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

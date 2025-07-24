@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.board.create.presentation
 
-import com.github.radlance.kanbanboards.board.create.domain.SearchUsersResult
+import com.github.radlance.kanbanboards.common.domain.SearchUsersResult
 import com.github.radlance.kanbanboards.common.domain.User
 import javax.inject.Inject
 

@@ -41,6 +41,7 @@ interface BoardUiState {
         navigateUp: () -> Unit,
         navigateToCreateTicket: (String, String) -> Unit,
         navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
+        navigateToBoardSettings: () -> Unit,
         boardTicketActions: BoardTicketActions,
         modifier: Modifier = Modifier
     )
@@ -53,6 +54,7 @@ interface BoardUiState {
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
+            navigateToBoardSettings: () -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -124,6 +126,7 @@ interface BoardUiState {
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
+            navigateToBoardSettings: () -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) {
@@ -144,6 +147,7 @@ interface BoardUiState {
             navigateUp: () -> Unit,
             navigateToCreateTicket: (String, String) -> Unit,
             navigateToTicketInfo: (TicketUi, boardId: String, ownerId: String) -> Unit,
+            navigateToBoardSettings: () -> Unit,
             boardTicketActions: BoardTicketActions,
             modifier: Modifier
         ) = CircularProgressIndicator()

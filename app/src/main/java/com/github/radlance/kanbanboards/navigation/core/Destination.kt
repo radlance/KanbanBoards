@@ -44,3 +44,7 @@ data class TicketInfo(val ticketId: String, val boardId: String) : Destination
 @Keep
 @Serializable
 data class EditTicket(val boardId: String) : Destination
+
+@Keep
+@Serializable
+object BoardSettings : Destination

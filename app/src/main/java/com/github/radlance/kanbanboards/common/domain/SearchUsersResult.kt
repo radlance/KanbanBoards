@@ -1,6 +1,4 @@
-package com.github.radlance.kanbanboards.board.create.domain
-
-import com.github.radlance.kanbanboards.common.domain.User
+package com.github.radlance.kanbanboards.common.domain
 
 interface SearchUsersResult {
 

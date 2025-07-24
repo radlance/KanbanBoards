@@ -159,7 +159,7 @@ abstract class BaseTest {
             boardMembersException = exception
         }
 
-        override fun loadBoard(boardId: String): Flow<BoardInfo> = flow {
+        override fun board(boardId: String): Flow<BoardInfo> = flow {
             loadBoardCalledList.add(boardId)
             boardException?.let { throw it }
             boardInfo.update { it.copy(id = boardId) }

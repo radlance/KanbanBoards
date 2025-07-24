@@ -143,6 +143,9 @@ fun NavGraph(
                     editTicketViewModel.fetchBoardMembers(boardId, ownerId)
                     ticketInfoViewModel.fetchTicket(ticketUi)
                     navHostController.navigate(TicketInfo(ticketUi.id, boardId))
+                },
+                navigateToBoardSettings = {
+                    navHostController.navigate(BoardSettings)
                 }
             )
         }
@@ -181,6 +184,10 @@ fun NavGraph(
                 },
                 viewModel = editTicketViewModel
             )
+        }
+
+        composable<BoardSettings> {
+
         }
     }
 }

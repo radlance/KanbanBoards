@@ -4,13 +4,13 @@ import com.github.radlance.kanbanboards.board.create.data.CreateBoardRemoteDataS
 import com.github.radlance.kanbanboards.board.create.data.RemoteCreateBoardRepository
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardResult
-import com.github.radlance.kanbanboards.board.create.domain.SearchUsersResult
 import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardMapperFacade
 import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardResultMapper
 import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardUiState
 import com.github.radlance.kanbanboards.board.create.presentation.HandleCreateBoard
 import com.github.radlance.kanbanboards.board.create.presentation.SearchUsersResultMapper
 import com.github.radlance.kanbanboards.board.create.presentation.SearchUsersUiState
+import com.github.radlance.kanbanboards.common.domain.SearchUsersResult
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
