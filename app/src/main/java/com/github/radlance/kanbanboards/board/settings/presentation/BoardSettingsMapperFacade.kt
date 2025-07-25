@@ -12,13 +12,13 @@ interface BoardSettingsMapperFacade {
 
     class Base @Inject constructor(
         private val boardSettingsMapper: BoardSettingsResult.Mapper<BoardSettingsUiState>,
-        private val boardResultMapper: BoardResult.Mapper<SettingsBoardUiState>
+        private val settingsBoardMapper: BoardResult.Mapper<SettingsBoardUiState>
     ) : BoardSettingsMapperFacade {
 
         override fun mapBoardSettingsResult(
             boardSettingsResult: BoardSettingsResult
         ): BoardSettingsUiState = boardSettingsResult.map(boardSettingsMapper)
 
-        override fun mapBoardResult(boardResult: BoardResult) = boardResult.map(boardResultMapper)
+        override fun mapBoardResult(boardResult: BoardResult) = boardResult.map(settingsBoardMapper)
     }
 }

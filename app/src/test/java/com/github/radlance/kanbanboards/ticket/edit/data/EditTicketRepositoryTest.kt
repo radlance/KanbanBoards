@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.ticket.edit.data
 
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.data.RemoteUsersRepository
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository
@@ -17,6 +18,7 @@ class EditTicketRepositoryTest : BaseTest() {
     private lateinit var ticketRemoteDataSource: TestTicketRemoteDataSource
     private lateinit var manageResource: TestManageResource
     private lateinit var boardRemoteDataSource: TestBoardRemoteDataSource
+    private lateinit var usersRemoteDataSource: TestUsersRemoteDataSource
 
     private lateinit var repository: EditTicketRepository
 
@@ -26,12 +28,13 @@ class EditTicketRepositoryTest : BaseTest() {
         ticketRemoteDataSource = TestTicketRemoteDataSource()
         manageResource = TestManageResource()
         boardRemoteDataSource = TestBoardRemoteDataSource()
+        usersRemoteDataSource = TestUsersRemoteDataSource()
 
         repository = RemoteEditTicketRepository(
             ticketInfoRepository = ticketInfoRepository,
             ticketRemoteDataSource = ticketRemoteDataSource,
             handleUnitResult = HandleUnitResult.Base(manageResource),
-            boardRemoteDataSource = boardRemoteDataSource
+            usersRepository = RemoteUsersRepository(usersRemoteDataSource)
         )
     }
 

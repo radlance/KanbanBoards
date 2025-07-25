@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.create.data
 
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.data.RemoteUsersRepository
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
@@ -19,6 +20,7 @@ class CreateTicketRepositoryTest : BaseTest() {
     private lateinit var boardRemoteDataSource: TestBoardRemoteDataSource
     private lateinit var ticketRemoteDataSource: TestTicketRemoteDataSource
     private lateinit var manageResource: TestManageResource
+    private lateinit var usersRemoteDataSource: TestUsersRemoteDataSource
 
     private lateinit var repository: CreateTicketRepository
 
@@ -27,11 +29,12 @@ class CreateTicketRepositoryTest : BaseTest() {
         boardRemoteDataSource = TestBoardRemoteDataSource()
         ticketRemoteDataSource = TestTicketRemoteDataSource()
         manageResource = TestManageResource()
+        usersRemoteDataSource = TestUsersRemoteDataSource()
 
         repository = RemoteCreateTicketRepository(
-            boardRemoteDataSource = boardRemoteDataSource,
             ticketRemoteDataSource = ticketRemoteDataSource,
-            manageResource = manageResource
+            manageResource = manageResource,
+            usersRepository = RemoteUsersRepository(usersRemoteDataSource)
         )
     }
 
@@ -105,7 +108,7 @@ class CreateTicketRepositoryTest : BaseTest() {
 
     @Test
     fun test_board_members_success() = runBlocking {
-        boardRemoteDataSource.makeExpectedBoardMembers(
+        usersRemoteDataSource.makeExpectedBoardMembers(
             users = listOf(
                 User(
                     id = "test id",
@@ -126,14 +129,14 @@ class CreateTicketRepositoryTest : BaseTest() {
             ),
             repository.boardMembers(boardId = "test board id", ownerId = "test owner id").first()
         )
-        assertEquals(1, boardRemoteDataSource.boardMembersCalledList.size)
-        assertEquals("test board id", boardRemoteDataSource.boardMembersCalledList[0].first)
-        assertEquals("test owner id", boardRemoteDataSource.boardMembersCalledList[0].second)
+        assertEquals(1, usersRemoteDataSource.boardMembersCalledList.size)
+        assertEquals("test board id", usersRemoteDataSource.boardMembersCalledList[0].first)
+        assertEquals("test owner id", usersRemoteDataSource.boardMembersCalledList[0].second)
     }
 
     @Test
     fun test_board_members_error() = runBlocking {
-        boardRemoteDataSource.makeExpectedBoardMembersException(
+        usersRemoteDataSource.makeExpectedBoardMembersException(
             IllegalStateException("some another error")
         )
 

@@ -3,12 +3,16 @@ package com.github.radlance.kanbanboards.common
 import com.github.radlance.kanbanboards.board.core.data.BoardRemoteDataSource
 import com.github.radlance.kanbanboards.board.core.data.TicketRemoteDataSource
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
+import com.github.radlance.kanbanboards.board.core.domain.BoardRepository
+import com.github.radlance.kanbanboards.board.core.domain.BoardResult
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.Ticket
+import com.github.radlance.kanbanboards.board.core.domain.TicketResult
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
+import com.github.radlance.kanbanboards.common.data.UsersRemoteDataSource
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
@@ -28,6 +32,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -147,29 +152,12 @@ abstract class BaseTest {
             boardException = exception
         }
 
-        private var boardMembersException: Exception? = null
-        val boardMembersCalledList = mutableListOf<Pair<String, String>>()
-        private val boardMembers = MutableStateFlow<List<User>>(emptyList())
-
-        fun makeExpectedBoardMembers(users: List<User>) {
-            this.boardMembers.value = users
-        }
-
-        fun makeExpectedBoardMembersException(exception: Exception) {
-            boardMembersException = exception
-        }
 
         override fun board(boardId: String): Flow<BoardInfo> = flow {
             loadBoardCalledList.add(boardId)
             boardException?.let { throw it }
             boardInfo.update { it.copy(id = boardId) }
             emitAll(boardInfo)
-        }
-
-        override fun boardMembers(boardId: String, ownerId: String): Flow<List<User>> = flow {
-            boardMembersCalledList.add(Pair(boardId, ownerId))
-            boardMembersException?.let { throw it }
-            emitAll(boardMembers)
         }
     }
 
@@ -343,6 +331,86 @@ abstract class BaseTest {
         override fun saveTicketUiState(ticketUiState: TicketUiState) {
             saveCreateTicketUiStateCalledList.add(ticketUiState)
             createTicketUiStateMutable.value = ticketUiState
+        }
+    }
+
+    protected class TestUsersRemoteDataSource : UsersRemoteDataSource {
+
+        private var boardMembersException: Exception? = null
+        val boardMembersCalledList = mutableListOf<Pair<String, String>>()
+        private val boardMembers = MutableStateFlow<List<User>>(emptyList())
+
+        fun makeExpectedBoardMembers(users: List<User>) {
+            this.boardMembers.value = users
+        }
+
+        var usersCalledCount = 0
+        private val users = MutableStateFlow<List<User>>(emptyList())
+
+        private var usersException: Exception? = null
+
+        fun makeExpectedUsers(users: List<User>) {
+            this.users.value = users
+        }
+
+        fun makeExpectedUsersException(exception: Exception) {
+            usersException = exception
+        }
+
+        fun makeExpectedBoardMembersException(exception: Exception) {
+            boardMembersException = exception
+        }
+
+        override fun user(userId: String): Flow<User> = emptyFlow()
+
+        override fun users(): Flow<List<User>> = flow {
+            usersCalledCount++
+            usersException?.let { throw it }
+            emitAll(users)
+        }
+
+        override fun boardMembers(boardId: String, ownerId: String): Flow<List<User>> = flow {
+            boardMembersCalledList.add(Pair(boardId, ownerId))
+            boardMembersException?.let { throw it }
+            emitAll(boardMembers)
+        }
+    }
+
+    protected class TestBoardRepository : BoardRepository {
+        val boardCalledList = mutableListOf<String>()
+
+        private val boardResult: MutableStateFlow<BoardResult> = MutableStateFlow(
+            BoardResult.Error(message = "default board error message")
+        )
+
+        fun makeExpectedBoardResult(boardResult: BoardResult) {
+            this.boardResult.value = boardResult
+        }
+
+        val ticketsCalledList = mutableListOf<String>()
+
+        private val ticketResult: MutableStateFlow<TicketResult> = MutableStateFlow(
+            TicketResult.Error(message = "default ticket error message")
+        )
+
+        fun makeExpectedTicketResult(ticketResult: TicketResult) {
+            this.ticketResult.value = ticketResult
+        }
+
+        val moveTicketCalledList = mutableListOf<Pair<String, Column>>()
+
+        override fun board(boardId: String): Flow<BoardResult> {
+            boardCalledList.add(boardId)
+            return boardResult
+        }
+
+        override fun tickets(boardId: String): Flow<TicketResult> {
+            ticketsCalledList.add(boardId)
+            return ticketResult
+        }
+
+        override fun moveTicket(ticketId: String, column: Column) {
+            moveTicketCalledList.add(Pair(ticketId, column))
         }
     }
 }

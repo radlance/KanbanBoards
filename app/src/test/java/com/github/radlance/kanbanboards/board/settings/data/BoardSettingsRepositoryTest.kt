@@ -1,0 +1,132 @@
+package com.github.radlance.kanbanboards.board.settings.data
+
+import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
+import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepository
+import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
+import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.domain.User
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+import org.junit.Before
+import org.junit.Test
+
+class BoardSettingsRepositoryTest : BaseTest() {
+
+    private lateinit var usersRemoteDataSource: TestUsersRemoteDataSource
+    private lateinit var boardRepository: TestBoardRepository
+    private lateinit var remoteDataSource: TestBoardSettingsRemoteDataSource
+
+    private lateinit var repository: BoardSettingsRepository
+
+    @Before
+    fun setup() {
+        usersRemoteDataSource = TestUsersRemoteDataSource()
+        boardRepository = TestBoardRepository()
+        remoteDataSource = TestBoardSettingsRemoteDataSource()
+
+        repository = RemoteBoardSettingsRepository(
+            usersRemoteDataSource = usersRemoteDataSource,
+            boardRepository = boardRepository,
+            boardSettingsRemoteDataSource = remoteDataSource
+        )
+    }
+
+    @Test
+    fun test_add_user_to_board() = runBlocking {
+        repository.addUserToBoard(boardId = "boardId", userId = "userId")
+        assertEquals(1, remoteDataSource.addUserToBoardCalledList.size)
+        assertEquals(Pair("boardId", "userId"), remoteDataSource.addUserToBoardCalledList[0])
+    }
+
+    @Test
+    fun test_delete_user_from_board() = runBlocking {
+        repository.deleteUserFromBoard(boardMemberId = "boardMemberId")
+        assertEquals(1, remoteDataSource.deleteUserFromBoardCalledList.size)
+        assertEquals("boardMemberId", remoteDataSource.deleteUserFromBoardCalledList[0])
+    }
+
+    @Test
+    fun test_board_settings_success() = runBlocking {
+        usersRemoteDataSource.makeExpectedUsers(
+            users = listOf(
+                User(id = "user id", email = "test@email.com", name = "user name")
+            )
+        )
+
+        remoteDataSource.makeExpectedBoardMembers(
+            boardMembers = listOf(
+                BoardMember(
+                    boardMemberId = "123",
+                    userId = "321",
+                    email = "email@test.com",
+                    name = "name"
+                )
+            )
+        )
+
+        assertEquals(
+            BoardSettingsResult.Success(
+                users = listOf(
+                    User(id = "user id", email = "test@email.com", name = "user name")
+                ),
+                members = listOf(
+                    BoardMember(
+                        boardMemberId = "123",
+                        userId = "321",
+                        email = "email@test.com",
+                        name = "name"
+                    )
+                )
+            ),
+            repository.boardSettings(boardId = "boardId").first()
+        )
+        assertEquals(1, usersRemoteDataSource.usersCalledCount)
+        assertEquals(1, remoteDataSource.boardMembersCalledList.size)
+        assertEquals("boardId", remoteDataSource.boardMembersCalledList[0])
+    }
+
+    @Test
+    fun test_board_settings_error() = runBlocking {
+        remoteDataSource.makeExpectedBoardMembersException(IllegalStateException("error"))
+        val actual = repository.boardSettings(boardId = "boardId").toList()
+        assertEquals(emptyList<BoardSettingsResult>(), actual)
+    }
+
+    private class TestBoardSettingsRemoteDataSource : BoardSettingsRemoteDataSource {
+
+        val addUserToBoardCalledList = mutableListOf<Pair<String, String>>()
+        val deleteUserFromBoardCalledList = mutableListOf<String>()
+
+        val boardMembersCalledList = mutableListOf<String>()
+        private val boardMembers = MutableStateFlow<List<BoardMember>>(emptyList())
+        private var boardMembersException: Exception? = null
+
+        fun makeExpectedBoardMembers(boardMembers: List<BoardMember>) {
+            this.boardMembers.value = boardMembers
+        }
+
+        fun makeExpectedBoardMembersException(exception: Exception) {
+            boardMembersException = exception
+        }
+
+        override suspend fun addUserToBoard(boardId: String, userId: String) {
+            addUserToBoardCalledList.add(Pair(boardId, userId))
+        }
+
+        override suspend fun deleteUserFromBoard(boardMemberId: String) {
+            deleteUserFromBoardCalledList.add(boardMemberId)
+        }
+
+        override fun boardMembers(boardId: String): Flow<List<BoardMember>> = flow {
+            boardMembersCalledList.add(boardId)
+            boardMembersException?.let { throw it }
+            emitAll(boardMembers)
+        }
+    }
+}

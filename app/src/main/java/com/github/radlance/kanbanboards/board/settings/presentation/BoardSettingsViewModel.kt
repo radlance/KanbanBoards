@@ -47,7 +47,6 @@ class BoardSettingsViewModel @Inject constructor(
 
     override fun deleteUserFromBoard(boardMemberId: String) {
         handle(background = { boardSettingsRepository.deleteUserFromBoard(boardMemberId) }, ui = {})
-
     }
 }
 

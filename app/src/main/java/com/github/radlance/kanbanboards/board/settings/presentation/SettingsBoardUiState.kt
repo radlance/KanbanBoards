@@ -38,7 +38,7 @@ interface SettingsBoardUiState {
         modifier: Modifier = Modifier
     )
 
-    class Success(private val boardInfo: BoardInfo) : SettingsBoardUiState {
+    data class Success(private val boardInfo: BoardInfo) : SettingsBoardUiState {
 
         @OptIn(ExperimentalMaterial3Api::class)
         @Composable
@@ -85,7 +85,7 @@ interface SettingsBoardUiState {
         }
     }
 
-    class Error(private val message: String) : SettingsBoardUiState {
+    data class Error(private val message: String) : SettingsBoardUiState {
 
         @Composable
         override fun Show(

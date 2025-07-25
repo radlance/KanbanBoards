@@ -5,13 +5,10 @@ import com.github.radlance.kanbanboards.board.create.domain.CreateBoardRepositor
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardResult
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.data.RemoteUsersRepository
 import com.github.radlance.kanbanboards.common.domain.SearchUsersResult
 import com.github.radlance.kanbanboards.common.domain.User
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -24,6 +21,7 @@ class CreateBoardRepositoryTest : BaseTest() {
     private lateinit var boardsRemoteDataSource: TestBoardsRemoteDataSource
     private lateinit var createBoardRemoteDataSource: TestCreateBoardRemoteDataSource
 
+    private lateinit var usersRemoteDataSource: TestUsersRemoteDataSource
     private lateinit var repository: CreateBoardRepository
 
     @Before
@@ -31,10 +29,12 @@ class CreateBoardRepositoryTest : BaseTest() {
         boardsRemoteDataSource = TestBoardsRemoteDataSource()
         createBoardRemoteDataSource = TestCreateBoardRemoteDataSource()
         manageResource = TestManageResource()
+        usersRemoteDataSource = TestUsersRemoteDataSource()
 
         repository = RemoteCreateBoardRepository(
             boardsRemoteDataSource = boardsRemoteDataSource,
             createBoardRemoteDataSource = createBoardRemoteDataSource,
+            usersRepository = RemoteUsersRepository(usersRemoteDataSource),
             manageResource = manageResource
         )
     }
@@ -106,7 +106,7 @@ class CreateBoardRepositoryTest : BaseTest() {
 
     @Test
     fun test_users_success() = runBlocking {
-        createBoardRemoteDataSource.makeExpectedUsers(
+        usersRemoteDataSource.makeExpectedUsers(
             listOf(User(id = "test id", email = "test email", name = "test name"))
         )
         assertEquals(
@@ -115,17 +115,17 @@ class CreateBoardRepositoryTest : BaseTest() {
             ),
             repository.users().first()
         )
-        assertEquals(1, createBoardRemoteDataSource.usersCalledCount)
+        assertEquals(1, usersRemoteDataSource.usersCalledCount)
     }
 
     @Test
     fun test_users_error() = runBlocking {
-        createBoardRemoteDataSource.makeExpectedUsersException(IllegalStateException("bad request"))
+        usersRemoteDataSource.makeExpectedUsersException(IllegalStateException("bad request"))
         assertEquals(
             0,
             repository.users().toList().size
         )
-        assertEquals(1, createBoardRemoteDataSource.usersCalledCount)
+        assertEquals(1, usersRemoteDataSource.usersCalledCount)
     }
 
     private class TestCreateBoardRemoteDataSource : CreateBoardRemoteDataSource {
@@ -136,18 +136,6 @@ class CreateBoardRepositoryTest : BaseTest() {
             createBoardException = expected
         }
 
-        var usersCalledCount = 0
-        private val users = MutableStateFlow<List<User>>(emptyList())
-        private var usersException: Exception? = null
-
-        fun makeExpectedUsers(users: List<User>) {
-            this.users.value = users
-        }
-
-        fun makeExpectedUsersException(exception: Exception) {
-            usersException = exception
-        }
-
         override suspend fun createBoard(name: String, memberIds: List<String>): BoardInfo {
             createBoardCalledCount++
             createBoardException?.let { throw it }
@@ -156,12 +144,6 @@ class CreateBoardRepositoryTest : BaseTest() {
                 name = name,
                 isMyBoard = true
             )
-        }
-
-        override fun users(): Flow<List<User>> = flow {
-            usersCalledCount++
-            usersException?.let { throw it }
-            emitAll(users)
         }
     }
 }

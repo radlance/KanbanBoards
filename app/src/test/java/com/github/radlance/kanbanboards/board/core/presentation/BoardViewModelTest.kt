@@ -1,14 +1,12 @@
 package com.github.radlance.kanbanboards.board.core.presentation
 
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.core.domain.BoardRepository
 import com.github.radlance.kanbanboards.board.core.domain.BoardResult
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.Ticket
 import com.github.radlance.kanbanboards.board.core.domain.TicketResult
 import com.github.radlance.kanbanboards.common.BaseTest
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.junit.Before
@@ -57,6 +55,10 @@ class BoardViewModelTest : BaseTest() {
             boardInfo = BoardInfo(id = "test id", name = "test name", isMyBoard = true)
         )
 
+        assertEquals(
+            BoardUiState.Error(message = "error loading board"),
+            viewModel.boardUiState.value
+        )
         assertEquals(1, repository.boardCalledList.size)
         assertEquals("test id", repository.boardCalledList[0])
         assertEquals(2, handle.saveBoardUiStateCalledList.size)
@@ -74,6 +76,11 @@ class BoardViewModelTest : BaseTest() {
                 boardInfo = BoardInfo(id = "first", name = "example", isMyBoard = false)
             )
         )
+        assertEquals(
+            BoardUiState.Success(
+                BoardInfo(id = "first", name = "example", isMyBoard = false)
+            ), viewModel.boardUiState.value
+        )
         assertEquals(1, repository.boardCalledList.size)
         assertEquals(3, handle.saveBoardUiStateCalledList.size)
         assertEquals(
@@ -81,6 +88,15 @@ class BoardViewModelTest : BaseTest() {
                 BoardInfo(id = "first", name = "example", isMyBoard = false)
             ),
             handle.saveBoardUiStateCalledList[2]
+        )
+
+        repository.makeExpectedBoardResult(BoardResult.NotExists)
+        assertEquals(BoardUiState.NotExists, viewModel.boardUiState.value)
+        assertEquals(1, repository.boardCalledList.size)
+        assertEquals(4, handle.saveBoardUiStateCalledList.size)
+        assertEquals(
+            BoardUiState.NotExists,
+            handle.saveBoardUiStateCalledList[3]
         )
     }
 
@@ -233,44 +249,6 @@ class BoardViewModelTest : BaseTest() {
         viewModel.moveTicket(ticketId = "new id", column = ColumnUi.Todo)
         assertEquals(3, repository.moveTicketCalledList.size)
         assertEquals(Pair("new id", Column.Todo), repository.moveTicketCalledList[2])
-    }
-
-    private class TestBoardRepository : BoardRepository {
-        val boardCalledList = mutableListOf<String>()
-
-        private val boardResult: MutableStateFlow<BoardResult> = MutableStateFlow(
-            BoardResult.Error(message = "default board error message")
-        )
-
-        fun makeExpectedBoardResult(boardResult: BoardResult) {
-            this.boardResult.value = boardResult
-        }
-
-        val ticketsCalledList = mutableListOf<String>()
-
-        private val ticketResult: MutableStateFlow<TicketResult> = MutableStateFlow(
-            TicketResult.Error(message = "default ticket error message")
-        )
-
-        fun makeExpectedTicketResult(ticketResult: TicketResult) {
-            this.ticketResult.value = ticketResult
-        }
-
-        val moveTicketCalledList = mutableListOf<Pair<String, Column>>()
-
-        override fun board(boardId: String): Flow<BoardResult> {
-            boardCalledList.add(boardId)
-            return boardResult
-        }
-
-        override fun tickets(boardId: String): Flow<TicketResult> {
-            ticketsCalledList.add(boardId)
-            return ticketResult
-        }
-
-        override fun moveTicket(ticketId: String, column: Column) {
-            moveTicketCalledList.add(Pair(ticketId, column))
-        }
     }
 
     private class TestHandleBoard : HandleBoard {
