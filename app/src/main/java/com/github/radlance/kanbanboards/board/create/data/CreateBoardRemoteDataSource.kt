@@ -24,12 +24,17 @@ interface CreateBoardRemoteDataSource {
                 val myUid = Firebase.auth.currentUser!!.uid
                 val boardsReference = provideDatabase.database().child("boards").push()
                 boardsReference.setValue(BoardEntity(name = name, owner = myUid)).await()
-                val membersReference = provideDatabase.database().child("boards-members").push()
+
                 memberIds.forEach { memberId ->
-                    membersReference.setValue(
-                        BoardMemberEntity(memberId = memberId, boardId = boardsReference.key!!)
-                    ).await()
+                    provideDatabase.database()
+                        .child("boards-members")
+                        .push()
+                        .setValue(
+                            BoardMemberEntity(memberId = memberId, boardId = boardsReference.key!!)
+                        )
+                        .await()
                 }
+
                 BoardInfo(id = boardsReference.key!!, name = name, isMyBoard = true)
             } catch (e: Exception) {
                 handleError.handle(e)
