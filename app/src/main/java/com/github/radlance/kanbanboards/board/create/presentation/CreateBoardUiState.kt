@@ -35,7 +35,9 @@ interface CreateBoardUiState {
         )
     }
 
-    data class Success(private val boardInfo: BoardInfo) : CreateBoardUiState {
+    data class Success(private val boardInfo: BoardInfo) : Abstract(
+        enabled = true
+    ) {
 
         @Composable
         override fun Show(
@@ -43,8 +45,8 @@ interface CreateBoardUiState {
             createBoardActions: CreateBoardActions,
             columnScope: ColumnScope
         ) {
+            super.Show(navigateToBoardScreen, createBoardActions, columnScope)
             navigateToBoardScreen(boardInfo)
-            createBoardActions.resetBoardUiState()
         }
     }
 

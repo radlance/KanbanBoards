@@ -1,7 +1,9 @@
 package com.github.radlance.kanbanboards.board.settings.data
 
 import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
+import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
+import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.google.firebase.database.getValue
@@ -24,8 +26,11 @@ interface BoardSettingsRemoteDataSource {
 
     fun boardMembers(boardId: String): Flow<List<BoardMember>>
 
+    suspend fun updateBoardName(boardInfo: BoardInfo)
+
     class Base @Inject constructor(
-        private val provideDatabase: ProvideDatabase
+        private val provideDatabase: ProvideDatabase,
+        private val handleError: HandleError
     ) : BoardSettingsRemoteDataSource {
 
         override suspend fun addUserToBoard(boardId: String, userId: String) {
@@ -87,6 +92,18 @@ interface BoardSettingsRemoteDataSource {
                 }
 
             }.catch { e -> throw IllegalStateException(e.message) }
+        }
+
+        override suspend fun updateBoardName(boardInfo: BoardInfo) {
+            try {
+                provideDatabase.database()
+                    .child("boards")
+                    .child(boardInfo.id)
+                    .setValue(boardInfo)
+                    .await()
+            } catch (e: Exception) {
+                handleError.handle(e)
+            }
         }
     }
 }

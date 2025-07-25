@@ -1,10 +1,11 @@
 package com.github.radlance.kanbanboards.board.settings.presentation
 
 import android.widget.Toast
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -21,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
@@ -54,13 +55,7 @@ interface SettingsBoardUiState {
                 topBar = {
                     CenterAlignedTopAppBar(
                         title = {
-                            Crossfade(targetState = boardInfo.name) { name ->
-                                Text(
-                                    text = stringResource(R.string.named_settings, name),
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
+                            Text(text = stringResource(R.string.settings))
                         },
                         navigationIcon = { BackButton(navigateUp) }
                     )
@@ -71,13 +66,18 @@ interface SettingsBoardUiState {
                     modifier = modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(contentPadding),
+                        .padding(
+                            top = contentPadding.calculateTopPadding(),
+                            start = contentPadding.calculateStartPadding(layoutDirection = LayoutDirection.Ltr),
+                            end = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+                        ),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     boardSettingsUiState.Show(
                         boardInfo = boardInfo,
-                        boardSettingsMembersAction = boardSettingsAction,
+                        boardSettingsAction = boardSettingsAction,
+                        navigateUp = navigateUp,
                         modifier = Modifier.weight(1f)
                     )
                 }

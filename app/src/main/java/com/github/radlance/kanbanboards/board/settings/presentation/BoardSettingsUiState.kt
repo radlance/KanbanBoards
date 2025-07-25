@@ -2,7 +2,9 @@ package com.github.radlance.kanbanboards.board.settings.presentation
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
 import com.github.radlance.kanbanboards.common.domain.User
@@ -12,8 +14,9 @@ interface BoardSettingsUiState {
 
     @Composable
     fun Show(
+        navigateUp: () -> Unit,
         boardInfo: BoardInfo,
-        boardSettingsMembersAction: BoardSettingsMembersAction,
+        boardSettingsAction: BoardSettingsAction,
         modifier: Modifier = Modifier
     )
 
@@ -24,15 +27,19 @@ interface BoardSettingsUiState {
 
         @Composable
         override fun Show(
+            navigateUp: () -> Unit,
             boardInfo: BoardInfo,
-            boardSettingsMembersAction: BoardSettingsMembersAction,
+            boardSettingsAction: BoardSettingsAction,
             modifier: Modifier
         ) {
-            BoardSettingsContent(
+            val boardSettingsUpdateState by boardSettingsAction.updateBoardNameUiState.collectAsStateWithLifecycle()
+
+            boardSettingsUpdateState.Show(
+                navigateUp = navigateUp,
+                boardSettingsAction = boardSettingsAction,
+                boardInfo = boardInfo,
                 users = users,
                 members = members,
-                boardId = boardInfo.id,
-                boardSettingsMembersAction = boardSettingsMembersAction,
                 modifier = modifier
             )
         }
@@ -42,8 +49,9 @@ interface BoardSettingsUiState {
 
         @Composable
         override fun Show(
+            navigateUp: () -> Unit,
             boardInfo: BoardInfo,
-            boardSettingsMembersAction: BoardSettingsMembersAction,
+            boardSettingsAction: BoardSettingsAction,
             modifier: Modifier
         ) = ErrorMessage(message)
     }
@@ -52,8 +60,9 @@ interface BoardSettingsUiState {
 
         @Composable
         override fun Show(
+            navigateUp: () -> Unit,
             boardInfo: BoardInfo,
-            boardSettingsMembersAction: BoardSettingsMembersAction,
+            boardSettingsAction: BoardSettingsAction,
             modifier: Modifier
         ) = CircularProgressIndicator()
     }

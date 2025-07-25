@@ -15,6 +15,10 @@ interface HandleBoardSettings {
 
     fun saveBoardSettingsUiState(boardSettingsUiState: BoardSettingsUiState)
 
+    val updateBoardNameUiState: StateFlow<UpdateBoardNameUiState>
+
+    fun saveUpdateBoardNameUiState(updateBoardNameUiState: UpdateBoardNameUiState)
+
     class Base @Inject constructor() : HandleBoardSettings {
 
         private val settingsBoardUiStateMutable = MutableStateFlow<SettingsBoardUiState>(
@@ -24,6 +28,11 @@ interface HandleBoardSettings {
         private val boardSettingsUiStateMutable = MutableStateFlow<BoardSettingsUiState>(
             BoardSettingsUiState.Loading
         )
+
+        private val updateBoardNameUiStateMutable = MutableStateFlow<UpdateBoardNameUiState>(
+            UpdateBoardNameUiState.CanCreate
+        )
+
         override val settingsBoardUiState: StateFlow<SettingsBoardUiState>
             get() = settingsBoardUiStateMutable.asStateFlow()
 
@@ -36,6 +45,13 @@ interface HandleBoardSettings {
 
         override fun saveBoardSettingsUiState(boardSettingsUiState: BoardSettingsUiState) {
             boardSettingsUiStateMutable.value = boardSettingsUiState
+        }
+
+        override val updateBoardNameUiState: StateFlow<UpdateBoardNameUiState>
+            get() = updateBoardNameUiStateMutable.asStateFlow()
+
+        override fun saveUpdateBoardNameUiState(updateBoardNameUiState: UpdateBoardNameUiState) {
+            updateBoardNameUiStateMutable.value = updateBoardNameUiState
         }
     }
 }

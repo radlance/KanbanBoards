@@ -21,6 +21,16 @@ class BoardSettingsViewModel @Inject constructor(
 
     override val boardSettingsUiState = handleBoardSettings.boardSettingsUiState
 
+    override val updateBoardNameUiState = handleBoardSettings.updateBoardNameUiState
+
+    override fun checkBoard(name: String) {
+        val uiState = if (name.trim().length >= 3) {
+            UpdateBoardNameUiState.CanCreate
+        } else UpdateBoardNameUiState.CanNotCreate
+
+        handleBoardSettings.saveUpdateBoardNameUiState(uiState)
+    }
+
     val boardUiState = handleBoardSettings.settingsBoardUiState
 
     fun fetchBoard(boardInfo: BoardInfo) {
@@ -48,16 +58,36 @@ class BoardSettingsViewModel @Inject constructor(
     override fun deleteUserFromBoard(boardMemberId: String) {
         handle(background = { boardSettingsRepository.deleteUserFromBoard(boardMemberId) }, ui = {})
     }
+
+    override fun updateBoardName(boardInfo: BoardInfo) {
+        handleBoardSettings.saveUpdateBoardNameUiState(UpdateBoardNameUiState.Loading)
+
+        handle(background = { boardSettingsRepository.updateBoardName(boardInfo) }) {
+            handleBoardSettings.saveUpdateBoardNameUiState(facade.mapUpdateBoardNameResult(it))
+        }
+    }
+
+    override fun resetBoardUiState() {
+        handleBoardSettings.saveUpdateBoardNameUiState(UpdateBoardNameUiState.CanNotCreate)
+    }
 }
 
 interface BoardSettingsAction : BoardSettingsMembersAction {
 
     val boardSettingsUiState: StateFlow<BoardSettingsUiState>
+
+    val updateBoardNameUiState: StateFlow<UpdateBoardNameUiState>
 }
 
 interface BoardSettingsMembersAction {
 
+    fun checkBoard(name: String)
+
     fun addUserToBoard(boardId: String, userId: String)
 
     fun deleteUserFromBoard(boardMemberId: String)
+
+    fun updateBoardName(boardInfo: BoardInfo)
+
+    fun resetBoardUiState()
 }

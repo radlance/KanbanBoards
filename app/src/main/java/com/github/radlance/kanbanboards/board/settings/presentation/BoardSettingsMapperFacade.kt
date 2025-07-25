@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.board.settings.presentation
 
 import com.github.radlance.kanbanboards.board.core.domain.BoardResult
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
+import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
 import javax.inject.Inject
 
 interface BoardSettingsMapperFacade {
@@ -10,9 +11,12 @@ interface BoardSettingsMapperFacade {
 
     fun mapBoardResult(boardResult: BoardResult): SettingsBoardUiState
 
+    fun mapUpdateBoardNameResult(boardNameResult: UpdateBoardNameResult): UpdateBoardNameUiState
+
     class Base @Inject constructor(
         private val boardSettingsMapper: BoardSettingsResult.Mapper<BoardSettingsUiState>,
-        private val settingsBoardMapper: BoardResult.Mapper<SettingsBoardUiState>
+        private val settingsBoardMapper: BoardResult.Mapper<SettingsBoardUiState>,
+        private val updateBoardNameMapper: UpdateBoardNameResult.Mapper<UpdateBoardNameUiState>
     ) : BoardSettingsMapperFacade {
 
         override fun mapBoardSettingsResult(
@@ -20,5 +24,8 @@ interface BoardSettingsMapperFacade {
         ): BoardSettingsUiState = boardSettingsResult.map(boardSettingsMapper)
 
         override fun mapBoardResult(boardResult: BoardResult) = boardResult.map(settingsBoardMapper)
+
+        override fun mapUpdateBoardNameResult(boardNameResult: UpdateBoardNameResult) =
+            boardNameResult.map(updateBoardNameMapper)
     }
 }

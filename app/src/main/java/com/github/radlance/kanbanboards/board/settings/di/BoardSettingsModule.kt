@@ -5,12 +5,15 @@ import com.github.radlance.kanbanboards.board.settings.data.BoardSettingsRemoteD
 import com.github.radlance.kanbanboards.board.settings.data.RemoteBoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
+import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
 import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsMapper
 import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsMapperFacade
 import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsUiState
 import com.github.radlance.kanbanboards.board.settings.presentation.HandleBoardSettings
 import com.github.radlance.kanbanboards.board.settings.presentation.SettingsBoardMapper
 import com.github.radlance.kanbanboards.board.settings.presentation.SettingsBoardUiState
+import com.github.radlance.kanbanboards.board.settings.presentation.UpdateBoardNameMapper
+import com.github.radlance.kanbanboards.board.settings.presentation.UpdateBoardNameUiState
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -37,4 +40,7 @@ interface BoardSettingsModule {
 
     @Binds
     fun provideBoardSettingsRemoteDataSource(boardSettingsRemoteDataSource: BoardSettingsRemoteDataSource.Base): BoardSettingsRemoteDataSource
+
+    @Binds
+    fun provideUpdateBoardNameMapper(updateBoardNameMapper: UpdateBoardNameMapper): UpdateBoardNameResult.Mapper<UpdateBoardNameUiState>
 }
