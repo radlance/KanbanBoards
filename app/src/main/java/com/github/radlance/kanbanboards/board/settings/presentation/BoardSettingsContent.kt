@@ -93,8 +93,15 @@ fun BoardSettingsContent(
         val empty = searchFieldValue.isEmpty()
         val displayedUsers = if (empty) {
             members
-        } else users.map {
-            with(it) { BoardMember(boardMemberId = "", userId = id, email = email, name = name) }
+        } else users.map { user ->
+            with(user) {
+                BoardMember(
+                    boardMemberId = members.find { it.email == email }?.boardMemberId ?: "",
+                    userId = id,
+                    email = email,
+                    name = name
+                )
+            }
         }.filter {
             it.email.contains(searchFieldValue, ignoreCase = true)
         }

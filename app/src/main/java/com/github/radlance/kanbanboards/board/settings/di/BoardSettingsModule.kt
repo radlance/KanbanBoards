@@ -14,6 +14,7 @@ import com.github.radlance.kanbanboards.board.settings.presentation.SettingsBoar
 import com.github.radlance.kanbanboards.board.settings.presentation.SettingsBoardUiState
 import com.github.radlance.kanbanboards.board.settings.presentation.UpdateBoardNameMapper
 import com.github.radlance.kanbanboards.board.settings.presentation.UpdateBoardNameUiState
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

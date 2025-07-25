@@ -178,7 +178,7 @@ interface BoardUiState {
                 navigateToBoardsScreen()
                 Toast.makeText(
                     context,
-                    R.string.you_have_been_removed_from_board,
+                    R.string.the_board_has_been_deleted,
                     Toast.LENGTH_SHORT
                 ).show()
             }

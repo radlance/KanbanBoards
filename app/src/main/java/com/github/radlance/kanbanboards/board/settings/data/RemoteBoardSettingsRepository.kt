@@ -62,4 +62,8 @@ class RemoteBoardSettingsRepository @Inject constructor(
             )
         }
     }
+
+    override suspend fun deleteBoard(boardId: String) {
+        boardSettingsRemoteDataSource.deleteBoard(boardId)
+    }
 }

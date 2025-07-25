@@ -28,6 +28,8 @@ interface BoardSettingsRemoteDataSource {
 
     suspend fun updateBoardName(boardInfo: BoardInfo)
 
+    suspend fun deleteBoard(boardId: String)
+
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase,
         private val handleError: HandleError
@@ -103,6 +105,27 @@ interface BoardSettingsRemoteDataSource {
                     .await()
             } catch (e: Exception) {
                 handleError.handle(e)
+            }
+        }
+
+        override suspend fun deleteBoard(boardId: String) {
+            try {
+
+                provideDatabase.database()
+                    .child("boards")
+                    .child(boardId)
+                    .removeValue()
+                    .await()
+
+                val membersSnapshot = provideDatabase.database()
+                    .child("boards-members")
+                    .orderByChild("boardId")
+                    .equalTo(boardId).get().await()
+
+                repeat(membersSnapshot.children.count()) {
+                    membersSnapshot.ref.removeValue().await()
+                }
+            } catch (_: Exception) {
             }
         }
     }

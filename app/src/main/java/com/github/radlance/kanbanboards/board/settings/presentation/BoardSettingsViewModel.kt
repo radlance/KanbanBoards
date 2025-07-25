@@ -23,6 +23,10 @@ class BoardSettingsViewModel @Inject constructor(
 
     override val updateBoardNameUiState = handleBoardSettings.updateBoardNameUiState
 
+    override fun deleteBoard(boardId: String) {
+        handle(background = { boardSettingsRepository.deleteBoard(boardId) }, ui = {})
+    }
+
     override fun checkBoard(name: String) {
         val uiState = if (name.trim().length >= 3) {
             UpdateBoardNameUiState.CanCreate
@@ -77,6 +81,8 @@ interface BoardSettingsAction : BoardSettingsMembersAction {
     val boardSettingsUiState: StateFlow<BoardSettingsUiState>
 
     val updateBoardNameUiState: StateFlow<UpdateBoardNameUiState>
+
+    fun deleteBoard(boardId: String)
 }
 
 interface BoardSettingsMembersAction {
