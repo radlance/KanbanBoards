@@ -1,6 +1,5 @@
 package com.github.radlance.kanbanboards.auth.presentation
 
-import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
@@ -12,6 +11,7 @@ import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInFieldsUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInViewModel
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -224,9 +224,9 @@ class SignInViewModelTest : BaseTest() {
 
         override val authState: StateFlow<AuthResultUiState>
             get() {
-            signInStateCalledCount++
-            return authResultUiState
-        }
+                signInStateCalledCount++
+                return authResultUiState
+            }
 
         override fun saveCredentialState(credentialUiState: CredentialUiState) {
             saveCredentialStateCalledList.add(credentialUiState)
@@ -235,15 +235,15 @@ class SignInViewModelTest : BaseTest() {
 
         override val credentialState: StateFlow<CredentialUiState>
             get() {
-            credentialStateCalledCount++
-            return credentialUiState
-        }
+                credentialStateCalledCount++
+                return credentialUiState
+            }
 
         override val fieldsState: MutableStateFlow<SignInFieldsUiState>
             get() {
-            fieldsStateCalledCount++
-            return fieldsUiState
-        }
+                fieldsStateCalledCount++
+                return fieldsUiState
+            }
     }
 
     private class TestValidateAuth : ValidateAuth {

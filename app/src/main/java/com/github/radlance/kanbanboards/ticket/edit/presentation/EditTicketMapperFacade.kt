@@ -3,8 +3,8 @@ package com.github.radlance.kanbanboards.ticket.edit.presentation
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketMapperFacade
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketMapperFacade
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
+import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import javax.inject.Inject
 

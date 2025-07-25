@@ -14,7 +14,7 @@ interface HandleAuthRemoteDataSource {
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase,
         private val handle: HandleError,
-    ): HandleAuthRemoteDataSource {
+    ) : HandleAuthRemoteDataSource {
         override suspend fun handle(action: suspend () -> FirebaseUser?) {
             try {
                 val user = action.invoke()

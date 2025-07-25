@@ -3,7 +3,7 @@ package com.github.radlance.kanbanboards.boards.presentation
 import com.github.radlance.kanbanboards.boards.domain.Board
 import javax.inject.Inject
 
-class BoardMapper @Inject constructor(): Board.Mapper<BoardUi> {
+class BoardMapper @Inject constructor() : Board.Mapper<BoardUi> {
 
     override fun mapMyBoard(id: String, name: String): BoardUi = BoardUi.My(id, name)
 

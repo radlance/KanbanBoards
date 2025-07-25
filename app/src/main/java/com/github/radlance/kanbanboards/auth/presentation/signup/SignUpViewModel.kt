@@ -1,10 +1,10 @@
 package com.github.radlance.kanbanboards.auth.presentation.signup
 
-import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.auth.domain.SignUpRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.BaseAuthViewModel
 import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.asStateFlow

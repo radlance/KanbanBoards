@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.presentation.UnitUiState
 import com.github.radlance.kanbanboards.common.presentation.AbstractUnitUiState
+import com.github.radlance.kanbanboards.common.presentation.UnitUiState
 
 interface CredentialUiState : UnitUiState {
 

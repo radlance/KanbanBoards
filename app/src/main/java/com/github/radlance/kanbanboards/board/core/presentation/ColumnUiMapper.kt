@@ -3,7 +3,7 @@ package com.github.radlance.kanbanboards.board.core.presentation
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import javax.inject.Inject
 
-class ColumnUiMapper @Inject constructor(): ColumnUi.Mapper<Column> {
+class ColumnUiMapper @Inject constructor() : ColumnUi.Mapper<Column> {
 
     override fun mapTodo(): Column = Column.Todo
 

@@ -7,5 +7,5 @@ data class BoardEntity(
 
 data class BoardMemberEntity(
     val memberId: String = "",
-    val boardId: String  = ""
+    val boardId: String = ""
 )

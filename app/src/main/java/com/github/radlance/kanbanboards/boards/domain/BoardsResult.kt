@@ -2,7 +2,7 @@ package com.github.radlance.kanbanboards.boards.domain
 
 interface BoardsResult {
 
-    fun <T: Any> map(mapper: Mapper<T>): T
+    fun <T : Any> map(mapper: Mapper<T>): T
 
     interface Mapper<T : Any> {
 

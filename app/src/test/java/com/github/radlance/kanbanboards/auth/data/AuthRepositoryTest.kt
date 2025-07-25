@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.auth.data
 
 import com.github.radlance.kanbanboards.auth.domain.AuthRepository
-import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -62,7 +62,10 @@ class AuthRepositoryTest : BaseTest() {
         assertEquals(UnitResult.Success, result)
 
         assertEquals(1, remoteDataSource.signInWithEmailCalledList.size)
-        assertEquals(Pair("test@email.com", "123456"), remoteDataSource.signInWithEmailCalledList[0])
+        assertEquals(
+            Pair("test@email.com", "123456"),
+            remoteDataSource.signInWithEmailCalledList[0]
+        )
         assertEquals(1, handleAuthResult.handleCalledCount)
     }
 
@@ -73,7 +76,10 @@ class AuthRepositoryTest : BaseTest() {
         assertEquals(UnitResult.Error(message = "test error"), result)
 
         assertEquals(1, remoteDataSource.signInWithEmailCalledList.size)
-        assertEquals(Pair("test@email.com", "123456"), remoteDataSource.signInWithEmailCalledList[0])
+        assertEquals(
+            Pair("test@email.com", "123456"),
+            remoteDataSource.signInWithEmailCalledList[0]
+        )
         assertEquals(1, handleAuthResult.handleCalledCount)
     }
 

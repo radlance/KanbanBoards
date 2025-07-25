@@ -4,7 +4,7 @@ import com.github.radlance.kanbanboards.board.core.domain.Ticket
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoResult
 import javax.inject.Inject
 
-class TicketInfoResultMapper @Inject constructor(): TicketInfoResult.Mapper<TicketInfoUiState> {
+class TicketInfoResultMapper @Inject constructor() : TicketInfoResult.Mapper<TicketInfoUiState> {
 
     override fun mapSuccess(ticket: Ticket): TicketInfoUiState = TicketInfoUiState.Success(ticket)
 

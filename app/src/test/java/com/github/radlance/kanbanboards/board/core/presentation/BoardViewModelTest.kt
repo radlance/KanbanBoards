@@ -264,9 +264,9 @@ class BoardViewModelTest : BaseTest() {
 
         override val boardUiState: StateFlow<BoardUiState>
             get() {
-            boardUiStateCalledCount++
+                boardUiStateCalledCount++
                 return boardUiStateMutable
-        }
+            }
 
         override fun saveBoardUiState(boardUiState: BoardUiState) {
             saveBoardUiStateCalledList.add(boardUiState)

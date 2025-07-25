@@ -2,9 +2,9 @@ package com.github.radlance.kanbanboards.auth.presentation.signin
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import com.github.radlance.kanbanboards.common.presentation.UnitUiState
 import com.github.radlance.kanbanboards.common.presentation.AbstractUnitUiState
 import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
+import com.github.radlance.kanbanboards.common.presentation.UnitUiState
 
 interface AuthResultUiState : UnitUiState {
 

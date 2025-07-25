@@ -4,7 +4,6 @@ import com.github.radlance.kanbanboards.auth.data.AuthRemoteDataSource
 import com.github.radlance.kanbanboards.auth.data.BaseAuthRepository
 import com.github.radlance.kanbanboards.auth.data.HandleAuthRemoteDataSource
 import com.github.radlance.kanbanboards.auth.data.HandleAuthResult
-import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.auth.domain.SignInRepository
 import com.github.radlance.kanbanboards.auth.domain.SignUpRepository
 import com.github.radlance.kanbanboards.auth.presentation.common.MatchEmail
@@ -17,6 +16,7 @@ import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResul
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signup.HandleSignUp
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

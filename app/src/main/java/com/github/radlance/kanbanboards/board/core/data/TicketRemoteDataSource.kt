@@ -114,7 +114,7 @@ interface TicketRemoteDataSource {
                                     )
                                 }
                             }
-                }
+                    }
 
                 if (ticketFlows.isEmpty()) {
                     flowOf(emptyList())

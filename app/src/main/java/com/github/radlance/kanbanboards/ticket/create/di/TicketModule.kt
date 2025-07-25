@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.create.di
 
 import com.github.radlance.kanbanboards.common.domain.UnitResult
+import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.create.data.RemoteCreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
@@ -10,7 +11,6 @@ import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketM
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketMapperFacade
 import com.github.radlance.kanbanboards.ticket.create.presentation.FormatTime
 import com.github.radlance.kanbanboards.ticket.create.presentation.HandleCreateTicket
-import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

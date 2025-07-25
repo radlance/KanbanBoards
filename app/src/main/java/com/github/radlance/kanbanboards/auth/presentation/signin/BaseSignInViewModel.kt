@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.auth.presentation.signin
 
-import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.auth.presentation.common.BaseAuthViewModel
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 
 abstract class BaseSignInViewModel(

@@ -77,9 +77,9 @@ class ProfileViewModelTest : BaseTest() {
 
         override val profileUiState: StateFlow<ProfileUiState>
             get() {
-            profileUiStateCalledCount++
+                profileUiStateCalledCount++
                 return profileUiStateMutable
-        }
+            }
 
         override fun saveProfileUiState(profileUiState: ProfileUiState) {
             this.profileUiStateMutable.value = profileUiState

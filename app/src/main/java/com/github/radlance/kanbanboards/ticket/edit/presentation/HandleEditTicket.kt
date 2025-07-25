@@ -21,7 +21,7 @@ interface HandleEditTicket : HandleTicket {
 
     fun saveDeleteTicketUiState(deleteTicketUiState: DeleteTicketUiState)
 
-    class Base @Inject constructor(): BaseHandleTicket(), HandleEditTicket {
+    class Base @Inject constructor() : BaseHandleTicket(), HandleEditTicket {
 
         private val boardMembersUiStateMutable = MutableStateFlow<BoardMembersUiStateEdit>(
             BoardMembersUiStateEdit.Loading

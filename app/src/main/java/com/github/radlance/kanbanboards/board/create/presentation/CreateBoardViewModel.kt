@@ -28,6 +28,7 @@ class CreateBoardViewModel @Inject constructor(
 
         handleCreateBoard.saveCreateBoardUiState(uiState)
     }
+
     override fun createBoard(name: String, boardMembers: List<CreateUserUi>) {
         handleCreateBoard.saveCreateBoardUiState(CreateBoardUiState.Loading)
 

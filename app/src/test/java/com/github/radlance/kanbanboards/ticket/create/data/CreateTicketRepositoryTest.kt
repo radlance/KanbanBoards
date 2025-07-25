@@ -140,7 +140,8 @@ class CreateTicketRepositoryTest : BaseTest() {
             IllegalStateException("some another error")
         )
 
-        val actual = repository.boardMembers(boardId = "test board id", ownerId = "test owner id").toList()
+        val actual =
+            repository.boardMembers(boardId = "test board id", ownerId = "test owner id").toList()
         assertEquals(0, actual.size)
     }
 }

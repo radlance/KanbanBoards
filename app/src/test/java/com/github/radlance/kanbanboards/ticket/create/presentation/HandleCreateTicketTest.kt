@@ -53,6 +53,9 @@ class HandleCreateTicketTest {
             handle.boardMembersUiState.value
         )
         handle.saveBoardMembersUiState(BoardMembersUiStateCreate.Error("error message"))
-        assertEquals(BoardMembersUiStateCreate.Error("error message"), handle.boardMembersUiState.value)
+        assertEquals(
+            BoardMembersUiStateCreate.Error("error message"),
+            handle.boardMembersUiState.value
+        )
     }
 }

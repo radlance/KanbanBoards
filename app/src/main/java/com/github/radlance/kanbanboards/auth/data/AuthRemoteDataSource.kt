@@ -17,7 +17,7 @@ interface AuthRemoteDataSource {
 
     class Base @Inject constructor(
         private val handle: HandleAuthRemoteDataSource
-    ): AuthRemoteDataSource {
+    ) : AuthRemoteDataSource {
 
         override suspend fun signInWithToken(userTokenId: String) = handle.handle {
             Firebase.auth.signInWithCredential(

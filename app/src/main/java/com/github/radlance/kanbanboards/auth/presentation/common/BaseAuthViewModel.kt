@@ -17,17 +17,21 @@ abstract class BaseAuthViewModel(
             when (state) {
                 is SignInFieldsUiState -> state.copy(emailErrorMessage = "") as T
                 is SignUpFieldsUiState -> state.copy(emailErrorMessage = "") as T
-                else -> { throw IllegalStateException("unknown type: ${T::class}") }
+                else -> {
+                    throw IllegalStateException("unknown type: ${T::class}")
+                }
             }
         }
     }
 
-    protected inline fun <reified T: BaseFieldsUiState> MutableStateFlow<T>.resetPasswordError() {
+    protected inline fun <reified T : BaseFieldsUiState> MutableStateFlow<T>.resetPasswordError() {
         update { state ->
             when (state) {
                 is SignInFieldsUiState -> state.copy(passwordErrorMessage = "") as T
                 is SignUpFieldsUiState -> state.copy(passwordErrorMessage = "") as T
-                else -> { throw IllegalStateException("unknown type: ${T::class}") }
+                else -> {
+                    throw IllegalStateException("unknown type: ${T::class}")
+                }
             }
         }
     }

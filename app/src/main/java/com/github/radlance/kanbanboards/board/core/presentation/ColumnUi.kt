@@ -30,9 +30,9 @@ interface ColumnUi {
     @Composable
     fun EndContent(onClick: (ColumnUi) -> Unit)
 
-    fun<T: Any> map(mapper: Mapper<T>): T
+    fun <T : Any> map(mapper: Mapper<T>): T
 
-    interface Mapper<T: Any> {
+    interface Mapper<T : Any> {
 
         fun mapTodo(): T
 
