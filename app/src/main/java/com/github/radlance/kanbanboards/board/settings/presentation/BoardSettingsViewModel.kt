@@ -72,7 +72,7 @@ class BoardSettingsViewModel @Inject constructor(
     }
 
     override fun resetBoardUiState() {
-        handleBoardSettings.saveUpdateBoardNameUiState(UpdateBoardNameUiState.CanNotCreate)
+        handleBoardSettings.saveUpdateBoardNameUiState(UpdateBoardNameUiState.CanCreate)
     }
 }
 

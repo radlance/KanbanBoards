@@ -1,8 +1,11 @@
 package com.github.radlance.kanbanboards.board.settings.data
 
+import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
+import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
+import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.User
 import junit.framework.TestCase.assertEquals
@@ -21,6 +24,8 @@ class BoardSettingsRepositoryTest : BaseTest() {
     private lateinit var usersRemoteDataSource: TestUsersRemoteDataSource
     private lateinit var boardRepository: TestBoardRepository
     private lateinit var remoteDataSource: TestBoardSettingsRemoteDataSource
+    private lateinit var boardsRemoteDataSource: TestBoardsRemoteDataSource
+    private lateinit var manageResource: TestManageResource
 
     private lateinit var repository: BoardSettingsRepository
 
@@ -29,11 +34,15 @@ class BoardSettingsRepositoryTest : BaseTest() {
         usersRemoteDataSource = TestUsersRemoteDataSource()
         boardRepository = TestBoardRepository()
         remoteDataSource = TestBoardSettingsRemoteDataSource()
+        boardsRemoteDataSource = TestBoardsRemoteDataSource()
+        manageResource = TestManageResource()
 
         repository = RemoteBoardSettingsRepository(
             usersRemoteDataSource = usersRemoteDataSource,
             boardRepository = boardRepository,
-            boardSettingsRemoteDataSource = remoteDataSource
+            boardSettingsRemoteDataSource = remoteDataSource,
+            boardsRemoteDataSource = boardsRemoteDataSource,
+            manageResource = manageResource
         )
     }
 
@@ -98,6 +107,54 @@ class BoardSettingsRepositoryTest : BaseTest() {
         assertEquals(emptyList<BoardSettingsResult>(), actual)
     }
 
+    @Test
+    fun test_update_board_name_success() = runBlocking {
+        assertEquals(
+            UpdateBoardNameResult.Success,
+            repository.updateBoardName(BoardInfo(id = "123", name = "name", isMyBoard = false))
+        )
+    }
+
+    @Test
+    fun test_update_board_name_error_with_message() = runBlocking {
+        remoteDataSource.makeExpectedUpdateBoardNameException(IllegalStateException("error"))
+        assertEquals(
+            UpdateBoardNameResult.Error("error"),
+            repository.updateBoardName(BoardInfo(id = "123", name = "name", isMyBoard = false))
+        )
+    }
+
+    @Test
+    fun test_update_board_name_error_without_message() = runBlocking {
+        manageResource.makeExpectedString("another error")
+        remoteDataSource.makeExpectedUpdateBoardNameException(IllegalStateException())
+        assertEquals(
+            UpdateBoardNameResult.Error("another error"),
+            repository.updateBoardName(BoardInfo(id = "123", name = "name", isMyBoard = false))
+        )
+        assertEquals(1, manageResource.stringCalledCount)
+    }
+
+    @Test
+    fun test_update_board_name_already_exists() = runBlocking {
+        manageResource.makeExpectedString("already exists")
+        boardsRemoteDataSource.makeExpectedMyBoards(
+            myBoards = listOf(Board.My(id = "123", name = "test name"))
+        )
+        assertEquals(
+            UpdateBoardNameResult.AlreadyExists("already exists"),
+            repository.updateBoardName(BoardInfo(id = "123", name = "test name", isMyBoard = false))
+        )
+        assertEquals(1, manageResource.stringCalledCount)
+    }
+
+    @Test
+    fun test_delete_board() = runBlocking {
+        repository.deleteBoard(boardId = "last board")
+        assertEquals(1, remoteDataSource.deleteBoardCalledList.size)
+        assertEquals("last board", remoteDataSource.deleteBoardCalledList[0])
+    }
+
     private class TestBoardSettingsRemoteDataSource : BoardSettingsRemoteDataSource {
 
         val addUserToBoardCalledList = mutableListOf<Pair<String, String>>()
@@ -107,12 +164,21 @@ class BoardSettingsRepositoryTest : BaseTest() {
         private val boardMembers = MutableStateFlow<List<BoardMember>>(emptyList())
         private var boardMembersException: Exception? = null
 
+        val updateBoardNameCalledList = mutableListOf<BoardInfo>()
+        private var updateBoardNameException: Exception? = null
+
+        val deleteBoardCalledList = mutableListOf<String>()
+
         fun makeExpectedBoardMembers(boardMembers: List<BoardMember>) {
             this.boardMembers.value = boardMembers
         }
 
         fun makeExpectedBoardMembersException(exception: Exception) {
             boardMembersException = exception
+        }
+
+        fun makeExpectedUpdateBoardNameException(exception: Exception) {
+            updateBoardNameException = exception
         }
 
         override suspend fun addUserToBoard(boardId: String, userId: String) {
@@ -127,6 +193,15 @@ class BoardSettingsRepositoryTest : BaseTest() {
             boardMembersCalledList.add(boardId)
             boardMembersException?.let { throw it }
             emitAll(boardMembers)
+        }
+
+        override suspend fun updateBoardName(boardInfo: BoardInfo) {
+            updateBoardNameCalledList.add(boardInfo)
+            updateBoardNameException?.let { throw it }
+        }
+
+        override suspend fun deleteBoard(boardId: String) {
+            deleteBoardCalledList.add(boardId)
         }
     }
 }
