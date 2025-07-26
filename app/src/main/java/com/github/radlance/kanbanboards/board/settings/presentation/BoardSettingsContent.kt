@@ -85,7 +85,7 @@ fun BoardSettingsContent(
             singleLine = true,
             placeholder = { Text(text = stringResource(R.string.enter_email)) },
             label = {
-                Text(text = stringResource(R.string.add_user_to_board))
+                Text(text = stringResource(R.string.add_users_to_the_board))
             },
             modifier = Modifier.fillMaxWidth()
         )

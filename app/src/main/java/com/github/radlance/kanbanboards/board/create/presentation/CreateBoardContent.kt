@@ -75,7 +75,7 @@ fun CreateBoardContent(
         },
         label = {
             Text(
-                text = stringResource(R.string.search_users)
+                text = stringResource(R.string.add_users_to_the_board)
 
             )
         },

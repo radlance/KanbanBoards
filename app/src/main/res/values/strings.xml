@@ -58,7 +58,7 @@
     <string name="board_members">Board members</string>
     <string name="search_icon">Search icon</string>
     <string name="search">Search…</string>
-    <string name="search_users">Search users</string>
+    <string name="add_users_to_the_board">Add users to the board</string>
     <string name="enter_email">Enter email address</string>
     <string name="more">More</string>
     <string name="ticket_info">Ticket info</string>
@@ -72,7 +72,6 @@
     <string name="cancel">Cancel</string>
     <string name="delete_ticket_error">Delete ticket error</string>
     <string name="ticket_deleted">Ticket deleted!</string>
-    <string name="add_user_to_board">Add user to board</string>
     <string name="found_users">Found users</string>
     <string name="add_status">add status</string>
     <string name="there_are_no_board_members_yet">There are no board members yet</string>
