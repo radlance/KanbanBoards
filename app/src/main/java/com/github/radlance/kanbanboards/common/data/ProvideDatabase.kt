@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.common.data
 
+import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.database
 
 interface ProvideDatabase {
 

@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.navigation.data
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import javax.inject.Inject
 
 interface NavigationRemoteDataSource {

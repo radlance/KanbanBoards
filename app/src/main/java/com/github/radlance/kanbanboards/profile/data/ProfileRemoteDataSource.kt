@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.profile.data
 
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import javax.inject.Inject
 
 interface ProfileRemoteDataSource {
