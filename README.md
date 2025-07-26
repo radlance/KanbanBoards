@@ -17,7 +17,6 @@
   + **Ticket Information:** View detailed information about each ticket
   + **Manage the process**: Move tickets between columns using drag and drop or special buttons
 + **User Profile:** View your personal information and be able to sign out
-+ **Intuitive Navigation:** Seamlessly move between different sections of the app
 
 <div align="center">
     <br/>
