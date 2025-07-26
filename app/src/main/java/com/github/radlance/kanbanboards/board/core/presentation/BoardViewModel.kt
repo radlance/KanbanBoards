@@ -42,6 +42,10 @@ class BoardViewModel @Inject constructor(
     override fun moveTicket(ticketId: String, column: ColumnUi) {
         boardRepository.moveTicket(ticketId, facade.mapColumnUi(column))
     }
+
+    override fun leaveBoard(boardId: String) {
+        handle(background = { boardRepository.leaveBoard(boardId) }, ui = {})
+    }
 }
 
 interface BoardTicketActions {
@@ -51,4 +55,6 @@ interface BoardTicketActions {
     fun fetchTickets(boardId: String)
 
     fun moveTicket(ticketId: String, column: ColumnUi)
+
+    fun leaveBoard(boardId: String)
 }

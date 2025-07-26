@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -94,6 +95,15 @@ interface BoardUiState {
                                     Icon(
                                         imageVector = Icons.Default.Settings,
                                         contentDescription = stringResource(R.string.settings_icon)
+                                    )
+                                }
+                            } else {
+                                IconButton(
+                                    onClick = { boardTicketActions.leaveBoard(boardInfo.id) }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Default.Logout,
+                                        contentDescription = stringResource(R.string.exit_icon)
                                     )
                                 }
                             }

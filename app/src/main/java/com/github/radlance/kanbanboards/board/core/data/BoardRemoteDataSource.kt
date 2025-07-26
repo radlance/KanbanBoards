@@ -9,11 +9,14 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 interface BoardRemoteDataSource {
 
     fun board(boardId: String): Flow<BoardInfo?>
+
+    suspend fun leaveBoard(boardId: String)
 
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase
@@ -51,6 +54,24 @@ interface BoardRemoteDataSource {
                     owner = entity.owner
                 )
             }.catch { e -> throw IllegalStateException(e.message) }
+        }
+
+        override suspend fun leaveBoard(boardId: String) {
+            try {
+                val myUserId = Firebase.auth.currentUser!!.uid
+                val boardMemberSnapshot = provideDatabase.database()
+                    .child("boards-members")
+                    .orderByChild("boardId")
+                    .equalTo(boardId)
+                    .get().await()
+
+                val result = boardMemberSnapshot.children.firstOrNull {
+                    it.child("memberId").getValue<String>() == myUserId
+                }
+
+                result?.ref?.removeValue()?.await()
+            } catch (_: Exception) {
+            }
         }
     }
 }

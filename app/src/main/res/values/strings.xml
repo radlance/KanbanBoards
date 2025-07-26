@@ -80,4 +80,5 @@
     <string name="update_board_name">Update board name</string>
     <string name="settings">Settings</string>
     <string name="delete_board">Delete board</string>
+    <string name="exit_icon">Exit icon</string>
 </resources>

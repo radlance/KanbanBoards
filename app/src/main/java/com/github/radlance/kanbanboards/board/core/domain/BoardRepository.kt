@@ -9,4 +9,6 @@ interface BoardRepository {
     fun tickets(boardId: String): Flow<TicketResult>
 
     fun moveTicket(ticketId: String, column: Column)
+
+    suspend fun leaveBoard(boardId: String)
 }

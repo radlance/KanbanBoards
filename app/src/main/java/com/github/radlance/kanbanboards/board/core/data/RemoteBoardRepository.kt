@@ -29,4 +29,8 @@ class RemoteBoardRepository @Inject constructor(
     override fun moveTicket(ticketId: String, column: Column) {
         ticketRemoteDataSource.moveTicket(ticketId, column)
     }
+
+    override suspend fun leaveBoard(boardId: String) {
+        boardRemoteDataSource.leaveBoard(boardId)
+    }
 }
