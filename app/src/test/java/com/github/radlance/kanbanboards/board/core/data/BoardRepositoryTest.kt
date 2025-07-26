@@ -113,4 +113,11 @@ class BoardRepositoryTest : BaseTest() {
             ticketRemoteDataSource.moveTicketCalledList[0]
         )
     }
+
+    @Test
+    fun test_leave_board() = runBlocking {
+        repository.leaveBoard(boardId = "testBoardId")
+        assertEquals(1, boardRemoteDataSource.leaveBoardCalledList.size)
+        assertEquals("testBoardId", boardRemoteDataSource.leaveBoardCalledList[0])
+    }
 }

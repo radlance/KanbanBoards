@@ -251,6 +251,13 @@ class BoardViewModelTest : BaseTest() {
         assertEquals(Pair("new id", Column.Todo), repository.moveTicketCalledList[2])
     }
 
+    @Test
+    fun test_leave_board() {
+        viewModel.leaveBoard(boardId = "boardId")
+        assertEquals(1, repository.leaveBoardCalledList.size)
+        assertEquals("boardId", repository.leaveBoardCalledList[0])
+    }
+
     private class TestHandleBoard : HandleBoard {
 
         private val boardUiStateMutable = MutableStateFlow<BoardUiState>(BoardUiState.Loading)

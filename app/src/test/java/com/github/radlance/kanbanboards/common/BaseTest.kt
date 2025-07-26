@@ -148,16 +148,21 @@ abstract class BaseTest {
             )
         )
 
+        val leaveBoardCalledList = mutableListOf<String>()
+
         fun makeExpectedBoardException(exception: Exception) {
             boardException = exception
         }
-
 
         override fun board(boardId: String): Flow<BoardInfo> = flow {
             loadBoardCalledList.add(boardId)
             boardException?.let { throw it }
             boardInfo.update { it.copy(id = boardId) }
             emitAll(boardInfo)
+        }
+
+        override suspend fun leaveBoard(boardId: String) {
+            leaveBoardCalledList.add(boardId)
         }
     }
 
@@ -399,6 +404,8 @@ abstract class BaseTest {
 
         val moveTicketCalledList = mutableListOf<Pair<String, Column>>()
 
+        val leaveBoardCalledList = mutableListOf<String>()
+
         override fun board(boardId: String): Flow<BoardResult> {
             boardCalledList.add(boardId)
             return boardResult
@@ -411,6 +418,10 @@ abstract class BaseTest {
 
         override fun moveTicket(ticketId: String, column: Column) {
             moveTicketCalledList.add(Pair(ticketId, column))
+        }
+
+        override suspend fun leaveBoard(boardId: String) {
+            leaveBoardCalledList.add(boardId)
         }
     }
 }
