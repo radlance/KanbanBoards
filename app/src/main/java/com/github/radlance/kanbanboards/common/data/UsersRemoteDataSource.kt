@@ -2,10 +2,10 @@ package com.github.radlance.kanbanboards.common.data
 
 import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.common.domain.User
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.database.getValue
 import com.google.firebase.database.snapshots
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

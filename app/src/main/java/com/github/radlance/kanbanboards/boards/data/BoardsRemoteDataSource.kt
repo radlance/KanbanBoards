@@ -5,11 +5,11 @@ import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.getValue
 import com.google.firebase.database.snapshots
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
