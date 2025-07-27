@@ -1,66 +1,61 @@
 package com.github.radlance.kanbanboards.board.create.presentation
 
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
+import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
 interface CreateBoardUiState {
 
     @Composable
-    fun Show(
-        navigateToBoardScreen: (BoardInfo) -> Unit,
-        createBoardActions: CreateBoardActions,
-        columnScope: ColumnScope
-    )
+    fun Show(navigateToBoardScreen: (BoardInfo) -> Unit, createBoardActions: CreateBoardActions)
 
-    abstract class Abstract(
-        private val enabled: Boolean,
-        private val loading: Boolean = false,
-        private val nameFieldErrorMessage: String = "",
-        private val createErrorMessage: String = ""
-    ) : CreateBoardUiState {
+    val buttonEnabled: Boolean
+
+    abstract class Abstract(override val buttonEnabled: Boolean = true) : CreateBoardUiState
+
+    data class Success(private val boardInfo: BoardInfo) : Abstract() {
 
         @Composable
         override fun Show(
             navigateToBoardScreen: (BoardInfo) -> Unit,
-            createBoardActions: CreateBoardActions,
-            columnScope: ColumnScope
-        ) = CreateBoardContent(
-            columnScope = columnScope,
-            enabled = enabled,
-            loading = loading,
-            nameFieldErrorMessage = nameFieldErrorMessage,
-            createErrorMessage = createErrorMessage,
-            createBoardActions = createBoardActions
-        )
+            createBoardActions: CreateBoardActions
+        ) = navigateToBoardScreen(boardInfo)
     }
 
-    data class Success(private val boardInfo: BoardInfo) : Abstract(
-        enabled = true
-    ) {
+    data class Error(private val message: String) : Abstract() {
 
         @Composable
         override fun Show(
             navigateToBoardScreen: (BoardInfo) -> Unit,
-            createBoardActions: CreateBoardActions,
-            columnScope: ColumnScope
-        ) {
-            super.Show(navigateToBoardScreen, createBoardActions, columnScope)
-            navigateToBoardScreen(boardInfo)
-        }
+            createBoardActions: CreateBoardActions
+        ) = ErrorMessage(message)
     }
 
-    data class AlreadyExists(private val message: String) : Abstract(
-        enabled = true, nameFieldErrorMessage = message
-    )
+    data class AlreadyExists(private val message: String) : Abstract() {
 
-    object CanCreate : Abstract(enabled = true)
+        @Composable
+        override fun Show(
+            navigateToBoardScreen: (BoardInfo) -> Unit,
+            createBoardActions: CreateBoardActions
+        ) = createBoardActions.setBoardNameErrorMessage(message)
+    }
 
-    object CanNotCreate : Abstract(enabled = false)
+    object Loading : Abstract(buttonEnabled = false) {
 
-    object Loading : Abstract(enabled = false, loading = true)
+        @Composable
+        override fun Show(
+            navigateToBoardScreen: (BoardInfo) -> Unit,
+            createBoardActions: CreateBoardActions
+        ) = CircularProgressIndicator()
+    }
 
-    data class Error(private val message: String) : Abstract(
-        enabled = true, createErrorMessage = message
-    )
+    object Initial : Abstract() {
+
+        @Composable
+        override fun Show(
+            navigateToBoardScreen: (BoardInfo) -> Unit,
+            createBoardActions: CreateBoardActions
+        ) = Unit
+    }
 }

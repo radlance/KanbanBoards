@@ -16,12 +16,12 @@ class HandleCreateBoardTest {
 
     @Test
     fun test_create_board_state() {
-        assertEquals(CreateBoardUiState.CanNotCreate, handle.createBoardUiState.value)
-        handle.saveCreateBoardUiState(CreateBoardUiState.Loading)
-        assertEquals(CreateBoardUiState.Loading, handle.createBoardUiState.value)
-        handle.saveCreateBoardUiState(CreateBoardUiState.CanCreate)
-        assertEquals(CreateBoardUiState.CanCreate, handle.createBoardUiState.value)
-        handle.saveCreateBoardUiState(
+        assertEquals(CreateBoardUiState.CanNotCreate, handle.createBoardFieldState.value)
+        handle.saveCreateBoardFieldState(CreateBoardUiState.Loading)
+        assertEquals(CreateBoardUiState.Loading, handle.createBoardFieldState.value)
+        handle.saveCreateBoardFieldState(CreateBoardUiState.CanCreate)
+        assertEquals(CreateBoardUiState.CanCreate, handle.createBoardFieldState.value)
+        handle.saveCreateBoardFieldState(
             CreateBoardUiState.Success(
                 BoardInfo(id = "123", name = "some board123", isMyBoard = false)
             )
@@ -30,20 +30,20 @@ class HandleCreateBoardTest {
             CreateBoardUiState.Success(
                 BoardInfo(id = "123", name = "some board123", isMyBoard = false)
             ),
-            handle.createBoardUiState.value
+            handle.createBoardFieldState.value
         )
-        handle.saveCreateBoardUiState(
+        handle.saveCreateBoardFieldState(
             CreateBoardUiState.AlreadyExists(message = "already exists")
         )
         assertEquals(
             CreateBoardUiState.AlreadyExists(message = "already exists"),
-            handle.createBoardUiState.value
+            handle.createBoardFieldState.value
         )
 
-        handle.saveCreateBoardUiState(CreateBoardUiState.Error(message = "went wrong"))
+        handle.saveCreateBoardFieldState(CreateBoardUiState.Error(message = "went wrong"))
         assertEquals(
             CreateBoardUiState.Error(message = "went wrong"),
-            handle.createBoardUiState.value
+            handle.createBoardFieldState.value
         )
     }
 
