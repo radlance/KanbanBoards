@@ -4,9 +4,10 @@ import com.github.radlance.kanbanboards.board.create.domain.CreateBoardRepositor
 import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,28 +18,30 @@ class CreateBoardViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseViewModel(runAsync), CreateBoardActions {
 
-    val createBoardUiState = handleCreateBoard.createBoardUiState
+    val createBardUiState = handleCreateBoard.createBoardUiState
 
-    override val searchUsersUiState = handleCreateBoard.searchUsersUiState
+    val createBoardFieldState = handleCreateBoard.createBoardFieldState.asStateFlow()
 
-    override fun checkBoard(name: String) {
-        val uiState: CreateBoardUiState = if (name.trim().length >= 3) {
-            CreateBoardUiState.CanCreate
-        } else CreateBoardUiState.CanNotCreate
+    val searchUsersUiState = handleCreateBoard.searchUsersUiState
 
-        handleCreateBoard.saveCreateBoardUiState(uiState)
+    fun checkBoard(name: String) {
+        handleCreateBoard.createBoardFieldState.update { currentState ->
+            currentState.copy(buttonEnabled = name.trim().length >= 3, nameErrorMessage = "")
+        }
     }
 
-    override fun createBoard(name: String, boardMembers: List<CreateUserUi>) {
+    fun createBoard(name: String, boardMembers: List<CreateUserUi>) {
+
         handleCreateBoard.saveCreateBoardUiState(CreateBoardUiState.Loading)
 
         val userIds = boardMembers.map { it.id }
+
         handle(background = { createBoardRepository.createBoard(name, userIds) }) {
             handleCreateBoard.saveCreateBoardUiState(facade.mapCreateBoardResult(it))
         }
     }
 
-    override fun fetchUsers() {
+    fun fetchUsers() {
         createBoardRepository.users().map {
             facade.mapSearchUsersResult(it)
         }.onEach {
@@ -46,8 +49,15 @@ class CreateBoardViewModel @Inject constructor(
         }.launchInViewModel()
     }
 
-    override fun resetBoardUiState() {
-        handleCreateBoard.saveCreateBoardUiState(CreateBoardUiState.CanNotCreate)
+    override fun setBoardNameErrorMessage(message: String) {
+        handleCreateBoard.createBoardFieldState.update { currentState ->
+            currentState.copy(nameErrorMessage = message)
+        }
+    }
+
+    fun resetBoardState() {
+        handleCreateBoard.saveCreateBoardUiState(CreateBoardUiState.Initial)
+        handleCreateBoard.createBoardFieldState.value = CreateBoardFieldState()
     }
 
     override fun switch(userId: String, users: List<CreateUserUi>) {
@@ -63,13 +73,5 @@ interface UsersActions {
 
 interface CreateBoardActions : UsersActions {
 
-    fun checkBoard(name: String)
-
-    fun createBoard(name: String, boardMembers: List<CreateUserUi>)
-
-    val searchUsersUiState: StateFlow<SearchUsersUiState>
-
-    fun fetchUsers()
-
-    fun resetBoardUiState()
+    fun setBoardNameErrorMessage(message: String)
 }

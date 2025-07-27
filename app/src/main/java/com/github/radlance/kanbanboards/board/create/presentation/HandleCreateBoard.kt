@@ -11,6 +11,8 @@ interface HandleCreateBoard {
 
     fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState)
 
+    val createBoardFieldState: MutableStateFlow<CreateBoardFieldState>
+
     val searchUsersUiState: StateFlow<SearchUsersUiState>
 
     fun saveSearchUsersUiState(searchUsersUiState: SearchUsersUiState)
@@ -18,7 +20,7 @@ interface HandleCreateBoard {
     class Base @Inject constructor() : HandleCreateBoard {
 
         private val createBoardUiStateMutable = MutableStateFlow<CreateBoardUiState>(
-            CreateBoardUiState.CanNotCreate
+            CreateBoardUiState.Initial
         )
 
         private val searchUsersUiStateMutable = MutableStateFlow<SearchUsersUiState>(
@@ -31,6 +33,8 @@ interface HandleCreateBoard {
         override fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState) {
             createBoardUiStateMutable.value = createBoardUiState
         }
+
+        override val createBoardFieldState = MutableStateFlow(CreateBoardFieldState())
 
         override val searchUsersUiState = searchUsersUiStateMutable.asStateFlow()
 

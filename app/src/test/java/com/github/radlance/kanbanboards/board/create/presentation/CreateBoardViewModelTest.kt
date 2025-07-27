@@ -38,14 +38,14 @@ class CreateBoardViewModelTest : BaseTest() {
 
     @Test
     fun test_initial_state() {
-        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
+        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardFieldState.value)
         assertEquals(1, handle.createBoardUiStateCalledCount)
     }
 
     @Test
     fun test_check_board_short_name() {
         viewModel.checkBoard(name = "go")
-        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
+        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardFieldState.value)
         assertEquals(1, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanNotCreate,
@@ -54,7 +54,7 @@ class CreateBoardViewModelTest : BaseTest() {
         assertEquals(1, handle.createBoardUiStateCalledCount)
 
         viewModel.checkBoard(name = "  it    ")
-        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardUiState.value)
+        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardFieldState.value)
         assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanNotCreate,
@@ -66,7 +66,7 @@ class CreateBoardViewModelTest : BaseTest() {
     @Test
     fun test_check_board_valid_name() {
         viewModel.checkBoard(name = "test name")
-        assertEquals(CreateBoardUiState.CanCreate, viewModel.createBoardUiState.value)
+        assertEquals(CreateBoardUiState.CanCreate, viewModel.createBoardFieldState.value)
         assertEquals(1, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.CanCreate,
@@ -84,7 +84,7 @@ class CreateBoardViewModelTest : BaseTest() {
 
         assertEquals(
             CreateBoardUiState.AlreadyExists(message = "board already exists"),
-            viewModel.createBoardUiState.value
+            viewModel.createBoardFieldState.value
         )
         assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
@@ -106,7 +106,7 @@ class CreateBoardViewModelTest : BaseTest() {
         viewModel.createBoard(name = "new board", boardMembers = emptyList())
         assertEquals(
             CreateBoardUiState.Error(message = "no internet connection"),
-            viewModel.createBoardUiState.value
+            viewModel.createBoardFieldState.value
         )
 
         assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
@@ -197,14 +197,14 @@ class CreateBoardViewModelTest : BaseTest() {
 
         assertEquals(
             CreateBoardUiState.AlreadyExists(message = "board already exists"),
-            viewModel.createBoardUiState.value
+            viewModel.createBoardFieldState.value
         )
 
-        viewModel.resetBoardUiState()
+        viewModel.resetBoardState()
 
         assertEquals(
             CreateBoardUiState.CanNotCreate,
-            viewModel.createBoardUiState.value
+            viewModel.createBoardFieldState.value
         )
     }
 
@@ -314,13 +314,13 @@ class CreateBoardViewModelTest : BaseTest() {
         val saveSearchUsersUiStateCalledList = mutableListOf<SearchUsersUiState>()
         private var usersUiState = MutableStateFlow<SearchUsersUiState>(SearchUsersUiState.Loading)
 
-        override val createBoardUiState: StateFlow<CreateBoardUiState>
+        override val createBoardFieldState: StateFlow<CreateBoardUiState>
             get() {
                 createBoardUiStateCalledCount++
                 return boardUiState
             }
 
-        override fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState) {
+        override fun saveCreateBoardFieldState(createBoardUiState: CreateBoardUiState) {
             saveCreateBoardUiStateCalledList.add(createBoardUiState)
             this.boardUiState.value = createBoardUiState
         }
