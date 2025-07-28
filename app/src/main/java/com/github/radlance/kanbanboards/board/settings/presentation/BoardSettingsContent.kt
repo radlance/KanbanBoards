@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HowToReg
 import androidx.compose.material.icons.filled.PersonAddAlt1
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
@@ -40,21 +40,20 @@ import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 
 @Composable
 fun BoardSettingsContent(
+    navigateUp: () -> Unit,
     boardInfo: BoardInfo,
     users: List<User>,
     members: List<BoardMember>,
-    boardSettingsMembersAction: BoardSettingsMembersAction,
-    enabled: Boolean,
-    loading: Boolean,
-    nameFieldErrorMessage: String,
-    editErrorMessage: String,
+    boardSettingsAction: BoardSettingsAction,
     modifier: Modifier = Modifier
 ) {
     var searchFieldValue by rememberSaveable { mutableStateOf("") }
     var boardNameFieldValue by rememberSaveable { mutableStateOf(boardInfo.name) }
+    val boardSettingsUpdateState by boardSettingsAction.updateBoardNameUiState.collectAsStateWithLifecycle()
+    val settingsFieldState by boardSettingsAction.settingsFieldState.collectAsStateWithLifecycle()
 
     DisposableEffect(Unit) {
-        onDispose { boardSettingsMembersAction.resetBoardUiState() }
+        onDispose { boardSettingsAction.resetBoardUiState() }
     }
 
     BaseColumn(modifier = modifier) {
@@ -62,14 +61,14 @@ fun BoardSettingsContent(
             value = boardNameFieldValue,
             onValueChange = {
                 boardNameFieldValue = it
-                boardSettingsMembersAction.checkBoard(it)
+                boardSettingsAction.checkBoard(it)
             },
-            isError = nameFieldErrorMessage.isNotEmpty(),
+            isError = settingsFieldState.nameErrorMessage.isNotEmpty(),
             singleLine = true,
             placeholder = { Text(text = stringResource(R.string.at_least_3_symbol)) },
             label = {
                 Text(
-                    text = nameFieldErrorMessage.ifEmpty {
+                    text = settingsFieldState.nameErrorMessage.ifEmpty {
                         stringResource(R.string.board_name)
                     }
                 )
@@ -145,11 +144,11 @@ fun BoardSettingsContent(
                     IconButton(
                         onClick = {
                             if (!contains) {
-                                boardSettingsMembersAction.addUserToBoard(
+                                boardSettingsAction.addUserToBoard(
                                     boardId = boardInfo.id, userId = user.userId
                                 )
                             } else {
-                                boardSettingsMembersAction.deleteUserFromBoard(user.boardMemberId)
+                                boardSettingsAction.deleteUserFromBoard(user.boardMemberId)
                             }
                         }
                     ) {
@@ -166,33 +165,25 @@ fun BoardSettingsContent(
             }
         }
 
-        if (editErrorMessage.isNotEmpty()) {
-            Text(
-                text = editErrorMessage,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    color = MaterialTheme.colorScheme.error
-                )
-            )
-            Spacer(Modifier.weight(1f))
-        }
+        boardSettingsUpdateState.Show(
+            navigateUp = navigateUp,
+            updateBoardNameAction = boardSettingsAction
+        )
+
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         Box(modifier = Modifier.safeDrawingPadding()) {
-            if (loading) {
-                CircularProgressIndicator()
-            } else {
-                val keyboardController = LocalSoftwareKeyboardController.current
-                Button(
-                    onClick = {
-                        boardSettingsMembersAction.updateBoardName(
-                            boardInfo.copy(name = boardNameFieldValue)
-                        )
-                        keyboardController?.hide()
-                    },
-                    enabled = enabled,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = stringResource(R.string.update_board_name))
-                }
+            Button(
+                onClick = {
+                    boardSettingsAction.updateBoardName(
+                        boardInfo = boardInfo.copy(name = boardNameFieldValue)
+                    )
+                    keyboardController?.hide()
+                },
+                enabled = boardSettingsUpdateState.buttonEnabled && settingsFieldState.buttonEnabled,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.create))
             }
         }
         Spacer(Modifier.height(10.dp))

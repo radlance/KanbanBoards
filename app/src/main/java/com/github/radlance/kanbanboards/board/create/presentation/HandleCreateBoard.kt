@@ -27,6 +27,8 @@ interface HandleCreateBoard {
             SearchUsersUiState.Loading
         )
 
+        private val createBoardFieldStateLocal = MutableStateFlow(CreateBoardFieldState())
+
         override val createBoardUiState: StateFlow<CreateBoardUiState>
             get() = createBoardUiStateMutable.asStateFlow()
 
@@ -34,7 +36,7 @@ interface HandleCreateBoard {
             createBoardUiStateMutable.value = createBoardUiState
         }
 
-        override val createBoardFieldState = MutableStateFlow(CreateBoardFieldState())
+        override val createBoardFieldState get() = createBoardFieldStateLocal
 
         override val searchUsersUiState = searchUsersUiStateMutable.asStateFlow()
 
