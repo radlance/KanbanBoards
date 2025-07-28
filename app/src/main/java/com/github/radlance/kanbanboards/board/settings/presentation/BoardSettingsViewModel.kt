@@ -6,9 +6,11 @@ import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +23,8 @@ class BoardSettingsViewModel @Inject constructor(
 
     override val boardSettingsUiState = handleBoardSettings.boardSettingsUiState
 
+    override val settingsFieldState = handleBoardSettings.settingsFieldState.asStateFlow()
+
     override val updateBoardNameUiState = handleBoardSettings.updateBoardNameUiState
 
     override fun deleteBoard(boardId: String) {
@@ -28,11 +32,9 @@ class BoardSettingsViewModel @Inject constructor(
     }
 
     override fun checkBoard(name: String) {
-        val uiState = if (name.trim().length >= 3) {
-            UpdateBoardNameUiState.CanCreate
-        } else UpdateBoardNameUiState.CanNotCreate
-
-        handleBoardSettings.saveUpdateBoardNameUiState(uiState)
+        handleBoardSettings.settingsFieldState.update { currentState ->
+            currentState.copy(buttonEnabled = name.trim().length >= 3, nameErrorMessage = "")
+        }
     }
 
     val boardUiState = handleBoardSettings.settingsBoardUiState
@@ -72,20 +74,26 @@ class BoardSettingsViewModel @Inject constructor(
     }
 
     override fun resetBoardUiState() {
-        handleBoardSettings.saveUpdateBoardNameUiState(UpdateBoardNameUiState.CanCreate)
+        handleBoardSettings.saveUpdateBoardNameUiState(UpdateBoardNameUiState.Initial)
+        handleBoardSettings.settingsFieldState.value = SettingsFieldState()
+    }
+
+    override fun setBoardNameErrorMessage(message: String) {
+        handleBoardSettings.settingsFieldState.update { currentState ->
+            currentState.copy(nameErrorMessage = message)
+        }
     }
 }
 
-interface BoardSettingsAction : BoardSettingsMembersAction {
+interface BoardSettingsAction : UpdateBoardNameAction {
 
     val boardSettingsUiState: StateFlow<BoardSettingsUiState>
+
+    val settingsFieldState: StateFlow<SettingsFieldState>
 
     val updateBoardNameUiState: StateFlow<UpdateBoardNameUiState>
 
     fun deleteBoard(boardId: String)
-}
-
-interface BoardSettingsMembersAction {
 
     fun checkBoard(name: String)
 
@@ -96,4 +104,9 @@ interface BoardSettingsMembersAction {
     fun updateBoardName(boardInfo: BoardInfo)
 
     fun resetBoardUiState()
+}
+
+interface UpdateBoardNameAction {
+
+    fun setBoardNameErrorMessage(message: String)
 }

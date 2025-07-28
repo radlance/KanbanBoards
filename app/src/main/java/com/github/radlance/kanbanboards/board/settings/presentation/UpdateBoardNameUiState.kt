@@ -1,81 +1,54 @@
 package com.github.radlance.kanbanboards.board.settings.presentation
 
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
-import com.github.radlance.kanbanboards.common.domain.User
+import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
 interface UpdateBoardNameUiState {
 
     @Composable
-    fun Show(
-        navigateUp: () -> Unit,
-        boardSettingsAction: BoardSettingsAction,
-        boardInfo: BoardInfo,
-        users: List<User>,
-        members: List<BoardMember>,
-        modifier: Modifier = Modifier
-    )
+    fun Show(navigateUp: () -> Unit, updateBoardNameAction: UpdateBoardNameAction)
 
-    abstract class Abstract(
-        private val enabled: Boolean,
-        private val loading: Boolean = false,
-        private val nameFieldErrorMessage: String = "",
-        private val editErrorMessage: String = ""
-    ) : UpdateBoardNameUiState {
+    val buttonEnabled: Boolean
+
+    abstract class Abstract(override val buttonEnabled: Boolean = true) : UpdateBoardNameUiState
+
+    object Success : Abstract() {
 
         @Composable
-        override fun Show(
-            navigateUp: () -> Unit,
-            boardSettingsAction: BoardSettingsAction,
-            boardInfo: BoardInfo,
-            users: List<User>,
-            members: List<BoardMember>,
-            modifier: Modifier
-        ) {
-            BoardSettingsContent(
-                users = users,
-                members = members,
-                boardInfo = boardInfo,
-                boardSettingsMembersAction = boardSettingsAction,
-                modifier = modifier,
-                enabled = enabled,
-                loading = loading,
-                nameFieldErrorMessage = nameFieldErrorMessage,
-                editErrorMessage = editErrorMessage
-            )
-        }
-    }
-
-    object Success : Abstract(
-        enabled = true
-    ) {
-        @Composable
-        override fun Show(
-            navigateUp: () -> Unit,
-            boardSettingsAction: BoardSettingsAction,
-            boardInfo: BoardInfo,
-            users: List<User>,
-            members: List<BoardMember>,
-            modifier: Modifier
-        ) {
-            super.Show(navigateUp, boardSettingsAction, boardInfo, users, members, modifier)
+        override fun Show(navigateUp: () -> Unit, updateBoardNameAction: UpdateBoardNameAction) {
             navigateUp()
         }
     }
 
-    data class AlreadyExists(private val message: String) : Abstract(
-        enabled = true, nameFieldErrorMessage = message
-    )
+    data class Error(private val message: String) : Abstract() {
 
-    object CanCreate : Abstract(enabled = true)
+        @Composable
+        override fun Show(navigateUp: () -> Unit, updateBoardNameAction: UpdateBoardNameAction) {
+            ErrorMessage(message)
+        }
+    }
 
-    object CanNotCreate : Abstract(enabled = false)
+    data class AlreadyExists(private val message: String) : Abstract() {
 
-    object Loading : Abstract(enabled = false, loading = true)
+        @Composable
+        override fun Show(navigateUp: () -> Unit, updateBoardNameAction: UpdateBoardNameAction) {
+            updateBoardNameAction.setBoardNameErrorMessage(message)
+        }
+    }
 
-    data class Error(private val message: String) : Abstract(
-        enabled = true, editErrorMessage = message
-    )
+    object Loading : Abstract(buttonEnabled = false) {
+
+        @Composable
+        override fun Show(navigateUp: () -> Unit, updateBoardNameAction: UpdateBoardNameAction) {
+            CircularProgressIndicator()
+        }
+    }
+
+    object Initial : Abstract() {
+
+        @Composable
+        override fun Show(navigateUp: () -> Unit, updateBoardNameAction: UpdateBoardNameAction) =
+            Unit
+    }
 }

@@ -2,9 +2,7 @@ package com.github.radlance.kanbanboards.board.settings.presentation
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
 import com.github.radlance.kanbanboards.common.domain.User
@@ -32,14 +30,12 @@ interface BoardSettingsUiState {
             boardSettingsAction: BoardSettingsAction,
             modifier: Modifier
         ) {
-            val boardSettingsUpdateState by boardSettingsAction.updateBoardNameUiState.collectAsStateWithLifecycle()
-
-            boardSettingsUpdateState.Show(
-                navigateUp = navigateUp,
-                boardSettingsAction = boardSettingsAction,
-                boardInfo = boardInfo,
+            BoardSettingsContent(
                 users = users,
                 members = members,
+                boardInfo = boardInfo,
+                boardSettingsAction = boardSettingsAction,
+                navigateUp = navigateUp,
                 modifier = modifier
             )
         }
