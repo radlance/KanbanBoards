@@ -183,7 +183,7 @@ fun BoardSettingsContent(
                 enabled = boardSettingsUpdateState.buttonEnabled && settingsFieldState.buttonEnabled,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = stringResource(R.string.create))
+                Text(text = stringResource(R.string.update_board_name))
             }
         }
         Spacer(Modifier.height(10.dp))
