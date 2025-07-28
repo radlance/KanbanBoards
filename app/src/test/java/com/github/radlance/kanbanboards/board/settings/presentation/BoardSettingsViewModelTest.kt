@@ -9,9 +9,12 @@ import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameRes
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.User
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -43,7 +46,11 @@ class BoardSettingsViewModelTest : BaseTest() {
     fun test_initial_state() {
         assertEquals(SettingsBoardUiState.Loading, viewModel.boardUiState.value)
         assertEquals(BoardSettingsUiState.Loading, viewModel.boardSettingsUiState.value)
-        assertEquals(UpdateBoardNameUiState.CanCreate, viewModel.updateBoardNameUiState.value)
+        assertEquals(UpdateBoardNameUiState.Initial, viewModel.updateBoardNameUiState.value)
+        assertEquals(
+            SettingsFieldState(nameErrorMessage = "", buttonEnabled = true),
+            viewModel.settingsFieldState.value
+        )
         assertEquals(1, handle.settingsBoardUiStateCalledCount)
         assertEquals(1, handle.boardSettingsUiStateCalledCount)
         assertEquals(1, handle.updateBoardNameUiStateCalledCount)
@@ -185,23 +192,13 @@ class BoardSettingsViewModelTest : BaseTest() {
     @Test
     fun test_short_board_name() {
         viewModel.checkBoard(name = "  ok   ")
-        assertEquals(UpdateBoardNameUiState.CanNotCreate, viewModel.updateBoardNameUiState.value)
-        assertEquals(1, handle.saveUpdateBoardNameUiStateCalledList.size)
-        assertEquals(
-            UpdateBoardNameUiState.CanNotCreate,
-            handle.saveUpdateBoardNameUiStateCalledList[0]
-        )
+        assertFalse(viewModel.settingsFieldState.value.buttonEnabled)
     }
 
     @Test
     fun test_valid_board_name() {
         viewModel.checkBoard("board name")
-        assertEquals(UpdateBoardNameUiState.CanCreate, viewModel.updateBoardNameUiState.value)
-        assertEquals(1, handle.saveUpdateBoardNameUiStateCalledList.size)
-        assertEquals(
-            UpdateBoardNameUiState.CanCreate,
-            handle.saveUpdateBoardNameUiStateCalledList[0]
-        )
+        assertTrue(viewModel.settingsFieldState.value.buttonEnabled)
     }
 
     @Test
@@ -264,18 +261,11 @@ class BoardSettingsViewModelTest : BaseTest() {
     @Test
     fun test_reset_board_ui_state() {
         viewModel.checkBoard(name = "  ok   ")
-        assertEquals(UpdateBoardNameUiState.CanNotCreate, viewModel.updateBoardNameUiState.value)
-        assertEquals(1, handle.saveUpdateBoardNameUiStateCalledList.size)
-        assertEquals(
-            UpdateBoardNameUiState.CanNotCreate,
-            handle.saveUpdateBoardNameUiStateCalledList[0]
-        )
+        assertFalse(viewModel.settingsFieldState.value.buttonEnabled)
         viewModel.resetBoardUiState()
-        assertEquals(UpdateBoardNameUiState.CanCreate, viewModel.updateBoardNameUiState.value)
-        assertEquals(2, handle.saveUpdateBoardNameUiStateCalledList.size)
         assertEquals(
-            UpdateBoardNameUiState.CanCreate,
-            handle.saveUpdateBoardNameUiStateCalledList[1]
+            viewModel.settingsFieldState.value,
+            SettingsFieldState(nameErrorMessage = "", buttonEnabled = true)
         )
     }
 
@@ -284,6 +274,16 @@ class BoardSettingsViewModelTest : BaseTest() {
         viewModel.deleteBoard(boardId = "boardId")
         assertEquals(1, repository.deleteBoardCalledList.size)
         assertEquals("boardId", repository.deleteBoardCalledList[0])
+    }
+
+    @Test
+    fun test_set_board_name_error_message() {
+        Assert.assertEquals("", viewModel.settingsFieldState.value.nameErrorMessage)
+        viewModel.setBoardNameErrorMessage(message = "test message")
+        Assert.assertEquals(
+            "test message",
+            viewModel.settingsFieldState.value.nameErrorMessage
+        )
     }
 
     private class TestBoardSettingsRepository : BoardSettingsRepository {
@@ -362,10 +362,11 @@ class BoardSettingsViewModelTest : BaseTest() {
 
         var updateBoardNameUiStateCalledCount = 0
         private val updateBoardNameUiStateMutable = MutableStateFlow<UpdateBoardNameUiState>(
-            UpdateBoardNameUiState.CanCreate
+            UpdateBoardNameUiState.Initial
         )
         val saveUpdateBoardNameUiStateCalledList = mutableListOf<UpdateBoardNameUiState>()
 
+        private val settingsFieldStateMutable = MutableStateFlow(SettingsFieldState())
         override val settingsBoardUiState: StateFlow<SettingsBoardUiState>
             get() {
                 settingsBoardUiStateCalledCount++
@@ -387,6 +388,8 @@ class BoardSettingsViewModelTest : BaseTest() {
             saveBoardSettingsUiStateCalledList.add(boardSettingsUiState)
             boardSettingsUiStateMutable.value = boardSettingsUiState
         }
+
+        override val settingsFieldState = settingsFieldStateMutable
 
         override val updateBoardNameUiState: StateFlow<UpdateBoardNameUiState>
             get() {
