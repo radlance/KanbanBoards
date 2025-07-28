@@ -29,7 +29,7 @@
       <img src="https://github.com/user-attachments/assets/2b0c0ea3-c404-4eb7-9d4f-bb0fa7ad288e" width="20%" alt="create ticket" />
       <img src="https://github.com/user-attachments/assets/5b3b749b-940c-4852-8c5f-fe707c8b2afe" width="20%" alt="board settings" />
       <br/>
-      <video controls src="https://github.com/user-attachments/assets/4153cd4f-0dee-4172-ab88-d3e2472ea81e" muted="muted"></video>
+      <video controls src="https://github.com/user-attachments/assets/7c974439-7523-4c5e-abe2-4f82e91f7738" muted="muted"></video>
 </div>
 
 ## Technologies
