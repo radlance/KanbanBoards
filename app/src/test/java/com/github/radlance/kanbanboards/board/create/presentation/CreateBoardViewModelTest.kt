@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -38,41 +40,27 @@ class CreateBoardViewModelTest : BaseTest() {
 
     @Test
     fun test_initial_state() {
-        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardFieldState.value)
+        assertEquals(CreateBoardUiState.Initial, viewModel.createBardUiState.value)
+        assertEquals(
+            CreateBoardFieldState(nameErrorMessage = "", buttonEnabled = false),
+            viewModel.createBoardFieldState.value
+        )
         assertEquals(1, handle.createBoardUiStateCalledCount)
     }
 
     @Test
     fun test_check_board_short_name() {
         viewModel.checkBoard(name = "go")
-        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardFieldState.value)
-        assertEquals(1, handle.saveCreateBoardUiStateCalledList.size)
-        assertEquals(
-            CreateBoardUiState.CanNotCreate,
-            handle.saveCreateBoardUiStateCalledList[0]
-        )
-        assertEquals(1, handle.createBoardUiStateCalledCount)
+        assertFalse(viewModel.createBoardFieldState.value.buttonEnabled)
 
         viewModel.checkBoard(name = "  it    ")
-        assertEquals(CreateBoardUiState.CanNotCreate, viewModel.createBoardFieldState.value)
-        assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
-        assertEquals(
-            CreateBoardUiState.CanNotCreate,
-            handle.saveCreateBoardUiStateCalledList[1]
-        )
-        assertEquals(1, handle.createBoardUiStateCalledCount)
+        assertFalse(viewModel.createBoardFieldState.value.buttonEnabled)
     }
 
     @Test
     fun test_check_board_valid_name() {
         viewModel.checkBoard(name = "test name")
-        assertEquals(CreateBoardUiState.CanCreate, viewModel.createBoardFieldState.value)
-        assertEquals(1, handle.saveCreateBoardUiStateCalledList.size)
-        assertEquals(
-            CreateBoardUiState.CanCreate,
-            handle.saveCreateBoardUiStateCalledList[0]
-        )
-        assertEquals(1, handle.createBoardUiStateCalledCount)
+        assertTrue(viewModel.createBoardFieldState.value.buttonEnabled)
     }
 
     @Test
@@ -84,8 +72,9 @@ class CreateBoardViewModelTest : BaseTest() {
 
         assertEquals(
             CreateBoardUiState.AlreadyExists(message = "board already exists"),
-            viewModel.createBoardFieldState.value
+            viewModel.createBardUiState.value
         )
+
         assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
         assertEquals(
             CreateBoardUiState.Loading,
@@ -104,9 +93,10 @@ class CreateBoardViewModelTest : BaseTest() {
             CreateBoardResult.Error(message = "no internet connection")
         )
         viewModel.createBoard(name = "new board", boardMembers = emptyList())
+
         assertEquals(
             CreateBoardUiState.Error(message = "no internet connection"),
-            viewModel.createBoardFieldState.value
+            viewModel.createBardUiState.value
         )
 
         assertEquals(2, handle.saveCreateBoardUiStateCalledList.size)
@@ -197,13 +187,18 @@ class CreateBoardViewModelTest : BaseTest() {
 
         assertEquals(
             CreateBoardUiState.AlreadyExists(message = "board already exists"),
-            viewModel.createBoardFieldState.value
+            viewModel.createBardUiState.value
         )
 
         viewModel.resetBoardState()
 
         assertEquals(
-            CreateBoardUiState.CanNotCreate,
+            CreateBoardUiState.Initial,
+            viewModel.createBardUiState.value
+        )
+
+        assertEquals(
+            CreateBoardFieldState(nameErrorMessage = "", buttonEnabled = false),
             viewModel.createBoardFieldState.value
         )
     }
@@ -268,6 +263,16 @@ class CreateBoardViewModelTest : BaseTest() {
         )
     }
 
+    @Test
+    fun test_set_board_name_error_message() {
+        assertEquals("", viewModel.createBoardFieldState.value.nameErrorMessage)
+        viewModel.setBoardNameErrorMessage(message = "test message")
+        assertEquals(
+            "test message",
+            viewModel.createBoardFieldState.value.nameErrorMessage
+        )
+    }
+
     private class TestCreateBoardRepository : CreateBoardRepository {
 
         var createBoardCalledCount = 0
@@ -307,23 +312,28 @@ class CreateBoardViewModelTest : BaseTest() {
 
         var createBoardUiStateCalledCount = 0
         val saveCreateBoardUiStateCalledList = mutableListOf<CreateBoardUiState>()
-        private var boardUiState =
-            MutableStateFlow<CreateBoardUiState>(CreateBoardUiState.CanNotCreate)
+        private val creteBoardUiStateMutable = MutableStateFlow<CreateBoardUiState>(
+            CreateBoardUiState.Initial
+        )
+        private val fieldState = MutableStateFlow(CreateBoardFieldState())
 
         var searchUsersUiStateCalledCount = 0
         val saveSearchUsersUiStateCalledList = mutableListOf<SearchUsersUiState>()
         private var usersUiState = MutableStateFlow<SearchUsersUiState>(SearchUsersUiState.Loading)
 
-        override val createBoardFieldState: StateFlow<CreateBoardUiState>
+        override val createBoardUiState: StateFlow<CreateBoardUiState>
             get() {
                 createBoardUiStateCalledCount++
-                return boardUiState
+                return creteBoardUiStateMutable
             }
 
-        override fun saveCreateBoardFieldState(createBoardUiState: CreateBoardUiState) {
+        override fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState) {
             saveCreateBoardUiStateCalledList.add(createBoardUiState)
-            this.boardUiState.value = createBoardUiState
+            creteBoardUiStateMutable.value = createBoardUiState
         }
+
+        override val createBoardFieldState = fieldState
+
 
         override val searchUsersUiState: StateFlow<SearchUsersUiState>
             get() {
