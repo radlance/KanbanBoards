@@ -39,7 +39,7 @@ interface HandleProfile {
             DeleteProfileUiState.Initial
         )
 
-        override val profileUiState = profileUiStateMutable.asStateFlow()
+        override val profileUiState get() = profileUiStateMutable.asStateFlow()
 
         override fun saveProfileUiState(profileUiState: ProfileUiState) {
             profileUiStateMutable.value = profileUiState

@@ -151,8 +151,8 @@ class BoardSettingsRepositoryTest : BaseTest() {
     @Test
     fun test_delete_board() = runBlocking {
         repository.deleteBoard(boardId = "last board")
-        assertEquals(1, remoteDataSource.deleteBoardCalledList.size)
-        assertEquals("last board", remoteDataSource.deleteBoardCalledList[0])
+        assertEquals(1, boardRepository.deleteBoardCalledList.size)
+        assertEquals("last board", boardRepository.deleteBoardCalledList[0])
     }
 
     private class TestBoardSettingsRemoteDataSource : BoardSettingsRemoteDataSource {
@@ -166,8 +166,6 @@ class BoardSettingsRepositoryTest : BaseTest() {
 
         val updateBoardNameCalledList = mutableListOf<BoardInfo>()
         private var updateBoardNameException: Exception? = null
-
-        val deleteBoardCalledList = mutableListOf<String>()
 
         fun makeExpectedBoardMembers(boardMembers: List<BoardMember>) {
             this.boardMembers.value = boardMembers
@@ -198,10 +196,6 @@ class BoardSettingsRepositoryTest : BaseTest() {
         override suspend fun updateBoardName(boardInfo: BoardInfo) {
             updateBoardNameCalledList.add(boardInfo)
             updateBoardNameException?.let { throw it }
-        }
-
-        override suspend fun deleteBoard(boardId: String) {
-            deleteBoardCalledList.add(boardId)
         }
     }
 }

@@ -150,6 +150,8 @@ abstract class BaseTest {
 
         val leaveBoardCalledList = mutableListOf<String>()
 
+        val deleteBoardCalledList = mutableListOf<String>()
+
         fun makeExpectedBoardException(exception: Exception) {
             boardException = exception
         }
@@ -163,6 +165,10 @@ abstract class BaseTest {
 
         override suspend fun leaveBoard(boardId: String) {
             leaveBoardCalledList.add(boardId)
+        }
+
+        override suspend fun deleteBoard(boardId: String) {
+            deleteBoardCalledList.add(boardId)
         }
     }
 
@@ -406,6 +412,8 @@ abstract class BaseTest {
 
         val leaveBoardCalledList = mutableListOf<String>()
 
+        val deleteBoardCalledList = mutableListOf<String>()
+
         override fun board(boardId: String): Flow<BoardResult> {
             boardCalledList.add(boardId)
             return boardResult
@@ -422,6 +430,10 @@ abstract class BaseTest {
 
         override suspend fun leaveBoard(boardId: String) {
             leaveBoardCalledList.add(boardId)
+        }
+
+        override suspend fun deleteBoard(boardId: String) {
+            deleteBoardCalledList.add(boardId)
         }
     }
 }
