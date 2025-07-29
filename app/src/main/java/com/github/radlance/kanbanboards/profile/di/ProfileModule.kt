@@ -1,12 +1,18 @@
 package com.github.radlance.kanbanboards.profile.di
 
+import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
+import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
 import com.github.radlance.kanbanboards.profile.data.RemoteProfileRepository
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
 import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
+import com.github.radlance.kanbanboards.profile.presentation.DeleteProfileMapper
+import com.github.radlance.kanbanboards.profile.presentation.DeleteProfileUiState
 import com.github.radlance.kanbanboards.profile.presentation.HandleProfile
 import com.github.radlance.kanbanboards.profile.presentation.LoadProfileResultMapper
+import com.github.radlance.kanbanboards.profile.presentation.ProfileCredentialMapper
+import com.github.radlance.kanbanboards.profile.presentation.ProfileCredentialUiState
 import com.github.radlance.kanbanboards.profile.presentation.ProfileMapperFacade
 import com.github.radlance.kanbanboards.profile.presentation.ProfileProviderMapper
 import com.github.radlance.kanbanboards.profile.presentation.ProfileProviderUi
@@ -39,4 +45,10 @@ interface ProfileModule {
 
     @Binds
     fun provideProfileMapperFacade(profileMapperFacade: ProfileMapperFacade.Base): ProfileMapperFacade
+
+    @Binds
+    fun provideProfileCredentialMapper(profileCredentialMapper: ProfileCredentialMapper): CredentialResult.Mapper<ProfileCredentialUiState>
+
+    @Binds
+    fun provideDeleteProfileMapper(deleteProfileMapper: DeleteProfileMapper): UnitResult.Mapper<DeleteProfileUiState>
 }

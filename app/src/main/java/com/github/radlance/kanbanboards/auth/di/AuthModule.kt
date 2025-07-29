@@ -12,8 +12,8 @@ import com.github.radlance.kanbanboards.auth.presentation.common.ValidateSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
-import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResultMapper
-import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInCredentialMapper
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInCredentialUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signup.HandleSignUp
 import com.github.radlance.kanbanboards.common.domain.UnitResult
@@ -37,8 +37,8 @@ interface AuthModule {
 
     @Binds
     fun provideCredentialResultMapper(
-        credentialResultMapper: CredentialResultMapper
-    ): CredentialResult.Mapper<CredentialUiState>
+        signInCredentialMapper: SignInCredentialMapper
+    ): CredentialResult.Mapper<SignInCredentialUiState>
 
     @Binds
     fun provideSignInResultMapper(

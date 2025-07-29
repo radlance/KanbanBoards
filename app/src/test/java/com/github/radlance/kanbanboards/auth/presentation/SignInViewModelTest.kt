@@ -5,8 +5,8 @@ import com.github.radlance.kanbanboards.auth.presentation.common.ValidateAuth
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultMapper
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
-import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResultMapper
-import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInCredentialMapper
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInCredentialUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInFieldsUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInViewModel
@@ -22,7 +22,7 @@ class SignInViewModelTest : BaseTest() {
 
     private lateinit var handle: TestHandleSignIn
     private lateinit var signInMapper: AuthResultMapper
-    private lateinit var credentialMapper: CredentialResultMapper
+    private lateinit var credentialMapper: SignInCredentialMapper
     private lateinit var manageResource: TestManageResource
     private lateinit var authRepository: TestSignInRepository
     private lateinit var validateAuth: TestValidateAuth
@@ -36,7 +36,7 @@ class SignInViewModelTest : BaseTest() {
         handle = TestHandleSignIn()
         signInMapper = AuthResultMapper()
         manageResource = TestManageResource()
-        credentialMapper = CredentialResultMapper(manageResource)
+        credentialMapper = SignInCredentialMapper(manageResource)
         validateAuth = TestValidateAuth()
 
         viewModel = SignInViewModel(
@@ -52,14 +52,14 @@ class SignInViewModelTest : BaseTest() {
     @Test
     fun test_initial_state() {
         assertEquals(AuthResultUiState.Initial, viewModel.authResultUiState.value)
-        assertEquals(CredentialUiState.Initial, viewModel.credentialResultUiState.value)
+        assertEquals(SignInCredentialUiState.Initial, viewModel.credentialResultUiState.value)
         assertEquals(SignInFieldsUiState(), viewModel.fieldsUiState.value)
 
         assertEquals(1, handle.signInStateCalledCount)
         assertEquals(1, handle.credentialStateCalledCount)
         assertEquals(1, handle.fieldsStateCalledCount)
         assertEquals(emptyList<AuthResultUiState>(), handle.saveSignInStateCalledList)
-        assertEquals(emptyList<CredentialUiState>(), handle.saveCredentialStateCalledList)
+        assertEquals(emptyList<SignInCredentialUiState>(), handle.saveCredentialStateCalledList)
     }
 
     @Test
@@ -95,14 +95,14 @@ class SignInViewModelTest : BaseTest() {
         viewModel.createCredential(CredentialResult.Error)
         assertEquals(1, handle.saveCredentialStateCalledList.size)
         assertEquals(
-            CredentialUiState.Error(manageResource),
+            SignInCredentialUiState.Error(manageResource),
             handle.saveCredentialStateCalledList[0]
         )
 
         viewModel.createCredential(CredentialResult.Success(idToken = "987654321"))
         assertEquals(2, handle.saveCredentialStateCalledList.size)
         assertEquals(
-            CredentialUiState.Success(idToken = "987654321"),
+            SignInCredentialUiState.Success(idToken = "987654321"),
             handle.saveCredentialStateCalledList[1]
         )
     }
@@ -209,9 +209,9 @@ class SignInViewModelTest : BaseTest() {
         var saveSignInStateCalledList = mutableListOf<AuthResultUiState>()
         var signInStateCalledCount = 0
 
-        private var credentialUiState =
-            MutableStateFlow<CredentialUiState>(CredentialUiState.Initial)
-        var saveCredentialStateCalledList = mutableListOf<CredentialUiState>()
+        private var signInCredentialUiState =
+            MutableStateFlow<SignInCredentialUiState>(SignInCredentialUiState.Initial)
+        var saveCredentialStateCalledList = mutableListOf<SignInCredentialUiState>()
         var credentialStateCalledCount = 0
 
         private var fieldsUiState = MutableStateFlow(SignInFieldsUiState())
@@ -228,15 +228,15 @@ class SignInViewModelTest : BaseTest() {
                 return authResultUiState
             }
 
-        override fun saveCredentialState(credentialUiState: CredentialUiState) {
-            saveCredentialStateCalledList.add(credentialUiState)
-            this.credentialUiState.value = credentialUiState
+        override fun saveCredentialState(signInCredentialUiState: SignInCredentialUiState) {
+            saveCredentialStateCalledList.add(signInCredentialUiState)
+            this.signInCredentialUiState.value = signInCredentialUiState
         }
 
-        override val credentialState: StateFlow<CredentialUiState>
+        override val credentialState: StateFlow<SignInCredentialUiState>
             get() {
                 credentialStateCalledCount++
-                return credentialUiState
+                return signInCredentialUiState
             }
 
         override val fieldsState: MutableStateFlow<SignInFieldsUiState>

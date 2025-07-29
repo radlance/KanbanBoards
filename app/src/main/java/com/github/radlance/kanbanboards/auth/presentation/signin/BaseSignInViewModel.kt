@@ -11,7 +11,7 @@ abstract class BaseSignInViewModel(
 ) : BaseAuthViewModel(handleSignIn, runAsync) {
 
     protected fun handleAuth(action: suspend () -> UnitResult) {
-        handleSignIn.saveCredentialState(CredentialUiState.Initial)
+        handleSignIn.saveCredentialState(SignInCredentialUiState.Initial)
         handleSignIn.saveAuthState(AuthResultUiState.Loading)
 
         handle(background = action) { result ->

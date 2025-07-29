@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.auth.presentation
 
 import com.github.radlance.kanbanboards.auth.presentation.signin.AuthResultUiState
-import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialUiState
+import com.github.radlance.kanbanboards.auth.presentation.signin.SignInCredentialUiState
 import com.github.radlance.kanbanboards.auth.presentation.signin.HandleSignIn
 import com.github.radlance.kanbanboards.auth.presentation.signin.SignInFieldsUiState
 import com.github.radlance.kanbanboards.common.BaseTest
@@ -36,20 +36,20 @@ class HandleSignInTest : BaseTest() {
     fun test_credential_state() {
         val manageResource = TestManageResource()
 
-        assertEquals(CredentialUiState.Initial, handleSignIn.credentialState.value)
-        handleSignIn.saveCredentialState(CredentialUiState.Success(idToken = "123456789"))
+        assertEquals(SignInCredentialUiState.Initial, handleSignIn.credentialState.value)
+        handleSignIn.saveCredentialState(SignInCredentialUiState.Success(idToken = "123456789"))
 
         assertEquals(
-            CredentialUiState.Success(idToken = "123456789"),
+            SignInCredentialUiState.Success(idToken = "123456789"),
             handleSignIn.credentialState.value
         )
 
         handleSignIn.saveCredentialState(
-            CredentialUiState.Error(manageResource = manageResource)
+            SignInCredentialUiState.Error(manageResource = manageResource)
         )
 
         assertEquals(
-            CredentialUiState.Error(manageResource = manageResource),
+            SignInCredentialUiState.Error(manageResource = manageResource),
             handleSignIn.credentialState.value
         )
     }

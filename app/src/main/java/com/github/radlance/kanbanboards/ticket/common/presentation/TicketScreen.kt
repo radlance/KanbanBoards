@@ -235,8 +235,8 @@ fun TicketScreen(
         }
 
         val boxModifier = if (
-            (ticketUiState.hasSize()
-                    || ticketUiState.hasSize()) &&
+            (ticketUiState.hasSize
+                    || ticketUiState.hasSize) &&
             (scrollState.canScrollForward
                     || scrollState.canScrollBackward)
         ) {
@@ -265,7 +265,7 @@ fun TicketScreen(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = titleFieldValue.length >= 3 && ticketUiState.buttonEnabled()
+                enabled = titleFieldValue.length >= 3 && ticketUiState.buttonEnabled
             ) {
                 Text(text = stringResource(buttonLabelId))
             }

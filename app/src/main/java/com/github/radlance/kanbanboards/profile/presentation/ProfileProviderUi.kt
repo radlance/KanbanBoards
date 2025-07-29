@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.auth.presentation.signin.AccountManager
 import com.github.radlance.kanbanboards.auth.presentation.signin.FormatNonce
@@ -45,12 +46,12 @@ import kotlinx.coroutines.launch
 interface ProfileProviderUi {
 
     @Composable
-    fun Show()
+    fun Show(profileProviderAction: ProfileProviderAction)
 
     object Email : ProfileProviderUi {
 
         @Composable
-        override fun Show() {
+        override fun Show(profileProviderAction: ProfileProviderAction) {
 
             val keyboardController = LocalSoftwareKeyboardController.current
             var showPassword by rememberSaveable { mutableStateOf(false) }
@@ -97,6 +98,7 @@ interface ProfileProviderUi {
                 Button(
                     onClick = {
                         keyboardController?.hide()
+                        profileProviderAction.deleteProfile(emailFieldValue, passwordFieldValue)
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -109,7 +111,7 @@ interface ProfileProviderUi {
     object Google : ProfileProviderUi {
 
         @Composable
-        override fun Show() {
+        override fun Show(profileProviderAction: ProfileProviderAction) {
             val activity = LocalActivity.current
             val scope = rememberCoroutineScope()
 
@@ -117,12 +119,15 @@ interface ProfileProviderUi {
                 activity?.let { AccountManager.Google(it, FormatNonce.DigestFold) }
             }
 
+            val profileCredentialUiState by profileProviderAction.profileCredentialUiState.collectAsStateWithLifecycle()
+
             Spacer(Modifier.height(16.dp))
             IconButton(
-//                enabled = signInResultUiState.buttonEnabled() || credentialResultUiState.buttonEnabled(),
                 onClick = {
                     scope.launch {
-//                        googleAccountManager?.signIn()?.let { viewModel.createCredential(it) }
+                        googleAccountManager?.signIn()?.let {
+                            profileProviderAction.createCredential(it)
+                        }
                     }
                 },
                 modifier = Modifier
@@ -141,12 +146,14 @@ interface ProfileProviderUi {
                         .padding(10.dp)
                 )
             }
+            Spacer(Modifier.height(16.dp))
+            profileCredentialUiState.Show(profileProviderAction)
         }
     }
 
     object Initial : ProfileProviderUi {
 
         @Composable
-        override fun Show() = Unit
+        override fun Show(profileProviderAction: ProfileProviderAction) = Unit
     }
 }

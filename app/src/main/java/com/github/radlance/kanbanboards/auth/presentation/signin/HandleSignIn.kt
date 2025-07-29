@@ -8,21 +8,21 @@ import javax.inject.Inject
 
 interface HandleSignIn : BaseHandle {
 
-    fun saveCredentialState(credentialUiState: CredentialUiState)
+    fun saveCredentialState(signInCredentialUiState: SignInCredentialUiState)
 
-    val credentialState: StateFlow<CredentialUiState>
+    val credentialState: StateFlow<SignInCredentialUiState>
 
     val fieldsState: MutableStateFlow<SignInFieldsUiState>
 
     class Base @Inject constructor() : HandleSignIn, BaseHandle.Abstract() {
 
         private val credentialStateFlowMutable =
-            MutableStateFlow<CredentialUiState>(CredentialUiState.Initial)
+            MutableStateFlow<SignInCredentialUiState>(SignInCredentialUiState.Initial)
 
         private val fieldsStateMutable = MutableStateFlow(SignInFieldsUiState())
 
-        override fun saveCredentialState(credentialUiState: CredentialUiState) {
-            credentialStateFlowMutable.value = credentialUiState
+        override fun saveCredentialState(signInCredentialUiState: SignInCredentialUiState) {
+            credentialStateFlowMutable.value = signInCredentialUiState
         }
 
         override val credentialState = credentialStateFlowMutable.asStateFlow()

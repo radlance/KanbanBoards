@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInRepository: SignInRepository,
-    private val credentialMapper: CredentialResult.Mapper<CredentialUiState>,
+    private val credentialMapper: CredentialResult.Mapper<SignInCredentialUiState>,
     private val validateSignIn: ValidateSignIn,
     handleSignIn: HandleSignIn,
     authMapper: UnitResult.Mapper<AuthResultUiState>,

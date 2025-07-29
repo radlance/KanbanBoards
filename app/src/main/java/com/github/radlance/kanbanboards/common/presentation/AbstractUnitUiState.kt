@@ -2,17 +2,12 @@ package com.github.radlance.kanbanboards.common.presentation
 
 interface UnitUiState {
 
-    fun buttonEnabled(): Boolean
+    val buttonEnabled: Boolean
 
-    fun hasSize(): Boolean
+    val hasSize: Boolean
 }
 
 abstract class AbstractUnitUiState(
-    private val hasSize: Boolean,
-    private val buttonEnabled: Boolean
-) : UnitUiState {
-
-    override fun buttonEnabled(): Boolean = buttonEnabled
-
-    override fun hasSize(): Boolean = hasSize
-}
+    override val hasSize: Boolean,
+    override val buttonEnabled: Boolean = true
+) : UnitUiState

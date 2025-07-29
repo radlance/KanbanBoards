@@ -99,7 +99,7 @@ fun SignInScreen(
 
             Spacer(Modifier.height(16.dp))
             Button(
-                enabled = signInResultUiState.buttonEnabled() || credentialResultUiState.buttonEnabled(),
+                enabled = signInResultUiState.buttonEnabled || credentialResultUiState.buttonEnabled,
                 onClick = {
                     viewModel.signInWithEmail(
                         email = emailFieldValue,
@@ -115,7 +115,7 @@ fun SignInScreen(
             Spacer(Modifier.height(16.dp))
 
             IconButton(
-                enabled = signInResultUiState.buttonEnabled() || credentialResultUiState.buttonEnabled(),
+                enabled = signInResultUiState.buttonEnabled || credentialResultUiState.buttonEnabled,
                 onClick = {
                     scope.launch {
                         googleAccountManager?.signIn()?.let { viewModel.createCredential(it) }
@@ -141,8 +141,8 @@ fun SignInScreen(
         }
 
         val columnModifier = if (
-            (signInResultUiState.hasSize()
-                    || credentialResultUiState.hasSize()) &&
+            (signInResultUiState.hasSize
+                    || credentialResultUiState.hasSize) &&
             (scrollState.canScrollForward
                     || scrollState.canScrollBackward)
         ) {

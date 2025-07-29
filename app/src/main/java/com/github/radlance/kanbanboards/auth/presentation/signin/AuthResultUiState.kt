@@ -15,8 +15,6 @@ interface AuthResultUiState : UnitUiState {
 
         @Composable
         override fun Show(navigateToBoardsScreen: () -> Unit) = navigateToBoardsScreen()
-
-        override fun buttonEnabled(): Boolean = true
     }
 
     data class Error(
@@ -25,23 +23,17 @@ interface AuthResultUiState : UnitUiState {
 
         @Composable
         override fun Show(navigateToBoardsScreen: () -> Unit) = ErrorMessage(message)
-
-        override fun buttonEnabled(): Boolean = true
     }
 
     object Loading : AuthResultUiState, AbstractUnitUiState(hasSize = true, buttonEnabled = false) {
 
         @Composable
         override fun Show(navigateToBoardsScreen: () -> Unit) = CircularProgressIndicator()
-
-        override fun buttonEnabled(): Boolean = false
     }
 
     object Initial : AuthResultUiState, AbstractUnitUiState(hasSize = false, buttonEnabled = true) {
 
         @Composable
         override fun Show(navigateToBoardsScreen: () -> Unit) = Unit
-
-        override fun buttonEnabled(): Boolean = true
     }
 }

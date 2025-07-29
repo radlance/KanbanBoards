@@ -114,7 +114,7 @@ fun NavGraph(
 
         composable<Profile> {
             ProfileScreen(
-                navigateToLoginScreen = {
+                navigateToSignInScreen = {
                     navHostController.navigate(SignIn) {
                         popUpTo<Boards> { inclusive = true }
                     }

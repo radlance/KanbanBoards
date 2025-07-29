@@ -94,7 +94,7 @@ fun SignUpScreen(
 
             Spacer(Modifier.height(16.dp))
             Button(
-                enabled = signUpResultUiState.buttonEnabled(),
+                enabled = signUpResultUiState.buttonEnabled,
                 onClick = {
                     viewModel.signUp(
                         name = nameFieldValue,
@@ -111,7 +111,7 @@ fun SignUpScreen(
         }
 
         val columnModifier = if (
-            signUpResultUiState.hasSize()
+            signUpResultUiState.hasSize
             && (scrollState.canScrollForward || scrollState.canScrollBackward)
         ) {
             Modifier.heightIn(min = 81.dp)

@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,12 +38,13 @@ import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    navigateToLoginScreen: () -> Unit,
+    navigateToSignInScreen: () -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val profileUiState by viewModel.profileUiState.collectAsStateWithLifecycle()
+    val deleteProfileUiState by viewModel.deleteProfileUiState.collectAsStateWithLifecycle()
     val profileProviderUi by viewModel.profileProviderUi.collectAsStateWithLifecycle()
     var showDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -60,9 +62,16 @@ fun ProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(30.dp)
             ) {
-                Text(text = stringResource(R.string.sign_in_again_to_delete_your_profile))
+                Text(
+                    text = stringResource(R.string.sign_in_again_to_delete_your_profile),
+                    textAlign = TextAlign.Center
+                )
                 Spacer(Modifier.height(8.dp))
-                profileProviderUi.Show()
+                profileProviderUi.Show(viewModel)
+                deleteProfileUiState.Show {
+                    showDialog = false
+                    navigateToSignInScreen()
+                }
             }
         }
     }
@@ -94,7 +103,7 @@ fun ProfileScreen(
             Button(
                 onClick = {
                     viewModel.signOut()
-                    navigateToLoginScreen()
+                    navigateToSignInScreen()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
