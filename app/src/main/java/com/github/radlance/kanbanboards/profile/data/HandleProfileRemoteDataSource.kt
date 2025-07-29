@@ -77,6 +77,7 @@ interface HandleProfileRemoteDataSource {
                 val credential = authCredential(currentUser)
                 currentUser.reauthenticate(credential).await()
                 currentUser.delete().await()
+                Firebase.auth.signOut()
             } catch (e: Exception) {
                 handle.handle(e)
             }
