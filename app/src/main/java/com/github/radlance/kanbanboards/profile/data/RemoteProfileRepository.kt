@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.profile.data
 
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
+import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
 import javax.inject.Inject
 
@@ -22,4 +23,6 @@ class RemoteProfileRepository @Inject constructor(
         dataStoreManager.saveAuthorized(authorized = false)
         return remoteDataSource.signOut()
     }
+
+    override fun profileProvider(): ProfileProvider = remoteDataSource.profileProvider()
 }

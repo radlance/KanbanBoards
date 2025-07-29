@@ -5,4 +5,6 @@ interface ProfileRepository {
     fun profile(): LoadProfileResult
 
     suspend fun signOut()
+
+    fun profileProvider(): ProfileProvider
 }

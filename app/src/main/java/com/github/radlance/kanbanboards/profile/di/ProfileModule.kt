@@ -3,9 +3,13 @@ package com.github.radlance.kanbanboards.profile.di
 import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
 import com.github.radlance.kanbanboards.profile.data.RemoteProfileRepository
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
+import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
 import com.github.radlance.kanbanboards.profile.presentation.HandleProfile
 import com.github.radlance.kanbanboards.profile.presentation.LoadProfileResultMapper
+import com.github.radlance.kanbanboards.profile.presentation.ProfileMapperFacade
+import com.github.radlance.kanbanboards.profile.presentation.ProfileProviderMapper
+import com.github.radlance.kanbanboards.profile.presentation.ProfileProviderUi
 import com.github.radlance.kanbanboards.profile.presentation.ProfileUiState
 import dagger.Binds
 import dagger.Module
@@ -29,4 +33,10 @@ interface ProfileModule {
 
     @Binds
     fun provideHandleProfile(handleProfile: HandleProfile.Base): HandleProfile
+
+    @Binds
+    fun provideProfileProviderMapper(profileProviderMapper: ProfileProviderMapper): ProfileProvider.Mapper<ProfileProviderUi>
+
+    @Binds
+    fun provideProfileMapperFacade(profileMapperFacade: ProfileMapperFacade.Base): ProfileMapperFacade
 }
