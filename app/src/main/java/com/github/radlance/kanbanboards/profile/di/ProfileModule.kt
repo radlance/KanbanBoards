@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.profile.di
 
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
 import com.github.radlance.kanbanboards.common.domain.UnitResult
+import com.github.radlance.kanbanboards.profile.data.HandleProfileRemoteDataSource
 import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
 import com.github.radlance.kanbanboards.profile.data.RemoteProfileRepository
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
@@ -51,4 +52,7 @@ interface ProfileModule {
 
     @Binds
     fun provideDeleteProfileMapper(deleteProfileMapper: DeleteProfileMapper): UnitResult.Mapper<DeleteProfileUiState>
+
+    @Binds
+    fun provideHandleProfileRemoteDataSource(handleProfileRemoteDataSource: HandleProfileRemoteDataSource.Base): HandleProfileRemoteDataSource
 }

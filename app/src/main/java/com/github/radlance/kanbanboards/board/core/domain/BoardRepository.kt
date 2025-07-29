@@ -11,4 +11,6 @@ interface BoardRepository {
     fun moveTicket(ticketId: String, column: Column)
 
     suspend fun leaveBoard(boardId: String)
+
+    suspend fun deleteBoard(boardId: String)
 }

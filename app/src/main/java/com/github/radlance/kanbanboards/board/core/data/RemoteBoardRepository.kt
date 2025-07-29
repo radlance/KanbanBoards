@@ -33,4 +33,11 @@ class RemoteBoardRepository @Inject constructor(
     override suspend fun leaveBoard(boardId: String) {
         boardRemoteDataSource.leaveBoard(boardId)
     }
+
+    override suspend fun deleteBoard(boardId: String) {
+        try {
+            boardRemoteDataSource.deleteBoard(boardId)
+        } catch (_: Exception) {
+        }
+    }
 }

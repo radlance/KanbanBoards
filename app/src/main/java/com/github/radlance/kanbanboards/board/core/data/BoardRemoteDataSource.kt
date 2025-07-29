@@ -18,6 +18,8 @@ interface BoardRemoteDataSource {
 
     suspend fun leaveBoard(boardId: String)
 
+    suspend fun deleteBoard(boardId: String)
+
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase
     ) : BoardRemoteDataSource {
@@ -71,6 +73,33 @@ interface BoardRemoteDataSource {
 
                 result?.ref?.removeValue()?.await()
             } catch (_: Exception) {
+            }
+        }
+
+        override suspend fun deleteBoard(boardId: String) {
+
+            provideDatabase.database()
+                .child("boards")
+                .child(boardId)
+                .removeValue()
+                .await()
+
+            val membersSnapshot = provideDatabase.database()
+                .child("boards-members")
+                .orderByChild("boardId")
+                .equalTo(boardId).get().await()
+
+            membersSnapshot.children.forEach { memberSnapshot ->
+                memberSnapshot.ref.removeValue().await()
+            }
+
+            val ticketsSnapshot = provideDatabase.database()
+                .child("tickets")
+                .orderByChild("boardId")
+                .equalTo(boardId).get().await()
+
+            ticketsSnapshot.children.forEach { ticketSnapshot ->
+                ticketSnapshot.ref.removeValue().await()
             }
         }
     }

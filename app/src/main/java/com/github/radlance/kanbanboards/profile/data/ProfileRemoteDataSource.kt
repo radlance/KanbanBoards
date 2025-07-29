@@ -1,13 +1,11 @@
 package com.github.radlance.kanbanboards.profile.data
 
-import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
 import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 interface ProfileRemoteDataSource {
@@ -22,7 +20,9 @@ interface ProfileRemoteDataSource {
 
     suspend fun deleteProfileWithEmail(email: String, password: String)
 
-    class Base @Inject constructor(private val handle: HandleError) : ProfileRemoteDataSource {
+    class Base @Inject constructor(
+        private val handleProfileRemoteDataSource: HandleProfileRemoteDataSource
+    ) : ProfileRemoteDataSource {
 
         override fun profile(): UserProfileEntity {
             val currentUser = Firebase.auth.currentUser!!
@@ -44,24 +44,14 @@ interface ProfileRemoteDataSource {
         }
 
         override suspend fun deleteProfileWithGoogle(userTokenId: String) {
-            try {
-                val currentUser = Firebase.auth.currentUser!!
-                val credential = GoogleAuthProvider.getCredential(userTokenId, null)
-                currentUser.reauthenticate(credential).await()
-                currentUser.delete().await()
-            } catch (e: Exception) {
-                handle.handle(e)
+            handleProfileRemoteDataSource.handle {
+                GoogleAuthProvider.getCredential(userTokenId, null)
             }
         }
 
         override suspend fun deleteProfileWithEmail(email: String, password: String) {
-            try {
-                val currentUser = Firebase.auth.currentUser!!
-                val credential = EmailAuthProvider.getCredential(email, password)
-                currentUser.reauthenticate(credential).await()
-                currentUser.delete().await()
-            } catch (e: Exception) {
-                handle.handle(e)
+            handleProfileRemoteDataSource.handle {
+                EmailAuthProvider.getCredential(email, password)
             }
         }
     }
