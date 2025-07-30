@@ -296,9 +296,13 @@ fun BoardSettingsContent(
         Box(modifier = Modifier.safeDrawingPadding()) {
             Button(
                 onClick = {
-                    boardSettingsAction.updateBoardName(
-                        boardInfo = boardInfo.copy(name = boardNameFieldValue)
-                    )
+                    if (boardNameFieldValue == boardInfo.name) {
+                        navigateUp()
+                    } else {
+                        boardSettingsAction.updateBoardName(
+                            boardInfo = boardInfo.copy(name = boardNameFieldValue)
+                        )
+                    }
                     keyboardController?.hide()
                 },
                 enabled = boardSettingsUpdateState.buttonEnabled && settingsFieldState.buttonEnabled,
