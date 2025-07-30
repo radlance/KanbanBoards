@@ -3,16 +3,19 @@ package com.github.radlance.kanbanboards.invitation.presentation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
 
 interface InvitationUiState : InvitationCount {
 
     @Composable
-    fun Show(columnScope: ColumnScope)
+    fun Show(columnScope: ColumnScope, invitationAction: InvitationAction)
 
     abstract class Abstract(override val count: Int = 0) : InvitationUiState
 
@@ -21,20 +24,27 @@ interface InvitationUiState : InvitationCount {
     ) : Abstract(count = invitations.size) {
 
         @Composable
-        override fun Show(columnScope: ColumnScope) = with(columnScope) {
-            InvitationList(
-                invitations = invitations,
-                onAcceptClick = {},
-                onDeclineClick = {},
-                modifier = Modifier.weight(1f)
-            )
+        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) = with(columnScope) {
+
+            if (invitations.isEmpty()) {
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    Text(text = stringResource(R.string.there_are_no_new_invitations))
+                }
+            } else {
+                InvitationList(
+                    invitations = invitations,
+                    onAcceptClick = invitationAction::acceptInvite,
+                    onDeclineClick = invitationAction::declineInvite,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 
     data class Error(private val message: String) : Abstract() {
 
         @Composable
-        override fun Show(columnScope: ColumnScope) = with(columnScope) {
+        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) = with(columnScope) {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
                 ErrorMessage(message)
             }
@@ -44,7 +54,7 @@ interface InvitationUiState : InvitationCount {
     object Loading : Abstract() {
 
         @Composable
-        override fun Show(columnScope: ColumnScope) = with(columnScope) {
+        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) = with(columnScope) {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }

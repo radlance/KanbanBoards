@@ -91,4 +91,5 @@
     <string name="invites_you_on">" invites you on \"%1$s\""</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
+    <string name="there_are_no_new_invitations">There are no new invitations</string>
 </resources>

@@ -22,4 +22,18 @@ class RemoteInvitationRepository @Inject constructor(
             emit(InvitationResult.Error(e.message ?: manageResource.string(R.string.error)))
         }
     }
+
+    override suspend fun acceptInvite(boardId: String, invitationId: String) {
+        try {
+            remoteDataSource.acceptInvite(boardId, invitationId)
+        } catch (_: Exception) {
+        }
+    }
+
+    override suspend fun declineInvite(boardId: String, invitationId: String) {
+        try {
+            remoteDataSource.declineInvite(boardId, invitationId)
+        } catch (_: Exception) {
+        }
+    }
 }

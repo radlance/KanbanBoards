@@ -38,7 +38,7 @@ fun InvitationScreen(
         }
     ) { contentPadding ->
         BaseColumn(modifier = modifier.padding(contentPadding)) {
-            invitationsUiState.Show(columnScope = this@BaseColumn)
+            invitationsUiState.Show(columnScope = this@BaseColumn, invitationAction = viewModel)
         }
     }
 }

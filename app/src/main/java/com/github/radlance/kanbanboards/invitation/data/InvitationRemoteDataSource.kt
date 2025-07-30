@@ -17,11 +17,16 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 interface InvitationRemoteDataSource {
 
     fun invitations(): Flow<List<Invitation>>
+
+    suspend fun acceptInvite(boardId: String, invitationId: String)
+
+    suspend fun declineInvite(boardId: String, invitationId: String)
 
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase
@@ -36,15 +41,17 @@ interface InvitationRemoteDataSource {
                 .equalTo(myUserId)
 
             return invitationsQuery.snapshots.flatMapLatest { invitationsSnapshot ->
-                val boardIds = invitationsSnapshot.children.mapNotNull {
-                    it.getValue<BoardMemberEntity>()?.boardId
+                val boardInvitations = invitationsSnapshot.children.mapNotNull { invitationSnapshot ->
+                    invitationSnapshot.getValue<BoardMemberEntity>()?.let { entity ->
+                        entity.boardId to invitationSnapshot.key
+                    }
                 }
 
-                if (boardIds.isEmpty()) {
+                if (boardInvitations.isEmpty()) {
                     flowOf(emptyList())
                 } else {
                     combine(
-                        boardIds.map { boardId ->
+                        boardInvitations.map { (boardId, invitationId) ->
                             provideDatabase
                                 .database()
                                 .child("boards")
@@ -56,15 +63,12 @@ interface InvitationRemoteDataSource {
                                             .child("users")
                                             .child(boardEntity.owner)
                                             .snapshots.mapNotNull { userSnapshot ->
-                                                val user =
-                                                    userSnapshot.getValue<UserProfileEntity>()
+                                                val user = userSnapshot.getValue<UserProfileEntity>()
                                                 Invitation(
-                                                    id = invitationsSnapshot.key ?: return@mapNotNull null,
-                                                    boardId = boardSnapshot.key
-                                                        ?: return@mapNotNull null,
+                                                    id = invitationId ?: return@mapNotNull null,
+                                                    boardId = boardSnapshot.key ?: return@mapNotNull null,
                                                     boardName = boardEntity.name,
-                                                    ownerEmail = user?.email
-                                                        ?: return@mapNotNull null
+                                                    ownerEmail = user?.email ?: return@mapNotNull null
                                                 )
                                             }
                                     } ?: flowOf(null)
@@ -73,6 +77,29 @@ interface InvitationRemoteDataSource {
                     ) { boards: Array<Invitation> -> boards.toList() }
                 }
             }.catch { e -> throw IllegalStateException(e.message) }
+        }
+
+        override suspend fun acceptInvite(boardId: String, invitationId: String) {
+            val currentUser = Firebase.auth.currentUser!!
+
+            provideDatabase.database()
+                .child("boards-invitations")
+                .child(invitationId)
+                .removeValue()
+                .await()
+
+            provideDatabase.database()
+                .child("boards-members").push()
+                .setValue(BoardMemberEntity(memberId = currentUser.uid, boardId = boardId))
+                .await()
+        }
+
+        override suspend fun declineInvite(boardId: String, invitationId: String) {
+            provideDatabase.database()
+                .child("boards-invitations")
+                .child(invitationId)
+                .removeValue()
+                .await()
         }
     }
 }

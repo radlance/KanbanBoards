@@ -14,8 +14,8 @@ import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 @Composable
 fun InvitationList(
     invitations: List<Invitation>,
-    onAcceptClick: (String) -> Unit,
-    onDeclineClick: (String) -> Unit,
+    onAcceptClick: (boardId: String, invitationId: String) -> Unit,
+    onDeclineClick: (boardId: String, invitationId: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), modifier = modifier) {
@@ -43,8 +43,8 @@ private fun InvitationListPreview() {
                     ownerEmail = "owner$it@gmail.com"
                 )
             },
-            onAcceptClick = {},
-            onDeclineClick = {},
+            onAcceptClick = { _, _ -> },
+            onDeclineClick = { _, _ -> },
             modifier = Modifier.padding(10.dp)
         )
     }

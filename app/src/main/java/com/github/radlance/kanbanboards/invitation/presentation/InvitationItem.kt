@@ -30,8 +30,8 @@ import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 
 @Composable
 fun InvitationItem(
-    onAcceptClick: (String) -> Unit,
-    onDeclineClick: (String) -> Unit,
+    onAcceptClick: (boardId: String, invitationId: String) -> Unit,
+    onDeclineClick: (boardId: String, invitationId: String) -> Unit,
     invitation: Invitation,
     modifier: Modifier = Modifier
 ) {
@@ -60,7 +60,7 @@ fun InvitationItem(
             Spacer(Modifier.height(16.dp))
             Row {
                 Button(
-                    onClick = { onAcceptClick(invitation.boardId) },
+                    onClick = { onAcceptClick(invitation.boardId, invitation.id) },
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = stringResource(R.string.accept))
@@ -69,7 +69,7 @@ fun InvitationItem(
                 Spacer(Modifier.width(8.dp))
 
                 OutlinedButton(
-                    onClick = { onDeclineClick(invitation.boardId) },
+                    onClick = { onDeclineClick(invitation.boardId, invitation.id) },
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = stringResource(R.string.decline))
@@ -91,8 +91,8 @@ private fun InvitationItemPreview() {
                 boardId = "123456",
                 ownerEmail = "test@gmail.com"
             ),
-            onAcceptClick = {},
-            onDeclineClick = {},
+            onAcceptClick = { _, _ -> },
+            onDeclineClick = { _, _ -> },
             modifier = Modifier.padding(10.dp)
         )
     }
