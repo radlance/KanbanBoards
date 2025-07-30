@@ -30,13 +30,13 @@ interface InvitationRemoteDataSource {
         @OptIn(ExperimentalCoroutinesApi::class)
         override fun invitations(): Flow<List<Invitation>> {
             val myUserId = Firebase.auth.currentUser!!.uid
-            val membersQuery = provideDatabase.database()
+            val invitationsQuery = provideDatabase.database()
                 .child("boards-invitations")
                 .orderByChild("memberId")
                 .equalTo(myUserId)
 
-            return membersQuery.snapshots.flatMapLatest { membersSnapshot ->
-                val boardIds = membersSnapshot.children.mapNotNull {
+            return invitationsQuery.snapshots.flatMapLatest { invitationsSnapshot ->
+                val boardIds = invitationsSnapshot.children.mapNotNull {
                     it.getValue<BoardMemberEntity>()?.boardId
                 }
 
@@ -59,6 +59,7 @@ interface InvitationRemoteDataSource {
                                                 val user =
                                                     userSnapshot.getValue<UserProfileEntity>()
                                                 Invitation(
+                                                    id = invitationsSnapshot.key ?: return@mapNotNull null,
                                                     boardId = boardSnapshot.key
                                                         ?: return@mapNotNull null,
                                                     boardName = boardEntity.name,

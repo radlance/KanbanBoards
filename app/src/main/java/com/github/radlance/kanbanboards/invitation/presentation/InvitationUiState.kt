@@ -21,8 +21,13 @@ interface InvitationUiState : InvitationCount {
     ) : Abstract(count = invitations.size) {
 
         @Composable
-        override fun Show(columnScope: ColumnScope) {
-            // TODO
+        override fun Show(columnScope: ColumnScope) = with(columnScope) {
+            InvitationList(
+                invitations = invitations,
+                onAcceptClick = {},
+                onDeclineClick = {},
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 
