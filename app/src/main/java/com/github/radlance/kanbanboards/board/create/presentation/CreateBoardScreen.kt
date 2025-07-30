@@ -115,8 +115,7 @@ fun CreateBoardsScreen(
                 },
                 label = {
                     Text(
-                        text = stringResource(R.string.add_users_to_the_board)
-
+                        text = stringResource(R.string.invite_users_to_the_board)
                     )
                 },
                 modifier = Modifier.fillMaxWidth()

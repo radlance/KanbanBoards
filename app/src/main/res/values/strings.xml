@@ -58,7 +58,7 @@
     <string name="board_members">Board members</string>
     <string name="search_icon">Search icon</string>
     <string name="search">Search…</string>
-    <string name="add_users_to_the_board">Add users to the board</string>
+    <string name="invite_users_to_the_board">Invite users to the board</string>
     <string name="enter_email">Enter email address</string>
     <string name="more">More</string>
     <string name="ticket_info">Ticket info</string>

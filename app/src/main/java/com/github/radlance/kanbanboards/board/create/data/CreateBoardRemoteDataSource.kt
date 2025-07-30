@@ -27,7 +27,7 @@ interface CreateBoardRemoteDataSource {
 
                 memberIds.forEach { memberId ->
                     provideDatabase.database()
-                        .child("boards-members")
+                        .child("boards-invitations")
                         .push()
                         .setValue(
                             BoardMemberEntity(memberId = memberId, boardId = boardsReference.key!!)
