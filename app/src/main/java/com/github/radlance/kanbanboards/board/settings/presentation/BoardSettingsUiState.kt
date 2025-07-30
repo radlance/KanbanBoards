@@ -4,7 +4,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
@@ -20,7 +20,8 @@ interface BoardSettingsUiState {
 
     data class Success(
         private val users: List<User>,
-        private val members: List<BoardMember>
+        private val members: List<BoardUser>,
+        private val invited: List<BoardUser>
     ) : BoardSettingsUiState {
 
         @Composable
@@ -33,6 +34,7 @@ interface BoardSettingsUiState {
             BoardSettingsContent(
                 users = users,
                 members = members,
+                invited = invited,
                 boardInfo = boardInfo,
                 boardSettingsAction = boardSettingsAction,
                 navigateUp = navigateUp,

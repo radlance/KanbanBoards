@@ -2,7 +2,7 @@ package com.github.radlance.kanbanboards.board.settings.presentation
 
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.core.domain.BoardResult
-import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
 import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
@@ -135,7 +135,7 @@ class BoardSettingsViewModelTest : BaseTest() {
             BoardSettingsResult.Success(
                 users = listOf(User(id = "userId1", email = "email@test.com", name = "name1")),
                 members = listOf(
-                    BoardMember(
+                    BoardUser(
                         boardMemberId = "boardMemberId1",
                         userId = "userId2",
                         email = "test@gmail.com",
@@ -148,7 +148,7 @@ class BoardSettingsViewModelTest : BaseTest() {
             BoardSettingsUiState.Success(
                 users = listOf(User(id = "userId1", email = "email@test.com", name = "name1")),
                 members = listOf(
-                    BoardMember(
+                    BoardUser(
                         boardMemberId = "boardMemberId1",
                         userId = "userId2",
                         email = "test@gmail.com",
@@ -163,7 +163,7 @@ class BoardSettingsViewModelTest : BaseTest() {
             BoardSettingsUiState.Success(
                 users = listOf(User(id = "userId1", email = "email@test.com", name = "name1")),
                 members = listOf(
-                    BoardMember(
+                    BoardUser(
                         boardMemberId = "boardMemberId1",
                         userId = "userId2",
                         email = "test@gmail.com",
@@ -177,7 +177,7 @@ class BoardSettingsViewModelTest : BaseTest() {
 
     @Test
     fun test_add_user_to_board() {
-        viewModel.addUserToBoard(boardId = "123", userId = "321")
+        viewModel.inviteUserToBoard(boardId = "123", userId = "321")
         assertEquals(1, repository.addUserToBoardCalledList.size)
         assertEquals(Pair("123", "321"), repository.addUserToBoardCalledList[0])
     }
@@ -328,7 +328,7 @@ class BoardSettingsViewModelTest : BaseTest() {
             return boardSettingsResult
         }
 
-        override suspend fun addUserToBoard(boardId: String, userId: String) {
+        override suspend fun inviteUserToBoard(boardId: String, userId: String) {
             addUserToBoardCalledList.add(Pair(boardId, userId))
         }
 

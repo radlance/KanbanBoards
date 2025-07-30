@@ -11,7 +11,6 @@ interface HandleBoardSettings {
 
     fun saveSettingsBoardUiState(settingsBoardUiState: SettingsBoardUiState)
 
-
     val boardSettingsUiState: StateFlow<BoardSettingsUiState>
 
     fun saveBoardSettingsUiState(boardSettingsUiState: BoardSettingsUiState)

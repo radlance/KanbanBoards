@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.board.settings.presentation
 
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.common.domain.User
 import junit.framework.TestCase.assertEquals
 import org.junit.Before
@@ -28,7 +28,7 @@ class HandleBoardSettingsTest {
             BoardSettingsUiState.Success(
                 users = listOf(User(id = "id", email = "test@email.com", name = "name")),
                 members = listOf(
-                    BoardMember(
+                    BoardUser(
                         boardMemberId = "boardMemberId",
                         userId = "userId",
                         email = "email@test.com",
@@ -41,7 +41,7 @@ class HandleBoardSettingsTest {
             BoardSettingsUiState.Success(
                 users = listOf(User(id = "id", email = "test@email.com", name = "name")),
                 members = listOf(
-                    BoardMember(
+                    BoardUser(
                         boardMemberId = "boardMemberId",
                         userId = "userId",
                         email = "email@test.com",

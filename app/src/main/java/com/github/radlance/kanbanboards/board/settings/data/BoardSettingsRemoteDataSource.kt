@@ -2,7 +2,7 @@ package com.github.radlance.kanbanboards.board.settings.data
 
 import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
@@ -20,23 +20,28 @@ import javax.inject.Inject
 
 interface BoardSettingsRemoteDataSource {
 
-    suspend fun addUserToBoard(boardId: String, userId: String)
+    suspend fun inviteUserToBoard(boardId: String, userId: String)
 
     suspend fun deleteUserFromBoard(boardMemberId: String)
 
-    fun boardMembers(boardId: String): Flow<List<BoardMember>>
+    suspend fun rollbackInvitation(invitedMemberId: String)
+
+    fun boardMembers(boardId: String): Flow<List<BoardUser>>
+
+    fun invitedUsers(boardId: String): Flow<List<BoardUser>>
 
     suspend fun updateBoardName(boardInfo: BoardInfo)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase,
         private val handleError: HandleError
     ) : BoardSettingsRemoteDataSource {
 
-        override suspend fun addUserToBoard(boardId: String, userId: String) {
+        override suspend fun inviteUserToBoard(boardId: String, userId: String) {
             try {
                 provideDatabase.database()
-                    .child("boards-members").push()
+                    .child("boards-invitations").push()
                     .setValue(BoardMemberEntity(memberId = userId, boardId = boardId))
                     .await()
             } catch (_: Exception) {
@@ -54,10 +59,42 @@ interface BoardSettingsRemoteDataSource {
             }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
-        override fun boardMembers(boardId: String): Flow<List<BoardMember>> {
+        override suspend fun rollbackInvitation(invitedMemberId: String) {
+            try {
+                provideDatabase.database()
+                    .child("boards-invitations")
+                    .child(invitedMemberId)
+                    .removeValue()
+                    .await()
+            } catch (_: Exception) {
+            }
+        }
+
+        override fun boardMembers(boardId: String): Flow<List<BoardUser>> = boardUsers(
+            boardId = boardId,
+            child = "boards-members"
+        )
+
+        override fun invitedUsers(boardId: String): Flow<List<BoardUser>> = boardUsers(
+            boardId = boardId,
+            child = "boards-invitations"
+        )
+
+        override suspend fun updateBoardName(boardInfo: BoardInfo) {
+            try {
+                provideDatabase.database()
+                    .child("boards")
+                    .child(boardInfo.id)
+                    .setValue(boardInfo)
+                    .await()
+            } catch (e: Exception) {
+                handleError.handle(e)
+            }
+        }
+
+        private fun boardUsers(boardId: String, child: String): Flow<List<BoardUser>> {
             val membersQuery = provideDatabase.database()
-                .child("boards-members")
+                .child(child)
                 .orderByChild("boardId")
                 .equalTo(boardId)
 
@@ -79,7 +116,7 @@ interface BoardSettingsRemoteDataSource {
                                     val userProfileEntity =
                                         memberSnapshot.getValue<UserProfileEntity>()
                                     with(userProfileEntity ?: return@mapNotNull null) {
-                                        BoardMember(
+                                        BoardUser(
                                             boardMemberId = pair.first,
                                             userId = pair.second,
                                             email = email,
@@ -88,22 +125,10 @@ interface BoardSettingsRemoteDataSource {
                                     }
                                 }
                         }
-                    ) { users: Array<BoardMember> -> users.toList() }
+                    ) { users: Array<BoardUser> -> users.toList() }
                 }
 
             }.catch { e -> throw IllegalStateException(e.message) }
-        }
-
-        override suspend fun updateBoardName(boardInfo: BoardInfo) {
-            try {
-                provideDatabase.database()
-                    .child("boards")
-                    .child(boardInfo.id)
-                    .setValue(boardInfo)
-                    .await()
-            } catch (e: Exception) {
-                handleError.handle(e)
-            }
         }
     }
 }

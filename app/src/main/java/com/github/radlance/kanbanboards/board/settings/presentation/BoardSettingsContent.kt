@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HowToReg
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.MarkEmailRead
 import androidx.compose.material.icons.filled.PersonAddAlt1
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Button
@@ -55,7 +56,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.common.domain.User
 import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 
@@ -64,7 +65,8 @@ fun BoardSettingsContent(
     navigateUp: () -> Unit,
     boardInfo: BoardInfo,
     users: List<User>,
-    members: List<BoardMember>,
+    members: List<BoardUser>,
+    invited: List<BoardUser>,
     boardSettingsAction: BoardSettingsAction,
     modifier: Modifier = Modifier
 ) {
@@ -112,13 +114,27 @@ fun BoardSettingsContent(
             modifier = Modifier.fillMaxWidth()
         )
 
+        val dropDownOptions = remember {
+            listOf(R.string.all, R.string.members, R.string.invitations)
+        }
+
+        var expanded by rememberSaveable { mutableStateOf(false) }
+        var selectedOptionIndex by rememberSaveable { mutableIntStateOf(0) }
+
         val empty = searchFieldValue.isEmpty()
-        val displayedUsers = if (empty) {
-            members
+        val displayedUsers = (
+                if (empty) {
+            when (selectedOptionIndex) {
+                0 -> (members + invited)
+                1 -> members
+                else -> invited
+            }
         } else users.map { user ->
             with(user) {
-                BoardMember(
-                    boardMemberId = members.find { it.email == email }?.boardMemberId ?: "",
+                BoardUser(
+                    boardMemberId = (members + invited).find {
+                        it.email == email
+                    }?.boardMemberId ?: "",
                     userId = id,
                     email = email,
                     name = name
@@ -126,13 +142,7 @@ fun BoardSettingsContent(
             }
         }.filter {
             it.email.contains(searchFieldValue, ignoreCase = true)
-        }
-
-        val dropDownOptions = remember {
-            listOf(R.string.all, R.string.members, R.string.invitations)
-        }
-        var expanded by rememberSaveable { mutableStateOf(false) }
-        var selectedOptionIndex by rememberSaveable { mutableIntStateOf(0) }
+        }).sortedBy { it.email }
 
         when {
             !empty -> {
@@ -238,21 +248,34 @@ fun BoardSettingsContent(
                             Spacer(Modifier.height(4.dp))
                         }
                     }
-                    val contains = members.map { it.email }.contains(user.email)
+                    val hasInvitation = invited.map { it.email }.contains(user.email)
+                    val isMember = members.map { it.email }.contains(user.email)
+
                     IconButton(
                         onClick = {
-                            if (!contains) {
-                                boardSettingsAction.addUserToBoard(
+                            when {
+                                isMember -> {
+                                    boardSettingsAction.deleteUserFromBoard(user.boardMemberId)
+                                }
+
+                                hasInvitation -> {
+                                    boardSettingsAction.rollbackInvitation(user.boardMemberId)
+                                }
+
+                                else -> boardSettingsAction.inviteUserToBoard(
                                     boardId = boardInfo.id, userId = user.userId
                                 )
-                            } else {
-                                boardSettingsAction.deleteUserFromBoard(user.boardMemberId)
                             }
                         }
                     ) {
-                        val icon = if (contains) {
-                            Icons.Default.HowToReg
-                        } else Icons.Default.PersonAddAlt1
+                        val icon = when {
+
+                            hasInvitation -> Icons.Default.MarkEmailRead
+
+                            isMember -> Icons.Default.HowToReg
+
+                            else -> Icons.Default.PersonAddAlt1
+                        }
 
                         Icon(
                             imageVector = icon,

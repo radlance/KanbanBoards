@@ -29,21 +29,27 @@ class RemoteBoardSettingsRepository @Inject constructor(
     override fun boardSettings(boardId: String): Flow<BoardSettingsResult> {
         return combine(
             usersRemoteDataSource.users(),
-            boardSettingsRemoteDataSource.boardMembers(boardId)
-        ) { users, members ->
+            boardSettingsRemoteDataSource.boardMembers(boardId),
+            boardSettingsRemoteDataSource.invitedUsers(boardId)
+        ) { users, members, invited ->
             BoardSettingsResult.Success(
                 users = users,
-                members = members
+                members = members,
+                invited = invited
             )
         }.catch { e -> BoardSettingsResult.Error(e.message!!) }
     }
 
-    override suspend fun addUserToBoard(boardId: String, userId: String) {
-        boardSettingsRemoteDataSource.addUserToBoard(boardId, userId)
+    override suspend fun inviteUserToBoard(boardId: String, userId: String) {
+        boardSettingsRemoteDataSource.inviteUserToBoard(boardId, userId)
     }
 
     override suspend fun deleteUserFromBoard(boardMemberId: String) {
         boardSettingsRemoteDataSource.deleteUserFromBoard(boardMemberId)
+    }
+
+    override suspend fun rollbackInvitation(invitedMemberId: String) {
+        boardSettingsRemoteDataSource.rollbackInvitation(invitedMemberId)
     }
 
     override suspend fun updateBoardName(boardInfo: BoardInfo): UpdateBoardNameResult {

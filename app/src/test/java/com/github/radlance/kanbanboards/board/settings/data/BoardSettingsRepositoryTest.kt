@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.board.settings.data
 
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.settings.domain.BoardMember
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
 import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
@@ -48,7 +48,7 @@ class BoardSettingsRepositoryTest : BaseTest() {
 
     @Test
     fun test_add_user_to_board() = runBlocking {
-        repository.addUserToBoard(boardId = "boardId", userId = "userId")
+        repository.inviteUserToBoard(boardId = "boardId", userId = "userId")
         assertEquals(1, remoteDataSource.addUserToBoardCalledList.size)
         assertEquals(Pair("boardId", "userId"), remoteDataSource.addUserToBoardCalledList[0])
     }
@@ -69,8 +69,8 @@ class BoardSettingsRepositoryTest : BaseTest() {
         )
 
         remoteDataSource.makeExpectedBoardMembers(
-            boardMembers = listOf(
-                BoardMember(
+            boardUsers = listOf(
+                BoardUser(
                     boardMemberId = "123",
                     userId = "321",
                     email = "email@test.com",
@@ -85,7 +85,7 @@ class BoardSettingsRepositoryTest : BaseTest() {
                     User(id = "user id", email = "test@email.com", name = "user name")
                 ),
                 members = listOf(
-                    BoardMember(
+                    BoardUser(
                         boardMemberId = "123",
                         userId = "321",
                         email = "email@test.com",
@@ -161,14 +161,14 @@ class BoardSettingsRepositoryTest : BaseTest() {
         val deleteUserFromBoardCalledList = mutableListOf<String>()
 
         val boardMembersCalledList = mutableListOf<String>()
-        private val boardMembers = MutableStateFlow<List<BoardMember>>(emptyList())
+        private val boardMembers = MutableStateFlow<List<BoardUser>>(emptyList())
         private var boardMembersException: Exception? = null
 
         val updateBoardNameCalledList = mutableListOf<BoardInfo>()
         private var updateBoardNameException: Exception? = null
 
-        fun makeExpectedBoardMembers(boardMembers: List<BoardMember>) {
-            this.boardMembers.value = boardMembers
+        fun makeExpectedBoardMembers(boardUsers: List<BoardUser>) {
+            this.boardMembers.value = boardUsers
         }
 
         fun makeExpectedBoardMembersException(exception: Exception) {
@@ -179,7 +179,7 @@ class BoardSettingsRepositoryTest : BaseTest() {
             updateBoardNameException = exception
         }
 
-        override suspend fun addUserToBoard(boardId: String, userId: String) {
+        override suspend fun inviteUserToBoard(boardId: String, userId: String) {
             addUserToBoardCalledList.add(Pair(boardId, userId))
         }
 
@@ -187,7 +187,7 @@ class BoardSettingsRepositoryTest : BaseTest() {
             deleteUserFromBoardCalledList.add(boardMemberId)
         }
 
-        override fun boardMembers(boardId: String): Flow<List<BoardMember>> = flow {
+        override fun boardMembers(boardId: String): Flow<List<BoardUser>> = flow {
             boardMembersCalledList.add(boardId)
             boardMembersException?.let { throw it }
             emitAll(boardMembers)

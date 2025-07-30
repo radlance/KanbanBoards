@@ -8,21 +8,22 @@ interface BoardSettingsResult {
 
     interface Mapper<T : Any> {
 
-        fun mapSuccess(users: List<User>, members: List<BoardMember>): T
+        fun mapSuccess(users: List<User>, members: List<BoardUser>, invited: List<BoardUser>): T
 
         fun mapError(message: String): T
     }
 
     data class Success(
         private val users: List<User>,
-        private val members: List<BoardMember>
+        private val members: List<BoardUser>,
+        private val invited: List<BoardUser>
     ) : BoardSettingsResult {
 
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapSuccess(users, members)
+        override fun <T : Any> map(mapper: Mapper<T>) = mapper.mapSuccess(users, members, invited)
     }
 
     data class Error(private val message: String) : BoardSettingsResult {
 
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapError(message)
+        override fun <T : Any> map(mapper: Mapper<T>) = mapper.mapError(message)
     }
 }

@@ -27,6 +27,8 @@ class BoardSettingsViewModel @Inject constructor(
 
     override val updateBoardNameUiState = handleBoardSettings.updateBoardNameUiState
 
+    val boardUiState = handleBoardSettings.settingsBoardUiState
+
     override fun deleteBoard(boardId: String) {
         handle(background = { boardSettingsRepository.deleteBoard(boardId) }, ui = {})
     }
@@ -36,8 +38,6 @@ class BoardSettingsViewModel @Inject constructor(
             currentState.copy(buttonEnabled = name.trim().length >= 3, nameErrorMessage = "")
         }
     }
-
-    val boardUiState = handleBoardSettings.settingsBoardUiState
 
     fun fetchBoard(boardInfo: BoardInfo) {
         boardSettingsRepository.board(boardInfo.id).map {
@@ -57,8 +57,12 @@ class BoardSettingsViewModel @Inject constructor(
         }.launchInViewModel()
     }
 
-    override fun addUserToBoard(boardId: String, userId: String) {
-        handle(background = { boardSettingsRepository.addUserToBoard(boardId, userId) }, ui = {})
+    override fun inviteUserToBoard(boardId: String, userId: String) {
+        handle(background = { boardSettingsRepository.inviteUserToBoard(boardId, userId) }, ui = {})
+    }
+
+    override fun rollbackInvitation(invitedMemberId: String) {
+        handle(background = { boardSettingsRepository.rollbackInvitation(invitedMemberId) }, ui = {})
     }
 
     override fun deleteUserFromBoard(boardMemberId: String) {
@@ -97,7 +101,9 @@ interface BoardSettingsAction : UpdateBoardNameAction {
 
     fun checkBoard(name: String)
 
-    fun addUserToBoard(boardId: String, userId: String)
+    fun inviteUserToBoard(boardId: String, userId: String)
+
+    fun rollbackInvitation(invitedMemberId: String)
 
     fun deleteUserFromBoard(boardMemberId: String)
 
