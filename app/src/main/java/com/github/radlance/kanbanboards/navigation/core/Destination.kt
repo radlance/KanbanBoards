@@ -48,3 +48,7 @@ data class EditTicket(val boardId: String) : Destination
 @Keep
 @Serializable
 object BoardSettings : Destination
+
+@Keep
+@Serializable
+object Invitation : Destination

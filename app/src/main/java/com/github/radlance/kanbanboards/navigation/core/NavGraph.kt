@@ -28,6 +28,8 @@ import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardsSc
 import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsScreen
 import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsViewModel
 import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
+import com.github.radlance.kanbanboards.invitation.presentation.InvitationScreen
+import com.github.radlance.kanbanboards.invitation.presentation.InvitationViewModel
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketViewModel
@@ -46,7 +48,8 @@ fun NavGraph(
     createBoardViewModel: CreateBoardViewModel = hiltViewModel(),
     ticketInfoViewModel: TicketInfoViewModel = hiltViewModel(),
     editTicketViewModel: EditTicketViewModel = hiltViewModel(),
-    boardSettingsViewModel: BoardSettingsViewModel = hiltViewModel()
+    boardSettingsViewModel: BoardSettingsViewModel = hiltViewModel(),
+    invitationViewModel: InvitationViewModel = hiltViewModel()
 ) {
 
     val authorized by navigationViewModel.authorized.collectAsStateWithLifecycle()
@@ -108,7 +111,9 @@ fun NavGraph(
                 navigateToBoard = {
                     boardViewModel.fetchBoard(it)
                     navHostController.navigate(Board)
-                }
+                },
+                navigateToInvitations = { navHostController.navigate(Invitation) },
+                invitationCountAction = invitationViewModel
             )
         }
 
@@ -201,6 +206,13 @@ fun NavGraph(
                     navHostController.popBackStack(Boards, inclusive = false)
                 },
                 viewModel = boardSettingsViewModel
+            )
+        }
+
+        composable<Invitation> {
+            InvitationScreen(
+                navigateUp = navHostController::navigateUp,
+                viewModel = invitationViewModel
             )
         }
     }

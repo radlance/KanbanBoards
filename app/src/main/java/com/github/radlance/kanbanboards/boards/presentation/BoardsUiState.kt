@@ -12,16 +12,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
+import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
 interface BoardsUiState {
 
@@ -68,13 +67,7 @@ interface BoardsUiState {
             navigateToBoard: (BoardInfo) -> Unit
         ) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                )
+                ErrorMessage(message)
             }
         }
     }
