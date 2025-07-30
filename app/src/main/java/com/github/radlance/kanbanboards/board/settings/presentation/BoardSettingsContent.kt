@@ -1,36 +1,57 @@
 package com.github.radlance.kanbanboards.board.settings.presentation
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HowToReg
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.PersonAddAlt1
+import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
@@ -76,7 +97,9 @@ fun BoardSettingsContent(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(Modifier.height(16.dp))
+        val verticalPadding = 16.dp
+
+        Spacer(Modifier.height(verticalPadding))
 
         OutlinedTextField(
             value = searchFieldValue,
@@ -105,19 +128,94 @@ fun BoardSettingsContent(
             it.email.contains(searchFieldValue, ignoreCase = true)
         }
 
-        val text = when {
-            !empty -> R.string.found_users
-            members.isEmpty() -> R.string.there_are_no_board_members_yet
-            else -> R.string.board_members
+        val dropDownOptions = remember {
+            listOf(R.string.all, R.string.members, R.string.invitations)
         }
+        var expanded by rememberSaveable { mutableStateOf(false) }
+        var selectedOptionIndex by rememberSaveable { mutableIntStateOf(0) }
 
-        Crossfade(text) {
-            Text(
-                text = stringResource(it),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp)
-            )
+        when {
+            !empty -> {
+                Text(
+                    text = stringResource(R.string.found_users),
+                    modifier = Modifier
+                        .padding(vertical = verticalPadding)
+                        .align(Alignment.Start),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            else -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = verticalPadding)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) { expanded = !expanded }
+                ) {
+
+                    Row {
+                        Text(
+                            text = stringResource(dropDownOptions[selectedOptionIndex]),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = stringResource(R.string.show_dropdown_options)
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.widthIn(min = 220.dp)
+                    ) {
+                        dropDownOptions.forEachIndexed { index, option ->
+                            DropdownMenuItem(
+                                text = { Text(text = stringResource(option), fontSize = 16.sp) },
+                                trailingIcon = {
+                                    AnimatedVisibility(
+                                        visible = selectedOptionIndex == index,
+                                        enter = fadeIn(),
+                                        exit = fadeOut()
+                                    ) {
+                                        if (selectedOptionIndex == index) {
+                                            Box(
+                                                contentAlignment = Alignment.Center,
+                                                modifier = Modifier
+                                                    .size(22.dp)
+                                                    .clip(CircleShape)
+                                                    .background(MaterialTheme.colorScheme.primary)
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Rounded.Done,
+                                                    contentDescription = stringResource(
+                                                        R.string.selected_dropdown_option
+                                                    ),
+                                                    tint = MenuDefaults.containerColor,
+                                                    modifier = Modifier
+                                                        .fillMaxSize()
+                                                        .padding(3.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                },
+                                onClick = {
+                                    selectedOptionIndex = index
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         LazyColumn(modifier = Modifier.weight(1f)) {

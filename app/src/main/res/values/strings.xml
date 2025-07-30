@@ -83,4 +83,9 @@
     <string name="delete_profile">Delete profile</string>
     <string name="are_you_sure_you_want_to_delete_your_profile">Are you sure you want to delete your profile?</string>
     <string name="sign_in_again_to_delete_your_profile">Sign in again to delete your profile</string>
+    <string name="selected_dropdown_option">Selected dropdown option</string>
+    <string name="show_dropdown_options">Show dropdown options</string>
+    <string name="all">All</string>
+    <string name="members">Members</string>
+    <string name="invitations">Invitations</string>
 </resources>
