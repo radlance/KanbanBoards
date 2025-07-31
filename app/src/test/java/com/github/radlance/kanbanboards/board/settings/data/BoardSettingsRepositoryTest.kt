@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.board.settings.data
 
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.BaseTest
@@ -18,6 +18,9 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class BoardSettingsRepositoryTest : BaseTest() {
 
@@ -48,9 +51,20 @@ class BoardSettingsRepositoryTest : BaseTest() {
 
     @Test
     fun test_add_user_to_board() = runBlocking {
-        repository.inviteUserToBoard(boardId = "boardId", userId = "userId")
+        repository.inviteUserToBoard(
+            boardId = "boardId",
+            userId = "userId",
+            sendDate = ZonedDateTime.of(LocalDateTime.of(2025, 1, 1, 1, 1), ZoneId.of("UTC"))
+        )
         assertEquals(1, remoteDataSource.addUserToBoardCalledList.size)
-        assertEquals(Pair("boardId", "userId"), remoteDataSource.addUserToBoardCalledList[0])
+        assertEquals(
+            Triple(
+                "boardId",
+                "userId",
+                ZonedDateTime.of(LocalDateTime.of(2025, 1, 1, 1, 1), ZoneId.of("UTC"))
+            ),
+            remoteDataSource.addUserToBoardCalledList[0]
+        )
     }
 
     @Test
@@ -79,6 +93,17 @@ class BoardSettingsRepositoryTest : BaseTest() {
             )
         )
 
+        remoteDataSource.makeExpectedInvitedUsers(
+            invitedUsers = listOf(
+                BoardUser(
+                    id = "456",
+                    userId = "654",
+                    email = "email2@gmail.com",
+                    name = "name2"
+                )
+            )
+        )
+
         assertEquals(
             BoardSettingsResult.Success(
                 users = listOf(
@@ -90,6 +115,14 @@ class BoardSettingsRepositoryTest : BaseTest() {
                         userId = "321",
                         email = "email@test.com",
                         name = "name"
+                    )
+                ),
+                invited = listOf(
+                    BoardUser(
+                        id = "456",
+                        userId = "654",
+                        email = "email2@gmail.com",
+                        name = "name2"
                     )
                 )
             ),
@@ -155,9 +188,16 @@ class BoardSettingsRepositoryTest : BaseTest() {
         assertEquals("last board", boardRepository.deleteBoardCalledList[0])
     }
 
+    @Test
+    fun test_rollback_invitation() = runBlocking {
+        repository.rollbackInvitation(invitedMemberId = "test member id")
+        assertEquals(1, remoteDataSource.rollbackInvitationCalledList.size)
+        assertEquals("test member id", remoteDataSource.rollbackInvitationCalledList[0])
+    }
+
     private class TestBoardSettingsRemoteDataSource : BoardSettingsRemoteDataSource {
 
-        val addUserToBoardCalledList = mutableListOf<Pair<String, String>>()
+        val addUserToBoardCalledList = mutableListOf<Triple<String, String, ZonedDateTime>>()
         val deleteUserFromBoardCalledList = mutableListOf<String>()
 
         val boardMembersCalledList = mutableListOf<String>()
@@ -166,6 +206,11 @@ class BoardSettingsRepositoryTest : BaseTest() {
 
         val updateBoardNameCalledList = mutableListOf<BoardInfo>()
         private var updateBoardNameException: Exception? = null
+
+        val rollbackInvitationCalledList = mutableListOf<String>()
+
+        private val invitedUsersCalledList = mutableListOf<String>()
+        private val invitedUsers = MutableStateFlow<List<BoardUser>>(emptyList())
 
         fun makeExpectedBoardMembers(boardUsers: List<BoardUser>) {
             this.boardMembers.value = boardUsers
@@ -179,18 +224,35 @@ class BoardSettingsRepositoryTest : BaseTest() {
             updateBoardNameException = exception
         }
 
-        override suspend fun inviteUserToBoard(boardId: String, userId: String) {
-            addUserToBoardCalledList.add(Pair(boardId, userId))
+        fun makeExpectedInvitedUsers(invitedUsers: List<BoardUser>) {
+            this.invitedUsers.value = invitedUsers
+        }
+
+        override suspend fun inviteUserToBoard(
+            boardId: String,
+            userId: String,
+            sendDate: ZonedDateTime
+        ) {
+            addUserToBoardCalledList.add(Triple(boardId, userId, sendDate))
         }
 
         override suspend fun deleteUserFromBoard(boardMemberId: String) {
             deleteUserFromBoardCalledList.add(boardMemberId)
         }
 
+        override suspend fun rollbackInvitation(invitedMemberId: String) {
+            rollbackInvitationCalledList.add(invitedMemberId)
+        }
+
         override fun boardMembers(boardId: String): Flow<List<BoardUser>> = flow {
             boardMembersCalledList.add(boardId)
             boardMembersException?.let { throw it }
             emitAll(boardMembers)
+        }
+
+        override fun invitedUsers(boardId: String): Flow<List<BoardUser>> = flow {
+            invitedUsersCalledList.add(boardId)
+            emitAll(invitedUsers)
         }
 
         override suspend fun updateBoardName(boardInfo: BoardInfo) {

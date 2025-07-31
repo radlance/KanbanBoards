@@ -34,6 +34,14 @@ class HandleBoardSettingsTest {
                         email = "email@test.com",
                         name = "name2"
                     )
+                ),
+                invited = listOf(
+                    BoardUser(
+                        id = "invitedMemberId1",
+                        userId = "invitedId1",
+                        email = "invited@gmail.com",
+                        name = "invited"
+                    )
                 )
             )
         )
@@ -46,6 +54,14 @@ class HandleBoardSettingsTest {
                         userId = "userId",
                         email = "email@test.com",
                         name = "name2"
+                    )
+                ),
+                invited = listOf(
+                    BoardUser(
+                        id = "invitedMemberId1",
+                        userId = "invitedId1",
+                        email = "invited@gmail.com",
+                        name = "invited"
                     )
                 )
             ),
@@ -84,5 +100,27 @@ class HandleBoardSettingsTest {
         )
         handle.saveSettingsBoardUiState(SettingsBoardUiState.NotExists)
         assertEquals(SettingsBoardUiState.NotExists, handle.settingsBoardUiState.value)
+    }
+
+    @Test
+    fun test_settings_field_state_initial_value() {
+        assertEquals(SettingsFieldState(), handle.settingsFieldState.value)
+    }
+
+    @Test
+    fun test_board_name_state() {
+        assertEquals(UpdateBoardNameUiState.Initial, handle.updateBoardNameUiState.value)
+        handle.saveUpdateBoardNameUiState(UpdateBoardNameUiState.Success)
+        assertEquals(UpdateBoardNameUiState.Success, handle.updateBoardNameUiState.value)
+        handle.saveUpdateBoardNameUiState(UpdateBoardNameUiState.Error("loading error"))
+        assertEquals(
+            UpdateBoardNameUiState.Error("loading error"),
+            handle.updateBoardNameUiState.value
+        )
+        handle.saveUpdateBoardNameUiState(UpdateBoardNameUiState.AlreadyExists("already exists"))
+        assertEquals(
+            UpdateBoardNameUiState.AlreadyExists("already exists"),
+            handle.updateBoardNameUiState.value
+        )
     }
 }

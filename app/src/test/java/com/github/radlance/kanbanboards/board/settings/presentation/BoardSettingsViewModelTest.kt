@@ -2,9 +2,9 @@ package com.github.radlance.kanbanboards.board.settings.presentation
 
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.core.domain.BoardResult
-import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepository
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
 import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.domain.User
@@ -14,9 +14,9 @@ import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.time.ZonedDateTime
 
 class BoardSettingsViewModelTest : BaseTest() {
 
@@ -141,6 +141,14 @@ class BoardSettingsViewModelTest : BaseTest() {
                         email = "test@gmail.com",
                         name = "name2"
                     )
+                ),
+                invited = listOf(
+                    BoardUser(
+                        id = "invitedMemberId1",
+                        userId = "invitedId1",
+                        email = "invited@gmail.com",
+                        name = "invited"
+                    )
                 )
             )
         )
@@ -153,6 +161,14 @@ class BoardSettingsViewModelTest : BaseTest() {
                         userId = "userId2",
                         email = "test@gmail.com",
                         name = "name2"
+                    )
+                ),
+                invited = listOf(
+                    BoardUser(
+                        id = "invitedMemberId1",
+                        userId = "invitedId1",
+                        email = "invited@gmail.com",
+                        name = "invited"
                     )
                 )
             ), viewModel.boardSettingsUiState.value
@@ -168,6 +184,14 @@ class BoardSettingsViewModelTest : BaseTest() {
                         userId = "userId2",
                         email = "test@gmail.com",
                         name = "name2"
+                    )
+                ),
+                invited = listOf(
+                    BoardUser(
+                        id = "invitedMemberId1",
+                        userId = "invitedId1",
+                        email = "invited@gmail.com",
+                        name = "invited"
                     )
                 )
             ),
@@ -256,6 +280,29 @@ class BoardSettingsViewModelTest : BaseTest() {
         assertEquals(4, handle.saveUpdateBoardNameUiStateCalledList.size)
         assertEquals(UpdateBoardNameUiState.Loading, handle.saveUpdateBoardNameUiStateCalledList[2])
         assertEquals(UpdateBoardNameUiState.Success, handle.saveUpdateBoardNameUiStateCalledList[3])
+
+        repository.makeExpectedUpdateBoardNameResult(UpdateBoardNameResult.AlreadyExists("already exists"))
+        viewModel.updateBoardName(
+            BoardInfo(
+                id = "id3",
+                name = "name3",
+                isMyBoard = false
+            )
+        )
+        assertEquals(UpdateBoardNameUiState.AlreadyExists("already exists"), viewModel.updateBoardNameUiState.value)
+        assertEquals(3, repository.updateBoardNameCalledList.size)
+        assertEquals(
+            BoardInfo(
+                id = "id3",
+                name = "name3",
+                isMyBoard = false
+            ),
+            repository.updateBoardNameCalledList[2]
+        )
+        assertEquals(1, handle.updateBoardNameUiStateCalledCount)
+        assertEquals(6, handle.saveUpdateBoardNameUiStateCalledList.size)
+        assertEquals(UpdateBoardNameUiState.Loading, handle.saveUpdateBoardNameUiStateCalledList[4])
+        assertEquals(UpdateBoardNameUiState.AlreadyExists("already exists"), handle.saveUpdateBoardNameUiStateCalledList[5])
     }
 
     @Test
@@ -278,12 +325,19 @@ class BoardSettingsViewModelTest : BaseTest() {
 
     @Test
     fun test_set_board_name_error_message() {
-        Assert.assertEquals("", viewModel.settingsFieldState.value.nameErrorMessage)
+        assertEquals("", viewModel.settingsFieldState.value.nameErrorMessage)
         viewModel.setBoardNameErrorMessage(message = "test message")
-        Assert.assertEquals(
+        assertEquals(
             "test message",
             viewModel.settingsFieldState.value.nameErrorMessage
         )
+    }
+
+    @Test
+    fun test_rollback_invitation() {
+        viewModel.rollbackInvitation(invitedMemberId = "test invited member id")
+        assertEquals(1, repository.rollbackInvitationCalledList.size)
+        assertEquals("test invited member id", repository.rollbackInvitationCalledList[0])
     }
 
     private class TestBoardSettingsRepository : BoardSettingsRepository {
@@ -305,6 +359,8 @@ class BoardSettingsViewModelTest : BaseTest() {
         val updateBoardNameCalledList = mutableListOf<BoardInfo>()
 
         val deleteBoardCalledList = mutableListOf<String>()
+
+        val rollbackInvitationCalledList = mutableListOf<String>()
 
         fun makeExpectedBoardResult(boardResult: BoardResult) {
             this.boardResult.value = boardResult
@@ -328,12 +384,20 @@ class BoardSettingsViewModelTest : BaseTest() {
             return boardSettingsResult
         }
 
-        override suspend fun inviteUserToBoard(boardId: String, userId: String) {
+        override suspend fun inviteUserToBoard(
+            boardId: String,
+            userId: String,
+            sendDate: ZonedDateTime
+        ) {
             addUserToBoardCalledList.add(Pair(boardId, userId))
         }
 
         override suspend fun deleteUserFromBoard(boardMemberId: String) {
             deleteUserFromBoardCalledList.add(boardMemberId)
+        }
+
+        override suspend fun rollbackInvitation(invitedMemberId: String) {
+            rollbackInvitationCalledList.add(invitedMemberId)
         }
 
         override suspend fun updateBoardName(boardInfo: BoardInfo): UpdateBoardNameResult {
