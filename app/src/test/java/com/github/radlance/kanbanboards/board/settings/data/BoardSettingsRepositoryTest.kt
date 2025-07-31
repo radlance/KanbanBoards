@@ -71,7 +71,7 @@ class BoardSettingsRepositoryTest : BaseTest() {
         remoteDataSource.makeExpectedBoardMembers(
             boardUsers = listOf(
                 BoardUser(
-                    boardMemberId = "123",
+                    id = "123",
                     userId = "321",
                     email = "email@test.com",
                     name = "name"
@@ -86,7 +86,7 @@ class BoardSettingsRepositoryTest : BaseTest() {
                 ),
                 members = listOf(
                     BoardUser(
-                        boardMemberId = "123",
+                        id = "123",
                         userId = "321",
                         email = "email@test.com",
                         name = "name"

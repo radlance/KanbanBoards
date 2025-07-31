@@ -132,9 +132,9 @@ fun BoardSettingsContent(
         } else users.map { user ->
             with(user) {
                 BoardUser(
-                    boardMemberId = (members + invited).find {
+                    id = (members + invited).find {
                         it.email == email
-                    }?.boardMemberId ?: "",
+                    }?.id ?: "",
                     userId = id,
                     email = email,
                     name = name
@@ -229,7 +229,7 @@ fun BoardSettingsContent(
         }
 
         LazyColumn(modifier = Modifier.weight(1f)) {
-            items(items = displayedUsers, key = { it.email }) { user ->
+            items(items = displayedUsers, key = { it.email + it.id }) { user ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.animateItem()
@@ -255,11 +255,11 @@ fun BoardSettingsContent(
                         onClick = {
                             when {
                                 isMember -> {
-                                    boardSettingsAction.deleteUserFromBoard(user.boardMemberId)
+                                    boardSettingsAction.deleteUserFromBoard(user.id)
                                 }
 
                                 hasInvitation -> {
-                                    boardSettingsAction.rollbackInvitation(user.boardMemberId)
+                                    boardSettingsAction.rollbackInvitation(user.id)
                                 }
 
                                 else -> boardSettingsAction.inviteUserToBoard(
@@ -270,9 +270,9 @@ fun BoardSettingsContent(
                     ) {
                         val icon = when {
 
-                            hasInvitation -> Icons.Default.MarkEmailRead
-
                             isMember -> Icons.Default.HowToReg
+
+                            hasInvitation -> Icons.Default.MarkEmailRead
 
                             else -> Icons.Default.PersonAddAlt1
                         }

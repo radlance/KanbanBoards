@@ -136,7 +136,7 @@ class BoardSettingsViewModelTest : BaseTest() {
                 users = listOf(User(id = "userId1", email = "email@test.com", name = "name1")),
                 members = listOf(
                     BoardUser(
-                        boardMemberId = "boardMemberId1",
+                        id = "boardMemberId1",
                         userId = "userId2",
                         email = "test@gmail.com",
                         name = "name2"
@@ -149,7 +149,7 @@ class BoardSettingsViewModelTest : BaseTest() {
                 users = listOf(User(id = "userId1", email = "email@test.com", name = "name1")),
                 members = listOf(
                     BoardUser(
-                        boardMemberId = "boardMemberId1",
+                        id = "boardMemberId1",
                         userId = "userId2",
                         email = "test@gmail.com",
                         name = "name2"
@@ -164,7 +164,7 @@ class BoardSettingsViewModelTest : BaseTest() {
                 users = listOf(User(id = "userId1", email = "email@test.com", name = "name1")),
                 members = listOf(
                     BoardUser(
-                        boardMemberId = "boardMemberId1",
+                        id = "boardMemberId1",
                         userId = "userId2",
                         email = "test@gmail.com",
                         name = "name2"

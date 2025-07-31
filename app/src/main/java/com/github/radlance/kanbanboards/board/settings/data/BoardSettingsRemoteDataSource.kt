@@ -117,7 +117,7 @@ interface BoardSettingsRemoteDataSource {
                                         memberSnapshot.getValue<UserProfileEntity>()
                                     with(userProfileEntity ?: return@mapNotNull null) {
                                         BoardUser(
-                                            boardMemberId = pair.first,
+                                            id = pair.first,
                                             userId = pair.second,
                                             email = email,
                                             name = name ?: ""

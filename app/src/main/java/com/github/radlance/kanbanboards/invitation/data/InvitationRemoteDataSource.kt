@@ -83,14 +83,14 @@ interface InvitationRemoteDataSource {
             val currentUser = Firebase.auth.currentUser!!
 
             provideDatabase.database()
-                .child("boards-invitations")
-                .child(invitationId)
-                .removeValue()
+                .child("boards-members").push()
+                .setValue(BoardMemberEntity(memberId = currentUser.uid, boardId = boardId))
                 .await()
 
             provideDatabase.database()
-                .child("boards-members").push()
-                .setValue(BoardMemberEntity(memberId = currentUser.uid, boardId = boardId))
+                .child("boards-invitations")
+                .child(invitationId)
+                .removeValue()
                 .await()
         }
 

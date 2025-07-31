@@ -29,7 +29,7 @@ class HandleBoardSettingsTest {
                 users = listOf(User(id = "id", email = "test@email.com", name = "name")),
                 members = listOf(
                     BoardUser(
-                        boardMemberId = "boardMemberId",
+                        id = "boardMemberId",
                         userId = "userId",
                         email = "email@test.com",
                         name = "name2"
@@ -42,7 +42,7 @@ class HandleBoardSettingsTest {
                 users = listOf(User(id = "id", email = "test@email.com", name = "name")),
                 members = listOf(
                     BoardUser(
-                        boardMemberId = "boardMemberId",
+                        id = "boardMemberId",
                         userId = "userId",
                         email = "email@test.com",
                         name = "name2"
