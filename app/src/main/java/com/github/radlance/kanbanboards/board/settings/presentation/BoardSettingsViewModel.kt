@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,7 +59,12 @@ class BoardSettingsViewModel @Inject constructor(
     }
 
     override fun inviteUserToBoard(boardId: String, userId: String) {
-        handle(background = { boardSettingsRepository.inviteUserToBoard(boardId, userId) }, ui = {})
+        handle(
+            background = {
+                boardSettingsRepository.inviteUserToBoard(boardId, userId, ZonedDateTime.now())
+            },
+            ui = {}
+        )
     }
 
     override fun rollbackInvitation(invitedMemberId: String) {

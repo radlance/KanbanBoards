@@ -6,6 +6,7 @@ import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
+import com.github.radlance.kanbanboards.invitation.data.InvitationEntity
 import com.google.firebase.database.getValue
 import com.google.firebase.database.snapshots
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,11 +17,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.tasks.await
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 interface BoardSettingsRemoteDataSource {
 
-    suspend fun inviteUserToBoard(boardId: String, userId: String)
+    suspend fun inviteUserToBoard(boardId: String, userId: String, sendDate: ZonedDateTime)
 
     suspend fun deleteUserFromBoard(boardMemberId: String)
 
@@ -38,11 +40,21 @@ interface BoardSettingsRemoteDataSource {
         private val handleError: HandleError
     ) : BoardSettingsRemoteDataSource {
 
-        override suspend fun inviteUserToBoard(boardId: String, userId: String) {
+        override suspend fun inviteUserToBoard(
+            boardId: String,
+            userId: String,
+            sendDate: ZonedDateTime
+        ) {
             try {
                 provideDatabase.database()
                     .child("boards-invitations").push()
-                    .setValue(BoardMemberEntity(memberId = userId, boardId = boardId))
+                    .setValue(
+                        InvitationEntity(
+                            memberId = userId,
+                            boardId = boardId,
+                            sendDate = sendDate.toString()
+                        )
+                    )
                     .await()
             } catch (_: Exception) {
             }

@@ -15,7 +15,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -24,9 +26,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
 import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @Composable
 fun InvitationItem(
@@ -47,8 +53,14 @@ fun InvitationItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(12.dp)
         ) {
+            TimeAgoText(dateTime = invitation.sendDate, modifier = Modifier.align(Alignment.End)) {
+                Text(text = it, fontSize = 14.sp, modifier = Modifier.alpha(0.5f))
+            }
+
+            Spacer(Modifier.height(4.dp))
+
             Text(
                 text = buildAnnotatedString {
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -89,7 +101,8 @@ private fun InvitationItemPreview() {
                 id = "123456",
                 boardName = "board name",
                 boardId = "123456",
-                ownerEmail = "test@gmail.com"
+                ownerEmail = "test@gmail.com",
+                sendDate = ZonedDateTime.of(LocalDateTime.of(2025, 1, 1, 1, 1), ZoneId.of("UTC"))
             ),
             onAcceptClick = { _, _ -> },
             onDeclineClick = { _, _ -> },

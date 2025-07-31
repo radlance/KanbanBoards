@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class RemoteBoardSettingsRepository @Inject constructor(
@@ -40,8 +41,12 @@ class RemoteBoardSettingsRepository @Inject constructor(
         }.catch { e -> BoardSettingsResult.Error(e.message!!) }
     }
 
-    override suspend fun inviteUserToBoard(boardId: String, userId: String) {
-        boardSettingsRemoteDataSource.inviteUserToBoard(boardId, userId)
+    override suspend fun inviteUserToBoard(
+        boardId: String,
+        userId: String,
+        sendDate: ZonedDateTime
+    ) {
+        boardSettingsRemoteDataSource.inviteUserToBoard(boardId, userId, sendDate)
     }
 
     override suspend fun deleteUserFromBoard(boardMemberId: String) {

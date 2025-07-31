@@ -3,6 +3,7 @@ package com.github.radlance.kanbanboards.board.settings.domain
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.core.domain.BoardResult
 import kotlinx.coroutines.flow.Flow
+import java.time.ZonedDateTime
 
 interface BoardSettingsRepository {
 
@@ -10,7 +11,7 @@ interface BoardSettingsRepository {
 
     fun boardSettings(boardId: String): Flow<BoardSettingsResult>
 
-    suspend fun inviteUserToBoard(boardId: String, userId: String)
+    suspend fun inviteUserToBoard(boardId: String, userId: String, sendDate: ZonedDateTime)
 
     suspend fun deleteUserFromBoard(boardMemberId: String)
 

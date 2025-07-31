@@ -1,13 +1,14 @@
 package com.github.radlance.kanbanboards.board.create.data
 
 import com.github.radlance.kanbanboards.board.core.data.BoardEntity
-import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.ProvideDatabase
+import com.github.radlance.kanbanboards.invitation.data.InvitationEntity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.tasks.await
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 interface CreateBoardRemoteDataSource {
@@ -25,12 +26,18 @@ interface CreateBoardRemoteDataSource {
                 val boardsReference = provideDatabase.database().child("boards").push()
                 boardsReference.setValue(BoardEntity(name = name, owner = myUid)).await()
 
+                val sendDate = ZonedDateTime.now()
+
                 memberIds.forEach { memberId ->
                     provideDatabase.database()
                         .child("boards-invitations")
                         .push()
                         .setValue(
-                            BoardMemberEntity(memberId = memberId, boardId = boardsReference.key!!)
+                            InvitationEntity(
+                                memberId = memberId,
+                                boardId = boardsReference.key!!,
+                                sendDate = sendDate.toString()
+                            )
                         )
                         .await()
                 }

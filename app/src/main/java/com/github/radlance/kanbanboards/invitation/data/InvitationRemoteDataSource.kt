@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.tasks.await
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 interface InvitationRemoteDataSource {
@@ -42,8 +43,8 @@ interface InvitationRemoteDataSource {
 
             return invitationsQuery.snapshots.flatMapLatest { invitationsSnapshot ->
                 val boardInvitations = invitationsSnapshot.children.mapNotNull { invitationSnapshot ->
-                    invitationSnapshot.getValue<BoardMemberEntity>()?.let { entity ->
-                        entity.boardId to invitationSnapshot.key
+                    invitationSnapshot.getValue<InvitationEntity>()?.let { entity ->
+                        entity to invitationSnapshot.key
                     }
                 }
 
@@ -51,11 +52,11 @@ interface InvitationRemoteDataSource {
                     flowOf(emptyList())
                 } else {
                     combine(
-                        boardInvitations.map { (boardId, invitationId) ->
+                        boardInvitations.map { (invitationEntity, invitationId) ->
                             provideDatabase
                                 .database()
                                 .child("boards")
-                                .child(boardId)
+                                .child(invitationEntity.boardId)
                                 .snapshots.flatMapLatest { boardSnapshot ->
                                     val boardEntity = boardSnapshot.getValue<BoardEntity>()
                                     boardEntity?.let {
@@ -68,13 +69,18 @@ interface InvitationRemoteDataSource {
                                                     id = invitationId ?: return@mapNotNull null,
                                                     boardId = boardSnapshot.key ?: return@mapNotNull null,
                                                     boardName = boardEntity.name,
+                                                    sendDate = ZonedDateTime.parse(invitationEntity.sendDate),
                                                     ownerEmail = user?.email ?: return@mapNotNull null
                                                 )
                                             }
                                     } ?: flowOf(null)
                                 }.filterNotNull()
                         }
-                    ) { boards: Array<Invitation> -> boards.toList() }
+                    ) { invitations: Array<Invitation> ->
+                        invitations.sortedByDescending {
+                            it.sendDate
+                        }.toList()
+                    }
                 }
             }.catch { e -> throw IllegalStateException(e.message) }
         }
