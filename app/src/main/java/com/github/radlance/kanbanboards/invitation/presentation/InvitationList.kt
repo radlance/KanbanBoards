@@ -18,7 +18,7 @@ import java.time.ZonedDateTime
 fun InvitationList(
     invitations: List<Invitation>,
     onAcceptClick: (boardId: String, invitationId: String) -> Unit,
-    onDeclineClick: (boardId: String, invitationId: String) -> Unit,
+    onDeclineClick: (invitationId: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), modifier = modifier) {
@@ -48,7 +48,7 @@ private fun InvitationListPreview() {
                 )
             },
             onAcceptClick = { _, _ -> },
-            onDeclineClick = { _, _ -> },
+            onDeclineClick = { },
             modifier = Modifier.padding(10.dp)
         )
     }

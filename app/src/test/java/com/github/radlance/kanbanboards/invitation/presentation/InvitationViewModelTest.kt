@@ -99,7 +99,7 @@ class InvitationViewModelTest : BaseTest() {
 
     @Test
     fun test_accept_invite() {
-        viewModel.acceptInvite(boardId = "test board id", invitationId = "test invitation id")
+        viewModel.accept(boardId = "test board id", invitationId = "test invitation id")
         assertEquals(1, repository.acceptInviteCalledList.size)
         assertEquals(
             Pair("test board id", "test invitation id"),
@@ -109,10 +109,10 @@ class InvitationViewModelTest : BaseTest() {
 
     @Test
     fun test_decline_invite() {
-        viewModel.declineInvite(boardId = "board id", invitationId = "invitation id")
+        viewModel.decline(invitationId = "invitation id")
         assertEquals(1, repository.declineInviteCalledList.size)
         assertEquals(
-            Pair("board id", "invitation id"),
+            "invitation id",
             repository.declineInviteCalledList[0]
         )
     }
@@ -130,19 +130,19 @@ class InvitationViewModelTest : BaseTest() {
         var invitationsCalledCount = 0
 
         val acceptInviteCalledList = mutableListOf<Pair<String, String>>()
-        val declineInviteCalledList = mutableListOf<Pair<String, String>>()
+        val declineInviteCalledList = mutableListOf<String>()
 
         override fun invitations(): Flow<InvitationResult> {
             invitationsCalledCount++
             return invitationResult
         }
 
-        override suspend fun acceptInvite(boardId: String, invitationId: String) {
+        override suspend fun accept(boardId: String, invitationId: String) {
             acceptInviteCalledList.add(Pair(boardId, invitationId))
         }
 
-        override suspend fun declineInvite(boardId: String, invitationId: String) {
-            declineInviteCalledList.add(Pair(boardId, invitationId))
+        override suspend fun decline(invitationId: String) {
+            declineInviteCalledList.add(invitationId)
         }
     }
 }

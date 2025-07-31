@@ -23,16 +23,16 @@ class RemoteInvitationRepository @Inject constructor(
         }
     }
 
-    override suspend fun acceptInvite(boardId: String, invitationId: String) {
+    override suspend fun accept(boardId: String, invitationId: String) {
         try {
-            remoteDataSource.acceptInvite(boardId, invitationId)
+            remoteDataSource.accept(boardId, invitationId)
         } catch (_: Exception) {
         }
     }
 
-    override suspend fun declineInvite(boardId: String, invitationId: String) {
+    override suspend fun decline(invitationId: String) {
         try {
-            remoteDataSource.declineInvite(boardId, invitationId)
+            remoteDataSource.decline(invitationId)
         } catch (_: Exception) {
         }
     }

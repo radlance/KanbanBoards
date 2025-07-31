@@ -22,20 +22,20 @@ class InvitationViewModel @Inject constructor(
 
     override val invitationCount: StateFlow<InvitationCount> get() = invitationsUiState
 
-    override fun acceptInvite(boardId: String, invitationId: String) {
-        handle(background = { invitationRepository.acceptInvite(boardId, invitationId) }, ui = {})
+    override fun accept(boardId: String, invitationId: String) {
+        handle(background = { invitationRepository.accept(boardId, invitationId) }, ui = {})
     }
 
-    override fun declineInvite(boardId: String, invitationId: String) {
-        handle(background = { invitationRepository.declineInvite(boardId, invitationId) }, ui = {})
+    override fun decline(invitationId: String) {
+        handle(background = { invitationRepository.decline(invitationId) }, ui = {})
     }
 }
 
 interface InvitationAction {
 
-    fun acceptInvite(boardId: String, invitationId: String)
+    fun accept(boardId: String, invitationId: String)
 
-    fun declineInvite(boardId: String, invitationId: String)
+    fun decline(invitationId: String)
 }
 
 interface InvitationCountAction {

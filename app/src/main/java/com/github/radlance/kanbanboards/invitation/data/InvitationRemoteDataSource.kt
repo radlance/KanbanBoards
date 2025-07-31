@@ -25,9 +25,9 @@ interface InvitationRemoteDataSource {
 
     fun invitations(): Flow<List<Invitation>>
 
-    suspend fun acceptInvite(boardId: String, invitationId: String)
+    suspend fun accept(boardId: String, invitationId: String)
 
-    suspend fun declineInvite(boardId: String, invitationId: String)
+    suspend fun decline(invitationId: String)
 
     class Base @Inject constructor(
         private val provideDatabase: ProvideDatabase
@@ -85,7 +85,7 @@ interface InvitationRemoteDataSource {
             }.catch { e -> throw IllegalStateException(e.message) }
         }
 
-        override suspend fun acceptInvite(boardId: String, invitationId: String) {
+        override suspend fun accept(boardId: String, invitationId: String) {
             val currentUser = Firebase.auth.currentUser!!
 
             provideDatabase.database()
@@ -100,7 +100,7 @@ interface InvitationRemoteDataSource {
                 .await()
         }
 
-        override suspend fun declineInvite(boardId: String, invitationId: String) {
+        override suspend fun decline(invitationId: String) {
             provideDatabase.database()
                 .child("boards-invitations")
                 .child(invitationId)

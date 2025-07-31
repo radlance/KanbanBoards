@@ -37,7 +37,7 @@ import java.time.ZonedDateTime
 @Composable
 fun InvitationItem(
     onAcceptClick: (boardId: String, invitationId: String) -> Unit,
-    onDeclineClick: (boardId: String, invitationId: String) -> Unit,
+    onDeclineClick: (invitationId: String) -> Unit,
     invitation: Invitation,
     modifier: Modifier = Modifier
 ) {
@@ -81,7 +81,7 @@ fun InvitationItem(
                 Spacer(Modifier.width(8.dp))
 
                 OutlinedButton(
-                    onClick = { onDeclineClick(invitation.boardId, invitation.id) },
+                    onClick = { onDeclineClick(invitation.id) },
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = stringResource(R.string.decline))
@@ -105,7 +105,7 @@ private fun InvitationItemPreview() {
                 sendDate = ZonedDateTime.of(LocalDateTime.of(2025, 1, 1, 1, 1), ZoneId.of("UTC"))
             ),
             onAcceptClick = { _, _ -> },
-            onDeclineClick = { _, _ -> },
+            onDeclineClick = { },
             modifier = Modifier.padding(10.dp)
         )
     }

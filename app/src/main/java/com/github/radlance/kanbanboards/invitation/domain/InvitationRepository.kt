@@ -6,7 +6,7 @@ interface InvitationRepository {
 
     fun invitations(): Flow<InvitationResult>
 
-    suspend fun acceptInvite(boardId: String, invitationId: String)
+    suspend fun accept(boardId: String, invitationId: String)
 
-    suspend fun declineInvite(boardId: String, invitationId: String)
+    suspend fun decline(invitationId: String)
 }

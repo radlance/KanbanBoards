@@ -89,7 +89,7 @@ class InvitationRepositoryTest : BaseTest() {
 
     @Test
     fun test_accept_invite() = runBlocking {
-        repository.acceptInvite(boardId = "test board id", invitationId = "test invitation id")
+        repository.accept(boardId = "test board id", invitationId = "test invitation id")
         assertEquals(1, remoteDataSource.acceptInviteCalledList.size)
         assertEquals(
             Pair("test board id", "test invitation id"),
@@ -99,10 +99,10 @@ class InvitationRepositoryTest : BaseTest() {
 
     @Test
     fun test_decline_invite() = runBlocking {
-        repository.declineInvite(boardId = "board id", invitationId = "invitation id")
+        repository.decline(invitationId = "invitation id")
         assertEquals(1, remoteDataSource.declineInviteCalledList.size)
         assertEquals(
-            Pair("board id", "invitation id"),
+            "invitation id",
             remoteDataSource.declineInviteCalledList[0]
         )
     }
@@ -114,7 +114,7 @@ class InvitationRepositoryTest : BaseTest() {
         var invitationsCalledCount = 0
 
         val acceptInviteCalledList = mutableListOf<Pair<String, String>>()
-        val declineInviteCalledList = mutableListOf<Pair<String, String>>()
+        val declineInviteCalledList = mutableListOf<String>()
 
         fun makeExpectedInvitations(invitations: List<Invitation>) {
             this.invitations.value = invitations
@@ -130,12 +130,12 @@ class InvitationRepositoryTest : BaseTest() {
             emitAll(invitations)
         }
 
-        override suspend fun acceptInvite(boardId: String, invitationId: String) {
+        override suspend fun accept(boardId: String, invitationId: String) {
             acceptInviteCalledList.add(Pair(boardId, invitationId))
         }
 
-        override suspend fun declineInvite(boardId: String, invitationId: String) {
-            declineInviteCalledList.add(Pair(boardId, invitationId))
+        override suspend fun decline(invitationId: String) {
+            declineInviteCalledList.add(invitationId)
         }
     }
 }

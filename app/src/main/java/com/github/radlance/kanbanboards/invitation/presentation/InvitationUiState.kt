@@ -33,8 +33,8 @@ interface InvitationUiState : InvitationCount {
             } else {
                 InvitationList(
                     invitations = invitations,
-                    onAcceptClick = invitationAction::acceptInvite,
-                    onDeclineClick = invitationAction::declineInvite,
+                    onAcceptClick = invitationAction::accept,
+                    onDeclineClick = invitationAction::decline,
                     modifier = Modifier.weight(1f)
                 )
             }
