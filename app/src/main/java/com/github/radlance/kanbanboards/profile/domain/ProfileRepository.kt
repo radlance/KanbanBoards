@@ -8,7 +8,7 @@ interface ProfileRepository {
 
     suspend fun signOut()
 
-    fun profileProvider(): ProfileProvider
+    fun profileProvider(): com.github.radlance.api.service.ProfileProvider
 
     suspend fun deleteProfileWithGoogle(userTokenId: String): UnitResult
 

@@ -1,9 +1,6 @@
 package com.github.radlance.kanbanboards.profile.data
 
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
-import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
-import com.github.radlance.kanbanboards.service.Auth
-import com.github.radlance.kanbanboards.service.MyUser
 import javax.inject.Inject
 
 interface ProfileRemoteDataSource {
@@ -12,7 +9,7 @@ interface ProfileRemoteDataSource {
 
     fun signOut()
 
-    fun profileProvider(): ProfileProvider
+    fun profileProvider(): com.github.radlance.api.service.ProfileProvider
 
     suspend fun deleteProfileWithGoogle(userTokenId: String)
 
@@ -20,8 +17,8 @@ interface ProfileRemoteDataSource {
 
     class Base @Inject constructor(
         private val handleProfileRemoteDataSource: HandleProfileRemoteDataSource,
-        private val myUser: MyUser,
-        private val auth: Auth
+        private val myUser: com.github.radlance.api.service.MyUser,
+        private val auth: com.github.radlance.api.service.Auth
     ) : ProfileRemoteDataSource {
 
         override fun profile(): UserProfileEntity = UserProfileEntity(
@@ -32,7 +29,8 @@ interface ProfileRemoteDataSource {
             myUser.signOut()
         }
 
-        override fun profileProvider(): ProfileProvider = myUser.profileProvider
+        override fun profileProvider(): com.github.radlance.api.service.ProfileProvider =
+            myUser.profileProvider
 
         override suspend fun deleteProfileWithGoogle(userTokenId: String) {
             handleProfileRemoteDataSource.handle {

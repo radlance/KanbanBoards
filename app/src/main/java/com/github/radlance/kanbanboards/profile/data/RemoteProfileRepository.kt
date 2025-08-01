@@ -5,7 +5,6 @@ import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
-import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
 import javax.inject.Inject
 
@@ -28,7 +27,8 @@ class RemoteProfileRepository @Inject constructor(
         return remoteDataSource.signOut()
     }
 
-    override fun profileProvider(): ProfileProvider = remoteDataSource.profileProvider()
+    override fun profileProvider(): com.github.radlance.api.service.ProfileProvider =
+        remoteDataSource.profileProvider()
 
     override suspend fun deleteProfileWithGoogle(userTokenId: String): UnitResult {
         return try {

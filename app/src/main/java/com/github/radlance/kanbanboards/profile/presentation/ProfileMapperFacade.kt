@@ -3,14 +3,13 @@ package com.github.radlance.kanbanboards.profile.presentation
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
-import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
 import javax.inject.Inject
 
 interface ProfileMapperFacade {
 
     fun mapLoadProfileResult(loadProfileResult: LoadProfileResult): ProfileUiState
 
-    fun mapProfileProvider(profileProvider: ProfileProvider): ProfileProviderUi
+    fun mapProfileProvider(profileProvider: com.github.radlance.api.service.ProfileProvider): ProfileProviderUi
 
     fun mapProfileCredentialResult(credentialResult: CredentialResult): ProfileCredentialUiState
 
@@ -18,7 +17,7 @@ interface ProfileMapperFacade {
 
     class Base @Inject constructor(
         private val loadProfileMapper: LoadProfileResult.Mapper<ProfileUiState>,
-        private val profileProviderMapper: ProfileProvider.Mapper<ProfileProviderUi>,
+        private val profileProviderMapper: com.github.radlance.api.service.ProfileProvider.Mapper<ProfileProviderUi>,
         private val profileCredentialMapper: CredentialResult.Mapper<ProfileCredentialUiState>,
         private val deleteProfileMapper: UnitResult.Mapper<DeleteProfileUiState>
     ) : ProfileMapperFacade {
@@ -27,7 +26,7 @@ interface ProfileMapperFacade {
             return loadProfileResult.map(loadProfileMapper)
         }
 
-        override fun mapProfileProvider(profileProvider: ProfileProvider): ProfileProviderUi {
+        override fun mapProfileProvider(profileProvider: com.github.radlance.api.service.ProfileProvider): ProfileProviderUi {
             return profileProvider.map(profileProviderMapper)
         }
 

@@ -4,7 +4,6 @@ import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
-import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -62,11 +61,17 @@ class ProfileRepositoryTest : BaseTest() {
 
     @Test
     fun test_profile_provider() {
-        remoteDataSource.makeExpectedProfileProvider(ProfileProvider.Email)
-        assertEquals(ProfileProvider.Email, repository.profileProvider())
+        remoteDataSource.makeExpectedProfileProvider(com.github.radlance.api.service.ProfileProvider.Email)
+        assertEquals(
+            com.github.radlance.api.service.ProfileProvider.Email,
+            repository.profileProvider()
+        )
         assertEquals(1, remoteDataSource.profileProviderCalledCount)
-        remoteDataSource.makeExpectedProfileProvider(ProfileProvider.Google)
-        assertEquals(ProfileProvider.Google, repository.profileProvider())
+        remoteDataSource.makeExpectedProfileProvider(com.github.radlance.api.service.ProfileProvider.Google)
+        assertEquals(
+            com.github.radlance.api.service.ProfileProvider.Google,
+            repository.profileProvider()
+        )
         assertEquals(2, remoteDataSource.profileProviderCalledCount)
     }
 
@@ -160,14 +165,15 @@ class ProfileRepositoryTest : BaseTest() {
         var profileCalledCount = 0
         var signOutCalledCount = 0
 
-        private var profileProvider: ProfileProvider = ProfileProvider.Email
+        private var profileProvider: com.github.radlance.api.service.ProfileProvider =
+            com.github.radlance.api.service.ProfileProvider.Email
         var profileProviderCalledCount = 0
 
         fun setUserData(name: String?, email: String) {
             userProfileEntity = UserProfileEntity(email, name)
         }
 
-        fun makeExpectedProfileProvider(profileProvider: ProfileProvider) {
+        fun makeExpectedProfileProvider(profileProvider: com.github.radlance.api.service.ProfileProvider) {
             this.profileProvider = profileProvider
         }
 
@@ -192,7 +198,7 @@ class ProfileRepositoryTest : BaseTest() {
             signOutCalledCount++
         }
 
-        override fun profileProvider(): ProfileProvider {
+        override fun profileProvider(): com.github.radlance.api.service.ProfileProvider {
             profileProviderCalledCount++
             return profileProvider
         }

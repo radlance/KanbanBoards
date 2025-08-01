@@ -5,7 +5,6 @@ import com.github.radlance.kanbanboards.common.BaseTest
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
-import com.github.radlance.kanbanboards.profile.domain.ProfileProvider
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -192,7 +191,8 @@ class ProfileViewModelTest : BaseTest() {
         )
 
         var profileProviderCalledCount = 0
-        private var profileProvider: ProfileProvider = ProfileProvider.Email
+        private var profileProvider: com.github.radlance.api.service.ProfileProvider =
+            com.github.radlance.api.service.ProfileProvider.Email
 
         val deleteProfileWithGoogleCalledList = mutableListOf<String>()
 
@@ -214,7 +214,7 @@ class ProfileViewModelTest : BaseTest() {
             signOutCalledCount++
         }
 
-        override fun profileProvider(): ProfileProvider {
+        override fun profileProvider(): com.github.radlance.api.service.ProfileProvider {
             profileProviderCalledCount++
             return profileProvider
         }

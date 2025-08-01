@@ -1,11 +1,11 @@
 package com.github.radlance.kanbanboards.boards.data
 
+import com.github.radlance.api.service.MyUser
+import com.github.radlance.api.service.Service
 import com.github.radlance.kanbanboards.board.core.data.BoardEntity
 import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
-import com.github.radlance.kanbanboards.service.MyUser
-import com.github.radlance.kanbanboards.service.Service
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

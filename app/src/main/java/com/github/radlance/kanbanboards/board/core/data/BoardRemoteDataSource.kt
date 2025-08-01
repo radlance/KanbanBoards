@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.board.core.data
 
+import com.github.radlance.api.service.MyUser
+import com.github.radlance.api.service.Service
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.data.IgnoreHandle
-import com.github.radlance.kanbanboards.service.MyUser
-import com.github.radlance.kanbanboards.service.Service
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine

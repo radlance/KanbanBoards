@@ -1,11 +1,11 @@
 package com.github.radlance.kanbanboards.board.create.data
 
+import com.github.radlance.api.service.MyUser
+import com.github.radlance.api.service.Service
 import com.github.radlance.kanbanboards.board.core.data.BoardEntity
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.invitation.data.InvitationEntity
-import com.github.radlance.kanbanboards.service.MyUser
-import com.github.radlance.kanbanboards.service.Service
 import java.time.ZonedDateTime
 import javax.inject.Inject
 

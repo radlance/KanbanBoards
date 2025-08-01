@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.domain
+package com.github.radlance.api.service
 
 interface ProfileProvider {
 

@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "KanbanBoards"
 include(":app")
- 
+include(":api-service")

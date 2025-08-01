@@ -2,8 +2,6 @@ package com.github.radlance.kanbanboards.common.data
 
 import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.common.domain.User
-import com.github.radlance.kanbanboards.service.MyUser
-import com.github.radlance.kanbanboards.service.Service
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -23,8 +21,8 @@ interface UsersRemoteDataSource {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     class Base @Inject constructor(
-        private val service: Service,
-        private val myUser: MyUser
+        private val service: com.github.radlance.api.service.Service,
+        private val myUser: com.github.radlance.api.service.MyUser
     ) : UsersRemoteDataSource {
 
         override fun user(userId: String): Flow<User> = service.get(

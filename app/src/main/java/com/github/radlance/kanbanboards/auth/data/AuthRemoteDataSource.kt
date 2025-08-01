@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.auth.data
 
-import com.github.radlance.kanbanboards.service.Auth
+import com.github.radlance.api.service.Auth
 import javax.inject.Inject
 
 interface AuthRemoteDataSource {

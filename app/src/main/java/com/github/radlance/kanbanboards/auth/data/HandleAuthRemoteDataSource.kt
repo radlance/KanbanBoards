@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.auth.data
 
+import com.github.radlance.api.service.NewMyUser
+import com.github.radlance.api.service.Service
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
-import com.github.radlance.kanbanboards.service.NewMyUser
-import com.github.radlance.kanbanboards.service.Service
 import javax.inject.Inject
 
 interface HandleAuthRemoteDataSource {
