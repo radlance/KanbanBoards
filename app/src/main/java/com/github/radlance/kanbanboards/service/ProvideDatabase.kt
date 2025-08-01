@@ -4,7 +4,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.database
 
-interface ProvideDatabase {
+internal interface ProvideDatabase {
 
     fun database(): DatabaseReference
 

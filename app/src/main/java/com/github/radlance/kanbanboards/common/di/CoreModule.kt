@@ -8,7 +8,6 @@ import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.common.data.IgnoreHandle
-import com.github.radlance.kanbanboards.service.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.RemoteUsersRepository
 import com.github.radlance.kanbanboards.common.data.UsersRemoteDataSource
 import com.github.radlance.kanbanboards.common.domain.UsersRepository
@@ -16,6 +15,7 @@ import com.github.radlance.kanbanboards.common.presentation.DispatchersList
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.service.Auth
 import com.github.radlance.kanbanboards.service.MyUser
+import com.github.radlance.kanbanboards.service.ProvideDatabase
 import com.github.radlance.kanbanboards.service.Service
 import dagger.Module
 import dagger.Provides
@@ -26,7 +26,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class CoreModule {
+internal class CoreModule {
 
     @Singleton
     @Provides
@@ -61,7 +61,7 @@ class CoreModule {
     @Provides
     @Singleton
     fun provideService(provideDatabase: ProvideDatabase): Service {
-        return Service.Base(provideDatabase)
+        return Service.Base(provideDatabase.database())
     }
 
     @Singleton

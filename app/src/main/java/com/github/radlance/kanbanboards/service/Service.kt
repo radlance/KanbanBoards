@@ -76,40 +76,40 @@ interface Service {
         queryValue: String
     ): List<Snapshot>
 
-    class Base @Inject constructor(private val provideDatabase: ProvideDatabase) : Service {
+    class Base @Inject constructor(private val database: DatabaseReference) : Service {
 
         override fun post(path: String, obj: Any): Reference {
-            val reference = provideDatabase.database().child(path).push()
+            val reference = database.child(path).push()
             reference.setValue(obj)
             return Reference.Base(reference)
         }
 
         override fun post(path: String, subPath: String, obj: Any): Reference {
-            val reference = provideDatabase.database().child(path).child(subPath).push()
+            val reference = database.child(path).child(subPath).push()
             reference.setValue(obj)
             return Reference.Base(reference)
         }
 
         override fun delete(path: String, itemId: String) {
-            provideDatabase.database().child(path).child(itemId).removeValue()
+            database.child(path).child(itemId).removeValue()
         }
 
         override fun update(path: String, subPath: String, obj: Any) {
-            provideDatabase.database().child(path).child(subPath).setValue(obj)
+            database.child(path).child(subPath).setValue(obj)
         }
 
         override fun update(path: String, subPath1: String, subPath2: String, obj: Any) {
-            provideDatabase.database().child(path).child(subPath1).child(subPath2).setValue(obj)
+            database.child(path).child(subPath1).child(subPath2).setValue(obj)
         }
 
         override fun get(path: String): Flow<Snapshot> {
-            return provideDatabase.database()
+            return database
                 .child(path)
                 .snapshots.map { Snapshot.Base(it) }
         }
 
         override fun get(path: String, subPath: String): Flow<Snapshot> {
-            return provideDatabase.database()
+            return database
                 .child(path)
                 .child(subPath)
                 .snapshots.map { Snapshot.Base(it) }
@@ -120,7 +120,7 @@ interface Service {
             queryKey: String,
             queryValue: String
         ): Flow<List<Snapshot>> {
-            return provideDatabase.database()
+            return database
                 .child(path)
                 .orderByChild(queryKey)
                 .equalTo(queryValue)
@@ -132,7 +132,7 @@ interface Service {
             queryKey: String,
             queryValue: String
         ): Snapshot {
-            val snapshot = provideDatabase.database()
+            val snapshot = database
                 .child(path)
                 .orderByChild(queryKey)
                 .equalTo(queryValue)
@@ -146,7 +146,7 @@ interface Service {
             queryKey: String,
             queryValue: String
         ): List<Snapshot> {
-            return provideDatabase.database()
+            return database
                 .child(path)
                 .orderByChild(queryKey)
                 .equalTo(queryValue)
