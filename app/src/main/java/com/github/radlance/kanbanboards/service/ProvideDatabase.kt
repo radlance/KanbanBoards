@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.common.data
+package com.github.radlance.kanbanboards.service
 
 import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference

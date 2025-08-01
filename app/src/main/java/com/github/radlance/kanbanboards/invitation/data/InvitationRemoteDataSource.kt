@@ -2,13 +2,10 @@ package com.github.radlance.kanbanboards.invitation.data
 
 import com.github.radlance.kanbanboards.board.core.data.BoardEntity
 import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
-import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.google.firebase.database.getValue
-import com.google.firebase.database.snapshots
+import com.github.radlance.kanbanboards.service.MyUser
+import com.github.radlance.kanbanboards.service.Service
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,7 +14,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.tasks.await
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -25,26 +21,27 @@ interface InvitationRemoteDataSource {
 
     fun invitations(): Flow<List<Invitation>>
 
-    suspend fun accept(boardId: String, invitationId: String)
+    fun accept(boardId: String, invitationId: String)
 
-    suspend fun decline(invitationId: String)
+    fun decline(invitationId: String)
 
     class Base @Inject constructor(
-        private val provideDatabase: ProvideDatabase
+        private val service: Service,
+        private val myUser: MyUser
     ) : InvitationRemoteDataSource {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         override fun invitations(): Flow<List<Invitation>> {
-            val myUserId = Firebase.auth.currentUser!!.uid
-            val invitationsQuery = provideDatabase.database()
-                .child("boards-invitations")
-                .orderByChild("memberId")
-                .equalTo(myUserId)
+            val invitationsQuery = service.getListByQuery(
+                path = "boards-invitations",
+                queryKey = "memberId",
+                queryValue = myUser.id
+            )
 
-            return invitationsQuery.snapshots.flatMapLatest { invitationsSnapshot ->
-                val boardInvitations = invitationsSnapshot.children.mapNotNull { invitationSnapshot ->
-                    invitationSnapshot.getValue<InvitationEntity>()?.let { entity ->
-                        entity to invitationSnapshot.key
+            return invitationsQuery.flatMapLatest { invitationsSnapshot ->
+                val boardInvitations = invitationsSnapshot.mapNotNull { invitationSnapshot ->
+                    invitationSnapshot.getValue(InvitationEntity::class.java)?.let { entity ->
+                        entity to invitationSnapshot.id
                     }
                 }
 
@@ -53,28 +50,28 @@ interface InvitationRemoteDataSource {
                 } else {
                     combine(
                         boardInvitations.map { (invitationEntity, invitationId) ->
-                            provideDatabase
-                                .database()
-                                .child("boards")
-                                .child(invitationEntity.boardId)
-                                .snapshots.flatMapLatest { boardSnapshot ->
-                                    val boardEntity = boardSnapshot.getValue<BoardEntity>()
-                                    boardEntity?.let {
-                                        provideDatabase.database()
-                                            .child("users")
-                                            .child(boardEntity.owner)
-                                            .snapshots.mapNotNull { userSnapshot ->
-                                                val user = userSnapshot.getValue<UserProfileEntity>()
-                                                Invitation(
-                                                    id = invitationId ?: return@mapNotNull null,
-                                                    boardId = boardSnapshot.key ?: return@mapNotNull null,
-                                                    boardName = boardEntity.name,
-                                                    sendDate = ZonedDateTime.parse(invitationEntity.sendDate),
-                                                    ownerEmail = user?.email ?: return@mapNotNull null
-                                                )
-                                            }
-                                    } ?: flowOf(null)
-                                }.filterNotNull()
+                            service.get(
+                                path = "boards",
+                                subPath = invitationEntity.boardId
+                            ).flatMapLatest { boardSnapshot ->
+                                val boardEntity = boardSnapshot.getValue(BoardEntity::class.java)
+                                boardEntity?.let {
+                                    service.get(
+                                        path = "users",
+                                        subPath = boardEntity.owner
+                                    ).mapNotNull { userSnapshot ->
+                                        val user =
+                                            userSnapshot.getValue(UserProfileEntity::class.java)
+                                        Invitation(
+                                            id = invitationId,
+                                            boardId = boardSnapshot.id,
+                                            boardName = boardEntity.name,
+                                            sendDate = ZonedDateTime.parse(invitationEntity.sendDate),
+                                            ownerEmail = user?.email ?: return@mapNotNull null
+                                        )
+                                    }
+                                } ?: flowOf(null)
+                            }.filterNotNull()
                         }
                     ) { invitations: Array<Invitation> ->
                         invitations.sortedByDescending {
@@ -85,27 +82,23 @@ interface InvitationRemoteDataSource {
             }.catch { e -> throw IllegalStateException(e.message) }
         }
 
-        override suspend fun accept(boardId: String, invitationId: String) {
-            val currentUser = Firebase.auth.currentUser!!
+        override fun accept(boardId: String, invitationId: String) {
+            service.post(
+                path = "boards-members",
+                obj = BoardMemberEntity(memberId = myUser.id, boardId = boardId)
+            )
 
-            provideDatabase.database()
-                .child("boards-members").push()
-                .setValue(BoardMemberEntity(memberId = currentUser.uid, boardId = boardId))
-                .await()
-
-            provideDatabase.database()
-                .child("boards-invitations")
-                .child(invitationId)
-                .removeValue()
-                .await()
+            service.delete(
+                path = "boards-invitations",
+                itemId = invitationId
+            )
         }
 
-        override suspend fun decline(invitationId: String) {
-            provideDatabase.database()
-                .child("boards-invitations")
-                .child(invitationId)
-                .removeValue()
-                .await()
+        override fun decline(invitationId: String) {
+            service.delete(
+                path = "boards-invitations",
+                itemId = invitationId
+            )
         }
     }
 }

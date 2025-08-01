@@ -17,11 +17,11 @@ class RemoteEditTicketRepository @Inject constructor(
     private val usersRepository: UsersRepository
 ) : EditTicketRepository {
 
-    override suspend fun editTicket(ticket: EditTicket): UnitResult = handleUnitResult.handle {
+    override fun editTicket(ticket: EditTicket): UnitResult = handleUnitResult.handle {
         ticketRemoteDataSource.editTicket(ticket)
     }
 
-    override suspend fun deleteTicket(ticketId: String): UnitResult = handleUnitResult.handle {
+    override fun deleteTicket(ticketId: String): UnitResult = handleUnitResult.handle {
         ticketRemoteDataSource.deleteTicket(ticketId)
     }
 

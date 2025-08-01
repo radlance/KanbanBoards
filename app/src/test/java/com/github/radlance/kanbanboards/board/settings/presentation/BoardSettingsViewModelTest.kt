@@ -384,7 +384,7 @@ class BoardSettingsViewModelTest : BaseTest() {
             return boardSettingsResult
         }
 
-        override suspend fun inviteUserToBoard(
+        override fun inviteUserToBoard(
             boardId: String,
             userId: String,
             sendDate: ZonedDateTime
@@ -392,11 +392,11 @@ class BoardSettingsViewModelTest : BaseTest() {
             addUserToBoardCalledList.add(Pair(boardId, userId))
         }
 
-        override suspend fun deleteUserFromBoard(boardMemberId: String) {
+        override fun deleteUserFromBoard(boardMemberId: String) {
             deleteUserFromBoardCalledList.add(boardMemberId)
         }
 
-        override suspend fun rollbackInvitation(invitedMemberId: String) {
+        override fun rollbackInvitation(invitedMemberId: String) {
             rollbackInvitationCalledList.add(invitedMemberId)
         }
 

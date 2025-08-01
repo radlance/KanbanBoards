@@ -9,6 +9,7 @@ import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResul
 import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.common.core.ManageResource
+import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import com.github.radlance.kanbanboards.common.data.UsersRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -23,6 +24,7 @@ class RemoteBoardSettingsRepository @Inject constructor(
     private val boardSettingsRemoteDataSource: BoardSettingsRemoteDataSource,
     private val boardsRemoteDataSource: BoardsRemoteDataSource,
     private val manageResource: ManageResource,
+    private val ignoreHandle: IgnoreHandle
 ) : BoardSettingsRepository {
 
     override fun board(boardId: String): Flow<BoardResult> = boardRepository.board(boardId)
@@ -41,19 +43,19 @@ class RemoteBoardSettingsRepository @Inject constructor(
         }.catch { e -> BoardSettingsResult.Error(e.message!!) }
     }
 
-    override suspend fun inviteUserToBoard(
+    override fun inviteUserToBoard(
         boardId: String,
         userId: String,
         sendDate: ZonedDateTime
-    ) {
+    ) = ignoreHandle.handle {
         boardSettingsRemoteDataSource.inviteUserToBoard(boardId, userId, sendDate)
     }
 
-    override suspend fun deleteUserFromBoard(boardMemberId: String) {
+    override fun deleteUserFromBoard(boardMemberId: String) = ignoreHandle.handle {
         boardSettingsRemoteDataSource.deleteUserFromBoard(boardMemberId)
     }
 
-    override suspend fun rollbackInvitation(invitedMemberId: String) {
+    override fun rollbackInvitation(invitedMemberId: String) = ignoreHandle.handle {
         boardSettingsRemoteDataSource.rollbackInvitation(invitedMemberId)
     }
 

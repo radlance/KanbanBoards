@@ -1,10 +1,6 @@
 package com.github.radlance.kanbanboards.auth.data
 
-import com.google.firebase.Firebase
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.auth
-import kotlinx.coroutines.tasks.await
+import com.github.radlance.kanbanboards.service.Auth
 import javax.inject.Inject
 
 interface AuthRemoteDataSource {
@@ -16,27 +12,20 @@ interface AuthRemoteDataSource {
     suspend fun signUp(name: String, email: String, password: String)
 
     class Base @Inject constructor(
-        private val handle: HandleAuthRemoteDataSource
+        private val handle: HandleAuthRemoteDataSource,
+        private val auth: Auth,
     ) : AuthRemoteDataSource {
 
         override suspend fun signInWithToken(userTokenId: String) = handle.handle {
-            Firebase.auth.signInWithCredential(
-                GoogleAuthProvider.getCredential(userTokenId, null)
-            ).await().user
+            auth.signIn(userTokenId)
         }
 
         override suspend fun signInWithEmail(email: String, password: String) = handle.handle {
-            Firebase.auth.signInWithEmailAndPassword(email, password).await().user
+            auth.signIn(email, password)
         }
 
         override suspend fun signUp(name: String, email: String, password: String) = handle.handle {
-            val user = Firebase.auth.createUserWithEmailAndPassword(email, password).await().user
-            user!!.updateProfile(
-                UserProfileChangeRequest.Builder().apply {
-                    displayName = name
-                }.build()
-            ).await()
-            user
+            auth.signUp(name, email, password)
         }
     }
 }

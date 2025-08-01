@@ -136,7 +136,7 @@ class CreateBoardRepositoryTest : BaseTest() {
             createBoardException = expected
         }
 
-        override suspend fun createBoard(name: String, memberIds: List<String>): BoardInfo {
+        override fun createBoard(name: String, memberIds: List<String>): BoardInfo {
             createBoardCalledCount++
             createBoardException?.let { throw it }
             return BoardInfo(

@@ -3,13 +3,9 @@ package com.github.radlance.kanbanboards.boards.data
 import com.github.radlance.kanbanboards.board.core.data.BoardEntity
 import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.boards.domain.Board
-import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.getValue
-import com.google.firebase.database.snapshots
+import com.github.radlance.kanbanboards.service.MyUser
+import com.github.radlance.kanbanboards.service.Service
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -29,20 +25,21 @@ interface BoardsRemoteDataSource {
     fun otherBoards(): Flow<List<Board.Storage>>
 
     class Base @Inject constructor(
-        private val provideDatabase: ProvideDatabase
+        private val service: Service,
+        private val myUser: MyUser
     ) : BoardsRemoteDataSource {
 
         override fun myBoard(): Flow<List<Board.Storage>> {
-            val myUserId = Firebase.auth.currentUser!!.uid
-            val query = provideDatabase.database()
-                .child("boards")
-                .orderByChild("owner")
-                .equalTo(myUserId)
+            val query = service.getListByQuery(
+                path = "boards",
+                queryKey = "owner",
+                queryValue = myUser.id
+            )
 
-            return query.snapshots.map<DataSnapshot, List<Board.Storage>> { snapshot ->
-                snapshot.children.mapNotNull {
-                    val key = it.key ?: return@mapNotNull null
-                    val entity = it.getValue<BoardEntity>() ?: return@mapNotNull null
+            return query.map { snapshots ->
+                snapshots.mapNotNull {
+                    val key = it.id
+                    val entity = it.getValue(BoardEntity::class.java) ?: return@mapNotNull null
                     Board.My(key, entity.name)
                 }
 
@@ -50,15 +47,15 @@ interface BoardsRemoteDataSource {
         }
 
         override fun otherBoards(): Flow<List<Board.Storage>> {
-            val myUserId = Firebase.auth.currentUser!!.uid
-            val membersQuery = provideDatabase.database()
-                .child("boards-members")
-                .orderByChild("memberId")
-                .equalTo(myUserId)
+            val membersQuery = service.getListByQuery(
+                path = "boards-members",
+                queryKey = "memberId",
+                queryValue = myUser.id
+            )
 
-            return membersQuery.snapshots.flatMapLatest { membersSnapshot ->
-                val boardIds = membersSnapshot.children.mapNotNull {
-                    it.getValue<BoardMemberEntity>()?.boardId
+            return membersQuery.flatMapLatest { membersSnapshot ->
+                val boardIds = membersSnapshot.mapNotNull {
+                    it.getValue(BoardMemberEntity::class.java)?.boardId
                 }
 
                 if (boardIds.isEmpty()) {
@@ -71,25 +68,24 @@ interface BoardsRemoteDataSource {
             }.catch { e -> throw IllegalStateException(e.message) }
         }
 
-        private fun otherBoard(boardId: String): Flow<Board.Other> = provideDatabase
-            .database()
-            .child("boards")
-            .child(boardId)
-            .snapshots.flatMapLatest { boardSnapshot ->
-                val boardEntity = boardSnapshot.getValue<BoardEntity>()
-                boardEntity?.let {
-                    provideDatabase.database()
-                        .child("users")
-                        .child(boardEntity.owner)
-                        .snapshots.mapNotNull { userSnapshot ->
-                            val user = userSnapshot.getValue<UserProfileEntity>()
-                            Board.Other(
-                                id = boardSnapshot.key ?: return@mapNotNull null,
-                                name = boardEntity.name,
-                                owner = user?.email ?: return@mapNotNull null
-                            )
-                        }
-                } ?: flowOf(null)
-            }.filterNotNull()
+        private fun otherBoard(boardId: String): Flow<Board.Other> = service.get(
+            path = "boards",
+            subPath = boardId
+        ).flatMapLatest { boardSnapshot ->
+            val boardEntity = boardSnapshot.getValue(BoardEntity::class.java)
+            boardEntity?.let {
+                service.get(
+                    path = "users",
+                    subPath = boardEntity.owner
+                ).mapNotNull { userSnapshot ->
+                    val user = userSnapshot.getValue(UserProfileEntity::class.java)
+                    Board.Other(
+                        id = boardSnapshot.id,
+                        name = boardEntity.name,
+                        owner = user?.email ?: return@mapNotNull null
+                    )
+                }
+            } ?: flowOf(null)
+        }.filterNotNull()
     }
 }

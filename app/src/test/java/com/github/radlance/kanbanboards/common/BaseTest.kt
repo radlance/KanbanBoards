@@ -253,17 +253,17 @@ abstract class BaseTest {
             moveTicketCalledList.add(Pair(ticketId, column))
         }
 
-        override suspend fun createTicket(newTicket: NewTicket) {
+        override fun createTicket(newTicket: NewTicket) {
             createTicketCalledList.add(newTicket)
             createTicketException?.let { throw it }
         }
 
-        override suspend fun editTicket(ticket: EditTicket) {
+        override fun editTicket(ticket: EditTicket) {
             editTicketCalledList.add(ticket)
             editTicketException?.let { throw it }
         }
 
-        override suspend fun deleteTicket(ticketId: String) {
+        override fun deleteTicket(ticketId: String) {
             deleteTicketCalledList.add(ticketId)
             deleteTicketException?.let { throw it }
         }
@@ -291,7 +291,7 @@ abstract class BaseTest {
             return boardMembersResult
         }
 
-        override suspend fun createTicket(newTicket: NewTicket): UnitResult {
+        override fun createTicket(newTicket: NewTicket): UnitResult {
             createTicketCalledList.add(newTicket)
             return createTicketResult
         }

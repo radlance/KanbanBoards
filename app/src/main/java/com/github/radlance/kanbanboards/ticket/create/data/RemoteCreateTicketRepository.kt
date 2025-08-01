@@ -17,7 +17,7 @@ class RemoteCreateTicketRepository @Inject constructor(
     private val usersRepository: UsersRepository
 ) : CreateTicketRepository {
 
-    override suspend fun createTicket(newTicket: NewTicket): UnitResult {
+    override fun createTicket(newTicket: NewTicket): UnitResult {
         return try {
             ticketRemoteDataSource.createTicket(newTicket)
             UnitResult.Success

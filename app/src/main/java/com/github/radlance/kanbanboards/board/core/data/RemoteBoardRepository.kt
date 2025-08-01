@@ -4,6 +4,7 @@ import com.github.radlance.kanbanboards.board.core.domain.BoardRepository
 import com.github.radlance.kanbanboards.board.core.domain.BoardResult
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.TicketResult
+import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 class RemoteBoardRepository @Inject constructor(
     private val boardRemoteDataSource: BoardRemoteDataSource,
-    private val ticketRemoteDataSource: TicketRemoteDataSource
+    private val ticketRemoteDataSource: TicketRemoteDataSource,
+    private val ignoreHandle: IgnoreHandle
 ) : BoardRepository {
 
     override fun board(boardId: String): Flow<BoardResult> {
@@ -34,10 +36,7 @@ class RemoteBoardRepository @Inject constructor(
         boardRemoteDataSource.leaveBoard(boardId)
     }
 
-    override suspend fun deleteBoard(boardId: String) {
-        try {
-            boardRemoteDataSource.deleteBoard(boardId)
-        } catch (_: Exception) {
-        }
+    override suspend fun deleteBoard(boardId: String) = ignoreHandle.handleSuspend {
+        boardRemoteDataSource.deleteBoard(boardId)
     }
 }

@@ -7,12 +7,16 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.github.radlance.kanbanboards.common.core.ManageResource
 import com.github.radlance.kanbanboards.common.data.DataStoreManager
 import com.github.radlance.kanbanboards.common.data.HandleError
-import com.github.radlance.kanbanboards.common.data.ProvideDatabase
+import com.github.radlance.kanbanboards.common.data.IgnoreHandle
+import com.github.radlance.kanbanboards.service.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.RemoteUsersRepository
 import com.github.radlance.kanbanboards.common.data.UsersRemoteDataSource
 import com.github.radlance.kanbanboards.common.domain.UsersRepository
 import com.github.radlance.kanbanboards.common.presentation.DispatchersList
 import com.github.radlance.kanbanboards.common.presentation.RunAsync
+import com.github.radlance.kanbanboards.service.Auth
+import com.github.radlance.kanbanboards.service.MyUser
+import com.github.radlance.kanbanboards.service.Service
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,6 +58,12 @@ class CoreModule {
         return DataStoreManager.Base(dataStore)
     }
 
+    @Provides
+    @Singleton
+    fun provideService(provideDatabase: ProvideDatabase): Service {
+        return Service.Base(provideDatabase)
+    }
+
     @Singleton
     @Provides
     fun provideRunAsync(dispatchersList: DispatchersList): RunAsync {
@@ -62,15 +72,28 @@ class CoreModule {
 
     @Provides
     @Singleton
+    fun provideMyUser(): MyUser = MyUser.Base()
+
+    @Provides
+    @Singleton
     fun provideUsersRemoteDataSource(
-        provideDatabase: ProvideDatabase
-    ): UsersRemoteDataSource = UsersRemoteDataSource.Base(provideDatabase)
+        service: Service,
+        myUser: MyUser
+    ): UsersRemoteDataSource = UsersRemoteDataSource.Base(service, myUser)
 
     @Provides
     @Singleton
     fun provideUsersRepository(usersRemoteDataSource: UsersRemoteDataSource): UsersRepository {
         return RemoteUsersRepository(usersRemoteDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideIgnoreHandle(): IgnoreHandle = IgnoreHandle.Base()
+
+    @Provides
+    @Singleton
+    fun provideAuth(): Auth = Auth.Base()
 
     companion object {
         private val Context.datastore by preferencesDataStore("settings")

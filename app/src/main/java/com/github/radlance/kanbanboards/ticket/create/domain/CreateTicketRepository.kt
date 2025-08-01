@@ -5,5 +5,5 @@ import com.github.radlance.kanbanboards.ticket.common.domain.TicketRepository
 
 interface CreateTicketRepository : TicketRepository {
 
-    suspend fun createTicket(newTicket: NewTicket): UnitResult
+    fun createTicket(newTicket: NewTicket): UnitResult
 }

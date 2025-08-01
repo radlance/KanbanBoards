@@ -7,13 +7,13 @@ import javax.inject.Inject
 
 interface HandleUnitResult {
 
-    suspend fun handle(action: suspend () -> Unit): UnitResult
+    fun handle(action: () -> Unit): UnitResult
 
     class Base @Inject constructor(
         private val manageResource: ManageResource
     ) : HandleUnitResult {
 
-        override suspend fun handle(action: suspend () -> Unit): UnitResult {
+        override fun handle(action: () -> Unit): UnitResult {
             return try {
                 action.invoke()
                 UnitResult.Success

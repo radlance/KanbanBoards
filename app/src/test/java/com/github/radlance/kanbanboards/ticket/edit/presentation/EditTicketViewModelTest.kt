@@ -334,12 +334,12 @@ class EditTicketViewModelTest : BaseTest() {
             this.deleteTicketResult = deleteTicketResult
         }
 
-        override suspend fun editTicket(ticket: EditTicket): UnitResult {
+        override fun editTicket(ticket: EditTicket): UnitResult {
             editTicketCalledList.add(ticket)
             return editTicketResult
         }
 
-        override suspend fun deleteTicket(ticketId: String): UnitResult {
+        override fun deleteTicket(ticketId: String): UnitResult {
             deleteTicketCalledList.add(ticketId)
             return deleteTicketResult
         }

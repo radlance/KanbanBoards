@@ -59,20 +59,15 @@ class BoardSettingsViewModel @Inject constructor(
     }
 
     override fun inviteUserToBoard(boardId: String, userId: String) {
-        handle(
-            background = {
-                boardSettingsRepository.inviteUserToBoard(boardId, userId, ZonedDateTime.now())
-            },
-            ui = {}
-        )
+        boardSettingsRepository.inviteUserToBoard(boardId, userId, ZonedDateTime.now())
     }
 
     override fun rollbackInvitation(invitedMemberId: String) {
-        handle(background = { boardSettingsRepository.rollbackInvitation(invitedMemberId) }, ui = {})
+        boardSettingsRepository.rollbackInvitation(invitedMemberId)
     }
 
     override fun deleteUserFromBoard(boardMemberId: String) {
-        handle(background = { boardSettingsRepository.deleteUserFromBoard(boardMemberId) }, ui = {})
+        boardSettingsRepository.deleteUserFromBoard(boardMemberId)
     }
 
     override fun updateBoardName(boardInfo: BoardInfo) {

@@ -2,82 +2,74 @@ package com.github.radlance.kanbanboards.profile.data
 
 import com.github.radlance.kanbanboards.board.core.data.BoardRemoteDataSource
 import com.github.radlance.kanbanboards.common.data.HandleError
-import com.github.radlance.kanbanboards.common.data.ProvideDatabase
-import com.google.firebase.Firebase
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.auth
-import kotlinx.coroutines.tasks.await
+import com.github.radlance.kanbanboards.service.MyUser
+import com.github.radlance.kanbanboards.service.Service
 import javax.inject.Inject
 
 interface HandleProfileRemoteDataSource {
 
-    suspend fun handle(authCredential: (FirebaseUser) -> AuthCredential)
+    suspend fun handle(deleteAction: () -> Unit)
 
     class Base @Inject constructor(
         private val handle: HandleError,
-        private val provideDatabase: ProvideDatabase,
-        private val boardRemoteDataSource: BoardRemoteDataSource
+        private val service: Service,
+        private val boardRemoteDataSource: BoardRemoteDataSource,
+        private val myUser: MyUser
     ) : HandleProfileRemoteDataSource {
 
-        override suspend fun handle(authCredential: (FirebaseUser) -> AuthCredential) {
+        override suspend fun handle(deleteAction: () -> Unit) {
             try {
-                val currentUser = Firebase.auth.currentUser!!
-                val uid = currentUser.uid
+                val uid = myUser.id
 
-                provideDatabase.database()
-                    .child("users")
-                    .child(uid)
-                    .removeValue()
-                    .await()
+                service.delete(
+                    path = "users",
+                    itemId = uid
+                )
 
-                val boardsQuery = provideDatabase.database()
-                    .child("boards")
-                    .orderByChild("owner")
-                    .equalTo(uid)
+                val boardsQuery = service.getListByQueryAwait(
+                    path = "boards",
+                    queryKey = "owner",
+                    queryValue = uid
+                )
 
-                boardsQuery.get().await().children.forEach { boardSnapshot ->
-                    val boardId = boardSnapshot.key!!
+                boardsQuery.forEach { boardSnapshot ->
+                    val boardId = boardSnapshot.id
 
                     boardRemoteDataSource.deleteBoard(boardId)
                 }
 
-                val membersQuery = provideDatabase.database()
-                    .child("boards-members")
-                    .orderByChild("memberId")
-                    .equalTo(uid)
+                val membersQuery = service.getListByQueryAwait(
+                    path = "boards-members",
+                    queryKey = "memberId",
+                    queryValue = uid
+                )
 
-                membersQuery.get().await().children.forEach { boardMemberSnapshot ->
-                    provideDatabase.database()
-                        .child("boards-members")
-                        .child(boardMemberSnapshot.key!!)
-                        .removeValue()
-                        .await()
+                membersQuery.forEach { boardMemberSnapshot ->
+                    service.delete(
+                        path = "boards-members",
+                        itemId = boardMemberSnapshot.id
+                    )
+
+                    boardMemberSnapshot.ref.removeValue()
                 }
 
-                val membersSnapshot = membersQuery.get().await()
+                val ticketsQuery = service.getListByQueryAwait(
+                    path = "tickets",
+                    queryKey = "assignee",
+                    queryValue = uid
+                )
 
-                membersSnapshot.children.forEach { memberSnapshot ->
-                    memberSnapshot.ref.removeValue().await()
-                }
-                val ticketsQuery = provideDatabase.database()
-                    .child("tickets")
-                    .orderByChild("assignee")
-                    .equalTo(uid)
-
-                ticketsQuery.get().await().children.forEach { ticketSnapshot ->
-                    provideDatabase.database()
-                        .child("tickets")
-                        .child(ticketSnapshot.key!!)
-                        .child("assignee")
-                        .setValue("")
-                        .await()
+                ticketsQuery.forEach { ticketSnapshot ->
+                    service.update(
+                        path = "tickets",
+                        subPath1 = ticketSnapshot.id,
+                        subPath2 = "assignee",
+                        obj = ""
+                    )
                 }
 
-                val credential = authCredential(currentUser)
-                currentUser.reauthenticate(credential).await()
-                currentUser.delete().await()
-                Firebase.auth.signOut()
+                deleteAction.invoke()
+                myUser.signOut()
             } catch (e: Exception) {
                 handle.handle(e)
             }

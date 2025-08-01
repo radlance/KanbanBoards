@@ -2,10 +2,8 @@ package com.github.radlance.kanbanboards.common.data
 
 import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.common.domain.User
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.google.firebase.database.getValue
-import com.google.firebase.database.snapshots
+import com.github.radlance.kanbanboards.service.MyUser
+import com.github.radlance.kanbanboards.service.Service
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -25,28 +23,27 @@ interface UsersRemoteDataSource {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     class Base @Inject constructor(
-        private val provideDatabase: ProvideDatabase
+        private val service: Service,
+        private val myUser: MyUser
     ) : UsersRemoteDataSource {
 
-        override fun user(userId: String): Flow<User> = provideDatabase
-            .database()
-            .child("users")
-            .child(userId)
-            .snapshots.mapNotNull { memberSnapshot ->
-                val userProfileEntity = memberSnapshot.getValue<UserProfileEntity>()
-                with(userProfileEntity ?: return@mapNotNull null) {
-                    User(id = userId, email = email, name = name ?: "")
-                }
+        override fun user(userId: String): Flow<User> = service.get(
+            path = "users",
+            subPath = userId
+        ).mapNotNull { memberSnapshot ->
+            val userProfileEntity = memberSnapshot.getValue(UserProfileEntity::class.java)
+            with(userProfileEntity ?: return@mapNotNull null) {
+                User(id = userId, email = email, name = name ?: "")
             }
+        }
 
         override fun users(): Flow<List<User>> {
-            val currentUserId = Firebase.auth.currentUser!!.uid
-            val usersQuery = provideDatabase.database()
-                .child("users")
+            val currentUserId = myUser.id
+            val usersQuery = service.get(path = "users")
 
-            return usersQuery.snapshots.flatMapLatest { usersSnapshot ->
-                val userIds = usersSnapshot.children.mapNotNull {
-                    it.key
+            return usersQuery.flatMapLatest { usersSnapshot ->
+                val userIds = usersSnapshot.children.map {
+                    it.id
                 }.filter { it != currentUserId }
                 if (userIds.isEmpty()) {
                     flowOf(emptyList())
@@ -59,17 +56,18 @@ interface UsersRemoteDataSource {
         }
 
         override fun boardMembers(boardId: String, ownerId: String): Flow<List<User>> {
-            val membersQuery = provideDatabase.database()
-                .child("boards-members")
-                .orderByChild("boardId")
-                .equalTo(boardId)
+            val membersQuery = service.getListByQuery(
+                path = "boards-members",
+                queryKey = "boardId",
+                queryValue = boardId
+            )
 
-            return membersQuery.snapshots.flatMapLatest { membersSnapshot ->
+            return membersQuery.flatMapLatest { membersSnapshot ->
                 val memberIds = buildList {
                     add(ownerId)
                     addAll(
-                        membersSnapshot.children.mapNotNull {
-                            it.getValue<BoardMemberEntity>()?.memberId
+                        membersSnapshot.mapNotNull {
+                            it.getValue(BoardMemberEntity::class.java)?.memberId
                         }
                     )
                 }

@@ -4,11 +4,9 @@ import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.common.data.HandleError
-import com.github.radlance.kanbanboards.common.data.ProvideDatabase
 import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.invitation.data.InvitationEntity
-import com.google.firebase.database.getValue
-import com.google.firebase.database.snapshots
+import com.github.radlance.kanbanboards.service.Service
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -16,70 +14,56 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.tasks.await
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
 interface BoardSettingsRemoteDataSource {
 
-    suspend fun inviteUserToBoard(boardId: String, userId: String, sendDate: ZonedDateTime)
+    fun inviteUserToBoard(boardId: String, userId: String, sendDate: ZonedDateTime)
 
-    suspend fun deleteUserFromBoard(boardMemberId: String)
+    fun deleteUserFromBoard(boardMemberId: String)
 
-    suspend fun rollbackInvitation(invitedMemberId: String)
+    fun rollbackInvitation(invitedMemberId: String)
 
     fun boardMembers(boardId: String): Flow<List<BoardUser>>
 
     fun invitedUsers(boardId: String): Flow<List<BoardUser>>
 
-    suspend fun updateBoardName(boardInfo: BoardInfo)
+    fun updateBoardName(boardInfo: BoardInfo)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     class Base @Inject constructor(
-        private val provideDatabase: ProvideDatabase,
+        private val service: Service,
         private val handleError: HandleError
     ) : BoardSettingsRemoteDataSource {
 
-        override suspend fun inviteUserToBoard(
+        override fun inviteUserToBoard(
             boardId: String,
             userId: String,
             sendDate: ZonedDateTime
         ) {
-            try {
-                provideDatabase.database()
-                    .child("boards-invitations").push()
-                    .setValue(
-                        InvitationEntity(
-                            memberId = userId,
-                            boardId = boardId,
-                            sendDate = sendDate.toString()
-                        )
-                    )
-                    .await()
-            } catch (_: Exception) {
-            }
+            service.post(
+                path = "boards-invitations",
+                obj = InvitationEntity(
+                    memberId = userId,
+                    boardId = boardId,
+                    sendDate = sendDate.toString()
+                )
+            )
         }
 
-        override suspend fun deleteUserFromBoard(boardMemberId: String) {
-            try {
-                provideDatabase.database()
-                    .child("boards-members")
-                    .child(boardMemberId)
-                    .removeValue()
-                    .await()
-            } catch (_: Exception) {
-            }
+        override fun deleteUserFromBoard(boardMemberId: String) {
+            service.delete(
+                path = "boards-members",
+                itemId = boardMemberId
+            )
         }
 
-        override suspend fun rollbackInvitation(invitedMemberId: String) {
-            try {
-                provideDatabase.database()
-                    .child("boards-invitations")
-                    .child(invitedMemberId)
-                    .removeValue()
-                    .await()
-            } catch (_: Exception) {
-            }
+        override fun rollbackInvitation(invitedMemberId: String) {
+            service.delete(
+                path = "boards-invitations",
+                itemId = invitedMemberId
+            )
         }
 
         override fun boardMembers(boardId: String): Flow<List<BoardUser>> = boardUsers(
@@ -92,27 +76,28 @@ interface BoardSettingsRemoteDataSource {
             child = "boards-invitations"
         )
 
-        override suspend fun updateBoardName(boardInfo: BoardInfo) {
+        override fun updateBoardName(boardInfo: BoardInfo) {
             try {
-                provideDatabase.database()
-                    .child("boards")
-                    .child(boardInfo.id)
-                    .setValue(boardInfo)
-                    .await()
+                service.update(
+                    path = "boards",
+                    subPath = boardInfo.id,
+                    obj = boardInfo
+                )
             } catch (e: Exception) {
                 handleError.handle(e)
             }
         }
 
         private fun boardUsers(boardId: String, child: String): Flow<List<BoardUser>> {
-            val membersQuery = provideDatabase.database()
-                .child(child)
-                .orderByChild("boardId")
-                .equalTo(boardId)
+            val membersQuery = service.getListByQuery(
+                path = child,
+                queryKey = "boardId",
+                queryValue = boardId
+            )
 
-            return membersQuery.snapshots.flatMapLatest { membersSnapshot ->
-                val ids: List<Pair<String, String>> = membersSnapshot.children.map {
-                    Pair(it.key!!, it.getValue<BoardMemberEntity>()!!.memberId)
+            return membersQuery.flatMapLatest { snapshots ->
+                val ids: List<Pair<String, String>> = snapshots.map {
+                    Pair(it.id, it.getValue(BoardMemberEntity::class.java)!!.memberId)
                 }
 
                 if (ids.isEmpty()) {
@@ -120,22 +105,21 @@ interface BoardSettingsRemoteDataSource {
                 } else {
                     combine(
                         ids.map { pair ->
-                            provideDatabase
-                                .database()
-                                .child("users")
-                                .child(pair.second)
-                                .snapshots.mapNotNull { memberSnapshot ->
-                                    val userProfileEntity =
-                                        memberSnapshot.getValue<UserProfileEntity>()
-                                    with(userProfileEntity ?: return@mapNotNull null) {
-                                        BoardUser(
-                                            id = pair.first,
-                                            userId = pair.second,
-                                            email = email,
-                                            name = name ?: ""
-                                        )
-                                    }
+                            service.get(
+                                path = "users",
+                                subPath = pair.second
+                            ).mapNotNull { memberSnapshot ->
+                                val userProfileEntity =
+                                    memberSnapshot.getValue(UserProfileEntity::class.java)
+                                with(userProfileEntity ?: return@mapNotNull null) {
+                                    BoardUser(
+                                        id = pair.first,
+                                        userId = pair.second,
+                                        email = email,
+                                        name = name ?: ""
+                                    )
                                 }
+                            }
                         }
                     ) { users: Array<BoardUser> -> users.toList() }
                 }

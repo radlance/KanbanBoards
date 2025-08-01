@@ -11,11 +11,11 @@ interface BoardSettingsRepository {
 
     fun boardSettings(boardId: String): Flow<BoardSettingsResult>
 
-    suspend fun inviteUserToBoard(boardId: String, userId: String, sendDate: ZonedDateTime)
+    fun inviteUserToBoard(boardId: String, userId: String, sendDate: ZonedDateTime)
 
-    suspend fun deleteUserFromBoard(boardMemberId: String)
+    fun deleteUserFromBoard(boardMemberId: String)
 
-    suspend fun rollbackInvitation(invitedMemberId: String)
+    fun rollbackInvitation(invitedMemberId: String)
 
     suspend fun updateBoardName(boardInfo: BoardInfo): UpdateBoardNameResult
 

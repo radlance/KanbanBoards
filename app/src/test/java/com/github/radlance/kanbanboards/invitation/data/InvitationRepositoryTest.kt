@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.invitation.data
 
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
 import com.github.radlance.kanbanboards.invitation.domain.InvitationRepository
 import com.github.radlance.kanbanboards.invitation.domain.InvitationResult
@@ -31,7 +32,8 @@ class InvitationRepositoryTest : BaseTest() {
 
         repository = RemoteInvitationRepository(
             remoteDataSource = remoteDataSource,
-            manageResource = manageResource
+            manageResource = manageResource,
+            ignoreHandle = IgnoreHandle.Base()
         )
     }
 
@@ -130,11 +132,11 @@ class InvitationRepositoryTest : BaseTest() {
             emitAll(invitations)
         }
 
-        override suspend fun accept(boardId: String, invitationId: String) {
+        override fun accept(boardId: String, invitationId: String) {
             acceptInviteCalledList.add(Pair(boardId, invitationId))
         }
 
-        override suspend fun decline(invitationId: String) {
+        override fun decline(invitationId: String) {
             declineInviteCalledList.add(invitationId)
         }
     }

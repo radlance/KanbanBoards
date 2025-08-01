@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.invitation.data
 
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.common.core.ManageResource
+import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
 import com.github.radlance.kanbanboards.invitation.domain.InvitationRepository
 import com.github.radlance.kanbanboards.invitation.domain.InvitationResult
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 class RemoteInvitationRepository @Inject constructor(
     private val remoteDataSource: InvitationRemoteDataSource,
-    private val manageResource: ManageResource
+    private val manageResource: ManageResource,
+    private val ignoreHandle: IgnoreHandle
 ) : InvitationRepository {
 
     override fun invitations(): Flow<InvitationResult> {
@@ -23,17 +25,11 @@ class RemoteInvitationRepository @Inject constructor(
         }
     }
 
-    override suspend fun accept(boardId: String, invitationId: String) {
-        try {
-            remoteDataSource.accept(boardId, invitationId)
-        } catch (_: Exception) {
-        }
+    override fun accept(boardId: String, invitationId: String) = ignoreHandle.handle {
+        remoteDataSource.accept(boardId, invitationId)
     }
 
-    override suspend fun decline(invitationId: String) {
-        try {
-            remoteDataSource.decline(invitationId)
-        } catch (_: Exception) {
-        }
+    override fun decline(invitationId: String) = ignoreHandle.handle {
+        remoteDataSource.decline(invitationId)
     }
 }

@@ -6,6 +6,7 @@ import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.Ticket
 import com.github.radlance.kanbanboards.board.core.domain.TicketResult
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
@@ -28,7 +29,8 @@ class BoardRepositoryTest : BaseTest() {
 
         repository = RemoteBoardRepository(
             boardRemoteDataSource = boardRemoteDataSource,
-            ticketRemoteDataSource = ticketRemoteDataSource
+            ticketRemoteDataSource = ticketRemoteDataSource,
+            ignoreHandle = IgnoreHandle.Base()
         )
     }
 

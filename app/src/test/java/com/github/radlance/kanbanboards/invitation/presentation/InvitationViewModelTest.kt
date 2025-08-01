@@ -137,11 +137,11 @@ class InvitationViewModelTest : BaseTest() {
             return invitationResult
         }
 
-        override suspend fun accept(boardId: String, invitationId: String) {
+        override fun accept(boardId: String, invitationId: String) {
             acceptInviteCalledList.add(Pair(boardId, invitationId))
         }
 
-        override suspend fun decline(invitationId: String) {
+        override fun decline(invitationId: String) {
             declineInviteCalledList.add(invitationId)
         }
     }

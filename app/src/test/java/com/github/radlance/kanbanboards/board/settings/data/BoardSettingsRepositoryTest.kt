@@ -7,6 +7,7 @@ import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import com.github.radlance.kanbanboards.common.domain.User
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.Flow
@@ -45,7 +46,8 @@ class BoardSettingsRepositoryTest : BaseTest() {
             boardRepository = boardRepository,
             boardSettingsRemoteDataSource = remoteDataSource,
             boardsRemoteDataSource = boardsRemoteDataSource,
-            manageResource = manageResource
+            manageResource = manageResource,
+            ignoreHandle = IgnoreHandle.Base()
         )
     }
 
@@ -228,7 +230,7 @@ class BoardSettingsRepositoryTest : BaseTest() {
             this.invitedUsers.value = invitedUsers
         }
 
-        override suspend fun inviteUserToBoard(
+        override fun inviteUserToBoard(
             boardId: String,
             userId: String,
             sendDate: ZonedDateTime
@@ -236,11 +238,11 @@ class BoardSettingsRepositoryTest : BaseTest() {
             addUserToBoardCalledList.add(Triple(boardId, userId, sendDate))
         }
 
-        override suspend fun deleteUserFromBoard(boardMemberId: String) {
+        override fun deleteUserFromBoard(boardMemberId: String) {
             deleteUserFromBoardCalledList.add(boardMemberId)
         }
 
-        override suspend fun rollbackInvitation(invitedMemberId: String) {
+        override fun rollbackInvitation(invitedMemberId: String) {
             rollbackInvitationCalledList.add(invitedMemberId)
         }
 
@@ -255,7 +257,7 @@ class BoardSettingsRepositoryTest : BaseTest() {
             emitAll(invitedUsers)
         }
 
-        override suspend fun updateBoardName(boardInfo: BoardInfo) {
+        override fun updateBoardName(boardInfo: BoardInfo) {
             updateBoardNameCalledList.add(boardInfo)
             updateBoardNameException?.let { throw it }
         }
