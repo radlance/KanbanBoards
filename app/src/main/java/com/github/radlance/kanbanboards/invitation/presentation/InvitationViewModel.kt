@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.invitation.presentation
 
-import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
-import com.github.radlance.kanbanboards.common.presentation.RunAsync
+import com.github.radlance.common.presentation.BaseViewModel
+import com.github.radlance.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.invitation.domain.InvitationRepository
 import com.github.radlance.kanbanboards.invitation.domain.InvitationResult
 import dagger.hilt.android.lifecycle.HiltViewModel

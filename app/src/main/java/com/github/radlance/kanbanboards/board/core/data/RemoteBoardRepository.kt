@@ -1,10 +1,10 @@
 package com.github.radlance.kanbanboards.board.core.data
 
+import com.github.radlance.common.data.IgnoreHandle
 import com.github.radlance.kanbanboards.board.core.domain.BoardRepository
 import com.github.radlance.kanbanboards.board.core.domain.BoardResult
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.TicketResult
-import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

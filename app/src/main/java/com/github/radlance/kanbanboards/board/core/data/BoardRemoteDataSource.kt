@@ -2,8 +2,8 @@ package com.github.radlance.kanbanboards.board.core.data
 
 import com.github.radlance.api.service.MyUser
 import com.github.radlance.api.service.Service
+import com.github.radlance.common.data.IgnoreHandle
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -38,10 +38,12 @@ interface BoardRemoteDataSource {
                 )
             ) { boardSnapshot, membersSnapshot ->
                 val key = boardSnapshot.id
-                val entity = boardSnapshot.getValue(BoardEntity::class.java) ?: return@combine null
+                val entity =
+                    boardSnapshot.getValue(com.github.radlance.common.data.BoardEntity::class.java)
+                        ?: return@combine null
 
                 val isMember = membersSnapshot.any {
-                    it.getValue(BoardMemberEntity::class.java)?.memberId == myUserId
+                    it.getValue(com.github.radlance.common.data.BoardMemberEntity::class.java)?.memberId == myUserId
                 }
 
                 if (entity.owner != myUserId && !isMember) {

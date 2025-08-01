@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.board.settings.domain
 
-import com.github.radlance.kanbanboards.common.domain.User
+import com.github.radlance.common.domain.User
 
 interface BoardSettingsResult {
 

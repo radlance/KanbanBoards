@@ -18,9 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.github.radlance.common.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
 interface BoardsUiState {
 

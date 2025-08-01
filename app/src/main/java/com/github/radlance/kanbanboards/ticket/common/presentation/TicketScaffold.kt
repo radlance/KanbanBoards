@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
-import com.github.radlance.kanbanboards.common.presentation.BackButton
+import com.github.radlance.common.presentation.BackButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

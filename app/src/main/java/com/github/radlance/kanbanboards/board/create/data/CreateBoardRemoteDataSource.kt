@@ -2,9 +2,9 @@ package com.github.radlance.kanbanboards.board.create.data
 
 import com.github.radlance.api.service.MyUser
 import com.github.radlance.api.service.Service
-import com.github.radlance.kanbanboards.board.core.data.BoardEntity
+import com.github.radlance.common.data.BoardEntity
+import com.github.radlance.common.data.HandleError
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.common.data.HandleError
 import com.github.radlance.kanbanboards.invitation.data.InvitationEntity
 import java.time.ZonedDateTime
 import javax.inject.Inject
@@ -23,7 +23,10 @@ interface CreateBoardRemoteDataSource {
             return try {
                 val reference = service.post(
                     path = "boards",
-                    obj = BoardEntity(name = name, owner = myUser.id)
+                    obj = BoardEntity(
+                        name = name,
+                        owner = myUser.id
+                    )
                 )
 
                 val sendDate = ZonedDateTime.now()

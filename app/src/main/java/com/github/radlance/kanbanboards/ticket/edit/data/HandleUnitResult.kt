@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.ticket.edit.data
 
+import com.github.radlance.common.core.ManageResource
+import com.github.radlance.common.domain.UnitResult
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.domain.UnitResult
 import javax.inject.Inject
 
 interface HandleUnitResult {

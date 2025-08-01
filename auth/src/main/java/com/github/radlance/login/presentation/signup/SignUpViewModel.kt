@@ -1,0 +1,72 @@
+package com.github.radlance.login.presentation.signup
+
+import com.github.radlance.common.domain.UnitResult
+import com.github.radlance.common.presentation.RunAsync
+import com.github.radlance.login.domain.SignUpRepository
+import com.github.radlance.login.presentation.common.BaseAuthViewModel
+import com.github.radlance.login.presentation.common.ValidateAuth
+import com.github.radlance.login.presentation.signin.AuthResultUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import javax.inject.Inject
+
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val signUpRepository: SignUpRepository,
+    private val handleSignUp: HandleSignUp,
+    private val authMapper: UnitResult.Mapper<AuthResultUiState>,
+    private val validateAuth: ValidateAuth,
+    runAsync: RunAsync
+) : BaseAuthViewModel(handleSignUp, runAsync) {
+
+    private val fieldsUiStateMutable = handleSignUp.fieldsState
+
+    val fieldsUiState get() = fieldsUiStateMutable.asStateFlow()
+
+    fun signUp(name: String, email: String, password: String, confirmPassword: String) {
+        fieldsUiStateMutable.update {
+            with(validateAuth) {
+                it.copy(
+                    nameErrorMessage = validName(name),
+                    emailErrorMessage = validEmail(email),
+                    passwordErrorMessage = validPassword(password),
+                    confirmPasswordErrorMessage = validPasswordConfirm(confirmPassword, password)
+                )
+            }
+        }
+
+        with(fieldsUiState.value) {
+            if (
+                nameErrorMessage.isEmpty()
+                && emailErrorMessage.isEmpty()
+                && passwordErrorMessage.isEmpty()
+                && confirmPasswordErrorMessage.isEmpty()
+            ) {
+                handleSignUp.saveAuthState(AuthResultUiState.Loading)
+
+                handle(background = {
+                    signUpRepository.signUp(
+                        name = name,
+                        email = email,
+                        password = password
+                    )
+                }) { result ->
+                    handleSignUp.saveAuthState(result.map(authMapper))
+                }
+            }
+        }
+    }
+
+    override fun resetEmailError() = fieldsUiStateMutable.resetEmailError()
+
+    override fun resetPasswordError() = fieldsUiStateMutable.resetPasswordError()
+
+    fun resetNameError() {
+        fieldsUiStateMutable.update { it.copy(nameErrorMessage = "") }
+    }
+
+    fun resetConfirmPasswordError() {
+        fieldsUiStateMutable.update { it.copy(confirmPasswordErrorMessage = "") }
+    }
+}

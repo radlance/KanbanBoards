@@ -28,9 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.radlance.common.presentation.BaseColumn
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 import com.github.radlance.kanbanboards.invitation.presentation.InvitationCountAction
 
 @OptIn(ExperimentalMaterial3Api::class)

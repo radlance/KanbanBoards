@@ -37,10 +37,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.radlance.common.presentation.BackButton
+import com.github.radlance.common.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
-import com.github.radlance.kanbanboards.common.presentation.BackButton
-import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
 interface SettingsBoardUiState {
 

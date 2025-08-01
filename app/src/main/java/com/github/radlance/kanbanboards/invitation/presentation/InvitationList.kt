@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
-import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import com.github.radlance.uikit.KanbanBoardsTheme
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -44,7 +44,10 @@ private fun InvitationListPreview() {
                     boardName = "board $it",
                     boardId = "1234",
                     ownerEmail = "owner$it@gmail.com",
-                    sendDate = ZonedDateTime.of(LocalDateTime.of(2025, 1, 1, 1, 1), ZoneId.of("UTC"))
+                    sendDate = ZonedDateTime.of(
+                        LocalDateTime.of(2025, 1, 1, 1, 1),
+                        ZoneId.of("UTC")
+                    )
                 )
             },
             onAcceptClick = { _, _ -> },

@@ -28,7 +28,7 @@ import androidx.compose.ui.draganddrop.DragAndDropTransferData
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import com.github.radlance.uikit.KanbanBoardsTheme
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.Json
 

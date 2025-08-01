@@ -22,3 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "KanbanBoards"
 include(":app")
 include(":api-service")
+include(":auth")
+include(":common")
+include(":uikit")

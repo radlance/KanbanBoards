@@ -39,8 +39,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.auth.presentation.signin.AccountManager
-import com.github.radlance.kanbanboards.auth.presentation.signin.FormatNonce
+import com.github.radlance.login.presentation.signin.AccountManager
+import com.github.radlance.login.presentation.signin.FormatNonce
+import com.github.radlance.login.presentation.signin.GoogleAccountManager
 import kotlinx.coroutines.launch
 
 interface ProfileProviderUi {
@@ -64,8 +65,16 @@ interface ProfileProviderUi {
                     onValueChange = { emailFieldValue = it },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
-                    label = { Text(text = stringResource(R.string.email)) },
-                    placeholder = { Text(text = stringResource(R.string.enter_your_email)) },
+                    label = {
+                        Text(text = stringResource(com.github.radlance.common.R.string.email))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(
+                                com.github.radlance.common.R.string.enter_your_email
+                            )
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -75,8 +84,16 @@ interface ProfileProviderUi {
                     onValueChange = { passwordFieldValue = it },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
-                    label = { Text(text = stringResource(R.string.password)) },
-                    placeholder = { Text(text = stringResource(R.string.enter_your_password)) },
+                    label = {
+                        Text(text = stringResource(com.github.radlance.common.R.string.password))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(
+                                com.github.radlance.common.R.string.enter_your_password
+                            )
+                        )
+                    },
                     visualTransformation = if (showPassword) {
                         VisualTransformation.None
                     } else PasswordVisualTransformation(),
@@ -88,7 +105,9 @@ interface ProfileProviderUi {
                         IconButton(onClick = { showPassword = !showPassword }) {
                             Icon(
                                 imageVector = icon,
-                                contentDescription = stringResource(R.string.show_hide_password_icon)
+                                contentDescription = stringResource(
+                                    com.github.radlance.common.R.string.show_hide_password_icon
+                                )
                             )
                         }
                     },
@@ -116,7 +135,7 @@ interface ProfileProviderUi {
             val scope = rememberCoroutineScope()
 
             val googleAccountManager: AccountManager? = remember {
-                activity?.let { AccountManager.Google(it, FormatNonce.DigestFold) }
+                activity?.let { GoogleAccountManager(it, FormatNonce.DigestFold) }
             }
 
             val profileCredentialUiState by profileProviderAction.profileCredentialUiState.collectAsStateWithLifecycle()
@@ -139,7 +158,7 @@ interface ProfileProviderUi {
                     )
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_google),
+                    painter = painterResource(com.github.radlance.login.R.drawable.ic_google),
                     contentDescription = "Google",
                     modifier = Modifier
                         .fillMaxSize()

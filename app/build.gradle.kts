@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.dagger.hilt.android)
@@ -25,12 +24,6 @@ android {
         versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-
-        val googleServerClientId = properties.getProperty("google.server.client.id")
-        buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", googleServerClientId)
     }
 
     buildTypes {
@@ -66,34 +59,16 @@ kapt {
 
 dependencies {
     implementation(libs.kotlinx.datetime)
-    implementation(libs.androidx.material.icons.extended)
     kapt(libs.hilt.android.compiler)
-    implementation(libs.hilt.android)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.datastore.preferences)
-
     implementation(libs.navigation.compose)
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.google.identity.googleid)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(project(":api-service"))
+    implementation(project(":auth"))
+    implementation(project(":common"))
+    implementation(project(":uikit"))
 }

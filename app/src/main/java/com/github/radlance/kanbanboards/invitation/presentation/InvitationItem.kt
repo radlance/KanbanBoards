@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
-import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import com.github.radlance.uikit.KanbanBoardsTheme
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime

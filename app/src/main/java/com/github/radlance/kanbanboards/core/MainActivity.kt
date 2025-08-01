@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.github.radlance.kanbanboards.navigation.core.NavGraph
-import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import com.github.radlance.uikit.KanbanBoardsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

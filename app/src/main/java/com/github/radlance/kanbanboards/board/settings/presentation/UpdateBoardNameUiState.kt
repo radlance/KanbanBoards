@@ -2,7 +2,7 @@ package com.github.radlance.kanbanboards.board.settings.presentation
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
+import com.github.radlance.common.presentation.ErrorMessage
 
 interface UpdateBoardNameUiState {
 

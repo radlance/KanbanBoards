@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.profile.domain
 
-import com.github.radlance.kanbanboards.common.domain.UnitResult
+import com.github.radlance.common.domain.UnitResult
 
 interface ProfileRepository {
 

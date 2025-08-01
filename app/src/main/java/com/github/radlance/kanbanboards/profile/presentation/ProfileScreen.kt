@@ -31,9 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.radlance.common.presentation.BackButton
+import com.github.radlance.common.presentation.BaseColumn
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.common.presentation.BackButton
-import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

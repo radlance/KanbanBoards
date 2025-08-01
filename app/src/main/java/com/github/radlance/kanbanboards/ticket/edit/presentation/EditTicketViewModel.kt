@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.edit.presentation
 
+import com.github.radlance.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.board.core.domain.Column
-import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketViewModel
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket

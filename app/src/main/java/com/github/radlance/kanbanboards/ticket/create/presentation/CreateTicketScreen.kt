@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
+import com.github.radlance.uikit.KanbanBoardsTheme
 
 @Composable
 fun CreateTicketScreen(

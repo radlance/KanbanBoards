@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.profile.data
 
+import com.github.radlance.common.data.HandleError
 import com.github.radlance.kanbanboards.board.core.data.BoardRemoteDataSource
-import com.github.radlance.kanbanboards.common.data.HandleError
 import javax.inject.Inject
 
 interface HandleProfileRemoteDataSource {

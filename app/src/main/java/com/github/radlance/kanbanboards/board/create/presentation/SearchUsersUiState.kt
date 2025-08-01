@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
+import com.github.radlance.common.presentation.ErrorMessage
 
 interface SearchUsersUiState {
 

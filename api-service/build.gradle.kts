@@ -43,7 +43,6 @@ android {
 dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation(libs.hilt.android)
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.analytics)
     implementation(libs.google.firebase.auth)

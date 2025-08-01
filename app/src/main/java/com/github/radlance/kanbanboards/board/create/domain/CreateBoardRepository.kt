@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.board.create.domain
 
-import com.github.radlance.kanbanboards.common.domain.SearchUsersResult
+import com.github.radlance.common.domain.SearchUsersResult
 import kotlinx.coroutines.flow.Flow
 
 interface CreateBoardRepository {

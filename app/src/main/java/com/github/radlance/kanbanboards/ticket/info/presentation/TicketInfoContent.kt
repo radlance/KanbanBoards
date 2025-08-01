@@ -23,9 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
+import com.github.radlance.common.presentation.BaseColumn
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.Ticket
-import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 
 @Composable
 fun TicketInfoContent(

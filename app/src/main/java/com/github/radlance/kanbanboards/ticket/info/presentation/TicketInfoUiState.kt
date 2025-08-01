@@ -9,9 +9,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.github.radlance.common.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.Ticket
-import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
 interface TicketInfoUiState {
 

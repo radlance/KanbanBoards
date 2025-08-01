@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.common.domain
 
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
+import com.github.radlance.common.domain.BoardMembersResult
 import kotlinx.coroutines.flow.Flow
 
 interface TicketRepository {

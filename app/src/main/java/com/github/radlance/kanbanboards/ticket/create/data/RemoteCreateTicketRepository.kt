@@ -1,11 +1,11 @@
 package com.github.radlance.kanbanboards.ticket.create.data
 
+import com.github.radlance.common.core.ManageResource
+import com.github.radlance.common.domain.BoardMembersResult
+import com.github.radlance.common.domain.UnitResult
+import com.github.radlance.common.domain.UsersRepository
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.data.TicketRemoteDataSource
-import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.domain.UnitResult
-import com.github.radlance.kanbanboards.common.domain.UsersRepository
-import com.github.radlance.kanbanboards.ticket.create.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import kotlinx.coroutines.flow.Flow

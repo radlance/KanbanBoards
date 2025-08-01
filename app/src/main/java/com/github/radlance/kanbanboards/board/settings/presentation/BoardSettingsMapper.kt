@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.board.settings.presentation
 
-import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
+import com.github.radlance.common.domain.User
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
-import com.github.radlance.kanbanboards.common.domain.User
+import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import javax.inject.Inject
 
 class BoardSettingsMapper @Inject constructor() : BoardSettingsResult.Mapper<BoardSettingsUiState> {

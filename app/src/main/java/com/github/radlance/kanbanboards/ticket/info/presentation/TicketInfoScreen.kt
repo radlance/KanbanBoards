@@ -17,9 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.radlance.common.presentation.BackButton
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.common.presentation.BackButton
-import com.github.radlance.kanbanboards.uikit.KanbanBoardsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +67,7 @@ fun TicketInfoScreen(
 @Preview
 @Composable
 private fun TicketInfoScreenPreview() {
-    KanbanBoardsTheme {
+    com.github.radlance.uikit.KanbanBoardsTheme {
         TicketInfoScreen(navigateUp = {}, navigateToEditTicket = {})
     }
 }

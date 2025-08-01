@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.board.create.presentation
 
+import com.github.radlance.common.presentation.BaseViewModel
+import com.github.radlance.common.presentation.RunAsync
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardRepository
-import com.github.radlance.kanbanboards.common.presentation.BaseViewModel
-import com.github.radlance.kanbanboards.common.presentation.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map

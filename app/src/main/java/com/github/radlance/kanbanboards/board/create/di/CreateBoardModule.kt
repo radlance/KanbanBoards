@@ -1,5 +1,6 @@
 package com.github.radlance.kanbanboards.board.create.di
 
+import com.github.radlance.common.domain.SearchUsersResult
 import com.github.radlance.kanbanboards.board.create.data.CreateBoardRemoteDataSource
 import com.github.radlance.kanbanboards.board.create.data.RemoteCreateBoardRepository
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardRepository
@@ -10,7 +11,6 @@ import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardUiS
 import com.github.radlance.kanbanboards.board.create.presentation.HandleCreateBoard
 import com.github.radlance.kanbanboards.board.create.presentation.SearchUsersResultMapper
 import com.github.radlance.kanbanboards.board.create.presentation.SearchUsersUiState
-import com.github.radlance.kanbanboards.common.domain.SearchUsersResult
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,9 +1,8 @@
 package com.github.radlance.kanbanboards.profile.presentation
 
 import androidx.compose.runtime.Composable
-import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
+import com.github.radlance.common.core.ManageResource
+import com.github.radlance.common.presentation.ErrorMessage
 
 interface ProfileCredentialUiState {
 
@@ -24,7 +23,11 @@ interface ProfileCredentialUiState {
 
         @Composable
         override fun Show(profileCredentialAction: ProfileCredentialAction) {
-            ErrorMessage(message = manageResource.string(R.string.error_enter_with_google))
+            ErrorMessage(
+                message = manageResource.string(
+                    com.github.radlance.common.R.string.error_enter_with_google
+                )
+            )
         }
     }
 

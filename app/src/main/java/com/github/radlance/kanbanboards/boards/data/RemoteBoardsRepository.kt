@@ -1,10 +1,10 @@
 package com.github.radlance.kanbanboards.boards.data
 
+import com.github.radlance.common.core.ManageResource
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.boards.domain.Board
 import com.github.radlance.kanbanboards.boards.domain.BoardsRepository
 import com.github.radlance.kanbanboards.boards.domain.BoardsResult
-import com.github.radlance.kanbanboards.common.core.ManageResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine

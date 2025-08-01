@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.board.core.data
 
+import com.github.radlance.common.data.HandleError
+import com.github.radlance.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.Ticket
-import com.github.radlance.kanbanboards.common.data.HandleError
-import com.github.radlance.kanbanboards.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicket
 import kotlinx.coroutines.ExperimentalCoroutinesApi

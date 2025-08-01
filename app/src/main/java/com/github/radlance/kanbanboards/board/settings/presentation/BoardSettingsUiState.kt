@@ -3,10 +3,10 @@ package com.github.radlance.kanbanboards.board.settings.presentation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.github.radlance.common.domain.User
+import com.github.radlance.common.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
-import com.github.radlance.kanbanboards.common.domain.User
-import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
 
 interface BoardSettingsUiState {
 

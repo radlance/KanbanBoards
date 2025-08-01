@@ -52,10 +52,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.radlance.common.domain.User
+import com.github.radlance.common.presentation.BaseColumn
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.Column
-import com.github.radlance.kanbanboards.common.domain.User
-import com.github.radlance.kanbanboards.common.presentation.BaseColumn
 import com.github.radlance.kanbanboards.ticket.create.presentation.TicketColor
 import com.github.radlance.kanbanboards.ticket.create.presentation.TicketColorsRow
 import java.time.LocalDateTime

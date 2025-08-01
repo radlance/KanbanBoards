@@ -1,12 +1,12 @@
 package com.github.radlance.kanbanboards.board.create.data
 
+import com.github.radlance.common.core.ManageResource
+import com.github.radlance.common.domain.SearchUsersResult
+import com.github.radlance.common.domain.UsersRepository
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardRepository
 import com.github.radlance.kanbanboards.board.create.domain.CreateBoardResult
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
-import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.domain.SearchUsersResult
-import com.github.radlance.kanbanboards.common.domain.UsersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject

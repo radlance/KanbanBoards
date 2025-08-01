@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.invitation.data
 
+import com.github.radlance.common.core.ManageResource
+import com.github.radlance.common.data.IgnoreHandle
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.data.IgnoreHandle
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
 import com.github.radlance.kanbanboards.invitation.domain.InvitationRepository
 import com.github.radlance.kanbanboards.invitation.domain.InvitationResult

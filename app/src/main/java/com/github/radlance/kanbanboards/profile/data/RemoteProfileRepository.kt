@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.profile.data
 
+import com.github.radlance.common.core.ManageResource
+import com.github.radlance.common.data.DataStoreManager
+import com.github.radlance.common.domain.UnitResult
 import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.data.DataStoreManager
-import com.github.radlance.kanbanboards.common.domain.UnitResult
 import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
 import javax.inject.Inject

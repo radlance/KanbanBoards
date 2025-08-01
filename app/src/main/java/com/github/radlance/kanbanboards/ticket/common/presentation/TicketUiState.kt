@@ -2,9 +2,9 @@ package com.github.radlance.kanbanboards.ticket.common.presentation
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import com.github.radlance.kanbanboards.common.presentation.AbstractUnitUiState
-import com.github.radlance.kanbanboards.common.presentation.ErrorMessage
-import com.github.radlance.kanbanboards.common.presentation.UnitUiState
+import com.github.radlance.common.presentation.AbstractUnitUiState
+import com.github.radlance.common.presentation.ErrorMessage
+import com.github.radlance.common.presentation.UnitUiState
 
 interface TicketUiState : UnitUiState {
 

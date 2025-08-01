@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.invitation.data
 
-import com.github.radlance.kanbanboards.board.core.data.BoardEntity
-import com.github.radlance.kanbanboards.board.core.data.BoardMemberEntity
-import com.github.radlance.kanbanboards.common.data.UserProfileEntity
+import com.github.radlance.common.data.BoardEntity
+import com.github.radlance.common.data.BoardMemberEntity
+import com.github.radlance.common.data.UserProfileEntity
 import com.github.radlance.kanbanboards.invitation.domain.Invitation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -83,7 +83,10 @@ interface InvitationRemoteDataSource {
         override fun accept(boardId: String, invitationId: String) {
             service.post(
                 path = "boards-members",
-                obj = BoardMemberEntity(memberId = myUser.id, boardId = boardId)
+                obj = BoardMemberEntity(
+                    memberId = myUser.id,
+                    boardId = boardId
+                )
             )
 
             service.delete(

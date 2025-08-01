@@ -1,5 +1,8 @@
 package com.github.radlance.kanbanboards.board.settings.data
 
+import com.github.radlance.common.core.ManageResource
+import com.github.radlance.common.data.IgnoreHandle
+import com.github.radlance.common.data.UsersRemoteDataSource
 import com.github.radlance.kanbanboards.R
 import com.github.radlance.kanbanboards.board.core.domain.BoardInfo
 import com.github.radlance.kanbanboards.board.core.domain.BoardRepository
@@ -8,9 +11,6 @@ import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsRepos
 import com.github.radlance.kanbanboards.board.settings.domain.BoardSettingsResult
 import com.github.radlance.kanbanboards.board.settings.domain.UpdateBoardNameResult
 import com.github.radlance.kanbanboards.boards.data.BoardsRemoteDataSource
-import com.github.radlance.kanbanboards.common.core.ManageResource
-import com.github.radlance.kanbanboards.common.data.IgnoreHandle
-import com.github.radlance.kanbanboards.common.data.UsersRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine

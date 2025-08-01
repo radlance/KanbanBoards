@@ -19,8 +19,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.github.radlance.kanbanboards.auth.presentation.signin.SignInScreen
-import com.github.radlance.kanbanboards.auth.presentation.signup.SignUpScreen
 import com.github.radlance.kanbanboards.board.core.presentation.BoardScreen
 import com.github.radlance.kanbanboards.board.core.presentation.BoardViewModel
 import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardViewModel
@@ -37,6 +35,8 @@ import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketScree
 import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketViewModel
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoScreen
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoViewModel
+import com.github.radlance.login.presentation.signin.SignInScreen
+import com.github.radlance.login.presentation.signup.SignUpScreen
 
 @Composable
 fun NavGraph(
