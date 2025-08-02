@@ -1,6 +1,5 @@
 package com.github.radlance.board.settings.data
 
-import com.github.radlance.board.R
 import com.github.radlance.board.core.domain.BoardRepository
 import com.github.radlance.board.core.domain.BoardResult
 import com.github.radlance.board.settings.domain.BoardSettingsRepository
@@ -73,7 +72,9 @@ class RemoteBoardSettingsRepository @Inject constructor(
             UpdateBoardNameResult.Success
         } catch (e: Exception) {
             UpdateBoardNameResult.Error(
-                message = e.message ?: manageResource.string(R.string.create_board_error)
+                message = e.message ?: manageResource.string(
+                    com.github.radlance.core.R.string.create_board_error
+                )
             )
         }
     }

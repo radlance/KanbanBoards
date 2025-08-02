@@ -41,5 +41,7 @@
     <string name="navigate_to_edit_ticket">Navigate to edit ticket</string>
     <string name="ticket_info">Ticket info</string>
     <string name="ticket_deleted">Ticket deleted!</string>
+    <string name="create_board_error">Creating board error</string>
+    <string name="create_board">Create Board</string>
 
 </resources>

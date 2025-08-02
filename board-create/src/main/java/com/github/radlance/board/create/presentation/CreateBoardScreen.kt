@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.radlance.board.R
 import com.github.radlance.core.domain.BoardInfo
 import com.github.radlance.core.presentation.BackButton
 import com.github.radlance.core.presentation.BaseColumn
@@ -65,7 +64,7 @@ fun CreateBoardsScreen(
                     BackButton(navigateUp)
                 },
                 title = {
-                    Text(text = stringResource(R.string.create_board))
+                    Text(text = stringResource(com.github.radlance.core.R.string.create_board))
                 }
             )
         }

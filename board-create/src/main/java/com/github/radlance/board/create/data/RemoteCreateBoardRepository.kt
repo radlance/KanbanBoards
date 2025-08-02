@@ -1,6 +1,5 @@
 package com.github.radlance.board.create.data
 
-import com.github.radlance.board.R
 import com.github.radlance.board.create.domain.CreateBoardRepository
 import com.github.radlance.board.create.domain.CreateBoardResult
 import com.github.radlance.core.core.ManageResource
@@ -28,7 +27,9 @@ class RemoteCreateBoardRepository @Inject constructor(
             CreateBoardResult.Success(boardInfo)
         } catch (e: Exception) {
             CreateBoardResult.Error(
-                message = e.message ?: manageResource.string(R.string.create_board_error)
+                message = e.message ?: manageResource.string(
+                    com.github.radlance.core.R.string.create_board_error
+                )
             )
         }
     }
