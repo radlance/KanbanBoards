@@ -1,7 +1,3 @@
--keepclassmembers class com.google.firebase.database.GenericTypeIndicator{*;}
--keep class * extends com.google.firebase.database.GenericTypeIndicator{*;}
--keep class com.google.firebase.database.GenericTypeIndicator{*;}
-
 -keepclassmembers class * {
     public <init>();
 }
