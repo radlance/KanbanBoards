@@ -56,8 +56,6 @@ import com.github.radlance.board.core.domain.Column
 import com.github.radlance.core.domain.User
 import com.github.radlance.core.presentation.BaseColumn
 import com.github.radlance.ticket.R
-import com.github.radlance.ticket.create.presentation.TicketColor
-import com.github.radlance.ticket.create.presentation.TicketColorsRow
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)

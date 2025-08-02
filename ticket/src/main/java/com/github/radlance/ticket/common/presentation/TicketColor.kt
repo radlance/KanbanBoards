@@ -1,4 +1,4 @@
-package com.github.radlance.ticket.create.presentation
+package com.github.radlance.ticket.common.presentation
 
 interface TicketColor {
 

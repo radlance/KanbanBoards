@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation(project(":auth"))
-    implementation(project(":core"))
-    implementation(project(":board"))
+    api(project(":core"))
+    api(project(":board"))
 }

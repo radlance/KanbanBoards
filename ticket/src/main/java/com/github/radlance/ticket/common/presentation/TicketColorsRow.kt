@@ -1,4 +1,4 @@
-package com.github.radlance.ticket.create.presentation
+package com.github.radlance.ticket.common.presentation
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut

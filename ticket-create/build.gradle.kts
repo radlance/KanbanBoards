@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.radlance.ticket.edit"
+    namespace = "com.github.radlance.ticket.create"
     compileSdk = 36
 
     defaultConfig {
