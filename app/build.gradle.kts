@@ -76,5 +76,6 @@ dependencies {
     implementation(project(":ticket"))
     implementation(project(":ticket-create"))
     implementation(project(":ticket-edit"))
+    implementation(project(":ticket-info"))
     implementation(project(":uikit"))
 }

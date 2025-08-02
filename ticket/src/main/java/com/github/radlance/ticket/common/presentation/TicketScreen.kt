@@ -217,7 +217,9 @@ fun TicketScreen(
                     value = members.find { it.id == selectedAssigneeId }?.email ?: "",
                     onValueChange = {},
                     singleLine = true,
-                    placeholder = { Text(text = stringResource(R.string.assignee)) },
+                    placeholder = {
+                        Text(text = stringResource(com.github.radlance.core.R.string.assignee))
+                    },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     }

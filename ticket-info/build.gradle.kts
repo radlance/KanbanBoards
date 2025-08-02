@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.radlance.ticket.edit"
+    namespace = "com.github.radlance.ticket.info"
     compileSdk = 36
 
     defaultConfig {
@@ -50,6 +50,6 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation(project(":ticket"))
-    implementation(project(":ticket-info"))
+    api(project(":core"))
+    api(project(":board"))
 }

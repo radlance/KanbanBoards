@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.core.presentation.BackButton
-import com.github.radlance.ticket.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,12 +45,18 @@ fun TicketInfoScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = stringResource(R.string.navigate_to_edit_ticket)
+                            contentDescription = stringResource(
+                                com.github.radlance.core.R.string.navigate_to_edit_ticket
+                            )
                         )
                     }
                 },
                 title = {
-                    Text(text = stringResource(R.string.ticket_info))
+                    Text(
+                        text = stringResource(
+                            com.github.radlance.core.R.string.ticket_info
+                        )
+                    )
                 }
             )
         },

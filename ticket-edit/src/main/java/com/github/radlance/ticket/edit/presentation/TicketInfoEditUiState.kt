@@ -170,7 +170,7 @@ interface TicketInfoEditUiState {
 
                 Toast.makeText(
                     context,
-                    context.getString(R.string.ticket_deleted),
+                    context.getString(com.github.radlance.core.R.string.ticket_deleted),
                     Toast.LENGTH_SHORT
                 ).show()
             }

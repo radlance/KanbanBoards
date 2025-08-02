@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import com.github.radlance.board.core.domain.Ticket
 import com.github.radlance.core.presentation.BaseColumn
-import com.github.radlance.ticket.R
+import com.github.radlance.ticket.info.R
 
 @Composable
 fun TicketInfoContent(
@@ -50,7 +50,7 @@ fun TicketInfoContent(
                     stringResource(R.string.no_assigned_member)
                 },
                 onValueChange = {},
-                label = { Text(text = stringResource(R.string.assignee)) },
+                label = { Text(text = stringResource(com.github.radlance.core.R.string.assignee)) },
                 modifier = Modifier.fillMaxWidth()
             )
 

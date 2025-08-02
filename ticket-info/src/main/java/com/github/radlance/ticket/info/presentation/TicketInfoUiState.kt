@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.github.radlance.board.core.domain.Ticket
 import com.github.radlance.core.presentation.ErrorMessage
-import com.github.radlance.ticket.R
 
 interface TicketInfoUiState {
 
@@ -57,7 +56,7 @@ interface TicketInfoUiState {
 
                 Toast.makeText(
                     context,
-                    context.getString(R.string.ticket_deleted),
+                    context.getString(com.github.radlance.core.R.string.ticket_deleted),
                     Toast.LENGTH_SHORT
                 ).show()
             }

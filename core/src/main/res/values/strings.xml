@@ -37,5 +37,9 @@
     <string name="settings">Settings</string>
     <string name="are_you_sure_you_want_to_delete_your_profile">Are you sure you want to delete your profile?</string>
     <string name="invitations">Invitations</string>
+    <string name="assignee">Assignee</string>
+    <string name="navigate_to_edit_ticket">Navigate to edit ticket</string>
+    <string name="ticket_info">Ticket info</string>
+    <string name="ticket_deleted">Ticket deleted!</string>
 
 </resources>
