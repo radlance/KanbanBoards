@@ -1,7 +1,7 @@
 package com.github.radlance.ticket.create.di
 
 import com.github.radlance.core.domain.UnitResult
-import com.github.radlance.ticket.common.presentation.TicketUiState
+import com.github.radlance.ticket.core.presentation.TicketUiState
 import com.github.radlance.ticket.create.data.RemoteCreateTicketRepository
 import com.github.radlance.ticket.create.domain.CreateTicketRepository
 import com.github.radlance.ticket.create.presentation.BoardMembersResultMapper

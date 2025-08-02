@@ -1,7 +1,7 @@
 package com.github.radlance.ticket.create.presentation
 
-import com.github.radlance.ticket.common.presentation.BaseHandleTicket
-import com.github.radlance.ticket.common.presentation.HandleTicket
+import com.github.radlance.ticket.core.presentation.BaseHandleTicket
+import com.github.radlance.ticket.core.presentation.HandleTicket
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

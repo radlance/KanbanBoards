@@ -1,4 +1,4 @@
-package com.github.radlance.ticket.common.presentation
+package com.github.radlance.ticket.core.presentation
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

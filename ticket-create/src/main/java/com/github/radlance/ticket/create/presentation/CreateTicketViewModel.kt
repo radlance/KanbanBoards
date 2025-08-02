@@ -3,8 +3,8 @@ package com.github.radlance.ticket.create.presentation
 import com.github.radlance.board.core.domain.Column
 import com.github.radlance.board.core.domain.NewTicket
 import com.github.radlance.core.presentation.RunAsync
-import com.github.radlance.ticket.common.presentation.BaseTicketViewModel
-import com.github.radlance.ticket.common.presentation.TicketUiState
+import com.github.radlance.ticket.core.presentation.BaseTicketViewModel
+import com.github.radlance.ticket.core.presentation.TicketUiState
 import com.github.radlance.ticket.create.domain.CreateTicketRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map

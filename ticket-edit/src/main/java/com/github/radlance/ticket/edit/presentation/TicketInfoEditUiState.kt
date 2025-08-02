@@ -28,7 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.board.core.domain.Ticket
 import com.github.radlance.core.presentation.ErrorMessage
 import com.github.radlance.ticket.R
-import com.github.radlance.ticket.common.presentation.TicketScaffold
+import com.github.radlance.ticket.core.presentation.TicketScaffold
 
 interface TicketInfoEditUiState {
 

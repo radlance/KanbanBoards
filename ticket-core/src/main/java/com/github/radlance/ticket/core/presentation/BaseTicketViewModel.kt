@@ -1,4 +1,4 @@
-package com.github.radlance.ticket.common.presentation
+package com.github.radlance.ticket.core.presentation
 
 import com.github.radlance.core.presentation.BaseViewModel
 import com.github.radlance.core.presentation.RunAsync

@@ -1,4 +1,4 @@
-package com.github.radlance.ticket.common.domain
+package com.github.radlance.ticket.core.domain
 
 import com.github.radlance.core.domain.BoardMembersResult
 import kotlinx.coroutines.flow.Flow

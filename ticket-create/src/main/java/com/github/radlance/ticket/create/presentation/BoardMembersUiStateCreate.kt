@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import com.github.radlance.core.domain.User
 import com.github.radlance.core.presentation.ErrorMessage
 import com.github.radlance.ticket.R
-import com.github.radlance.ticket.common.presentation.TicketActions
-import com.github.radlance.ticket.common.presentation.TicketScaffold
-import com.github.radlance.ticket.common.presentation.TicketScreen
+import com.github.radlance.ticket.core.presentation.TicketActions
+import com.github.radlance.ticket.core.presentation.TicketScaffold
+import com.github.radlance.ticket.core.presentation.TicketScreen
 
 interface BoardMembersUiStateCreate {
 

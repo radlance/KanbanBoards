@@ -50,6 +50,6 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation(project(":ticket"))
+    implementation(project(":ticket-core"))
     implementation(project(":ticket-info"))
 }

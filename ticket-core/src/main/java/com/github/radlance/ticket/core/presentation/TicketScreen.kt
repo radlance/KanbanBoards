@@ -1,4 +1,4 @@
-package com.github.radlance.ticket.common.presentation
+package com.github.radlance.ticket.core.presentation
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility

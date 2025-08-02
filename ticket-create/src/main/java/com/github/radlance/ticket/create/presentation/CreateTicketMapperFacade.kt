@@ -2,9 +2,9 @@ package com.github.radlance.ticket.create.presentation
 
 import com.github.radlance.core.domain.BoardMembersResult
 import com.github.radlance.core.domain.UnitResult
-import com.github.radlance.ticket.common.presentation.BaseTicketMapperFacade
-import com.github.radlance.ticket.common.presentation.TicketMapperFacade
-import com.github.radlance.ticket.common.presentation.TicketUiState
+import com.github.radlance.ticket.core.presentation.BaseTicketMapperFacade
+import com.github.radlance.ticket.core.presentation.TicketMapperFacade
+import com.github.radlance.ticket.core.presentation.TicketUiState
 import javax.inject.Inject
 
 interface CreateTicketMapperFacade : TicketMapperFacade {

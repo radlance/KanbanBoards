@@ -73,7 +73,7 @@ dependencies {
     implementation(project(":boards"))
     implementation(project(":invitation"))
     implementation(project(":profile"))
-    implementation(project(":ticket"))
+    implementation(project(":ticket-core"))
     implementation(project(":ticket-create"))
     implementation(project(":ticket-edit"))
     implementation(project(":ticket-info"))
