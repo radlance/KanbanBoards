@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.edit.domain
 
-import com.github.radlance.common.domain.UnitResult
+import com.github.radlance.board.core.domain.EditTicket
+import com.github.radlance.core.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.common.domain.TicketRepository
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository
 

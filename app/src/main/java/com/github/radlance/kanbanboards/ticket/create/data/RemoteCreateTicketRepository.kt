@@ -1,13 +1,12 @@
 package com.github.radlance.kanbanboards.ticket.create.data
 
-import com.github.radlance.common.core.ManageResource
-import com.github.radlance.common.domain.BoardMembersResult
-import com.github.radlance.common.domain.UnitResult
-import com.github.radlance.common.domain.UsersRepository
-import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.core.data.TicketRemoteDataSource
+import com.github.radlance.board.core.data.TicketRemoteDataSource
+import com.github.radlance.board.core.domain.NewTicket
+import com.github.radlance.core.core.ManageResource
+import com.github.radlance.core.domain.BoardMembersResult
+import com.github.radlance.core.domain.UnitResult
+import com.github.radlance.core.domain.UsersRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
-import com.github.radlance.kanbanboards.ticket.create.domain.NewTicket
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -22,7 +21,9 @@ class RemoteCreateTicketRepository @Inject constructor(
             ticketRemoteDataSource.createTicket(newTicket)
             UnitResult.Success
         } catch (e: Exception) {
-            UnitResult.Error(e.message ?: manageResource.string(R.string.error))
+            UnitResult.Error(
+                e.message ?: manageResource.string(com.github.radlance.core.R.string.error)
+            )
         }
     }
 

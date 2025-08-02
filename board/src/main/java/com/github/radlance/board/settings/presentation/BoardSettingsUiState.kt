@@ -1,0 +1,67 @@
+package com.github.radlance.board.settings.presentation
+
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.github.radlance.board.settings.domain.BoardUser
+import com.github.radlance.core.domain.BoardInfo
+import com.github.radlance.core.domain.User
+import com.github.radlance.core.presentation.ErrorMessage
+
+interface BoardSettingsUiState {
+
+    @Composable
+    fun Show(
+        navigateUp: () -> Unit,
+        boardInfo: BoardInfo,
+        boardSettingsAction: BoardSettingsAction,
+        modifier: Modifier = Modifier
+    )
+
+    data class Success(
+        private val users: List<User>,
+        private val members: List<BoardUser>,
+        private val invited: List<BoardUser>
+    ) : BoardSettingsUiState {
+
+        @Composable
+        override fun Show(
+            navigateUp: () -> Unit,
+            boardInfo: BoardInfo,
+            boardSettingsAction: BoardSettingsAction,
+            modifier: Modifier
+        ) {
+            BoardSettingsContent(
+                users = users,
+                members = members,
+                invited = invited,
+                boardInfo = boardInfo,
+                boardSettingsAction = boardSettingsAction,
+                navigateUp = navigateUp,
+                modifier = modifier
+            )
+        }
+    }
+
+    data class Error(private val message: String) : BoardSettingsUiState {
+
+        @Composable
+        override fun Show(
+            navigateUp: () -> Unit,
+            boardInfo: BoardInfo,
+            boardSettingsAction: BoardSettingsAction,
+            modifier: Modifier
+        ) = ErrorMessage(message)
+    }
+
+    object Loading : BoardSettingsUiState {
+
+        @Composable
+        override fun Show(
+            navigateUp: () -> Unit,
+            boardInfo: BoardInfo,
+            boardSettingsAction: BoardSettingsAction,
+            modifier: Modifier
+        ) = CircularProgressIndicator()
+    }
+}

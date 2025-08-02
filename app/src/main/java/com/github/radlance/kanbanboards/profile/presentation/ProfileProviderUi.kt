@@ -38,10 +38,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.radlance.kanbanboards.R
-import com.github.radlance.login.presentation.signin.AccountManager
-import com.github.radlance.login.presentation.signin.FormatNonce
-import com.github.radlance.login.presentation.signin.GoogleAccountManager
+import com.github.radlance.auth.presentation.signin.AccountManager
+import com.github.radlance.auth.presentation.signin.FormatNonce
+import com.github.radlance.auth.presentation.signin.GoogleAccountManager
 import kotlinx.coroutines.launch
 
 interface ProfileProviderUi {
@@ -66,12 +65,12 @@ interface ProfileProviderUi {
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
                     label = {
-                        Text(text = stringResource(com.github.radlance.common.R.string.email))
+                        Text(text = stringResource(com.github.radlance.core.R.string.email))
                     },
                     placeholder = {
                         Text(
                             text = stringResource(
-                                com.github.radlance.common.R.string.enter_your_email
+                                com.github.radlance.core.R.string.enter_your_email
                             )
                         )
                     },
@@ -85,12 +84,12 @@ interface ProfileProviderUi {
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                     label = {
-                        Text(text = stringResource(com.github.radlance.common.R.string.password))
+                        Text(text = stringResource(com.github.radlance.core.R.string.password))
                     },
                     placeholder = {
                         Text(
                             text = stringResource(
-                                com.github.radlance.common.R.string.enter_your_password
+                                com.github.radlance.core.R.string.enter_your_password
                             )
                         )
                     },
@@ -106,7 +105,7 @@ interface ProfileProviderUi {
                             Icon(
                                 imageVector = icon,
                                 contentDescription = stringResource(
-                                    com.github.radlance.common.R.string.show_hide_password_icon
+                                    com.github.radlance.core.R.string.show_hide_password_icon
                                 )
                             )
                         }
@@ -121,7 +120,7 @@ interface ProfileProviderUi {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = stringResource(R.string.delete_profile))
+                    Text(text = stringResource(com.github.radlance.core.R.string.delete_profile))
                 }
             }
         }
@@ -158,7 +157,7 @@ interface ProfileProviderUi {
                     )
             ) {
                 Image(
-                    painter = painterResource(com.github.radlance.login.R.drawable.ic_google),
+                    painter = painterResource(com.github.radlance.auth.R.drawable.ic_google),
                     contentDescription = "Google",
                     modifier = Modifier
                         .fillMaxSize()

@@ -10,7 +10,7 @@ interface ProvideDatabase {
     fun database(): DatabaseReference
 }
 
-internal class BaseProvideDatabase @Inject constructor(): ProvideDatabase {
+internal class BaseProvideDatabase @Inject constructor() : ProvideDatabase {
 
     init {
         Firebase.database(DATABASE_URL).setPersistenceEnabled(false)

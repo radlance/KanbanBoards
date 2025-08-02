@@ -11,7 +11,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.radlance.login"
+    namespace = "com.github.radlance.auth"
     compileSdk = 36
 
     defaultConfig {
@@ -56,13 +56,9 @@ android {
 dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.google.identity.googleid)
     implementation(libs.navigation.compose)
-
-    implementation(project(":api-service"))
-    implementation(project(":uikit"))
-    implementation(project(":common"))
+    implementation(project(":core"))
 }

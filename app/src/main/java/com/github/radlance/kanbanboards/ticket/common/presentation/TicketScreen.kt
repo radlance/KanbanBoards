@@ -52,10 +52,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.radlance.common.domain.User
-import com.github.radlance.common.presentation.BaseColumn
-import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.core.domain.Column
+import com.github.radlance.board.core.domain.Column
+import com.github.radlance.core.domain.User
+import com.github.radlance.core.presentation.BaseColumn
 import com.github.radlance.kanbanboards.ticket.create.presentation.TicketColor
 import com.github.radlance.kanbanboards.ticket.create.presentation.TicketColorsRow
 import java.time.LocalDateTime
@@ -137,12 +136,12 @@ fun TicketScreen(
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.Search,
-                                contentDescription = stringResource(R.string.search_icon)
+                                contentDescription = stringResource(com.github.radlance.core.R.string.search_icon)
                             )
                         },
                         placeholder = {
                             Text(
-                                text = stringResource(R.string.search)
+                                text = stringResource(com.github.radlance.core.R.string.search)
                             )
                         },
                         singleLine = true
@@ -192,9 +191,9 @@ fun TicketScreen(
             OutlinedTextField(
                 value = titleFieldValue,
                 onValueChange = { titleFieldValue = it },
-                label = { Text(text = stringResource(R.string.title)) },
+                label = { Text(text = stringResource(com.github.radlance.core.R.string.title)) },
                 singleLine = true,
-                placeholder = { Text(text = stringResource(R.string.at_least_3_symbol)) },
+                placeholder = { Text(text = stringResource(com.github.radlance.core.R.string.at_least_3_symbol)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -207,7 +206,7 @@ fun TicketScreen(
             OutlinedTextField(
                 value = descriptionFieldValue,
                 onValueChange = { descriptionFieldValue = it },
-                label = { Text(text = stringResource(R.string.description_optional)) },
+                label = { Text(text = stringResource(com.github.radlance.core.R.string.description_optional)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -219,7 +218,7 @@ fun TicketScreen(
                     value = members.find { it.id == selectedAssigneeId }?.email ?: "",
                     onValueChange = {},
                     singleLine = true,
-                    placeholder = { Text(text = stringResource(R.string.assignee)) },
+                    placeholder = { Text(text = stringResource(com.github.radlance.core.R.string.assignee)) },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     }

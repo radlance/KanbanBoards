@@ -1,7 +1,9 @@
 package com.github.radlance.kanbanboards.profile.data
 
-import com.github.radlance.common.data.HandleError
-import com.github.radlance.kanbanboards.board.core.data.BoardRemoteDataSource
+import com.github.radlance.api.service.MyUser
+import com.github.radlance.api.service.Service
+import com.github.radlance.board.core.data.BoardRemoteDataSource
+import com.github.radlance.core.data.HandleError
 import javax.inject.Inject
 
 interface HandleProfileRemoteDataSource {
@@ -10,9 +12,9 @@ interface HandleProfileRemoteDataSource {
 
     class Base @Inject constructor(
         private val handle: HandleError,
-        private val service: com.github.radlance.api.service.Service,
+        private val service: Service,
         private val boardRemoteDataSource: BoardRemoteDataSource,
-        private val myUser: com.github.radlance.api.service.MyUser
+        private val myUser: MyUser
     ) : HandleProfileRemoteDataSource {
 
         override suspend fun handle(deleteAction: () -> Unit) {

@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.common.presentation
 
-import com.github.radlance.kanbanboards.board.core.domain.Column
+import com.github.radlance.board.core.domain.Column
 import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDateTime
 

@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.create.di
 
-import com.github.radlance.common.domain.UnitResult
+import com.github.radlance.core.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState
 import com.github.radlance.kanbanboards.ticket.create.data.RemoteCreateTicketRepository
 import com.github.radlance.kanbanboards.ticket.create.domain.CreateTicketRepository
@@ -25,7 +25,7 @@ interface TicketModule {
     @Binds
     fun provideBoardMembersResultMapper(
         boardMembersResultMapper: BoardMembersResultMapper
-    ): com.github.radlance.common.domain.BoardMembersResult.Mapper<BoardMembersUiStateCreate>
+    ): com.github.radlance.core.domain.BoardMembersResult.Mapper<BoardMembersUiStateCreate>
 
     @Binds
     fun provideHandleAddTicket(handleCreateTicket: HandleCreateTicket.Base): HandleCreateTicket

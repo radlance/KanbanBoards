@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.profile.presentation
 
-import com.github.radlance.common.presentation.RunAsync
+import com.github.radlance.auth.presentation.signin.CredentialResult
+import com.github.radlance.core.presentation.RunAsync
 import com.github.radlance.kanbanboards.profile.domain.ProfileRepository
-import com.github.radlance.login.presentation.signin.CredentialResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart

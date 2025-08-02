@@ -6,10 +6,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.github.radlance.common.domain.User
-import com.github.radlance.common.presentation.ErrorMessage
-import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.core.domain.Ticket
+import com.github.radlance.board.core.domain.Ticket
+import com.github.radlance.core.domain.User
+import com.github.radlance.core.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketActions
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketScreen
 
@@ -47,7 +46,7 @@ interface BoardMembersUiStateEdit {
                     ticketId = id,
                     column = column,
                     creationDate = creationDate,
-                    buttonLabelId = R.string.edit_ticket,
+                    buttonLabelId = com.github.radlance.core.R.string.edit_ticket,
                     modifier = modifier
                 )
             }

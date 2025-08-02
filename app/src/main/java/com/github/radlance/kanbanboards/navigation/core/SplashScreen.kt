@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.github.radlance.kanbanboards.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -25,7 +24,7 @@ fun SplashScreen(
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(
-            text = stringResource(R.string.kanban_boards),
+            text = stringResource(com.github.radlance.core.R.string.kanban_boards),
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold
         )

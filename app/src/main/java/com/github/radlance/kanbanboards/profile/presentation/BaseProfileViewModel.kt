@@ -1,8 +1,8 @@
 package com.github.radlance.kanbanboards.profile.presentation
 
-import com.github.radlance.common.domain.UnitResult
-import com.github.radlance.common.presentation.BaseViewModel
-import com.github.radlance.common.presentation.RunAsync
+import com.github.radlance.core.domain.UnitResult
+import com.github.radlance.core.presentation.BaseViewModel
+import com.github.radlance.core.presentation.RunAsync
 
 abstract class BaseProfileViewModel(
     protected val handleProfile: HandleProfile,

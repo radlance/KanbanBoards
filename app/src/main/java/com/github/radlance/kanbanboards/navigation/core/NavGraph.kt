@@ -19,15 +19,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.github.radlance.kanbanboards.board.core.presentation.BoardScreen
-import com.github.radlance.kanbanboards.board.core.presentation.BoardViewModel
-import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardViewModel
-import com.github.radlance.kanbanboards.board.create.presentation.CreateBoardsScreen
-import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsScreen
-import com.github.radlance.kanbanboards.board.settings.presentation.BoardSettingsViewModel
-import com.github.radlance.kanbanboards.boards.presentation.BoardsScreen
-import com.github.radlance.kanbanboards.invitation.presentation.InvitationScreen
-import com.github.radlance.kanbanboards.invitation.presentation.InvitationViewModel
+import com.github.radlance.auth.presentation.signin.SignInScreen
+import com.github.radlance.auth.presentation.signup.SignUpScreen
+import com.github.radlance.board.core.presentation.BoardScreen
+import com.github.radlance.board.core.presentation.BoardViewModel
+import com.github.radlance.board.create.presentation.CreateBoardViewModel
+import com.github.radlance.board.create.presentation.CreateBoardsScreen
+import com.github.radlance.board.settings.presentation.BoardSettingsScreen
+import com.github.radlance.board.settings.presentation.BoardSettingsViewModel
+import com.github.radlance.boards.presentation.BoardsScreen
+import com.github.radlance.invitation.presentation.InvitationScreen
+import com.github.radlance.invitation.presentation.InvitationViewModel
 import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketViewModel
@@ -35,8 +37,6 @@ import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketScree
 import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketViewModel
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoScreen
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoViewModel
-import com.github.radlance.login.presentation.signin.SignInScreen
-import com.github.radlance.login.presentation.signup.SignUpScreen
 
 @Composable
 fun NavGraph(

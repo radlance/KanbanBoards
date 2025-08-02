@@ -31,9 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.radlance.common.presentation.BackButton
-import com.github.radlance.common.presentation.BaseColumn
-import com.github.radlance.kanbanboards.R
+import com.github.radlance.core.presentation.BackButton
+import com.github.radlance.core.presentation.BaseColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +62,9 @@ fun ProfileScreen(
                 modifier = Modifier.padding(30.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.sign_in_again_to_delete_your_profile),
+                    text = stringResource(
+                        com.github.radlance.core.R.string.sign_in_again_to_delete_your_profile
+                    ),
                     textAlign = TextAlign.Center
                 )
                 Spacer(Modifier.height(8.dp))
@@ -83,13 +84,15 @@ fun ProfileScreen(
                     BackButton(navigateUp)
                 },
                 title = {
-                    Text(text = stringResource(R.string.profile))
+                    Text(text = stringResource(com.github.radlance.core.R.string.profile))
                 },
                 actions = {
                     IconButton(onClick = { showDialog = true }) {
                         Icon(
                             imageVector = Icons.Rounded.Delete,
-                            contentDescription = stringResource(R.string.delete_profile)
+                            contentDescription = stringResource(
+                                com.github.radlance.core.R.string.delete_profile
+                            )
                         )
                     }
                 }
@@ -107,7 +110,7 @@ fun ProfileScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = stringResource(R.string.sign_out))
+                Text(text = stringResource(com.github.radlance.core.R.string.sign_out))
             }
             Spacer(Modifier.height(10.dp))
         }

@@ -1,8 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.edit.data
 
-import com.github.radlance.common.core.ManageResource
-import com.github.radlance.common.domain.UnitResult
-import com.github.radlance.kanbanboards.R
+import com.github.radlance.core.core.ManageResource
+import com.github.radlance.core.domain.UnitResult
 import javax.inject.Inject
 
 interface HandleUnitResult {
@@ -18,7 +17,9 @@ interface HandleUnitResult {
                 action.invoke()
                 UnitResult.Success
             } catch (e: Exception) {
-                UnitResult.Error(e.message ?: manageResource.string(R.string.error))
+                UnitResult.Error(
+                    e.message ?: manageResource.string(com.github.radlance.core.R.string.error)
+                )
             }
         }
     }

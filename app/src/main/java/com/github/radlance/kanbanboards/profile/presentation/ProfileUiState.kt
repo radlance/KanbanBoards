@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.github.radlance.kanbanboards.R
 
 interface ProfileUiState {
 
@@ -23,14 +22,14 @@ interface ProfileUiState {
         override fun Show() {
             Column {
                 Text(
-                    text = stringResource(R.string.my_name, name),
+                    text = stringResource(com.github.radlance.core.R.string.my_name, name),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = stringResource(R.string.my_email, email),
+                    text = stringResource(com.github.radlance.core.R.string.my_email, email),
                     style = MaterialTheme.typography.bodyLarge
                 )
             }

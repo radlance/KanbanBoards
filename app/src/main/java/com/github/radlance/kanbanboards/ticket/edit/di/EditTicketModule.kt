@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.edit.di
 
-import com.github.radlance.common.domain.BoardMembersResult
-import com.github.radlance.common.domain.UnitResult
+import com.github.radlance.core.domain.BoardMembersResult
+import com.github.radlance.core.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.edit.data.HandleUnitResult
 import com.github.radlance.kanbanboards.ticket.edit.data.RemoteEditTicketRepository
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository

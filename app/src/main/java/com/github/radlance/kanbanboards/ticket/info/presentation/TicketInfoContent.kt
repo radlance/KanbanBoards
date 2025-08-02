@@ -23,9 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
-import com.github.radlance.common.presentation.BaseColumn
-import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.core.domain.Ticket
+import com.github.radlance.board.core.domain.Ticket
+import com.github.radlance.core.presentation.BaseColumn
 
 @Composable
 fun TicketInfoContent(
@@ -47,10 +46,10 @@ fun TicketInfoContent(
 
             OutlinedTextField(
                 value = ticket.assignedMemberName.ifEmpty {
-                    stringResource(R.string.no_assigned_member)
+                    stringResource(com.github.radlance.core.R.string.no_assigned_member)
                 },
                 onValueChange = {},
-                label = { Text(text = stringResource(R.string.assignee)) },
+                label = { Text(text = stringResource(com.github.radlance.core.R.string.assignee)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -67,7 +66,7 @@ fun TicketInfoContent(
         if (ticket.description.isNotEmpty()) {
             Column {
                 Text(
-                    text = stringResource(R.string.description),
+                    text = stringResource(com.github.radlance.core.R.string.description),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )

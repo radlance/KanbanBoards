@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.create.presentation
 
-import com.github.radlance.common.domain.BoardMembersResult
-import com.github.radlance.common.domain.UnitResult
+import com.github.radlance.core.domain.BoardMembersResult
+import com.github.radlance.core.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.common.presentation.BaseTicketMapperFacade
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketMapperFacade
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketUiState

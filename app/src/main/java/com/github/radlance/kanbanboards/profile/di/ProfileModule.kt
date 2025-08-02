@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.profile.di
 
-import com.github.radlance.common.domain.UnitResult
+import com.github.radlance.auth.presentation.signin.CredentialResult
+import com.github.radlance.core.domain.UnitResult
 import com.github.radlance.kanbanboards.profile.data.HandleProfileRemoteDataSource
 import com.github.radlance.kanbanboards.profile.data.ProfileRemoteDataSource
 import com.github.radlance.kanbanboards.profile.data.RemoteProfileRepository
@@ -16,7 +17,6 @@ import com.github.radlance.kanbanboards.profile.presentation.ProfileMapperFacade
 import com.github.radlance.kanbanboards.profile.presentation.ProfileProviderMapper
 import com.github.radlance.kanbanboards.profile.presentation.ProfileProviderUi
 import com.github.radlance.kanbanboards.profile.presentation.ProfileUiState
-import com.github.radlance.login.presentation.signin.CredentialResult
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

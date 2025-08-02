@@ -1,0 +1,13 @@
+package com.github.radlance.auth.presentation.signin
+
+import com.github.radlance.core.core.ManageResource
+import javax.inject.Inject
+
+internal class SignInCredentialMapper @Inject constructor(
+    private val manageResource: ManageResource
+) : CredentialResult.Mapper<SignInCredentialUiState> {
+
+    override fun mapSuccess(idToken: String): SignInCredentialUiState = SignInCredentialUiState.Success(idToken)
+
+    override fun mapError(): SignInCredentialUiState = SignInCredentialUiState.Error(manageResource)
+}

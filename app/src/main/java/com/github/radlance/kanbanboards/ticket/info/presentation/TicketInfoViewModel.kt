@@ -1,9 +1,9 @@
 package com.github.radlance.kanbanboards.ticket.info.presentation
 
-import com.github.radlance.common.presentation.BaseViewModel
-import com.github.radlance.common.presentation.RunAsync
-import com.github.radlance.kanbanboards.board.core.domain.Ticket
-import com.github.radlance.kanbanboards.board.core.presentation.TicketUi
+import com.github.radlance.board.core.domain.Ticket
+import com.github.radlance.board.core.presentation.TicketUi
+import com.github.radlance.core.presentation.BaseViewModel
+import com.github.radlance.core.presentation.RunAsync
 import com.github.radlance.kanbanboards.ticket.info.domain.TicketInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map

@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.edit.presentation
 
-import com.github.radlance.common.domain.UnitResult
+import com.github.radlance.core.domain.UnitResult
 import javax.inject.Inject
 
 class DeleteTicketMapper @Inject constructor() : UnitResult.Mapper<DeleteTicketUiState> {

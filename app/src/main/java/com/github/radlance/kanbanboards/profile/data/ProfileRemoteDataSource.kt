@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.profile.data
 
-import com.github.radlance.common.data.UserProfileEntity
+import com.github.radlance.core.data.UserProfileEntity
 import javax.inject.Inject
 
 interface ProfileRemoteDataSource {

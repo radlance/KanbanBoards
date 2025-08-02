@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.ticket.edit.presentation
 
-import com.github.radlance.common.domain.BoardMembersResult
-import com.github.radlance.common.domain.User
+import com.github.radlance.core.domain.BoardMembersResult
+import com.github.radlance.core.domain.User
 import javax.inject.Inject
 
 class BoardMembersEditMapper @Inject constructor() :

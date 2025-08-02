@@ -31,13 +31,14 @@ internal class BaseMyUser @Inject constructor() : MyUser {
 
     override val displayName: String get() = currentUser.displayName!!
 
-    override val profileProvider: ProfileProvider get() = when (
-        currentUser.providerData[1].providerId
-    ) {
-        GoogleAuthProvider.PROVIDER_ID -> ProfileProvider.Google
-        EmailAuthProvider.PROVIDER_ID -> ProfileProvider.Email
-        else -> throw IllegalStateException("unknown provider type")
-    }
+    override val profileProvider: ProfileProvider
+        get() = when (
+            currentUser.providerData[1].providerId
+        ) {
+            GoogleAuthProvider.PROVIDER_ID -> ProfileProvider.Google
+            EmailAuthProvider.PROVIDER_ID -> ProfileProvider.Email
+            else -> throw IllegalStateException("unknown provider type")
+        }
 
     override val exists: Boolean get() = Firebase.auth.currentUser != null
 

@@ -6,9 +6,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.github.radlance.common.domain.User
-import com.github.radlance.common.presentation.ErrorMessage
-import com.github.radlance.kanbanboards.R
+import com.github.radlance.core.domain.User
+import com.github.radlance.core.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketActions
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketScaffold
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketScreen
@@ -34,14 +33,14 @@ interface BoardMembersUiStateCreate {
         ) {
             TicketScaffold(
                 navigateUp = navigateUp,
-                titleResId = R.string.create_ticket
+                titleResId = com.github.radlance.core.R.string.create_ticket
             ) { ticketModifier ->
                 TicketScreen(
                     boardId = boardId,
                     members = members,
                     ticketActions = ticketActions,
                     navigateUp = navigateUp,
-                    buttonLabelId = R.string.create_ticket,
+                    buttonLabelId = com.github.radlance.core.R.string.create_ticket,
                     modifier = ticketModifier
                 )
             }

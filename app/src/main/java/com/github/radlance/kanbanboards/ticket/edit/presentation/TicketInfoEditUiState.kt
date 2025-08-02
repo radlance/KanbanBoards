@@ -25,9 +25,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.radlance.common.presentation.ErrorMessage
-import com.github.radlance.kanbanboards.R
-import com.github.radlance.kanbanboards.board.core.domain.Ticket
+import com.github.radlance.board.core.domain.Ticket
+import com.github.radlance.core.presentation.ErrorMessage
 import com.github.radlance.kanbanboards.ticket.common.presentation.TicketScaffold
 
 interface TicketInfoEditUiState {
@@ -67,17 +66,17 @@ interface TicketInfoEditUiState {
                                 viewModel.deleteTicket(ticket.id)
                             }
                         ) {
-                            Text(text = stringResource(R.string.delete))
+                            Text(text = stringResource(com.github.radlance.core.R.string.delete))
                         }
                     },
                     dismissButton = {
                         TextButton(onClick = { showAlertDialog = false }) {
-                            Text(text = stringResource(R.string.cancel))
+                            Text(text = stringResource(com.github.radlance.core.R.string.cancel))
                         }
                     },
                     title = {
                         Text(
-                            text = stringResource(R.string.delete_ticket),
+                            text = stringResource(com.github.radlance.core.R.string.delete_ticket),
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
                         )
@@ -88,7 +87,8 @@ interface TicketInfoEditUiState {
                     text = {
                         Text(
                             text = stringResource(
-                                R.string.are_you_sure_you_want_to_delete, ticket.name
+                                com.github.radlance.core.R.string.are_you_sure_you_want_to_delete,
+                                ticket.name
                             )
                         )
                     }
@@ -97,12 +97,12 @@ interface TicketInfoEditUiState {
 
             TicketScaffold(
                 navigateUp = navigateUp,
-                titleResId = R.string.edit_ticket,
+                titleResId = com.github.radlance.core.R.string.edit_ticket,
                 actions = {
                     IconButton(onClick = { showAlertDialog = true }) {
                         Icon(
                             imageVector = Icons.Rounded.Delete,
-                            contentDescription = stringResource(R.string.delete)
+                            contentDescription = stringResource(com.github.radlance.core.R.string.delete)
                         )
                     }
                 }
@@ -169,7 +169,7 @@ interface TicketInfoEditUiState {
 
                 Toast.makeText(
                     context,
-                    context.getString(R.string.ticket_deleted),
+                    context.getString(com.github.radlance.core.R.string.ticket_deleted),
                     Toast.LENGTH_SHORT
                 ).show()
             }

@@ -58,8 +58,8 @@ kapt {
 }
 
 dependencies {
-    implementation(libs.kotlinx.datetime)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
@@ -69,6 +69,9 @@ dependencies {
 
     implementation(project(":api-service"))
     implementation(project(":auth"))
-    implementation(project(":common"))
+    implementation(project(":core"))
+    implementation(project(":board"))
+    implementation(project(":boards"))
+    implementation(project(":invitation"))
     implementation(project(":uikit"))
 }

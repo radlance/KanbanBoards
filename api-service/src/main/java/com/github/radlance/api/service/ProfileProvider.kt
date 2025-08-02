@@ -2,9 +2,9 @@ package com.github.radlance.api.service
 
 interface ProfileProvider {
 
-    fun<T: Any> map(mapper: Mapper<T>): T
+    fun <T : Any> map(mapper: Mapper<T>): T
 
-    interface Mapper<T: Any> {
+    interface Mapper<T : Any> {
 
         fun mapEmail(): T
 
