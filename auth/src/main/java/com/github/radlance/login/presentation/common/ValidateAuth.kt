@@ -13,14 +13,14 @@ interface ValidateSignIn {
     fun validPassword(value: String): String
 }
 
-interface MatchEmail {
+internal interface MatchEmail {
 
     fun match(value: String): Boolean
-}
 
-internal class BaseMatchEmail @Inject constructor() : MatchEmail {
-    override fun match(value: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(value).matches()
+    class Base @Inject constructor() : MatchEmail {
+        override fun match(value: String): Boolean {
+            return Patterns.EMAIL_ADDRESS.matcher(value).matches()
+        }
     }
 }
 

@@ -3,7 +3,7 @@ package com.github.radlance.login.presentation.signin
 import com.github.radlance.common.core.ManageResource
 import javax.inject.Inject
 
-class SignInCredentialMapper @Inject constructor(
+internal class SignInCredentialMapper @Inject constructor(
     private val manageResource: ManageResource
 ) : CredentialResult.Mapper<SignInCredentialUiState> {
 

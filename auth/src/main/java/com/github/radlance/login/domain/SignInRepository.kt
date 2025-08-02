@@ -14,4 +14,4 @@ interface SignInRepository {
     suspend fun signInWithEmail(email: String, password: String): UnitResult
 }
 
-interface AuthRepository : SignInRepository, SignUpRepository
+internal interface AuthRepository : SignInRepository, SignUpRepository

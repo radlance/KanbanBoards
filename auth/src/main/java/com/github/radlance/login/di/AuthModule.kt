@@ -2,15 +2,11 @@ package com.github.radlance.login.di
 
 import com.github.radlance.common.domain.UnitResult
 import com.github.radlance.login.data.AuthRemoteDataSource
-import com.github.radlance.login.data.BaseAuthRemoteDataSource
 import com.github.radlance.login.data.BaseAuthRepository
-import com.github.radlance.login.data.BaseHandleAuthRemoteDataSource
-import com.github.radlance.login.data.BaseHandleAuthResult
 import com.github.radlance.login.data.HandleAuthRemoteDataSource
 import com.github.radlance.login.data.HandleAuthResult
 import com.github.radlance.login.domain.SignInRepository
 import com.github.radlance.login.domain.SignUpRepository
-import com.github.radlance.login.presentation.common.BaseMatchEmail
 import com.github.radlance.login.presentation.common.BaseValidateAuth
 import com.github.radlance.login.presentation.common.MatchEmail
 import com.github.radlance.login.presentation.common.ValidateAuth
@@ -34,7 +30,7 @@ import dagger.hilt.components.SingletonComponent
 internal interface AuthModule {
 
     @Binds
-    fun provideHandleAuthResult(baseResult: BaseHandleAuthResult): HandleAuthResult
+    fun provideHandleAuthResult(baseResult: HandleAuthResult.Base): HandleAuthResult
 
     @Binds
     fun provideSignInRepository(signInRepository: BaseAuthRepository): SignInRepository
@@ -53,10 +49,10 @@ internal interface AuthModule {
     ): UnitResult.Mapper<AuthResultUiState>
 
     @Binds
-    fun provideAuthRemoteDataSource(authRemoteDataSource: BaseAuthRemoteDataSource): AuthRemoteDataSource
+    fun provideAuthRemoteDataSource(authRemoteDataSource: AuthRemoteDataSource.Base): AuthRemoteDataSource
 
     @Binds
-    fun provideHandleAuthRemoteDataSource(handle: BaseHandleAuthRemoteDataSource): HandleAuthRemoteDataSource
+    fun provideHandleAuthRemoteDataSource(handle: HandleAuthRemoteDataSource.Base): HandleAuthRemoteDataSource
 
     @Binds
     fun provideValidateAuth(validateAuth: BaseValidateAuth): ValidateAuth
@@ -65,7 +61,7 @@ internal interface AuthModule {
     fun provideValidateSignIn(validateAuth: BaseValidateAuth): ValidateSignIn
 
     @Binds
-    fun provideMatchEmail(matchEmail: BaseMatchEmail): MatchEmail
+    fun provideMatchEmail(matchEmail: MatchEmail.Base): MatchEmail
 
     @Binds
     fun provideHandleSignIn(handleSignIn: BaseHandleSignIn): HandleSignIn
