@@ -132,25 +132,25 @@ fun BoardSettingsContent(
         val empty = searchFieldValue.isEmpty()
         val displayedUsers = (
                 if (empty) {
-            when (selectedOptionIndex) {
-                0 -> (members + invited)
-                1 -> members
-                else -> invited
-            }
-        } else users.map { user ->
-            with(user) {
-                BoardUser(
-                    id = (members + invited).find {
-                        it.email == email
-                    }?.id ?: "",
-                    userId = id,
-                    email = email,
-                    name = name
-                )
-            }
-        }.filter {
-            it.email.contains(searchFieldValue, ignoreCase = true)
-        }).sortedBy { it.email }
+                    when (selectedOptionIndex) {
+                        0 -> (members + invited)
+                        1 -> members
+                        else -> invited
+                    }
+                } else users.map { user ->
+                    with(user) {
+                        BoardUser(
+                            id = (members + invited).find {
+                                it.email == email
+                            }?.id ?: "",
+                            userId = id,
+                            email = email,
+                            name = name
+                        )
+                    }
+                }.filter {
+                    it.email.contains(searchFieldValue, ignoreCase = true)
+                }).sortedBy { it.email }
 
         when {
             !empty -> {

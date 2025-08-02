@@ -1,9 +1,9 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.profile.presentation
 
 import com.github.radlance.api.service.ProfileProvider
 import com.github.radlance.auth.presentation.signin.CredentialResult
 import com.github.radlance.core.domain.UnitResult
-import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
+import com.github.radlance.profile.domain.LoadProfileResult
 import javax.inject.Inject
 
 interface ProfileMapperFacade {

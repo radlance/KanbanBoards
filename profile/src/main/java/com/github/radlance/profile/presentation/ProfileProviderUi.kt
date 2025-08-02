@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.profile.presentation
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.auth.presentation.signin.AccountManager
 import com.github.radlance.auth.presentation.signin.FormatNonce
 import com.github.radlance.auth.presentation.signin.GoogleAccountManager
+import com.github.radlance.profile.R
 import kotlinx.coroutines.launch
 
 interface ProfileProviderUi {
@@ -120,7 +121,7 @@ interface ProfileProviderUi {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = stringResource(com.github.radlance.core.R.string.delete_profile))
+                    Text(text = stringResource(R.string.delete_profile))
                 }
             }
         }

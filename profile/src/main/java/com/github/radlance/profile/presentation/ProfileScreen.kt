@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.profile.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.radlance.core.presentation.BackButton
 import com.github.radlance.core.presentation.BaseColumn
+import com.github.radlance.profile.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,9 +63,7 @@ fun ProfileScreen(
                 modifier = Modifier.padding(30.dp)
             ) {
                 Text(
-                    text = stringResource(
-                        com.github.radlance.core.R.string.sign_in_again_to_delete_your_profile
-                    ),
+                    text = stringResource(R.string.sign_in_again_to_delete_your_profile),
                     textAlign = TextAlign.Center
                 )
                 Spacer(Modifier.height(8.dp))
@@ -90,9 +89,7 @@ fun ProfileScreen(
                     IconButton(onClick = { showDialog = true }) {
                         Icon(
                             imageVector = Icons.Rounded.Delete,
-                            contentDescription = stringResource(
-                                com.github.radlance.core.R.string.delete_profile
-                            )
+                            contentDescription = stringResource(R.string.delete_profile)
                         )
                     }
                 }

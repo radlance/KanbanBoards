@@ -16,9 +16,10 @@ class InvitationViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseViewModel(runAsync), InvitationCountAction, InvitationAction {
 
-    val invitationsUiState get() = invitationRepository.invitations().map {
-        it.map(mapper)
-    }.stateInViewModel(initialValue = InvitationUiState.Loading)
+    val invitationsUiState
+        get() = invitationRepository.invitations().map {
+            it.map(mapper)
+        }.stateInViewModel(initialValue = InvitationUiState.Loading)
 
     override val invitationCount: StateFlow<InvitationCount> get() = invitationsUiState
 

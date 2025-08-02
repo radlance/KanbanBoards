@@ -1,6 +1,6 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.profile.presentation
 
-import com.github.radlance.kanbanboards.profile.domain.LoadProfileResult
+import com.github.radlance.profile.domain.LoadProfileResult
 import javax.inject.Inject
 
 class LoadProfileResultMapper @Inject constructor() : LoadProfileResult.Mapper<ProfileUiState> {

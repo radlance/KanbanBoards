@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.domain
+package com.github.radlance.profile.domain
 
 import com.github.radlance.core.domain.UnitResult
 

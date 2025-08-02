@@ -30,13 +30,13 @@ import com.github.radlance.board.settings.presentation.BoardSettingsViewModel
 import com.github.radlance.boards.presentation.BoardsScreen
 import com.github.radlance.invitation.presentation.InvitationScreen
 import com.github.radlance.invitation.presentation.InvitationViewModel
-import com.github.radlance.kanbanboards.profile.presentation.ProfileScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketScreen
 import com.github.radlance.kanbanboards.ticket.create.presentation.CreateTicketViewModel
 import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketScreen
 import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketViewModel
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoScreen
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoViewModel
+import com.github.radlance.profile.presentation.ProfileScreen
 
 @Composable
 fun NavGraph(

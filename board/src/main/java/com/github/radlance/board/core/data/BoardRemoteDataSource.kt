@@ -69,7 +69,7 @@ interface BoardRemoteDataSource {
 
             val result = boardMemberSnapshot.firstOrNull {
                 it.child("memberId").getValue(String::class.java) == myUserId
-                }
+            }
 
             result?.ref?.removeValue()
         }

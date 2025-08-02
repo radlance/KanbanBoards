@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.data
+package com.github.radlance.profile.data
 
 import com.github.radlance.api.service.MyUser
 import com.github.radlance.api.service.Service

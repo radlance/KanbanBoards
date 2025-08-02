@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.data
+package com.github.radlance.profile.data
 
 import com.github.radlance.core.data.UserProfileEntity
 import javax.inject.Inject

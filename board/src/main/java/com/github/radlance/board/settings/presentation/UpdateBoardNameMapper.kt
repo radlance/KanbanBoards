@@ -3,7 +3,8 @@ package com.github.radlance.board.settings.presentation
 import com.github.radlance.board.settings.domain.UpdateBoardNameResult
 import javax.inject.Inject
 
-class UpdateBoardNameMapper @Inject constructor(): UpdateBoardNameResult.Mapper<UpdateBoardNameUiState> {
+class UpdateBoardNameMapper @Inject constructor() :
+    UpdateBoardNameResult.Mapper<UpdateBoardNameUiState> {
 
     override fun mapSuccess() = UpdateBoardNameUiState.Success
 

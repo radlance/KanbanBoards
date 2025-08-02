@@ -24,41 +24,44 @@ interface InvitationUiState : InvitationCount {
     ) : Abstract(count = invitations.size) {
 
         @Composable
-        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) = with(columnScope) {
+        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) =
+            with(columnScope) {
 
-            if (invitations.isEmpty()) {
-                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                    Text(text = stringResource(R.string.there_are_no_new_invitations))
+                if (invitations.isEmpty()) {
+                    Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                        Text(text = stringResource(R.string.there_are_no_new_invitations))
+                    }
+                } else {
+                    InvitationList(
+                        invitations = invitations,
+                        onAcceptClick = invitationAction::accept,
+                        onDeclineClick = invitationAction::decline,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
-            } else {
-                InvitationList(
-                    invitations = invitations,
-                    onAcceptClick = invitationAction::accept,
-                    onDeclineClick = invitationAction::decline,
-                    modifier = Modifier.weight(1f)
-                )
             }
-        }
     }
 
     data class Error(private val message: String) : Abstract() {
 
         @Composable
-        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) = with(columnScope) {
-            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                ErrorMessage(message)
+        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) =
+            with(columnScope) {
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    ErrorMessage(message)
+                }
             }
-        }
     }
 
     object Loading : Abstract() {
 
         @Composable
-        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) = with(columnScope) {
-            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+        override fun Show(columnScope: ColumnScope, invitationAction: InvitationAction) =
+            with(columnScope) {
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
             }
-        }
     }
 }
 
