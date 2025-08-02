@@ -51,5 +51,5 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
     api(project(":core"))
-    api(project(":board"))
+    api(project(":board-core"))
 }

@@ -69,7 +69,7 @@ dependencies {
     implementation(project(":api-service"))
     implementation(project(":auth"))
     implementation(project(":core"))
-    implementation(project(":board"))
+    implementation(project(":board-core"))
     implementation(project(":board-create"))
     implementation(project(":board-settings"))
     implementation(project(":boards"))

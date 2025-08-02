@@ -52,5 +52,5 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(project(":core"))
     implementation(project(":invitation"))
-    implementation(project(":board"))
+    implementation(project(":board-core"))
 }

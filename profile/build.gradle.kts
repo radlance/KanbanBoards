@@ -51,5 +51,5 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(project(":auth"))
     implementation(project(":core"))
-    implementation(project(":board"))
+    implementation(project(":board-core"))
 }
