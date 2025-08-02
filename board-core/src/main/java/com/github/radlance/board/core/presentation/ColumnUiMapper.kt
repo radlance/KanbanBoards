@@ -3,7 +3,7 @@ package com.github.radlance.board.core.presentation
 import com.github.radlance.board.core.domain.Column
 import javax.inject.Inject
 
-class ColumnUiMapper @Inject constructor() : ColumnUi.Mapper<Column> {
+internal class ColumnUiMapper @Inject constructor() : ColumnUi.Mapper<Column> {
 
     override fun mapTodo(): Column = Column.Todo
 

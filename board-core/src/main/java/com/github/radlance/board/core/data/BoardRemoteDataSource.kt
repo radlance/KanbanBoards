@@ -2,6 +2,8 @@ package com.github.radlance.board.core.data
 
 import com.github.radlance.api.service.MyUser
 import com.github.radlance.api.service.Service
+import com.github.radlance.core.data.BoardEntity
+import com.github.radlance.core.data.BoardMemberEntity
 import com.github.radlance.core.data.IgnoreHandle
 import com.github.radlance.core.domain.BoardInfo
 import kotlinx.coroutines.flow.Flow
@@ -16,90 +18,90 @@ interface BoardRemoteDataSource {
     suspend fun leaveBoard(boardId: String)
 
     suspend fun deleteBoard(boardId: String)
+}
 
-    class Base @Inject constructor(
-        private val service: Service,
-        private val ignoreHandle: IgnoreHandle,
-        private val myUser: MyUser
-    ) : BoardRemoteDataSource {
+internal class BaseBoardRemoteDataSource @Inject constructor(
+    private val service: Service,
+    private val ignoreHandle: IgnoreHandle,
+    private val myUser: MyUser
+) : BoardRemoteDataSource {
 
-        override fun board(boardId: String): Flow<BoardInfo?> {
-            val myUserId = myUser.id
+    override fun board(boardId: String): Flow<BoardInfo?> {
+        val myUserId = myUser.id
 
-            return combine(
-                service.get(
-                    path = "boards",
-                    subPath = boardId
-                ),
-                service.getListByQuery(
-                    path = "boards-members",
-                    queryKey = "boardId",
-                    queryValue = boardId
-                )
-            ) { boardSnapshot, membersSnapshot ->
-                val key = boardSnapshot.id
-                val entity =
-                    boardSnapshot.getValue(com.github.radlance.core.data.BoardEntity::class.java)
-                        ?: return@combine null
-
-                val isMember = membersSnapshot.any {
-                    it.getValue(com.github.radlance.core.data.BoardMemberEntity::class.java)?.memberId == myUserId
-                }
-
-                if (entity.owner != myUserId && !isMember) {
-                    return@combine null
-                }
-
-                BoardInfo(
-                    id = key,
-                    name = entity.name,
-                    isMyBoard = myUserId == entity.owner,
-                    owner = entity.owner
-                )
-            }.catch { e -> throw IllegalStateException(e.message) }
-        }
-
-        override suspend fun leaveBoard(boardId: String) = ignoreHandle.handleSuspend {
-            val myUserId = myUser.id
-            val boardMemberSnapshot = service.getListByQueryAwait(
-                path = "boards-members",
-                queryKey = "boardId",
-                queryValue = boardId
-            )
-
-            val result = boardMemberSnapshot.firstOrNull {
-                it.child("memberId").getValue(String::class.java) == myUserId
-            }
-
-            result?.ref?.removeValue()
-        }
-
-        override suspend fun deleteBoard(boardId: String) {
-
-            service.delete(
+        return combine(
+            service.get(
                 path = "boards",
-                itemId = boardId
-            )
-
-            val membersSnapshot = service.getSingleQueryAwait(
+                subPath = boardId
+            ),
+            service.getListByQuery(
                 path = "boards-members",
                 queryKey = "boardId",
                 queryValue = boardId
             )
+        ) { boardSnapshot, membersSnapshot ->
+            val key = boardSnapshot.id
+            val entity =
+                boardSnapshot.getValue(BoardEntity::class.java)
+                    ?: return@combine null
 
-            membersSnapshot.children.forEach { memberSnapshot ->
-                memberSnapshot.ref.removeValue()
+            val isMember = membersSnapshot.any {
+                it.getValue(BoardMemberEntity::class.java)?.memberId == myUserId
             }
 
-            val ticketsSnapshot = service.getSingleQueryAwait(
-                "tickets",
-                "boardId",
-                boardId
+            if (entity.owner != myUserId && !isMember) {
+                return@combine null
+            }
+
+            BoardInfo(
+                id = key,
+                name = entity.name,
+                isMyBoard = myUserId == entity.owner,
+                owner = entity.owner
             )
+        }.catch { e -> throw IllegalStateException(e.message) }
+    }
 
-            ticketsSnapshot.children.forEach { ticketSnapshot ->
-                ticketSnapshot.ref.removeValue()
-            }
+    override suspend fun leaveBoard(boardId: String) = ignoreHandle.handleSuspend {
+        val myUserId = myUser.id
+        val boardMemberSnapshot = service.getListByQueryAwait(
+            path = "boards-members",
+            queryKey = "boardId",
+            queryValue = boardId
+        )
+
+        val result = boardMemberSnapshot.firstOrNull {
+            it.child("memberId").getValue(String::class.java) == myUserId
+        }
+
+        result?.ref?.removeValue()
+    }
+
+    override suspend fun deleteBoard(boardId: String) {
+
+        service.delete(
+            path = "boards",
+            itemId = boardId
+        )
+
+        val membersSnapshot = service.getSingleQueryAwait(
+            path = "boards-members",
+            queryKey = "boardId",
+            queryValue = boardId
+        )
+
+        membersSnapshot.children.forEach { memberSnapshot ->
+            memberSnapshot.ref.removeValue()
+        }
+
+        val ticketsSnapshot = service.getSingleQueryAwait(
+            "tickets",
+            "boardId",
+            boardId
+        )
+
+        ticketsSnapshot.children.forEach { ticketSnapshot ->
+            ticketSnapshot.ref.removeValue()
         }
     }
 }

@@ -33,7 +33,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.Json
 
 @Composable
-fun TicketColumn(
+internal fun TicketColumn(
     json: Json,
     tickets: List<TicketUi>,
     columnType: ColumnUi,

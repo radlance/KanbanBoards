@@ -4,7 +4,7 @@ import com.github.radlance.board.core.domain.BoardResult
 import com.github.radlance.core.domain.BoardInfo
 import javax.inject.Inject
 
-class BoardResultMapper @Inject constructor() : BoardResult.Mapper<BoardUiState> {
+internal class BoardResultMapper @Inject constructor() : BoardResult.Mapper<BoardUiState> {
 
     override fun mapSuccess(boardInfo: BoardInfo): BoardUiState = BoardUiState.Success(boardInfo)
 

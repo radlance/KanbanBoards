@@ -1,5 +1,7 @@
 package com.github.radlance.board.core.di
 
+import com.github.radlance.board.core.data.BaseBoardRemoteDataSource
+import com.github.radlance.board.core.data.BaseTicketRemoteDataSource
 import com.github.radlance.board.core.data.BoardRemoteDataSource
 import com.github.radlance.board.core.data.ColumnTypeMapper
 import com.github.radlance.board.core.data.RemoteBoardRepository
@@ -8,6 +10,8 @@ import com.github.radlance.board.core.domain.BoardRepository
 import com.github.radlance.board.core.domain.BoardResult
 import com.github.radlance.board.core.domain.Column
 import com.github.radlance.board.core.domain.TicketResult
+import com.github.radlance.board.core.presentation.BaseBoardMapperFacade
+import com.github.radlance.board.core.presentation.BaseHandleBoard
 import com.github.radlance.board.core.presentation.BoardMapperFacade
 import com.github.radlance.board.core.presentation.BoardResultMapper
 import com.github.radlance.board.core.presentation.BoardUiState
@@ -24,10 +28,10 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface BoardModule {
+internal interface BoardModule {
 
     @Binds
-    fun provideBoardDataSource(boardRemoteDataSource: BoardRemoteDataSource.Base): BoardRemoteDataSource
+    fun provideBoardDataSource(boardRemoteDataSource: BaseBoardRemoteDataSource): BoardRemoteDataSource
 
     @Binds
     fun provideBoardRepository(boardRepository: RemoteBoardRepository): BoardRepository
@@ -36,7 +40,7 @@ interface BoardModule {
     fun provideBoardResultMapper(boardResultMapper: BoardResultMapper): BoardResult.Mapper<BoardUiState>
 
     @Binds
-    fun provideTicketDataSource(ticketRemoteDataSource: TicketRemoteDataSource.Base): TicketRemoteDataSource
+    fun provideTicketDataSource(ticketRemoteDataSource: BaseTicketRemoteDataSource): TicketRemoteDataSource
 
     @Binds
     fun provideTicketResultMapper(ticketResultMapper: TicketResultMapper): TicketResult.Mapper<TicketBoardUiState>
@@ -48,10 +52,10 @@ interface BoardModule {
     fun provideColumnUiMapper(columnUiMapper: ColumnUiMapper): ColumnUi.Mapper<Column>
 
     @Binds
-    fun provideBoardMapperFacade(boardMapperFacade: BoardMapperFacade.Base): BoardMapperFacade
+    fun provideBoardMapperFacade(boardMapperFacade: BaseBoardMapperFacade): BoardMapperFacade
 
     @Binds
-    fun provideHandleBoard(handleBoard: HandleBoard.Base): HandleBoard
+    fun provideHandleBoard(handleBoard: BaseHandleBoard): HandleBoard
 
     @Binds
     fun provideColumnTypeMapper(columnTypeMapper: ColumnTypeMapper): Column.Mapper<String>

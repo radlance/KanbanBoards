@@ -1,5 +1,6 @@
 package com.github.radlance.board.core.data
 
+import com.github.radlance.api.service.Service
 import com.github.radlance.board.core.domain.Column
 import com.github.radlance.board.core.domain.EditTicket
 import com.github.radlance.board.core.domain.NewTicket
@@ -30,172 +31,172 @@ interface TicketRemoteDataSource {
     fun editTicket(ticket: EditTicket)
 
     fun deleteTicket(ticketId: String)
+}
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    class Base @Inject constructor(
-        private val service: com.github.radlance.api.service.Service,
-        private val handleError: HandleError,
-        private val columnMapper: ColumnTypeMapper
-    ) : TicketRemoteDataSource {
+@OptIn(ExperimentalCoroutinesApi::class)
+internal class BaseTicketRemoteDataSource @Inject constructor(
+    private val service: Service,
+    private val handleError: HandleError,
+    private val columnMapper: ColumnTypeMapper
+) : TicketRemoteDataSource {
 
-        override fun ticket(ticketId: String): Flow<Ticket?> {
-            val tickets = service.get(path = "tickets", subPath = ticketId)
-            return tickets.flatMapLatest { ticketSnapshot ->
-                val entity = ticketSnapshot.getValue(TicketEntity::class.java)
+    override fun ticket(ticketId: String): Flow<Ticket?> {
+        val tickets = service.get(path = "tickets", subPath = ticketId)
+        return tickets.flatMapLatest { ticketSnapshot ->
+            val entity = ticketSnapshot.getValue(TicketEntity::class.java)
 
-                if (entity == null) {
-                    flowOf(null)
-                } else {
+            if (entity == null) {
+                flowOf(null)
+            } else {
 
-                    service.get(
-                        path = "users",
-                        subPath = entity.assignee
-                    ).mapNotNull { userSnapshot ->
-                        val userEntity = userSnapshot.getValue(UserProfileEntity::class.java)
+                service.get(
+                    path = "users",
+                    subPath = entity.assignee
+                ).mapNotNull { userSnapshot ->
+                    val userEntity = userSnapshot.getValue(UserProfileEntity::class.java)
 
-                        val column = columnType(entity)
+                    val column = columnType(entity)
 
-                        with(entity) {
-                            Ticket(
-                                id = ticketSnapshot.id,
-                                colorHex = color,
-                                name = title,
-                                description = description,
-                                assignedMemberName = userEntity?.name ?: "",
-                                assignedMemberId = entity.assignee,
-                                column = column,
-                                creationDate = LocalDateTime.parse(creationDate)
-                            )
-                        }
+                    with(entity) {
+                        Ticket(
+                            id = ticketSnapshot.id,
+                            colorHex = color,
+                            name = title,
+                            description = description,
+                            assignedMemberName = userEntity?.name ?: "",
+                            assignedMemberId = entity.assignee,
+                            column = column,
+                            creationDate = LocalDateTime.parse(creationDate)
+                        )
                     }
                 }
             }
         }
+    }
 
-        override fun tickets(boardId: String): Flow<List<Ticket>> {
-            service.getListByQuery(
-                path = "tickets",
-                queryKey = "boardId",
-                queryValue = boardId
-            )
-            val ticketsQuery = service.getListByQuery(
-                path = "tickets",
-                queryKey = "boardId",
-                queryValue = boardId
-            )
+    override fun tickets(boardId: String): Flow<List<Ticket>> {
+        service.getListByQuery(
+            path = "tickets",
+            queryKey = "boardId",
+            queryValue = boardId
+        )
+        val ticketsQuery = service.getListByQuery(
+            path = "tickets",
+            queryKey = "boardId",
+            queryValue = boardId
+        )
 
-            return ticketsQuery.flatMapLatest { snapshot ->
-                val ticketFlows: List<Flow<Ticket>> = snapshot.mapNotNull { ticketSnapshot ->
-                    val key = ticketSnapshot.id
-                    val entity = ticketSnapshot.getValue(TicketEntity::class.java)
-                        ?: return@mapNotNull null
+        return ticketsQuery.flatMapLatest { snapshot ->
+            val ticketFlows: List<Flow<Ticket>> = snapshot.mapNotNull { ticketSnapshot ->
+                val key = ticketSnapshot.id
+                val entity = ticketSnapshot.getValue(TicketEntity::class.java)
+                    ?: return@mapNotNull null
 
-                    service.get(
-                        path = "users",
-                        subPath = entity.assignee
-                    ).map { userSnapshot ->
-                        val userEntity = userSnapshot.getValue(UserProfileEntity::class.java)
+                service.get(
+                    path = "users",
+                    subPath = entity.assignee
+                ).map { userSnapshot ->
+                    val userEntity = userSnapshot.getValue(UserProfileEntity::class.java)
 
-                        val column = columnType(entity)
+                    val column = columnType(entity)
 
-                        with(entity) {
-                            Ticket(
-                                id = key,
-                                colorHex = color,
-                                name = title,
-                                description = description,
-                                assignedMemberName = userEntity?.name ?: "",
-                                assignedMemberId = entity.assignee,
-                                column = column,
-                                creationDate = LocalDateTime.parse(creationDate)
-                            )
-                        }
+                    with(entity) {
+                        Ticket(
+                            id = key,
+                            colorHex = color,
+                            name = title,
+                            description = description,
+                            assignedMemberName = userEntity?.name ?: "",
+                            assignedMemberId = entity.assignee,
+                            column = column,
+                            creationDate = LocalDateTime.parse(creationDate)
+                        )
                     }
                 }
+            }
 
-                if (ticketFlows.isEmpty()) {
-                    flowOf(emptyList())
-                } else {
-                    combine(ticketFlows) { ticketsArray: Array<Ticket> -> ticketsArray.toList() }
-                }
-            }.catch { e -> throw IllegalStateException(e.message) }
+            if (ticketFlows.isEmpty()) {
+                flowOf(emptyList())
+            } else {
+                combine(ticketFlows) { ticketsArray: Array<Ticket> -> ticketsArray.toList() }
+            }
+        }.catch { e -> throw IllegalStateException(e.message) }
+    }
+
+    override fun moveTicket(ticketId: String, column: Column) {
+
+        service.update(
+            path = "tickets",
+            subPath1 = ticketId,
+            subPath2 = "columnId",
+            obj = column.map(columnMapper)
+        )
+    }
+
+    override fun createTicket(newTicket: NewTicket) {
+        try {
+            val entity = with(newTicket) {
+                TicketEntity(
+                    boardId = boardId,
+                    color = colorHex,
+                    title = name,
+                    description = description,
+                    assignee = assignedMemberId,
+                    columnId = "todo",
+                    creationDate = creationDate.toString()
+                )
+            }
+
+            service.post(
+                path = "tickets",
+                obj = entity
+            )
+
+        } catch (e: Exception) {
+            handleError.handle(e)
         }
+    }
 
-        override fun moveTicket(ticketId: String, column: Column) {
+    override fun editTicket(ticket: EditTicket) {
+        try {
+            val entity = with(ticket) {
+                TicketEntity(
+                    boardId = boardId,
+                    color = colorHex,
+                    title = name,
+                    description = description,
+                    assignee = assignedMemberId,
+                    columnId = column.map(columnMapper),
+                    creationDate = creationDate.toString()
+                )
+            }
 
             service.update(
                 path = "tickets",
-                subPath1 = ticketId,
-                subPath2 = "columnId",
-                obj = column.map(columnMapper)
+                subPath = ticket.id,
+                obj = entity
             )
+
+        } catch (e: Exception) {
+            handleError.handle(e)
         }
+    }
 
-        override fun createTicket(newTicket: NewTicket) {
-            try {
-                val entity = with(newTicket) {
-                    TicketEntity(
-                        boardId = boardId,
-                        color = colorHex,
-                        title = name,
-                        description = description,
-                        assignee = assignedMemberId,
-                        columnId = "todo",
-                        creationDate = creationDate.toString()
-                    )
-                }
-
-                service.post(
-                    path = "tickets",
-                    obj = entity
-                )
-
-            } catch (e: Exception) {
-                handleError.handle(e)
-            }
+    override fun deleteTicket(ticketId: String) {
+        try {
+            service.delete(
+                path = "tickets",
+                itemId = ticketId
+            )
+        } catch (e: Exception) {
+            handleError.handle(e)
         }
+    }
 
-        override fun editTicket(ticket: EditTicket) {
-            try {
-                val entity = with(ticket) {
-                    TicketEntity(
-                        boardId = boardId,
-                        color = colorHex,
-                        title = name,
-                        description = description,
-                        assignee = assignedMemberId,
-                        columnId = column.map(columnMapper),
-                        creationDate = creationDate.toString()
-                    )
-                }
-
-                service.update(
-                    path = "tickets",
-                    subPath = ticket.id,
-                    obj = entity
-                )
-
-            } catch (e: Exception) {
-                handleError.handle(e)
-            }
-        }
-
-        override fun deleteTicket(ticketId: String) {
-            try {
-                service.delete(
-                    path = "tickets",
-                    itemId = ticketId
-                )
-            } catch (e: Exception) {
-                handleError.handle(e)
-            }
-        }
-
-        private fun columnType(entity: TicketEntity) = when (entity.columnId) {
-            "todo" -> Column.Todo
-            "inProgress" -> Column.InProgress
-            "done" -> Column.Done
-            else -> throw IllegalStateException("unknown column type")
-        }
+    private fun columnType(entity: TicketEntity) = when (entity.columnId) {
+        "todo" -> Column.Todo
+        "inProgress" -> Column.InProgress
+        "done" -> Column.Done
+        else -> throw IllegalStateException("unknown column type")
     }
 }

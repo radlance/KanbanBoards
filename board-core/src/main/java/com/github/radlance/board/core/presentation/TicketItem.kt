@@ -38,7 +38,7 @@ import com.github.radlance.uikit.KanbanBoardsTheme
 import kotlinx.datetime.LocalDateTime
 
 @Composable
-fun TicketItem(
+internal fun TicketItem(
     ticket: TicketUi,
     onMove: (ticketId: String, column: ColumnUi) -> Unit,
     navigateToTicketInfo: (TicketUi) -> Unit,

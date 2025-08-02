@@ -1,6 +1,6 @@
 package com.github.radlance.board.core.data
 
-data class TicketEntity(
+internal data class TicketEntity(
     val boardId: String = "",
     val color: String = "",
     val title: String = "",

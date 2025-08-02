@@ -6,7 +6,7 @@ import com.github.radlance.board.core.domain.TicketResult
 import kotlinx.datetime.toKotlinLocalDateTime
 import javax.inject.Inject
 
-class TicketResultMapper @Inject constructor(
+internal class TicketResultMapper @Inject constructor(
     private val mapper: Column.Mapper<ColumnUi>
 ) : TicketResult.Mapper<TicketBoardUiState> {
 

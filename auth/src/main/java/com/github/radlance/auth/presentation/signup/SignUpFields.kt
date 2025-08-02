@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.github.radlance.auth.R
 
 @Composable
-fun SignUpFields(
+internal fun SignUpFields(
     nameFieldValue: String,
     onNameValueChange: (String) -> Unit,
     emailFieldValue: String,

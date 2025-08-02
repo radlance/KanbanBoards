@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SignInFields(
+internal fun SignInFields(
     emailFieldValue: String,
     onEmailValueChange: (String) -> Unit,
     passwordFieldValue: String,

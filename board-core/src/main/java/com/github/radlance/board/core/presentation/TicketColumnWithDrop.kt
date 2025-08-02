@@ -14,7 +14,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 
 @Composable
-fun TicketColumnWithDrop(
+internal fun TicketColumnWithDrop(
     tickets: List<TicketUi>,
     columnType: ColumnUi,
     onMove: (ticketId: String, column: ColumnUi) -> Unit,
