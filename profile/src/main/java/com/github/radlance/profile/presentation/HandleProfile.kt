@@ -15,7 +15,7 @@ interface HandleProfile {
 
     fun saveProfileProviderUi(profileProviderUi: ProfileProviderUi)
 
-    val  profileCredentialUiState: StateFlow<ProfileCredentialUiState>
+    val profileCredentialUiState: StateFlow<ProfileCredentialUiState>
 
     fun saveProfileCredentialUiState(profileCredentialUiState: ProfileCredentialUiState)
 

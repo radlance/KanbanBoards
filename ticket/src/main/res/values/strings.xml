@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title">Title</string>
+    <string name="assignee">Assignee</string>
+    <string name="description_optional">Description (optional)</string>
+    <string name="create_ticket">Create ticket</string>
+    <string name="edit_ticket">Edit ticket</string>
+    <string name="delete_ticket">Delete ticket</string>
+    <string name="no_assigned_member">No assigned member</string>
+    <string name="navigate_to_edit_ticket">Navigate to edit ticket</string>
+    <string name="ticket_info">Ticket info</string>
+    <string name="ticket_deleted">Ticket deleted!</string>
+
+</resources>
