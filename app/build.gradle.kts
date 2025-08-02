@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":board"))
     implementation(project(":board-create"))
+    implementation(project(":board-settings"))
     implementation(project(":boards"))
     implementation(project(":invitation"))
     implementation(project(":profile"))
