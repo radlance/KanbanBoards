@@ -10,6 +10,11 @@ plugins {
 }
 
 android {
+    @Suppress("UnstableApiUsage")
+    testFixtures {
+        enable = true
+    }
+
     namespace = "com.github.radlance.core"
     compileSdk = 36
 
@@ -50,6 +55,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
     api(libs.hilt.navigation.compose)
+    testFixturesApi(libs.junit)
 
     api(project(":uikit"))
     api(project(":api-service"))

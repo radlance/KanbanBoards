@@ -10,6 +10,11 @@ plugins {
 }
 
 android {
+    @Suppress("UnstableApiUsage")
+    testFixtures {
+        enable = true
+    }
+
     namespace = "com.github.radlance.ticket"
     compileSdk = 36
 

@@ -61,4 +61,5 @@ dependencies {
     implementation(libs.google.identity.googleid)
     implementation(libs.navigation.compose)
     implementation(project(":core"))
+    testImplementation(testFixtures(project(":core")))
 }

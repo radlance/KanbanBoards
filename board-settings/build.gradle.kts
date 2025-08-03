@@ -53,4 +53,5 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":invitation"))
     implementation(project(":board-core"))
+    testImplementation(testFixtures(project(":board-core")))
 }

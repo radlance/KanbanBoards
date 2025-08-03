@@ -79,4 +79,5 @@ dependencies {
     implementation(project(":ticket-edit"))
     implementation(project(":ticket-info"))
     implementation(project(":uikit"))
+    testImplementation(testFixtures(project(":core")))
 }

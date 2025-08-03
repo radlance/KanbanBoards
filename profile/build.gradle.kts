@@ -52,4 +52,5 @@ dependencies {
     implementation(project(":auth"))
     implementation(project(":core"))
     implementation(project(":board-core"))
+    testImplementation(testFixtures(project(":board-core")))
 }

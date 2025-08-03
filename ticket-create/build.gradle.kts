@@ -51,4 +51,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
     implementation(project(":ticket-core"))
+    testImplementation(testFixtures(project(":ticket-core")))
+    testImplementation(testFixtures(project(":board-core")))
 }

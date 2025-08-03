@@ -52,4 +52,6 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(project(":ticket-core"))
     implementation(project(":ticket-info"))
+    testImplementation(testFixtures(project(":ticket-core")))
+    testImplementation(testFixtures(project(":ticket-info")))
 }

@@ -11,6 +11,11 @@ plugins {
 }
 
 android {
+    @Suppress("UnstableApiUsage")
+    testFixtures {
+        enable = true
+    }
+
     namespace = "com.github.radlance.board"
     compileSdk = 36
 
@@ -52,5 +57,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
     implementation(project(":core"))
+    testImplementation(testFixtures(project(":core")))
+    testFixturesApi(testFixtures(project(":core")))
     implementation(project(":invitation"))
 }

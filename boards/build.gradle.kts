@@ -50,5 +50,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
     implementation(project(":core"))
+    testImplementation(testFixtures(project(":core")))
     implementation(project(":invitation"))
 }
