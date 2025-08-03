@@ -6,6 +6,8 @@ import com.github.radlance.board.settings.data.RemoteBoardSettingsRepository
 import com.github.radlance.board.settings.domain.BoardSettingsRepository
 import com.github.radlance.board.settings.domain.BoardSettingsResult
 import com.github.radlance.board.settings.domain.UpdateBoardNameResult
+import com.github.radlance.board.settings.presentation.BaseBoardSettingsMapperFacade
+import com.github.radlance.board.settings.presentation.BaseHandleBoardSettings
 import com.github.radlance.board.settings.presentation.BoardSettingsMapper
 import com.github.radlance.board.settings.presentation.BoardSettingsMapperFacade
 import com.github.radlance.board.settings.presentation.BoardSettingsUiState
@@ -21,7 +23,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface BoardSettingsModule {
+internal interface BoardSettingsModule {
 
     @Binds
     fun provideBoardSettingsRepository(boardSettingsRepository: RemoteBoardSettingsRepository): BoardSettingsRepository
@@ -33,10 +35,10 @@ interface BoardSettingsModule {
     fun provideSettingsBoardMapper(settingsBoardMapper: SettingsBoardMapper): BoardResult.Mapper<SettingsBoardUiState>
 
     @Binds
-    fun provideBoardSettingsMapperFacade(boardSettingsMapperFacade: BoardSettingsMapperFacade.Base): BoardSettingsMapperFacade
+    fun provideBoardSettingsMapperFacade(boardSettingsMapperFacade: BaseBoardSettingsMapperFacade): BoardSettingsMapperFacade
 
     @Binds
-    fun provideHandleBoardSettings(handleBoardSettings: HandleBoardSettings.Base): HandleBoardSettings
+    fun provideHandleBoardSettings(handleBoardSettings: BaseHandleBoardSettings): HandleBoardSettings
 
     @Binds
     fun provideBoardSettingsRemoteDataSource(boardSettingsRemoteDataSource: BoardSettingsRemoteDataSource.Base): BoardSettingsRemoteDataSource

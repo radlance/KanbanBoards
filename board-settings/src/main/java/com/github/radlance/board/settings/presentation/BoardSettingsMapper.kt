@@ -5,7 +5,8 @@ import com.github.radlance.board.settings.domain.BoardUser
 import com.github.radlance.core.domain.User
 import javax.inject.Inject
 
-class BoardSettingsMapper @Inject constructor() : BoardSettingsResult.Mapper<BoardSettingsUiState> {
+internal class BoardSettingsMapper @Inject constructor() :
+    BoardSettingsResult.Mapper<BoardSettingsUiState> {
 
     override fun mapSuccess(
         users: List<User>,

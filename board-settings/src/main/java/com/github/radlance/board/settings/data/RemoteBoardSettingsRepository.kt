@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.first
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-class RemoteBoardSettingsRepository @Inject constructor(
+internal class RemoteBoardSettingsRepository @Inject constructor(
     private val usersRemoteDataSource: UsersRemoteDataSource,
     private val boardRepository: BoardRepository,
     private val boardSettingsRemoteDataSource: BoardSettingsRemoteDataSource,

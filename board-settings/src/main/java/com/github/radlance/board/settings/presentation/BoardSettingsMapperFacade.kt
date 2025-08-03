@@ -12,20 +12,20 @@ interface BoardSettingsMapperFacade {
     fun mapBoardResult(boardResult: BoardResult): SettingsBoardUiState
 
     fun mapUpdateBoardNameResult(boardNameResult: UpdateBoardNameResult): UpdateBoardNameUiState
+}
 
-    class Base @Inject constructor(
-        private val boardSettingsMapper: BoardSettingsResult.Mapper<BoardSettingsUiState>,
-        private val settingsBoardMapper: BoardResult.Mapper<SettingsBoardUiState>,
-        private val updateBoardNameMapper: UpdateBoardNameResult.Mapper<UpdateBoardNameUiState>
-    ) : BoardSettingsMapperFacade {
+internal class BaseBoardSettingsMapperFacade @Inject constructor(
+    private val boardSettingsMapper: BoardSettingsResult.Mapper<BoardSettingsUiState>,
+    private val settingsBoardMapper: BoardResult.Mapper<SettingsBoardUiState>,
+    private val updateBoardNameMapper: UpdateBoardNameResult.Mapper<UpdateBoardNameUiState>
+) : BoardSettingsMapperFacade {
 
-        override fun mapBoardSettingsResult(
-            boardSettingsResult: BoardSettingsResult
-        ): BoardSettingsUiState = boardSettingsResult.map(boardSettingsMapper)
+    override fun mapBoardSettingsResult(
+        boardSettingsResult: BoardSettingsResult
+    ): BoardSettingsUiState = boardSettingsResult.map(boardSettingsMapper)
 
-        override fun mapBoardResult(boardResult: BoardResult) = boardResult.map(settingsBoardMapper)
+    override fun mapBoardResult(boardResult: BoardResult) = boardResult.map(settingsBoardMapper)
 
-        override fun mapUpdateBoardNameResult(boardNameResult: UpdateBoardNameResult) =
-            boardNameResult.map(updateBoardNameMapper)
-    }
+    override fun mapUpdateBoardNameResult(boardNameResult: UpdateBoardNameResult) =
+        boardNameResult.map(updateBoardNameMapper)
 }

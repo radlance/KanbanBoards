@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-interface BoardSettingsRemoteDataSource {
+internal interface BoardSettingsRemoteDataSource {
 
     fun inviteUserToBoard(boardId: String, userId: String, sendDate: ZonedDateTime)
 
