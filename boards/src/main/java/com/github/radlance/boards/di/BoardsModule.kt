@@ -22,9 +22,6 @@ internal interface BoardsModule {
     fun provideBoardsRepository(boardsRepository: RemoteBoardsRepository): BoardsRepository
 
     @Binds
-    fun provideBoardsRemoteDataSource(boardsRemoteDataSource: BoardsRemoteDataSource.Base): BoardsRemoteDataSource
-
-    @Binds
     fun provideBoardMapper(boardMapper: BoardMapper): Board.Mapper<BoardUi>
 
     @Binds

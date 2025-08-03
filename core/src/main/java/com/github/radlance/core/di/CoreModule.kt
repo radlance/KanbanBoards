@@ -8,10 +8,12 @@ import com.github.radlance.api.service.MyUser
 import com.github.radlance.api.service.Service
 import com.github.radlance.core.core.BaseManageResource
 import com.github.radlance.core.core.ManageResource
+import com.github.radlance.core.data.BaseBoardsRemoteDataSource
 import com.github.radlance.core.data.BaseDataStoreManager
 import com.github.radlance.core.data.BaseHandleError
 import com.github.radlance.core.data.BaseIgnoreHandle
 import com.github.radlance.core.data.BaseUsersRemoteDataSource
+import com.github.radlance.core.data.BoardsRemoteDataSource
 import com.github.radlance.core.data.DataStoreManager
 import com.github.radlance.core.data.HandleError
 import com.github.radlance.core.data.IgnoreHandle
@@ -81,6 +83,13 @@ internal class CoreModule {
         service: Service,
         myUser: MyUser
     ): UsersRemoteDataSource = BaseUsersRemoteDataSource(service, myUser)
+
+    @Provides
+    @Singleton
+    fun provideBoardsRemoteDataSource(
+        service: Service,
+        myUser: MyUser
+    ): BoardsRemoteDataSource = BaseBoardsRemoteDataSource(service, myUser)
 
     companion object {
         private val Context.datastore by preferencesDataStore("settings")
