@@ -10,13 +10,13 @@ import javax.inject.Inject
 interface CreateTicketMapperFacade : TicketMapperFacade {
 
     fun mapBoardMembersResult(boardMembersResult: BoardMembersResult): BoardMembersUiStateCreate
+}
 
-    class Base @Inject constructor(
-        private val boardMembersMapper: BoardMembersResult.Mapper<BoardMembersUiStateCreate>,
-        createTicketMapper: UnitResult.Mapper<TicketUiState>
-    ) : BaseTicketMapperFacade(createTicketMapper), CreateTicketMapperFacade {
-        override fun mapBoardMembersResult(
-            boardMembersResult: BoardMembersResult
-        ): BoardMembersUiStateCreate = boardMembersResult.map(boardMembersMapper)
-    }
+internal class BaseCreateTicketMapperFacade @Inject constructor(
+    private val boardMembersMapper: BoardMembersResult.Mapper<BoardMembersUiStateCreate>,
+    createTicketMapper: UnitResult.Mapper<TicketUiState>
+) : BaseTicketMapperFacade(createTicketMapper), CreateTicketMapperFacade {
+    override fun mapBoardMembersResult(
+        boardMembersResult: BoardMembersResult
+    ): BoardMembersUiStateCreate = boardMembersResult.map(boardMembersMapper)
 }

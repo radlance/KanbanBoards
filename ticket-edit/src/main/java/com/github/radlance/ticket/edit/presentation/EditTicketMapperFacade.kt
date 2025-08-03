@@ -15,24 +15,24 @@ interface EditTicketMapperFacade : TicketMapperFacade {
     fun mapTicketInfoResult(ticketInfoResult: TicketInfoResult): TicketInfoEditUiState
 
     fun mapDeleteTicket(deleteTicketResult: UnitResult): DeleteTicketUiState
+}
 
-    class Base @Inject constructor(
-        private val boardMembersMapper: BoardMembersResult.Mapper<BoardMembersUiStateEdit>,
-        private val ticketInfoUiMapper: TicketInfoResult.Mapper<TicketInfoEditUiState>,
-        private val deleteTicketMapper: UnitResult.Mapper<DeleteTicketUiState>,
-        ticketMapper: UnitResult.Mapper<TicketUiState>
-    ) : BaseTicketMapperFacade(ticketMapper), EditTicketMapperFacade {
+internal class BaseEditTicketMapperFacade @Inject constructor(
+    private val boardMembersMapper: BoardMembersResult.Mapper<BoardMembersUiStateEdit>,
+    private val ticketInfoUiMapper: TicketInfoResult.Mapper<TicketInfoEditUiState>,
+    private val deleteTicketMapper: UnitResult.Mapper<DeleteTicketUiState>,
+    ticketMapper: UnitResult.Mapper<TicketUiState>
+) : BaseTicketMapperFacade(ticketMapper), EditTicketMapperFacade {
 
-        override fun mapBoardMembersResult(boardMembersResult: BoardMembersResult): BoardMembersUiStateEdit {
-            return boardMembersResult.map(boardMembersMapper)
-        }
+    override fun mapBoardMembersResult(boardMembersResult: BoardMembersResult): BoardMembersUiStateEdit {
+        return boardMembersResult.map(boardMembersMapper)
+    }
 
-        override fun mapTicketInfoResult(ticketInfoResult: TicketInfoResult): TicketInfoEditUiState {
-            return ticketInfoResult.map(ticketInfoUiMapper)
-        }
+    override fun mapTicketInfoResult(ticketInfoResult: TicketInfoResult): TicketInfoEditUiState {
+        return ticketInfoResult.map(ticketInfoUiMapper)
+    }
 
-        override fun mapDeleteTicket(deleteTicketResult: UnitResult): DeleteTicketUiState {
-            return deleteTicketResult.map(deleteTicketMapper)
-        }
+    override fun mapDeleteTicket(deleteTicketResult: UnitResult): DeleteTicketUiState {
+        return deleteTicketResult.map(deleteTicketMapper)
     }
 }

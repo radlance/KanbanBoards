@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class RemoteTicketInfoRepository @Inject constructor(
+internal class RemoteTicketInfoRepository @Inject constructor(
     private val ticketRemoteDataSource: TicketRemoteDataSource
 ) : TicketInfoRepository {
 

@@ -5,6 +5,8 @@ import com.github.radlance.core.domain.UnitResult
 import com.github.radlance.ticket.edit.data.HandleUnitResult
 import com.github.radlance.ticket.edit.data.RemoteEditTicketRepository
 import com.github.radlance.ticket.edit.domain.EditTicketRepository
+import com.github.radlance.ticket.edit.presentation.BaseEditTicketMapperFacade
+import com.github.radlance.ticket.edit.presentation.BaseHandleEditTicket
 import com.github.radlance.ticket.edit.presentation.BoardMembersEditMapper
 import com.github.radlance.ticket.edit.presentation.BoardMembersUiStateEdit
 import com.github.radlance.ticket.edit.presentation.DeleteTicketMapper
@@ -21,13 +23,13 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface EditTicketModule {
+internal interface EditTicketModule {
 
     @Binds
     fun provideEditTicketRepository(remoteTicketRepository: RemoteEditTicketRepository): EditTicketRepository
 
     @Binds
-    fun provideEditTicketMapperFacade(editTicketMapperFacade: EditTicketMapperFacade.Base): EditTicketMapperFacade
+    fun provideEditTicketMapperFacade(editTicketMapperFacade: BaseEditTicketMapperFacade): EditTicketMapperFacade
 
     @Binds
     fun provideBoardMembersEditMapper(boardMembersEditMapper: BoardMembersEditMapper): BoardMembersResult.Mapper<BoardMembersUiStateEdit>
@@ -36,7 +38,7 @@ interface EditTicketModule {
     fun provideTicketInfoEditMapper(ticketInfoEditMapper: TicketInfoEditMapper): TicketInfoResult.Mapper<TicketInfoEditUiState>
 
     @Binds
-    fun provideHandleEditTicket(handleEditTicket: HandleEditTicket.Base): HandleEditTicket
+    fun provideHandleEditTicket(handleEditTicket: BaseHandleEditTicket): HandleEditTicket
 
     @Binds
     fun provideHandleUnitResult(handleUnitResult: HandleUnitResult.Base): HandleUnitResult

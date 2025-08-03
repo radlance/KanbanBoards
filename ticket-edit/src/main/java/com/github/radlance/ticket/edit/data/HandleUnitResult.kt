@@ -4,7 +4,7 @@ import com.github.radlance.core.core.ManageResource
 import com.github.radlance.core.domain.UnitResult
 import javax.inject.Inject
 
-interface HandleUnitResult {
+internal interface HandleUnitResult {
 
     fun handle(action: () -> Unit): UnitResult
 

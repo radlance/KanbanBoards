@@ -3,7 +3,7 @@ package com.github.radlance.ticket.edit.presentation
 import com.github.radlance.core.domain.UnitResult
 import javax.inject.Inject
 
-class DeleteTicketMapper @Inject constructor() : UnitResult.Mapper<DeleteTicketUiState> {
+internal class DeleteTicketMapper @Inject constructor() : UnitResult.Mapper<DeleteTicketUiState> {
 
     override fun mapSuccess(): DeleteTicketUiState = DeleteTicketUiState.Success
 

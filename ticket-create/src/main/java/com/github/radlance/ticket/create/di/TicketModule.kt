@@ -4,6 +4,9 @@ import com.github.radlance.core.domain.UnitResult
 import com.github.radlance.ticket.core.presentation.TicketUiState
 import com.github.radlance.ticket.create.data.RemoteCreateTicketRepository
 import com.github.radlance.ticket.create.domain.CreateTicketRepository
+import com.github.radlance.ticket.create.presentation.BaseCreateTicketMapperFacade
+import com.github.radlance.ticket.create.presentation.BaseFormatTime
+import com.github.radlance.ticket.create.presentation.BaseHandleCreateTicket
 import com.github.radlance.ticket.create.presentation.BoardMembersResultMapper
 import com.github.radlance.ticket.create.presentation.BoardMembersUiStateCreate
 import com.github.radlance.ticket.create.presentation.CreateTicketMapper
@@ -17,7 +20,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface TicketModule {
+internal interface TicketModule {
 
     @Binds
     fun provideTicketRepository(ticketRepository: RemoteCreateTicketRepository): CreateTicketRepository
@@ -28,7 +31,7 @@ interface TicketModule {
     ): com.github.radlance.core.domain.BoardMembersResult.Mapper<BoardMembersUiStateCreate>
 
     @Binds
-    fun provideHandleAddTicket(handleCreateTicket: HandleCreateTicket.Base): HandleCreateTicket
+    fun provideHandleAddTicket(handleCreateTicket: BaseHandleCreateTicket): HandleCreateTicket
 
     @Binds
     fun provideCreateTicketMapper(
@@ -36,8 +39,8 @@ interface TicketModule {
     ): UnitResult.Mapper<TicketUiState>
 
     @Binds
-    fun provideTicketMapperFacade(createTicketMapperFacade: CreateTicketMapperFacade.Base): CreateTicketMapperFacade
+    fun provideTicketMapperFacade(createTicketMapperFacade: BaseCreateTicketMapperFacade): CreateTicketMapperFacade
 
     @Binds
-    fun provideFormatTime(formatTime: FormatTime.Base): FormatTime
+    fun provideFormatTime(formatTime: BaseFormatTime): FormatTime
 }

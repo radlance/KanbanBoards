@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 
 @Composable
-fun TicketColorsRow(
+internal fun TicketColorsRow(
     colors: List<String>,
     selectedColorIndex: Int,
     onColorClick: (Int) -> Unit,

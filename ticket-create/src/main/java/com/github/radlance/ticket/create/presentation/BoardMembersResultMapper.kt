@@ -4,7 +4,7 @@ import com.github.radlance.core.domain.BoardMembersResult
 import com.github.radlance.core.domain.User
 import javax.inject.Inject
 
-class BoardMembersResultMapper @Inject constructor() :
+internal class BoardMembersResultMapper @Inject constructor() :
     BoardMembersResult.Mapper<BoardMembersUiStateCreate> {
 
     override fun mapSuccess(members: List<User>): BoardMembersUiStateCreate =

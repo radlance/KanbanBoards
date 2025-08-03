@@ -4,7 +4,8 @@ import com.github.radlance.board.core.domain.Ticket
 import com.github.radlance.ticket.info.domain.TicketInfoResult
 import javax.inject.Inject
 
-class TicketInfoResultMapper @Inject constructor() : TicketInfoResult.Mapper<TicketInfoUiState> {
+internal class TicketInfoResultMapper @Inject constructor() :
+    TicketInfoResult.Mapper<TicketInfoUiState> {
 
     override fun mapSuccess(ticket: Ticket): TicketInfoUiState = TicketInfoUiState.Success(ticket)
 

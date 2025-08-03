@@ -10,7 +10,7 @@ import com.github.radlance.ticket.create.domain.CreateTicketRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class RemoteCreateTicketRepository @Inject constructor(
+internal class RemoteCreateTicketRepository @Inject constructor(
     private val ticketRemoteDataSource: TicketRemoteDataSource,
     private val manageResource: ManageResource,
     private val usersRepository: UsersRepository

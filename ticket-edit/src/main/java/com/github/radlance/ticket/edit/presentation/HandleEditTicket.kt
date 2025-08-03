@@ -20,40 +20,40 @@ interface HandleEditTicket : HandleTicket {
     val deleteTicketUiState: StateFlow<DeleteTicketUiState>
 
     fun saveDeleteTicketUiState(deleteTicketUiState: DeleteTicketUiState)
+}
 
-    class Base @Inject constructor() : BaseHandleTicket(), HandleEditTicket {
+internal class BaseHandleEditTicket @Inject constructor() : BaseHandleTicket(), HandleEditTicket {
 
-        private val boardMembersUiStateMutable = MutableStateFlow<BoardMembersUiStateEdit>(
-            BoardMembersUiStateEdit.Loading
-        )
+    private val boardMembersUiStateMutable = MutableStateFlow<BoardMembersUiStateEdit>(
+        BoardMembersUiStateEdit.Loading
+    )
 
-        private val ticketInfoEditUiStateMutable = MutableStateFlow<TicketInfoEditUiState>(
-            TicketInfoEditUiState.Loading
-        )
+    private val ticketInfoEditUiStateMutable = MutableStateFlow<TicketInfoEditUiState>(
+        TicketInfoEditUiState.Loading
+    )
 
-        private val deleteTicketUiStateMutable = MutableStateFlow<DeleteTicketUiState>(
-            DeleteTicketUiState.Initial
-        )
+    private val deleteTicketUiStateMutable = MutableStateFlow<DeleteTicketUiState>(
+        DeleteTicketUiState.Initial
+    )
 
-        override val boardMembersUiState: StateFlow<BoardMembersUiStateEdit>
-            get() = boardMembersUiStateMutable.asStateFlow()
+    override val boardMembersUiState: StateFlow<BoardMembersUiStateEdit>
+        get() = boardMembersUiStateMutable.asStateFlow()
 
-        override fun saveBoardMembersUiState(boardMembersUiStateEdit: BoardMembersUiStateEdit) {
-            boardMembersUiStateMutable.value = boardMembersUiStateEdit
-        }
+    override fun saveBoardMembersUiState(boardMembersUiStateEdit: BoardMembersUiStateEdit) {
+        boardMembersUiStateMutable.value = boardMembersUiStateEdit
+    }
 
-        override val ticketInfoEditUiState: StateFlow<TicketInfoEditUiState>
-            get() = ticketInfoEditUiStateMutable.asStateFlow()
+    override val ticketInfoEditUiState: StateFlow<TicketInfoEditUiState>
+        get() = ticketInfoEditUiStateMutable.asStateFlow()
 
-        override fun saveTicketInfoEditUiState(ticketInfoEditUiState: TicketInfoEditUiState) {
-            ticketInfoEditUiStateMutable.value = ticketInfoEditUiState
-        }
+    override fun saveTicketInfoEditUiState(ticketInfoEditUiState: TicketInfoEditUiState) {
+        ticketInfoEditUiStateMutable.value = ticketInfoEditUiState
+    }
 
-        override val deleteTicketUiState: StateFlow<DeleteTicketUiState>
-            get() = deleteTicketUiStateMutable.asStateFlow()
+    override val deleteTicketUiState: StateFlow<DeleteTicketUiState>
+        get() = deleteTicketUiStateMutable.asStateFlow()
 
-        override fun saveDeleteTicketUiState(deleteTicketUiState: DeleteTicketUiState) {
-            deleteTicketUiStateMutable.value = deleteTicketUiState
-        }
+    override fun saveDeleteTicketUiState(deleteTicketUiState: DeleteTicketUiState) {
+        deleteTicketUiStateMutable.value = deleteTicketUiState
     }
 }

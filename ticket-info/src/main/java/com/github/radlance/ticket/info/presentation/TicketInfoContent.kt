@@ -28,7 +28,7 @@ import com.github.radlance.core.presentation.BaseColumn
 import com.github.radlance.ticket.info.R
 
 @Composable
-fun TicketInfoContent(
+internal fun TicketInfoContent(
     ticket: Ticket,
     modifier: Modifier = Modifier
 ) {

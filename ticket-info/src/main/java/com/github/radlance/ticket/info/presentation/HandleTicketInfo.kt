@@ -10,17 +10,17 @@ interface HandleTicketInfo {
     val ticketInfoUiState: StateFlow<TicketInfoUiState>
 
     fun saveTicketInfoUiState(ticketInfoUiState: TicketInfoUiState)
+}
 
-    class Base @Inject constructor() : HandleTicketInfo {
+internal class BaseHandleTicketInfo @Inject constructor() : HandleTicketInfo {
 
-        private val ticketInfoUiStateMutable = MutableStateFlow<TicketInfoUiState>(
-            TicketInfoUiState.Loading
-        )
+    private val ticketInfoUiStateMutable = MutableStateFlow<TicketInfoUiState>(
+        TicketInfoUiState.Loading
+    )
 
-        override val ticketInfoUiState get() = ticketInfoUiStateMutable.asStateFlow()
+    override val ticketInfoUiState get() = ticketInfoUiStateMutable.asStateFlow()
 
-        override fun saveTicketInfoUiState(ticketInfoUiState: TicketInfoUiState) {
-            ticketInfoUiStateMutable.value = ticketInfoUiState
-        }
+    override fun saveTicketInfoUiState(ticketInfoUiState: TicketInfoUiState) {
+        ticketInfoUiStateMutable.value = ticketInfoUiState
     }
 }

@@ -32,7 +32,7 @@ import com.github.radlance.core.domain.User
 import com.github.radlance.core.presentation.BaseColumn
 
 @Composable
-fun BoardSettingsContent(
+internal fun BoardSettingsContent(
     navigateUp: () -> Unit,
     boardInfo: BoardInfo,
     users: List<User>,

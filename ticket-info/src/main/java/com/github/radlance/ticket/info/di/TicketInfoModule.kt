@@ -3,6 +3,8 @@ package com.github.radlance.ticket.info.di
 import com.github.radlance.ticket.info.data.RemoteTicketInfoRepository
 import com.github.radlance.ticket.info.domain.TicketInfoRepository
 import com.github.radlance.ticket.info.domain.TicketInfoResult
+import com.github.radlance.ticket.info.presentation.BaseHandleTicketInfo
+import com.github.radlance.ticket.info.presentation.BaseTicketInfoFacade
 import com.github.radlance.ticket.info.presentation.HandleTicketInfo
 import com.github.radlance.ticket.info.presentation.TicketInfoFacade
 import com.github.radlance.ticket.info.presentation.TicketInfoResultMapper
@@ -14,7 +16,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface TicketInfoModule {
+internal interface TicketInfoModule {
 
     @Binds
     fun provideTicketInfoRepository(remoteTicketInfoRepository: RemoteTicketInfoRepository): TicketInfoRepository
@@ -23,8 +25,8 @@ interface TicketInfoModule {
     fun provideTicketInfoResultMapper(ticketInfoResultMapper: TicketInfoResultMapper): TicketInfoResult.Mapper<TicketInfoUiState>
 
     @Binds
-    fun provideHandleTicketInfo(handleTicketInfo: HandleTicketInfo.Base): HandleTicketInfo
+    fun provideHandleTicketInfo(handleTicketInfo: BaseHandleTicketInfo): HandleTicketInfo
 
     @Binds
-    fun provideTicketInfoFacade(ticketInfoFacade: TicketInfoFacade.Base): TicketInfoFacade
+    fun provideTicketInfoFacade(ticketInfoFacade: BaseTicketInfoFacade): TicketInfoFacade
 }

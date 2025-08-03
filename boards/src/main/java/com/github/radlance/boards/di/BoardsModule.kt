@@ -7,7 +7,6 @@ import com.github.radlance.boards.presentation.BoardMapper
 import com.github.radlance.boards.presentation.BoardUi
 import com.github.radlance.boards.presentation.BoardsResultMapper
 import com.github.radlance.boards.presentation.BoardsUiState
-import com.github.radlance.core.data.BoardsRemoteDataSource
 import com.github.radlance.core.domain.Board
 import dagger.Binds
 import dagger.Module

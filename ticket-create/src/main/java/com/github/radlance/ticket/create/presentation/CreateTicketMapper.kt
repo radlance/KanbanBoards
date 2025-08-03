@@ -4,7 +4,7 @@ import com.github.radlance.core.domain.UnitResult
 import com.github.radlance.ticket.core.presentation.TicketUiState
 import javax.inject.Inject
 
-class CreateTicketMapper @Inject constructor() : UnitResult.Mapper<TicketUiState> {
+internal class CreateTicketMapper @Inject constructor() : UnitResult.Mapper<TicketUiState> {
 
     override fun mapSuccess(): TicketUiState = TicketUiState.Success
 

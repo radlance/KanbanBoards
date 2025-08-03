@@ -6,9 +6,9 @@ import javax.inject.Inject
 interface FormatTime {
 
     fun now(): LocalDateTime
+}
 
-    class Base @Inject constructor() : FormatTime {
+internal class BaseFormatTime @Inject constructor() : FormatTime {
 
-        override fun now(): LocalDateTime = LocalDateTime.now()
-    }
+    override fun now(): LocalDateTime = LocalDateTime.now()
 }

@@ -24,7 +24,7 @@ interface HandleProfile {
     fun saveDeleteProfileUiState(deleteProfileUiState: DeleteProfileUiState)
 }
 
-class BaseHandleProfile @Inject constructor() : HandleProfile {
+internal class BaseHandleProfile @Inject constructor() : HandleProfile {
 
     private val profileUiStateMutable = MutableStateFlow<ProfileUiState>(ProfileUiState.Initial)
 

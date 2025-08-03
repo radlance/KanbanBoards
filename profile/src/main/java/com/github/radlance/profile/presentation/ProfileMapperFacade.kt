@@ -17,7 +17,7 @@ interface ProfileMapperFacade {
     fun mapDeleteProfileResult(deleteProfileResult: UnitResult): DeleteProfileUiState
 }
 
-class BaseProfileMapperFacade @Inject constructor(
+internal class BaseProfileMapperFacade @Inject constructor(
     private val loadProfileMapper: LoadProfileResult.Mapper<ProfileUiState>,
     private val profileProviderMapper: ProfileProvider.Mapper<ProfileProviderUi>,
     private val profileCredentialMapper: CredentialResult.Mapper<ProfileCredentialUiState>,

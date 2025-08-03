@@ -12,18 +12,19 @@ interface HandleCreateTicket : HandleTicket {
     val boardMembersUiState: StateFlow<BoardMembersUiStateCreate>
 
     fun saveBoardMembersUiState(boardMembersUiStateCreate: BoardMembersUiStateCreate)
+}
 
-    class Base @Inject constructor() : BaseHandleTicket(), HandleCreateTicket {
+internal class BaseHandleCreateTicket @Inject constructor() : BaseHandleTicket(),
+    HandleCreateTicket {
 
-        private val boardMembersUiStateMutable = MutableStateFlow<BoardMembersUiStateCreate>(
-            BoardMembersUiStateCreate.Loading
-        )
+    private val boardMembersUiStateMutable = MutableStateFlow<BoardMembersUiStateCreate>(
+        BoardMembersUiStateCreate.Loading
+    )
 
-        override val boardMembersUiState: StateFlow<BoardMembersUiStateCreate>
-            get() = boardMembersUiStateMutable.asStateFlow()
+    override val boardMembersUiState: StateFlow<BoardMembersUiStateCreate>
+        get() = boardMembersUiStateMutable.asStateFlow()
 
-        override fun saveBoardMembersUiState(boardMembersUiStateCreate: BoardMembersUiStateCreate) {
-            boardMembersUiStateMutable.value = boardMembersUiStateCreate
-        }
+    override fun saveBoardMembersUiState(boardMembersUiStateCreate: BoardMembersUiStateCreate) {
+        boardMembersUiStateMutable.value = boardMembersUiStateCreate
     }
 }
