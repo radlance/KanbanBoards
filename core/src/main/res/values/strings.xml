@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="kanban_boards">Kanban Boards</string>
+    <string name="navigate_up">navigate up</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="email">Email</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="password">Password</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="show_hide_password_icon">show/hide password icon</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="error_enter_with_google">Error enter with google</string>
+    <string name="board_with_this_already_exists">Board with this name already exists</string>
+    <string name="at_least_3_symbol">At least 3 symbol</string>
+    <string name="board_name">Board name</string>
+    <string name="loading">loading…</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="welcome_to_kanban_boards">Welcome to Kanban Boards</string>
+    <string name="sign_out">Sign out</string>
+    <string name="error">Error</string>
+    <string name="profile">Profile</string>
+    <string name="create">Create</string>
+    <string name="board_members">Board members</string>
+    <string name="search_icon">Search icon</string>
+    <string name="search">Search…</string>
+    <string name="invite_users_to_the_board">Invite users to the board</string>
+    <string name="enter_email">Enter email address</string>
+    <string name="description">Description</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_you_want_to_delete">Are you sure you want to delete \"%1$s\"?</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_ticket_error">Delete ticket error</string>
+    <string name="add_status">add status</string>
+    <string name="there_are_no_board_members_yet">There are no board members yet</string>
+    <string name="settings">Settings</string>
+    <string name="are_you_sure_you_want_to_delete_your_profile">Are you sure you want to delete your profile?</string>
+    <string name="invitations">Invitations</string>
+    <string name="assignee">Assignee</string>
+    <string name="navigate_to_edit_ticket">Navigate to edit ticket</string>
+    <string name="ticket_info">Ticket info</string>
+    <string name="ticket_deleted">Ticket deleted!</string>
+    <string name="create_board_error">Creating board error</string>
+    <string name="create_board">Create Board</string>
+
+</resources>

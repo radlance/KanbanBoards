@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.navigation.core
 
-import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.core.BaseTest
 import com.github.radlance.kanbanboards.navigation.domain.NavigationRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

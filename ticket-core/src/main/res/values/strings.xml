@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title">Title</string>
+    <string name="description_optional">Description (optional)</string>
+    <string name="create_ticket">Create ticket</string>
+    <string name="edit_ticket">Edit ticket</string>
+    <string name="delete_ticket">Delete ticket</string>
+
+</resources>

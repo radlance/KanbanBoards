@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.navigation.data
 
-import com.github.radlance.kanbanboards.common.BaseTest
+import com.github.radlance.kanbanboards.core.BaseTest
 import com.github.radlance.kanbanboards.navigation.domain.NavigationRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

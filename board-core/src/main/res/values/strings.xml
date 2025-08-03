@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_icon">settings icon</string>
+    <string name="exit_icon">Exit icon</string>
+    <string name="the_board_has_been_deleted">The board has been deleted</string>
+    <string name="keyboard_double_arrow_right_icon">keyboard double arrow right icon</string>
+    <string name="keyboard_double_arrow_left_icon">keyboard double arrow left icon</string>
+    <string name="more">More</string>
+    <string name="all">All</string>
+    <string name="members">Members</string>
+    <string name="show_dropdown_options">Show dropdown options</string>
+    <string name="found_users">Found users</string>
+    <string name="update_board_name">Update board name</string>
+    <string name="delete_board">Delete board</string>
+    <string name="selected_dropdown_option">Selected dropdown option</string>
+
+</resources>
