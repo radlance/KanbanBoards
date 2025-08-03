@@ -1,6 +1,6 @@
 package com.github.radlance.kanbanboards.navigation.data
 
-import com.github.radlance.api.service.MyUser
+import com.github.radlance.kanbanboards.api.service.MyUser
 import javax.inject.Inject
 
 interface NavigationRemoteDataSource {

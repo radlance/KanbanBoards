@@ -1,7 +1,7 @@
 package com.github.radlance.kanbanboards.navigation.core
 
-import com.github.radlance.core.presentation.BaseViewModel
-import com.github.radlance.core.presentation.RunAsync
+import com.github.radlance.kanbanboards.core.presentation.BaseViewModel
+import com.github.radlance.kanbanboards.core.presentation.RunAsync
 import com.github.radlance.kanbanboards.navigation.domain.NavigationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
