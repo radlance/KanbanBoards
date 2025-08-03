@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class RemoteInvitationRepository @Inject constructor(
+internal class RemoteInvitationRepository @Inject constructor(
     private val remoteDataSource: InvitationRemoteDataSource,
     private val manageResource: ManageResource,
     private val ignoreHandle: IgnoreHandle

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-interface InvitationRemoteDataSource {
+internal interface InvitationRemoteDataSource {
 
     fun invitations(): Flow<List<Invitation>>
 

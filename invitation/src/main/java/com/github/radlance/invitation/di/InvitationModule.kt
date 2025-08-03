@@ -13,7 +13,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface InvitationModule {
+internal interface InvitationModule {
 
     @Binds
     fun provideInvitationRemoteDataSource(invitationRemoteDataSource: InvitationRemoteDataSource.Base): InvitationRemoteDataSource

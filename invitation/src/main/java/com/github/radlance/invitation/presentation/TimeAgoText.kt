@@ -14,7 +14,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun TimeAgoText(
+internal fun TimeAgoText(
     dateTime: ZonedDateTime,
     modifier: Modifier = Modifier,
     content: @Composable (String) -> Unit

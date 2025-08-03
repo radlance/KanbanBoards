@@ -35,7 +35,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 @Composable
-fun InvitationItem(
+internal fun InvitationItem(
     onAcceptClick: (boardId: String, invitationId: String) -> Unit,
     onDeclineClick: (invitationId: String) -> Unit,
     invitation: Invitation,
