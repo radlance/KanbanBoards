@@ -4,7 +4,7 @@ import com.github.radlance.boards.domain.BoardsResult
 import com.github.radlance.core.domain.Board
 import javax.inject.Inject
 
-class BoardsResultMapper @Inject constructor(
+internal class BoardsResultMapper @Inject constructor(
     private val boardsMapper: Board.Mapper<BoardUi>
 ) : BoardsResult.Mapper<BoardsUiState> {
 

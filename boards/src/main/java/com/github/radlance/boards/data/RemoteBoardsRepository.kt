@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
-class RemoteBoardsRepository @Inject constructor(
+internal class RemoteBoardsRepository @Inject constructor(
     private val remoteDataSource: BoardsRemoteDataSource,
     private val manageResource: ManageResource
 ) : BoardsRepository {

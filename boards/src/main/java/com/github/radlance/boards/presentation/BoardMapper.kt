@@ -3,7 +3,7 @@ package com.github.radlance.boards.presentation
 import com.github.radlance.core.domain.Board
 import javax.inject.Inject
 
-class BoardMapper @Inject constructor() : Board.Mapper<BoardUi> {
+internal class BoardMapper @Inject constructor() : Board.Mapper<BoardUi> {
 
     override fun mapMyBoard(id: String, name: String): BoardUi = BoardUi.My(id, name)
 

@@ -16,7 +16,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface BoardsModule {
+internal interface BoardsModule {
 
     @Binds
     fun provideBoardsRepository(boardsRepository: RemoteBoardsRepository): BoardsRepository
