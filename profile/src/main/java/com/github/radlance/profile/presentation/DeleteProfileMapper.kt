@@ -3,7 +3,7 @@ package com.github.radlance.profile.presentation
 import com.github.radlance.core.domain.UnitResult
 import javax.inject.Inject
 
-class DeleteProfileMapper @Inject constructor() : UnitResult.Mapper<DeleteProfileUiState> {
+internal class DeleteProfileMapper @Inject constructor() : UnitResult.Mapper<DeleteProfileUiState> {
 
     override fun mapSuccess() = DeleteProfileUiState.Success
 

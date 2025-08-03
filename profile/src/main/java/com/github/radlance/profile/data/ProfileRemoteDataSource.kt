@@ -3,7 +3,7 @@ package com.github.radlance.profile.data
 import com.github.radlance.core.data.UserProfileEntity
 import javax.inject.Inject
 
-interface ProfileRemoteDataSource {
+internal interface ProfileRemoteDataSource {
 
     fun profile(): UserProfileEntity
 

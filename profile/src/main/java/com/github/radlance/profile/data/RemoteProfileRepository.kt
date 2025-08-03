@@ -8,7 +8,7 @@ import com.github.radlance.profile.domain.LoadProfileResult
 import com.github.radlance.profile.domain.ProfileRepository
 import javax.inject.Inject
 
-class RemoteProfileRepository @Inject constructor(
+internal class RemoteProfileRepository @Inject constructor(
     private val remoteDataSource: ProfileRemoteDataSource,
     private val dataStoreManager: DataStoreManager,
     private val manageResource: ManageResource

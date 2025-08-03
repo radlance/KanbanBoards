@@ -4,7 +4,7 @@ import com.github.radlance.auth.presentation.signin.CredentialResult
 import com.github.radlance.core.core.ManageResource
 import javax.inject.Inject
 
-class ProfileCredentialMapper @Inject constructor(
+internal class ProfileCredentialMapper @Inject constructor(
     private val manageResource: ManageResource
 ) : CredentialResult.Mapper<ProfileCredentialUiState> {
 

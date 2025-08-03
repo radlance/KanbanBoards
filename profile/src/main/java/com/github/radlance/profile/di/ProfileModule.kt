@@ -7,6 +7,8 @@ import com.github.radlance.profile.data.ProfileRemoteDataSource
 import com.github.radlance.profile.data.RemoteProfileRepository
 import com.github.radlance.profile.domain.LoadProfileResult
 import com.github.radlance.profile.domain.ProfileRepository
+import com.github.radlance.profile.presentation.BaseHandleProfile
+import com.github.radlance.profile.presentation.BaseProfileMapperFacade
 import com.github.radlance.profile.presentation.DeleteProfileMapper
 import com.github.radlance.profile.presentation.DeleteProfileUiState
 import com.github.radlance.profile.presentation.HandleProfile
@@ -24,7 +26,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface ProfileModule {
+internal interface ProfileModule {
 
     @Binds
     fun provideLoadProfileResultMapper(
@@ -38,13 +40,13 @@ interface ProfileModule {
     fun provideProfileRemoteDataSource(profileRemoteDataSource: ProfileRemoteDataSource.Base): ProfileRemoteDataSource
 
     @Binds
-    fun provideHandleProfile(handleProfile: HandleProfile.Base): HandleProfile
+    fun provideHandleProfile(handleProfile: BaseHandleProfile): HandleProfile
 
     @Binds
     fun provideProfileProviderMapper(profileProviderMapper: ProfileProviderMapper): com.github.radlance.api.service.ProfileProvider.Mapper<ProfileProviderUi>
 
     @Binds
-    fun provideProfileMapperFacade(profileMapperFacade: ProfileMapperFacade.Base): ProfileMapperFacade
+    fun provideProfileMapperFacade(profileMapperFacade: BaseProfileMapperFacade): ProfileMapperFacade
 
     @Binds
     fun provideProfileCredentialMapper(profileCredentialMapper: ProfileCredentialMapper): CredentialResult.Mapper<ProfileCredentialUiState>

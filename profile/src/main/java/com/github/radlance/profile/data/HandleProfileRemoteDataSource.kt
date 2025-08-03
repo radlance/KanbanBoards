@@ -6,7 +6,7 @@ import com.github.radlance.board.core.data.BoardRemoteDataSource
 import com.github.radlance.core.data.HandleError
 import javax.inject.Inject
 
-interface HandleProfileRemoteDataSource {
+internal interface HandleProfileRemoteDataSource {
 
     suspend fun handle(deleteAction: () -> Unit)
 
