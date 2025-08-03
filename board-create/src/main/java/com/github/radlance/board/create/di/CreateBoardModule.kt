@@ -4,6 +4,8 @@ import com.github.radlance.board.create.data.CreateBoardRemoteDataSource
 import com.github.radlance.board.create.data.RemoteCreateBoardRepository
 import com.github.radlance.board.create.domain.CreateBoardRepository
 import com.github.radlance.board.create.domain.CreateBoardResult
+import com.github.radlance.board.create.presentation.BaseCreateBoardMapperFacade
+import com.github.radlance.board.create.presentation.BaseHandleCreateBoard
 import com.github.radlance.board.create.presentation.CreateBoardMapperFacade
 import com.github.radlance.board.create.presentation.CreateBoardResultMapper
 import com.github.radlance.board.create.presentation.CreateBoardUiState
@@ -18,7 +20,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface CreateBoardModule {
+internal interface CreateBoardModule {
 
     @Binds
     fun provideCreateBoardRepository(createBoardRepository: RemoteCreateBoardRepository): CreateBoardRepository
@@ -30,11 +32,11 @@ interface CreateBoardModule {
     fun provideCreateBoardsClodDataSource(createBoardRemoteDataSource: CreateBoardRemoteDataSource.Base): CreateBoardRemoteDataSource
 
     @Binds
-    fun provideHandleCreateBoard(handleCreateBoard: HandleCreateBoard.Base): HandleCreateBoard
+    fun provideHandleCreateBoard(handleCreateBoard: BaseHandleCreateBoard): HandleCreateBoard
 
     @Binds
     fun provideSearchUsersMapper(searchUsersResultMapper: SearchUsersResultMapper): SearchUsersResult.Mapper<SearchUsersUiState>
 
     @Binds
-    fun provideCreateBoardMapperFacade(createBoardMapperFacade: CreateBoardMapperFacade.Base): CreateBoardMapperFacade
+    fun provideCreateBoardMapperFacade(createBoardMapperFacade: BaseCreateBoardMapperFacade): CreateBoardMapperFacade
 }

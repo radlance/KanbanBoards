@@ -16,32 +16,32 @@ interface HandleCreateBoard {
     val searchUsersUiState: StateFlow<SearchUsersUiState>
 
     fun saveSearchUsersUiState(searchUsersUiState: SearchUsersUiState)
+}
 
-    class Base @Inject constructor() : HandleCreateBoard {
+internal class BaseHandleCreateBoard @Inject constructor() : HandleCreateBoard {
 
-        private val createBoardUiStateMutable = MutableStateFlow<CreateBoardUiState>(
-            CreateBoardUiState.Initial
-        )
+    private val createBoardUiStateMutable = MutableStateFlow<CreateBoardUiState>(
+        CreateBoardUiState.Initial
+    )
 
-        private val searchUsersUiStateMutable = MutableStateFlow<SearchUsersUiState>(
-            SearchUsersUiState.Loading
-        )
+    private val searchUsersUiStateMutable = MutableStateFlow<SearchUsersUiState>(
+        SearchUsersUiState.Loading
+    )
 
-        private val createBoardFieldStateLocal = MutableStateFlow(CreateBoardFieldState())
+    private val createBoardFieldStateLocal = MutableStateFlow(CreateBoardFieldState())
 
-        override val createBoardUiState: StateFlow<CreateBoardUiState>
-            get() = createBoardUiStateMutable.asStateFlow()
+    override val createBoardUiState: StateFlow<CreateBoardUiState>
+        get() = createBoardUiStateMutable.asStateFlow()
 
-        override fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState) {
-            createBoardUiStateMutable.value = createBoardUiState
-        }
+    override fun saveCreateBoardUiState(createBoardUiState: CreateBoardUiState) {
+        createBoardUiStateMutable.value = createBoardUiState
+    }
 
-        override val createBoardFieldState get() = createBoardFieldStateLocal
+    override val createBoardFieldState get() = createBoardFieldStateLocal
 
-        override val searchUsersUiState = searchUsersUiStateMutable.asStateFlow()
+    override val searchUsersUiState = searchUsersUiStateMutable.asStateFlow()
 
-        override fun saveSearchUsersUiState(searchUsersUiState: SearchUsersUiState) {
-            searchUsersUiStateMutable.value = searchUsersUiState
-        }
+    override fun saveSearchUsersUiState(searchUsersUiState: SearchUsersUiState) {
+        searchUsersUiStateMutable.value = searchUsersUiState
     }
 }

@@ -9,7 +9,7 @@ import com.github.radlance.invitation.data.InvitationEntity
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-interface CreateBoardRemoteDataSource {
+internal interface CreateBoardRemoteDataSource {
 
     fun createBoard(name: String, memberIds: List<String>): BoardInfo
 

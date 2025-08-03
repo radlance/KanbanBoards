@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class RemoteCreateBoardRepository @Inject constructor(
+internal class RemoteCreateBoardRepository @Inject constructor(
     private val boardsRemoteDataSource: BoardsRemoteDataSource,
     private val createBoardRemoteDataSource: CreateBoardRemoteDataSource,
     private val usersRepository: UsersRepository,
