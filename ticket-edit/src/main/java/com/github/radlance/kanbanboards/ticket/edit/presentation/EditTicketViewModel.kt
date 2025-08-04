@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class EditTicketViewModel @Inject constructor(
+class EditTicketViewModel @Inject internal constructor(
     private val editTicketRepository: EditTicketRepository,
     private val editTicketMapperFacade: EditTicketMapperFacade,
     private val handleEditTicket: HandleEditTicket,

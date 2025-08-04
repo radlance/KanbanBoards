@@ -13,7 +13,7 @@ import kotlinx.datetime.toJavaLocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class TicketInfoViewModel @Inject constructor(
+class TicketInfoViewModel @Inject internal constructor(
     private val ticketInfoRepository: TicketInfoRepository,
     private val facade: TicketInfoFacade,
     private val handleTicketInfo: HandleTicketInfo,

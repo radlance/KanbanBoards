@@ -51,7 +51,6 @@ fun NavGraph(
     boardSettingsViewModel: BoardSettingsViewModel = hiltViewModel(),
     invitationViewModel: InvitationViewModel = hiltViewModel()
 ) {
-
     val authorized by navigationViewModel.authorized.collectAsStateWithLifecycle()
 
     NavHost(

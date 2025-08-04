@@ -15,7 +15,7 @@ import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class BoardSettingsViewModel @Inject constructor(
+class BoardSettingsViewModel @Inject internal constructor(
     private val boardSettingsRepository: BoardSettingsRepository,
     private val facade: BoardSettingsMapperFacade,
     private val handleBoardSettings: HandleBoardSettings,

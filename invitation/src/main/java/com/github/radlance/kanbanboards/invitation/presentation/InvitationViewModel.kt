@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
-class InvitationViewModel @Inject constructor(
+class InvitationViewModel @Inject internal constructor(
     private val invitationRepository: InvitationRepository,
     private val mapper: InvitationResult.Mapper<InvitationUiState>,
     runAsync: RunAsync

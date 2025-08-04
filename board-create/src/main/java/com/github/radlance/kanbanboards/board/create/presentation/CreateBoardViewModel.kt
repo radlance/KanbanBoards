@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateBoardViewModel @Inject constructor(
+class CreateBoardViewModel @Inject internal constructor(
     private val createBoardRepository: CreateBoardRepository,
     private val handleCreateBoard: HandleCreateBoard,
     private val facade: CreateBoardMapperFacade,

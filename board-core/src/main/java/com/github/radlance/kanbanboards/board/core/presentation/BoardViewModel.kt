@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
-class BoardViewModel @Inject constructor(
+class BoardViewModel @Inject internal constructor(
     private val boardRepository: BoardRepository,
     private val handleBoard: HandleBoard,
     private val facade: BoardMapperFacade,
