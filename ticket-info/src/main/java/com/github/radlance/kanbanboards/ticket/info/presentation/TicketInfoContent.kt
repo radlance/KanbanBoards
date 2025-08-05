@@ -1,5 +1,6 @@
 package com.github.radlance.kanbanboards.ticket.info.presentation
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -45,19 +46,18 @@ internal fun TicketInfoContent(
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(Modifier.height(4.dp))
-                ticket.assignedMemberNames.forEach {
-                    Text(text = it, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    ticket.assignedMemberNames.forEach {
+                        Text(text = it, maxLines = 1, overflow = TextOverflow.Ellipsis)
 
-                    if (it != ticket.assignedMemberNames.last()) {
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                        if (it != ticket.assignedMemberNames.last()) {
+                            HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                        }
                     }
                 }
             }
+            Spacer(Modifier.height(16.dp))
         }
-
-
-        Spacer(Modifier.height(16.dp))
-
 
         if (ticket.description.isNotEmpty()) {
             Column {
