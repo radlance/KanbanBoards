@@ -123,11 +123,11 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         id = "test ticket id",
                         colorHex = "#FFFFFF",
                         name = "test ticket name",
-                        assignedMemberNames = "test user",
+                        assignedMemberNames = listOf("test user"),
                         description = "test description",
                         column = Column.Todo,
                         creationDate = LocalDateTime.of(2024, 6, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id"
+                        assignedMemberIds = listOf("test assigned member id")
                     ),
 
                     Ticket(
@@ -135,10 +135,10 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         colorHex = "#FAEEFF",
                         name = "test task",
                         description = "test",
-                        assignedMemberNames = "",
+                        assignedMemberNames = emptyList(),
                         column = Column.InProgress,
                         creationDate = LocalDateTime.of(2024, 5, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id2"
+                        assignedMemberIds = listOf("test assigned member id2")
                     ),
 
                     Ticket(
@@ -146,10 +146,10 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         colorHex = "#000000",
                         name = "first task",
                         description = "",
-                        assignedMemberNames = "another user",
+                        assignedMemberNames = listOf("another user"),
                         column = Column.Done,
                         creationDate = LocalDateTime.of(2024, 4, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id3"
+                        assignedMemberIds = listOf("test assigned member id3")
                     )
                 )
             )
@@ -162,10 +162,10 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         colorHex = "#FFFFFF",
                         name = "test ticket name",
                         description = "test description",
-                        assignedMemberNames = "test user",
+                        assignedMemberNames = listOf("test user"),
                         column = ColumnUi.Todo,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id"
+                        assignedMemberIds = listOf("test assigned member id")
                     ),
 
                     TicketUi(
@@ -173,10 +173,10 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         colorHex = "#FAEEFF",
                         name = "test task",
                         description = "test",
-                        assignedMemberNames = "",
+                        assignedMemberNames = emptyList(),
                         column = ColumnUi.InProgress,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id2"
+                        assignedMemberIds = listOf("test assigned member id2")
                     ),
 
                     TicketUi(
@@ -184,10 +184,10 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         colorHex = "#000000",
                         name = "first task",
                         description = "",
-                        assignedMemberNames = "another user",
+                        assignedMemberNames = listOf("another user"),
                         column = ColumnUi.Done,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id3"
+                        assignedMemberIds = listOf("test assigned member id3")
                     )
                 )
             ),
@@ -203,10 +203,10 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         colorHex = "#FFFFFF",
                         name = "test ticket name",
                         description = "test description",
-                        assignedMemberNames = "test user",
+                        assignedMemberNames = listOf("test user"),
                         column = ColumnUi.Todo,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 6, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id"
+                        assignedMemberIds = listOf("test assigned member id")
                     ),
 
                     TicketUi(
@@ -214,10 +214,10 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         colorHex = "#FAEEFF",
                         name = "test task",
                         description = "test",
-                        assignedMemberNames = "",
+                        assignedMemberNames = emptyList(),
                         column = ColumnUi.InProgress,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 5, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id2"
+                        assignedMemberIds = listOf("test assigned member id2")
                     ),
 
                     TicketUi(
@@ -225,10 +225,10 @@ class BoardViewModelTest : BaseBoardCoreTest() {
                         colorHex = "#000000",
                         name = "first task",
                         description = "",
-                        assignedMemberNames = "another user",
+                        assignedMemberNames = listOf("another user"),
                         column = ColumnUi.Done,
                         creationDate = kotlinx.datetime.LocalDateTime(2024, 4, 18, 6, 30),
-                        assignedMemberIds = "test assigned member id3"
+                        assignedMemberIds = listOf("test assigned member id3")
                     )
                 )
             ),

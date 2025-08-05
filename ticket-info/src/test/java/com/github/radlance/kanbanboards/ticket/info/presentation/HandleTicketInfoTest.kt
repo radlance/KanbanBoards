@@ -26,10 +26,10 @@ class HandleTicketInfoTest {
                     colorHex = "testColorHex",
                     name = "testName",
                     description = "testDescription",
-                    assignedMemberNames = "testAssignedMemberName",
+                    assignedMemberNames = listOf("testAssignedMemberName"),
                     column = Column.Todo,
                     creationDate = LocalDateTime.of(2025, 5, 5, 5, 5),
-                    assignedMemberIds = "testAssignedMemberId"
+                    assignedMemberIds = listOf("testAssignedMemberId")
                 )
             )
         )
@@ -40,10 +40,10 @@ class HandleTicketInfoTest {
                     colorHex = "testColorHex",
                     name = "testName",
                     description = "testDescription",
-                    assignedMemberNames = "testAssignedMemberName",
+                    assignedMemberNames = listOf("testAssignedMemberName"),
                     column = Column.Todo,
                     creationDate = LocalDateTime.of(2025, 5, 5, 5, 5),
-                    assignedMemberIds = "testAssignedMemberId"
+                    assignedMemberIds = listOf("testAssignedMemberId")
                 )
             ),
             handle.ticketInfoUiState.value

@@ -36,10 +36,10 @@ class TicketInfoRepositoryTest : BaseBoardCoreTest() {
                     colorHex = "initial color",
                     name = "initial name",
                     description = "initial description",
-                    assignedMemberNames = "initial assignee",
+                    assignedMemberNames = listOf("initial assignee"),
                     column = Column.Todo,
                     creationDate = LocalDateTime.of(2025, 4, 4, 4, 4),
-                    assignedMemberIds = "initial assigned member id"
+                    assignedMemberIds = listOf("initial assigned member id")
                 )
             ),
             ticket.first()

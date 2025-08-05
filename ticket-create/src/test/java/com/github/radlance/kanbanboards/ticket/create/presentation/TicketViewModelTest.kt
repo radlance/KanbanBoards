@@ -118,7 +118,7 @@ class TicketViewModelTest : BaseTest() {
             title = "title1",
             color = "#000000",
             description = "description1",
-            assigneeId = "assignee1",
+            assigneeIds = listOf("assignee1"),
             ticketId = "stub",
             column = Column.Todo,
             creationDate = LocalDateTime.of(1, 1, 1, 1, 1)
@@ -134,7 +134,7 @@ class TicketViewModelTest : BaseTest() {
                 colorHex = "#000000",
                 name = "title1",
                 description = "description1",
-                assignedMemberIds = "assignee1",
+                assignedMemberIds = listOf("assignee1"),
                 creationDate = LocalDateTime.of(2025, 1, 1, 1, 1)
             ),
             repository.createTicketCalledList[0]
@@ -158,7 +158,7 @@ class TicketViewModelTest : BaseTest() {
             title = "title2",
             color = "#000000",
             description = "description2",
-            assigneeId = "assignee2",
+            assigneeIds = listOf("assignee2"),
             ticketId = "stub",
             column = Column.Todo,
             creationDate = LocalDateTime.of(1, 1, 1, 1, 1)
@@ -174,7 +174,7 @@ class TicketViewModelTest : BaseTest() {
                 colorHex = "#000000",
                 name = "title2",
                 description = "description2",
-                assignedMemberIds = "assignee2",
+                assignedMemberIds = listOf("assignee2"),
                 creationDate = LocalDateTime.of(2025, 1, 1, 1, 30)
             ),
             repository.createTicketCalledList[1]

@@ -46,7 +46,7 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "v name",
                 description = "edited description",
-                assignedMemberIds = "edited assignee id",
+                assignedMemberIds = listOf("edited assignee id"),
                 creationDate = LocalDateTime.of(2024, 2, 2, 2, 2),
                 id = "edited id",
                 column = Column.Done
@@ -61,7 +61,7 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "v name",
                 description = "edited description",
-                assignedMemberIds = "edited assignee id",
+                assignedMemberIds = listOf("edited assignee id"),
                 creationDate = LocalDateTime.of(2024, 2, 2, 2, 2),
                 id = "edited id",
                 column = Column.Done
@@ -81,7 +81,7 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "edited name2",
                 description = "edited description2",
-                assignedMemberIds = "edited assignee id2",
+                assignedMemberIds = listOf("edited assignee id2"),
                 creationDate = LocalDateTime.of(2023, 2, 2, 2, 2),
                 id = "edited id2",
                 column = Column.Todo
@@ -95,7 +95,7 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "edited name2",
                 description = "edited description2",
-                assignedMemberIds = "edited assignee id2",
+                assignedMemberIds = listOf("edited assignee id2"),
                 creationDate = LocalDateTime.of(2023, 2, 2, 2, 2),
                 id = "edited id2",
                 column = Column.Todo
@@ -117,7 +117,7 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "edited name2",
                 description = "edited description2",
-                assignedMemberIds = "edited assignee id2",
+                assignedMemberIds = listOf("edited assignee id2"),
                 creationDate = LocalDateTime.of(2023, 2, 2, 2, 2),
                 id = "edited id2",
                 column = Column.Todo
@@ -131,7 +131,7 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "edited name2",
                 description = "edited description2",
-                assignedMemberIds = "edited assignee id2",
+                assignedMemberIds = listOf("edited assignee id2"),
                 creationDate = LocalDateTime.of(2023, 2, 2, 2, 2),
                 id = "edited id2",
                 column = Column.Todo

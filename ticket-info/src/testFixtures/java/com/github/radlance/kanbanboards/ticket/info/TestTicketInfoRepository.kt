@@ -17,10 +17,10 @@ class TestTicketInfoRepository : TicketInfoRepository {
                 colorHex = "initial color",
                 name = "initial name",
                 description = "initial description",
-                assignedMemberNames = "initial assignee member name",
+                assignedMemberNames = listOf("initial assignee member name"),
                 column = Column.Todo,
                 creationDate = LocalDateTime.of(2025, 1, 1, 1, 1),
-                assignedMemberIds = "initial assigned member id"
+                assignedMemberIds = listOf("initial assigned member id")
             )
         )
     )
