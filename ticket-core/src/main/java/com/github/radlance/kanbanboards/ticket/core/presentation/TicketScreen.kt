@@ -2,13 +2,13 @@ package com.github.radlance.kanbanboards.ticket.core.presentation
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,14 +35,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -93,8 +94,7 @@ fun TicketScreen(
         )
     }
     var titleFieldValue by rememberSaveable { mutableStateOf(initialTitleFieldValue) }
-    val selectedAssignedIds =
-        remember { mutableStateListOf(*initialSelectedAssignedList.toTypedArray()) }
+    val selectedAssignedIds = remember { initialSelectedAssignedList.toMutableStateList() }
     var descriptionFieldValue by rememberSaveable { mutableStateOf(initialDescriptionFieldValue) }
 
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -104,6 +104,7 @@ fun TicketScreen(
 
     if (expanded) {
         var searchFieldValue by rememberSaveable { mutableStateOf("") }
+        val localAssignedIds = remember { selectedAssignedIds.toMutableStateList() }
         BasicAlertDialog(
             onDismissRequest = {
                 expanded = false
@@ -114,13 +115,6 @@ fun TicketScreen(
                 .background(AlertDialogDefaults.containerColor)
         ) {
             val listState = rememberLazyListState()
-
-//            if (selectedAssigneeId != "") {
-//                val index = members.indexOf(members.first { it.id == selectedAssigneeId })
-//                LaunchedEffect(Unit) {
-//                    listState.scrollToItem(index)
-//                }
-//            }
 
             val filteredMembers = remember(members, searchFieldValue) {
                 members.filter { it.email.contains(searchFieldValue, ignoreCase = true) }
@@ -158,18 +152,17 @@ fun TicketScreen(
                     ) { index, member ->
                         DropdownMenuItem(
                             onClick = {
-                                if (selectedAssignedIds.contains(member.id)) {
-                                    selectedAssignedIds.remove(member.id)
+                                if (localAssignedIds.contains(member.id)) {
+                                    localAssignedIds.remove(member.id)
                                 } else {
-                                    selectedAssignedIds.add(member.id)
+                                    localAssignedIds.add(member.id)
                                 }
                             },
                             text = {
-                                val color by animateColorAsState(
-                                    if (selectedAssignedIds.contains(member.id)) {
-                                        MaterialTheme.colorScheme.primary
-                                    } else LocalTextStyle.current.color
-                                )
+                                val color = if (localAssignedIds.contains(member.id)) {
+                                    MaterialTheme.colorScheme.primary
+                                } else LocalTextStyle.current.color
+
                                 Text(text = member.email, fontSize = 16.sp, color = color)
                             }
                         )
@@ -177,6 +170,31 @@ fun TicketScreen(
                         if (index < filteredMembers.lastIndex) {
                             HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                         }
+                    }
+                }
+                Spacer(Modifier.height(4.dp))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    TextButton(onClick = { expanded = false }) {
+                        Text(
+                            text = stringResource(com.github.radlance.core.R.string.cancel),
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+
+                    TextButton(
+                        onClick = {
+                            selectedAssignedIds.clear()
+                            selectedAssignedIds.addAll(localAssignedIds)
+                            expanded = false
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.ok),
+                            color = MaterialTheme.colorScheme.secondary
+                        )
                     }
                 }
             }
