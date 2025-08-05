@@ -27,7 +27,7 @@
     <string name="search">Search…</string>
     <string name="invite_users_to_the_board">Invite users to the board</string>
     <string name="enter_email">Enter email address</string>
-    <string name="description">Description</string>
+    <string name="description">Description:</string>
     <string name="delete">Delete</string>
     <string name="are_you_sure_you_want_to_delete">Are you sure you want to delete \"%1$s\"?</string>
     <string name="cancel">Cancel</string>
@@ -43,5 +43,6 @@
     <string name="ticket_deleted">Ticket deleted!</string>
     <string name="create_board_error">Creating board error</string>
     <string name="create_board">Create Board</string>
+    <string name="assigned_to">Assigned to:</string>
 
 </resources>

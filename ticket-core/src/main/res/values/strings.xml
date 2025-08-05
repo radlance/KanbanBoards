@@ -6,5 +6,7 @@
     <string name="edit_ticket">Edit ticket</string>
     <string name="delete_ticket">Delete ticket</string>
     <string name="ok">OK</string>
+    <string name="edit">Edit</string>
+    <string name="no_assigned_members_yet">No assigned members yet</string>
 
 </resources>
