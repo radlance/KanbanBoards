@@ -15,7 +15,7 @@ interface TicketActions {
         title: String,
         color: String,
         description: String,
-        assigneeId: String,
+        assigneeIds: List<String>,
         creationDate: LocalDateTime
     )
 

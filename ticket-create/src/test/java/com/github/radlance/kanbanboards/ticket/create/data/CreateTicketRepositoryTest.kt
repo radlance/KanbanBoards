@@ -45,7 +45,7 @@ class CreateTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "new name",
                 description = "new description",
-                assignedMemberId = "new assignee id",
+                assignedMemberIds = "new assignee id",
                 creationDate = LocalDateTime.of(2024, 2, 2, 2, 2)
             )
         )
@@ -58,7 +58,7 @@ class CreateTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "new name",
                 description = "new description",
-                assignedMemberId = "new assignee id",
+                assignedMemberIds = "new assignee id",
                 creationDate = LocalDateTime.of(2024, 2, 2, 2, 2)
             ),
             ticketRemoteDataSource.createTicketCalledList[0]
@@ -76,7 +76,7 @@ class CreateTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "new name2",
                 description = "new description2",
-                assignedMemberId = "new assignee id2",
+                assignedMemberIds = "new assignee id2",
                 creationDate = LocalDateTime.of(2023, 2, 2, 2, 2)
             )
         )
@@ -96,7 +96,7 @@ class CreateTicketRepositoryTest : BaseBoardCoreTest() {
                 colorHex = "#111111",
                 name = "new name2",
                 description = "new description2",
-                assignedMemberId = "new assignee id2",
+                assignedMemberIds = "new assignee id2",
                 creationDate = LocalDateTime.of(2023, 2, 2, 2, 2)
             )
         )

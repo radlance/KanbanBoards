@@ -59,10 +59,10 @@ class HandleBoardTest {
                         colorHex = "#AAAAAA",
                         name = "name1",
                         description = "description1",
-                        assignedMemberName = "user",
+                        assignedMemberNames = "user",
                         column = ColumnUi.InProgress,
                         creationDate = LocalDateTime(2024, 1, 10, 5, 50),
-                        assignedMemberId = "assigned member id1"
+                        assignedMemberIds = "assigned member id1"
                     )
                 )
             )
@@ -75,10 +75,10 @@ class HandleBoardTest {
                         colorHex = "#AAAAAA",
                         name = "name1",
                         description = "description1",
-                        assignedMemberName = "user",
+                        assignedMemberNames = "user",
                         column = ColumnUi.InProgress,
                         creationDate = LocalDateTime(2024, 1, 10, 5, 50),
-                        assignedMemberId = "assigned member id1"
+                        assignedMemberIds = "assigned member id1"
                     )
                 )
             ),

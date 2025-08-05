@@ -9,6 +9,6 @@ data class EditTicket(
     val column: Column,
     val name: String,
     val description: String,
-    val assignedMemberId: String,
+    val assignedMemberIds: List<String>,
     val creationDate: LocalDateTime
 )

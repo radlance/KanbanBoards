@@ -38,7 +38,7 @@ class CreateTicketViewModel @Inject internal constructor(
         title: String,
         color: String,
         description: String,
-        assigneeId: String,
+        assigneeIds: List<String>,
         creationDate: LocalDateTime
     ) {
 
@@ -49,7 +49,7 @@ class CreateTicketViewModel @Inject internal constructor(
             colorHex = color,
             name = title,
             description = description,
-            assignedMemberId = assigneeId,
+            assignedMemberIds = assigneeIds,
             creationDate = formatTime.now()
         )
 

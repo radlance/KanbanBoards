@@ -18,8 +18,8 @@ internal class TicketResultMapper @Inject constructor(
                     id = id,
                     name = name,
                     description = description,
-                    assignedMemberName = assignedMemberName,
-                    assignedMemberId = assignedMemberId,
+                    assignedMemberNames = assignedMemberNames,
+                    assignedMemberIds = assignedMemberIds,
                     column = column.map(mapper),
                     creationDate = creationDate.toKotlinLocalDateTime()
                 )

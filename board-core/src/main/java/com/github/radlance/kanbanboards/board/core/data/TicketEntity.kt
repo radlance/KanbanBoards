@@ -5,7 +5,7 @@ internal data class TicketEntity(
     val color: String = "",
     val title: String = "",
     val description: String = "",
-    val assignee: String = "",
+    val assignee: List<String> = emptyList(),
     val columnId: String = "",
     val creationDate: String = ""
 )

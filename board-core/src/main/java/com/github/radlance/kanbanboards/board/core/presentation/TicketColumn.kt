@@ -103,8 +103,8 @@ private fun TicketColumnPreview() {
                     colorHex = "#BFE951",
                     id = "id",
                     name = "test another ticket",
-                    assignedMemberName = "some member",
-                    assignedMemberId = "1",
+                    assignedMemberNames = listOf("some member"),
+                    assignedMemberIds = listOf("1"),
                     column = ColumnUi.Todo,
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     description = ""
@@ -114,8 +114,8 @@ private fun TicketColumnPreview() {
                     colorHex = "#EBC944",
                     id = "id2",
                     name = "test ticket",
-                    assignedMemberName = "some member",
-                    assignedMemberId = "1",
+                    assignedMemberNames = listOf("some member"),
+                    assignedMemberIds = listOf("1"),
                     column = ColumnUi.Todo,
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     description = ""
@@ -125,8 +125,8 @@ private fun TicketColumnPreview() {
                     colorHex = "#EBCAFF",
                     id = "id3",
                     name = "done ticket",
-                    assignedMemberName = "some member",
-                    assignedMemberId = "1",
+                    assignedMemberNames = listOf("some member"),
+                    assignedMemberIds = listOf("1"),
                     column = ColumnUi.Todo,
                     creationDate = LocalDateTime(1, 1, 1, 1, 1),
                     description = ""

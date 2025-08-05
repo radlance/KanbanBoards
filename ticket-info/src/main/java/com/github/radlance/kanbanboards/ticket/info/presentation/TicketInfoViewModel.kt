@@ -32,8 +32,8 @@ class TicketInfoViewModel @Inject internal constructor(
                     colorHex = colorHex,
                     name = name,
                     description = description,
-                    assignedMemberName = assignedMemberName,
-                    assignedMemberId = assignedMemberId,
+                    assignedMemberNames = assignedMemberNames,
+                    assignedMemberIds = assignedMemberIds,
                     column = facade.mapColumnUi(column),
                     creationDate = creationDate.toJavaLocalDateTime()
                 )

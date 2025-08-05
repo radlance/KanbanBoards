@@ -33,7 +33,7 @@ class EditTicketViewModel @Inject internal constructor(
         title: String,
         color: String,
         description: String,
-        assigneeId: String,
+        assigneeIds: List<String>,
         creationDate: LocalDateTime
     ) {
         handleEditTicket.saveTicketUiState(TicketUiState.Loading)
@@ -42,7 +42,7 @@ class EditTicketViewModel @Inject internal constructor(
             colorHex = color,
             name = title,
             description = description,
-            assignedMemberId = assigneeId,
+            assignedMemberIds = assigneeIds,
             id = ticketId,
             boardId = boardId,
             column = column,

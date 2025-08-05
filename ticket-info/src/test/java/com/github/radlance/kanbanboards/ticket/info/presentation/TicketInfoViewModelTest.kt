@@ -54,7 +54,7 @@ class TicketInfoViewModelTest : BaseTest() {
                 id = "123",
                 name = "test name",
                 description = "test description",
-                assignedMemberName = "test assignee member name",
+                assignedMemberNames = "test assignee member name",
                 column = ColumnUi.InProgress,
                 creationDate = LocalDateTime(
                     year = 2025,
@@ -63,7 +63,7 @@ class TicketInfoViewModelTest : BaseTest() {
                     hour = 1,
                     minute = 1
                 ),
-                assignedMemberId = "test assigned member id"
+                assignedMemberIds = "test assigned member id"
             )
         )
         assertEquals(1, repository.ticketCalledList.size)
@@ -76,7 +76,7 @@ class TicketInfoViewModelTest : BaseTest() {
                     id = "123",
                     name = "test name",
                     description = "test description",
-                    assignedMemberName = "test assignee member name",
+                    assignedMemberNames = "test assignee member name",
                     column = Column.InProgress,
                     creationDate = java.time.LocalDateTime.of(
                         2025,
@@ -85,7 +85,7 @@ class TicketInfoViewModelTest : BaseTest() {
                         1,
                         1
                     ),
-                    assignedMemberId = "test assigned member id"
+                    assignedMemberIds = "test assigned member id"
                 )
             ),
             handle.saveTicketInfoUiStateCalledList[0]
@@ -101,7 +101,7 @@ class TicketInfoViewModelTest : BaseTest() {
                     id = "success id",
                     name = "success name",
                     description = "success description",
-                    assignedMemberName = "success assignee member name",
+                    assignedMemberNames = "success assignee member name",
                     column = Column.InProgress,
                     creationDate = java.time.LocalDateTime.of(
                         2024,
@@ -110,7 +110,7 @@ class TicketInfoViewModelTest : BaseTest() {
                         2,
                         2
                     ),
-                    assignedMemberId = "success assigned member id"
+                    assignedMemberIds = "success assigned member id"
                 )
             )
         )
@@ -123,7 +123,7 @@ class TicketInfoViewModelTest : BaseTest() {
                     id = "success id",
                     name = "success name",
                     description = "success description",
-                    assignedMemberName = "success assignee member name",
+                    assignedMemberNames = "success assignee member name",
                     column = Column.InProgress,
                     creationDate = java.time.LocalDateTime.of(
                         2024,
@@ -132,7 +132,7 @@ class TicketInfoViewModelTest : BaseTest() {
                         2,
                         2
                     ),
-                    assignedMemberId = "success assigned member id"
+                    assignedMemberIds = "success assigned member id"
                 )
             ),
             handle.saveTicketInfoUiStateCalledList[2]

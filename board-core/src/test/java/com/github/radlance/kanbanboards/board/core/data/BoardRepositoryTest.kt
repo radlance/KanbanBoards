@@ -67,11 +67,11 @@ class BoardRepositoryTest : BaseBoardCoreTest() {
                     id = "ticketId",
                     colorHex = "#EAAEEE",
                     name = "ticketName",
-                    assignedMemberName = "member",
+                    assignedMemberNames = "member",
                     description = "ticketDescription",
                     column = Column.Todo,
                     creationDate = LocalDateTime.of(2025, 7, 18, 6, 30),
-                    assignedMemberId = "assignedMemberId"
+                    assignedMemberIds = "assignedMemberId"
                 )
             )
         )
@@ -83,11 +83,11 @@ class BoardRepositoryTest : BaseBoardCoreTest() {
                         id = "test board id",
                         colorHex = "#EAAEEE",
                         name = "ticketName",
-                        assignedMemberName = "member",
+                        assignedMemberNames = "member",
                         description = "ticketDescription",
                         column = Column.Todo,
                         creationDate = LocalDateTime.of(2025, 7, 18, 6, 30),
-                        assignedMemberId = "assignedMemberId"
+                        assignedMemberIds = "assignedMemberId"
                     )
                 )
             ),

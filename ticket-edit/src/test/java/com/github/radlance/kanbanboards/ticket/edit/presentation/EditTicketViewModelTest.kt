@@ -146,7 +146,7 @@ class EditTicketViewModelTest : BaseTest() {
                     id = "success id",
                     name = "success name",
                     description = "success description",
-                    assignedMemberName = "success assignee member name",
+                    assignedMemberNames = "success assignee member name",
                     column = Column.InProgress,
                     creationDate = LocalDateTime.of(
                         2024,
@@ -155,7 +155,7 @@ class EditTicketViewModelTest : BaseTest() {
                         2,
                         2
                     ),
-                    assignedMemberId = "success assigned member id"
+                    assignedMemberIds = "success assigned member id"
                 )
             )
         )
@@ -168,7 +168,7 @@ class EditTicketViewModelTest : BaseTest() {
                     id = "success id",
                     name = "success name",
                     description = "success description",
-                    assignedMemberName = "success assignee member name",
+                    assignedMemberNames = "success assignee member name",
                     column = Column.InProgress,
                     creationDate = LocalDateTime.of(
                         2024,
@@ -177,7 +177,7 @@ class EditTicketViewModelTest : BaseTest() {
                         2,
                         2
                     ),
-                    assignedMemberId = "success assigned member id"
+                    assignedMemberIds = "success assigned member id"
                 )
             ),
             handle.saveTicketInfoEditUiStateCalledList[1]
@@ -196,7 +196,7 @@ class EditTicketViewModelTest : BaseTest() {
             title = "title1",
             color = "#000000",
             description = "description1",
-            assigneeId = "assignee1",
+            assigneeIds = "assignee1",
             ticketId = "ticketId1",
             column = Column.Todo,
             creationDate = LocalDateTime.of(2025, 3, 3, 3, 3)
@@ -212,7 +212,7 @@ class EditTicketViewModelTest : BaseTest() {
                 colorHex = "#000000",
                 name = "title1",
                 description = "description1",
-                assignedMemberId = "assignee1",
+                assignedMemberIds = "assignee1",
                 creationDate = LocalDateTime.of(2025, 3, 3, 3, 3),
                 id = "ticketId1",
                 column = Column.Todo
@@ -237,7 +237,7 @@ class EditTicketViewModelTest : BaseTest() {
             title = "title2",
             color = "#000000",
             description = "description2",
-            assigneeId = "assignee2",
+            assigneeIds = "assignee2",
             ticketId = "ticketId2",
             column = Column.InProgress,
             creationDate = LocalDateTime.of(2024, 1, 1, 1, 1)
@@ -253,7 +253,7 @@ class EditTicketViewModelTest : BaseTest() {
                 colorHex = "#000000",
                 name = "title2",
                 description = "description2",
-                assignedMemberId = "assignee2",
+                assignedMemberIds = "assignee2",
                 creationDate = LocalDateTime.of(2024, 1, 1, 1, 1),
                 id = "ticketId2",
                 column = Column.InProgress

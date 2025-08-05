@@ -46,7 +46,7 @@ internal fun TicketInfoContent(
         Box(modifier = Modifier.height(IntrinsicSize.Min)) {
 
             OutlinedTextField(
-                value = ticket.assignedMemberName.ifEmpty {
+                value = ticket.assignedMemberNames.joinToString().ifEmpty {
                     stringResource(R.string.no_assigned_member)
                 },
                 onValueChange = {},

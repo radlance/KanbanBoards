@@ -42,7 +42,7 @@ interface BoardMembersUiStateEdit {
                     navigateUp = navigateUp,
                     selectedColor = colorHex,
                     initialTitleFieldValue = name,
-                    initialSelectedAssigneeId = assignedMemberId,
+                    initialSelectedAssignedList = assignedMemberIds,
                     initialDescriptionFieldValue = description,
                     ticketId = id,
                     column = column,

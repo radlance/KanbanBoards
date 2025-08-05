@@ -60,10 +60,10 @@ class HandleEditTicketTest {
                     colorHex = "testColorHex",
                     name = "testName",
                     description = "testDescription",
-                    assignedMemberName = "testAssignedMemberName",
+                    assignedMemberNames = "testAssignedMemberName",
                     column = Column.Todo,
                     creationDate = LocalDateTime.of(2025, 5, 5, 5, 5),
-                    assignedMemberId = "testAssignedMemberId"
+                    assignedMemberIds = "testAssignedMemberId"
                 )
             )
         )
@@ -74,10 +74,10 @@ class HandleEditTicketTest {
                     colorHex = "testColorHex",
                     name = "testName",
                     description = "testDescription",
-                    assignedMemberName = "testAssignedMemberName",
+                    assignedMemberNames = "testAssignedMemberName",
                     column = Column.Todo,
                     creationDate = LocalDateTime.of(2025, 5, 5, 5, 5),
-                    assignedMemberId = "testAssignedMemberId"
+                    assignedMemberIds = "testAssignedMemberId"
                 )
             ),
             handle.ticketInfoEditUiState.value

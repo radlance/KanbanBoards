@@ -93,7 +93,7 @@ internal fun TicketItem(
                 )
             }
             Text(
-                text = ticket.assignedMemberName,
+                text = ticket.assignedMemberNames.joinToString(),
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(horizontal = contentPaddingModifier)
             )
@@ -134,8 +134,8 @@ private fun TicketItemPreview() {
                 colorHex = "#EBC944",
                 id = "id",
                 name = "test ticket",
-                assignedMemberName = "some member",
-                assignedMemberId = "1",
+                assignedMemberNames = listOf("some member"),
+                assignedMemberIds = listOf("1"),
                 column = ColumnUi.Todo,
                 description = "",
                 creationDate = LocalDateTime(1, 1, 1, 1, 1)

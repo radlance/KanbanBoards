@@ -134,7 +134,7 @@ class TicketViewModelTest : BaseTest() {
                 colorHex = "#000000",
                 name = "title1",
                 description = "description1",
-                assignedMemberId = "assignee1",
+                assignedMemberIds = "assignee1",
                 creationDate = LocalDateTime.of(2025, 1, 1, 1, 1)
             ),
             repository.createTicketCalledList[0]
@@ -174,7 +174,7 @@ class TicketViewModelTest : BaseTest() {
                 colorHex = "#000000",
                 name = "title2",
                 description = "description2",
-                assignedMemberId = "assignee2",
+                assignedMemberIds = "assignee2",
                 creationDate = LocalDateTime.of(2025, 1, 1, 1, 30)
             ),
             repository.createTicketCalledList[1]

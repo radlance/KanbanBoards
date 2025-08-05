@@ -75,10 +75,10 @@ abstract class BaseBoardCoreTest : BaseTest() {
                 colorHex = "initial color",
                 name = "initial name",
                 description = "initial description",
-                assignedMemberName = "initial assignee",
+                assignedMemberNames = "initial assignee",
                 column = Column.Todo,
                 creationDate = LocalDateTime.of(2025, 4, 4, 4, 4),
-                assignedMemberId = "initial assigned member id"
+                assignedMemberIds = "initial assigned member id"
             )
         )
         private var ticketException: Exception? = null

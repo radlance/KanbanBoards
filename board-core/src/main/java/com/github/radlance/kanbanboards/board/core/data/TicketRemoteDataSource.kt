@@ -48,26 +48,42 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
             if (entity == null) {
                 flowOf(null)
             } else {
+                val userFlows = entity.assignee.map { assigneeId ->
+                    service.get(path = "users", subPath = assigneeId)
+                        .mapNotNull { userSnapshot ->
+                            userSnapshot.getValue(UserProfileEntity::class.java)?.name
+                        }
+                }
 
-                service.get(
-                    path = "users",
-                    subPath = entity.assignee
-                ).mapNotNull { userSnapshot ->
-                    val userEntity = userSnapshot.getValue(UserProfileEntity::class.java)
-
-                    val column = columnType(entity)
-
-                    with(entity) {
-                        Ticket(
-                            id = ticketSnapshot.id,
-                            colorHex = color,
-                            name = title,
-                            description = description,
-                            assignedMemberName = userEntity?.name ?: "",
-                            assignedMemberId = entity.assignee,
-                            column = column,
-                            creationDate = LocalDateTime.parse(creationDate)
-                        )
+                if (userFlows.isEmpty()) {
+                    flowOf(
+                        with(entity) {
+                            Ticket(
+                                id = ticketSnapshot.id,
+                                colorHex = color,
+                                name = title,
+                                description = description,
+                                assignedMemberNames = emptyList(),
+                                assignedMemberIds = entity.assignee,
+                                column = columnType(entity),
+                                creationDate = LocalDateTime.parse(creationDate)
+                            )
+                        }
+                    )
+                } else {
+                    combine(userFlows) { namesArray ->
+                        with(entity) {
+                            Ticket(
+                                id = ticketSnapshot.id,
+                                colorHex = color,
+                                name = title,
+                                description = description,
+                                assignedMemberNames = namesArray.filterNotNull(),
+                                assignedMemberIds = entity.assignee,
+                                column = columnType(entity),
+                                creationDate = LocalDateTime.parse(creationDate)
+                            )
+                        }
                     }
                 }
             }
@@ -75,11 +91,6 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
     }
 
     override fun tickets(boardId: String): Flow<List<Ticket>> {
-        service.getListByQuery(
-            path = "tickets",
-            queryKey = "boardId",
-            queryValue = boardId
-        )
         val ticketsQuery = service.getListByQuery(
             path = "tickets",
             queryKey = "boardId",
@@ -92,25 +103,42 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
                 val entity = ticketSnapshot.getValue(TicketEntity::class.java)
                     ?: return@mapNotNull null
 
-                service.get(
-                    path = "users",
-                    subPath = entity.assignee
-                ).map { userSnapshot ->
-                    val userEntity = userSnapshot.getValue(UserProfileEntity::class.java)
+                if (entity.assignee.isEmpty()) {
+                    flowOf(
+                        with(entity) {
+                            Ticket(
+                                id = key,
+                                colorHex = color,
+                                name = title,
+                                description = description,
+                                assignedMemberNames = emptyList(),
+                                assignedMemberIds = emptyList(),
+                                column = columnType(entity),
+                                creationDate = LocalDateTime.parse(creationDate)
+                            )
+                        }
+                    )
+                } else {
+                    val userFlows = entity.assignee.map { assigneeId ->
+                        service.get(path = "users", subPath = assigneeId)
+                            .map { userSnapshot ->
+                                userSnapshot.getValue(UserProfileEntity::class.java)?.name ?: ""
+                            }
+                    }
 
-                    val column = columnType(entity)
-
-                    with(entity) {
-                        Ticket(
-                            id = key,
-                            colorHex = color,
-                            name = title,
-                            description = description,
-                            assignedMemberName = userEntity?.name ?: "",
-                            assignedMemberId = entity.assignee,
-                            column = column,
-                            creationDate = LocalDateTime.parse(creationDate)
-                        )
+                    combine(userFlows) { namesArray ->
+                        with(entity) {
+                            Ticket(
+                                id = key,
+                                colorHex = color,
+                                name = title,
+                                description = description,
+                                assignedMemberNames = namesArray.toList(),
+                                assignedMemberIds = entity.assignee,
+                                column = columnType(entity),
+                                creationDate = LocalDateTime.parse(creationDate)
+                            )
+                        }
                     }
                 }
             }
@@ -141,7 +169,7 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
                     color = colorHex,
                     title = name,
                     description = description,
-                    assignee = assignedMemberId,
+                    assignee = assignedMemberIds,
                     columnId = "todo",
                     creationDate = creationDate.toString()
                 )
@@ -165,7 +193,7 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
                     color = colorHex,
                     title = name,
                     description = description,
-                    assignee = assignedMemberId,
+                    assignee = assignedMemberIds,
                     columnId = column.map(columnMapper),
                     creationDate = creationDate.toString()
                 )

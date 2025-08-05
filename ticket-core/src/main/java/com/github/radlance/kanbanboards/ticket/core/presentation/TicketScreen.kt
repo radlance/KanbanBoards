@@ -36,9 +36,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -68,7 +68,7 @@ fun TicketScreen(
     modifier: Modifier = Modifier,
     selectedColor: String = "",
     initialTitleFieldValue: String = "",
-    initialSelectedAssigneeId: String = "",
+    initialSelectedAssignedList: List<String> = emptyList(),
     initialDescriptionFieldValue: String = "",
     ticketId: String = "",
     column: Column = Column.Todo,
@@ -93,7 +93,8 @@ fun TicketScreen(
         )
     }
     var titleFieldValue by rememberSaveable { mutableStateOf(initialTitleFieldValue) }
-    var selectedAssigneeId by rememberSaveable { mutableStateOf(initialSelectedAssigneeId) }
+    val selectedAssignedIds =
+        remember { mutableStateListOf(*initialSelectedAssignedList.toTypedArray()) }
     var descriptionFieldValue by rememberSaveable { mutableStateOf(initialDescriptionFieldValue) }
 
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -114,12 +115,12 @@ fun TicketScreen(
         ) {
             val listState = rememberLazyListState()
 
-            if (selectedAssigneeId != "") {
-                val index = members.indexOf(members.first { it.id == selectedAssigneeId })
-                LaunchedEffect(Unit) {
-                    listState.scrollToItem(index)
-                }
-            }
+//            if (selectedAssigneeId != "") {
+//                val index = members.indexOf(members.first { it.id == selectedAssigneeId })
+//                LaunchedEffect(Unit) {
+//                    listState.scrollToItem(index)
+//                }
+//            }
 
             val filteredMembers = remember(members, searchFieldValue) {
                 members.filter { it.email.contains(searchFieldValue, ignoreCase = true) }
@@ -157,12 +158,15 @@ fun TicketScreen(
                     ) { index, member ->
                         DropdownMenuItem(
                             onClick = {
-                                selectedAssigneeId = member.id
-                                expanded = false
+                                if (selectedAssignedIds.contains(member.id)) {
+                                    selectedAssignedIds.remove(member.id)
+                                } else {
+                                    selectedAssignedIds.add(member.id)
+                                }
                             },
                             text = {
                                 val color by animateColorAsState(
-                                    if (selectedAssigneeId == member.id) {
+                                    if (selectedAssignedIds.contains(member.id)) {
                                         MaterialTheme.colorScheme.primary
                                     } else LocalTextStyle.current.color
                                 )
@@ -214,7 +218,9 @@ fun TicketScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     readOnly = true,
-                    value = members.find { it.id == selectedAssigneeId }?.email ?: "",
+                    value = members.filter {
+                        selectedAssignedIds.contains(it.id)
+                    }.joinToString { it.email },
                     onValueChange = {},
                     singleLine = true,
                     placeholder = {
@@ -259,7 +265,8 @@ fun TicketScreen(
                         title = titleFieldValue,
                         color = ticketColors[selectedColorIndex],
                         description = descriptionFieldValue,
-                        assigneeId = members.find { it.id == selectedAssigneeId }?.id ?: "",
+                        assigneeIds = members.filter { selectedAssignedIds.contains(it.id) }
+                            .map { it.id },
                         column = column,
                         creationDate = creationDate
                     )
