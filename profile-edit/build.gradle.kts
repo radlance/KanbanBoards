@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.radlance.profile"
+    namespace = "com.github.radlance.kanbanboars.profile.edit"
     compileSdk = 36
 
     defaultConfig {
@@ -29,14 +29,10 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
 
     tasks.withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
 
@@ -47,9 +43,10 @@ android {
 
 dependencies {
 
+    implementation(libs.kotlinx.datetime)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    api(project(":core"))
+    implementation(project(":auth"))
     implementation(project(":board-core"))
-    testImplementation(testFixtures(project(":board-core")))
+    implementation(project(":profile"))
 }

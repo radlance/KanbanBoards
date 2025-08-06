@@ -4,5 +4,6 @@
     <string name="sign_in_again_to_delete_your_profile">Sign in again to delete your profile</string>
     <string name="my_name">My name: %1$s</string>
     <string name="my_email">My email: %1$s</string>
+    <string name="edit_profile">Edit profile</string>
 
 </resources>

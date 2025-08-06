@@ -15,7 +15,7 @@ class HandleProfileTest {
 
     @Test
     fun test_profile_ui_state() {
-        assertEquals(ProfileUiState.Initial, handleProfile.profileUiState.value)
+        assertEquals(ProfileUiState.Loading, handleProfile.profileUiState.value)
         handleProfile.saveProfileUiState(ProfileUiState.Loading)
         assertEquals(ProfileUiState.Loading, handleProfile.profileUiState.value)
 

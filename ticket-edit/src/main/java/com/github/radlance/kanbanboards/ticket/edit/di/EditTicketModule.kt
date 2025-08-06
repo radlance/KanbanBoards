@@ -2,7 +2,6 @@ package com.github.radlance.kanbanboards.ticket.edit.di
 
 import com.github.radlance.kanbanboards.core.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.core.domain.UnitResult
-import com.github.radlance.kanbanboards.ticket.edit.data.HandleUnitResult
 import com.github.radlance.kanbanboards.ticket.edit.data.RemoteEditTicketRepository
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository
 import com.github.radlance.kanbanboards.ticket.edit.presentation.BaseEditTicketMapperFacade
@@ -39,9 +38,6 @@ internal interface EditTicketModule {
 
     @Binds
     fun provideHandleEditTicket(handleEditTicket: BaseHandleEditTicket): HandleEditTicket
-
-    @Binds
-    fun provideHandleUnitResult(handleUnitResult: HandleUnitResult.Base): HandleUnitResult
 
     @Binds
     fun provideDeleteTicketMapper(deleteTicketMapper: DeleteTicketMapper): UnitResult.Mapper<DeleteTicketUiState>

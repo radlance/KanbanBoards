@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.kanbanboars.profile.edit.presentation
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height

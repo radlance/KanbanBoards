@@ -11,11 +11,13 @@ import com.github.radlance.kanbanboards.core.core.ManageResource
 import com.github.radlance.kanbanboards.core.data.BaseBoardsRemoteDataSource
 import com.github.radlance.kanbanboards.core.data.BaseDataStoreManager
 import com.github.radlance.kanbanboards.core.data.BaseHandleError
+import com.github.radlance.kanbanboards.core.data.BaseHandleUnitResult
 import com.github.radlance.kanbanboards.core.data.BaseIgnoreHandle
 import com.github.radlance.kanbanboards.core.data.BaseUsersRemoteDataSource
 import com.github.radlance.kanbanboards.core.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.core.data.DataStoreManager
 import com.github.radlance.kanbanboards.core.data.HandleError
+import com.github.radlance.kanbanboards.core.data.HandleUnitResult
 import com.github.radlance.kanbanboards.core.data.IgnoreHandle
 import com.github.radlance.kanbanboards.core.data.RemoteUsersRepository
 import com.github.radlance.kanbanboards.core.data.UsersRemoteDataSource
@@ -90,6 +92,13 @@ internal class CoreModule {
         service: Service,
         myUser: MyUser
     ): BoardsRemoteDataSource = BaseBoardsRemoteDataSource(service, myUser)
+
+    @Provides
+    @Singleton
+    fun provideHandleUnitResult(manageResource: ManageResource): HandleUnitResult {
+        return BaseHandleUnitResult(manageResource)
+    }
+
 
     companion object {
         private val Context.datastore by preferencesDataStore("settings")

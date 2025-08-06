@@ -6,11 +6,18 @@ interface LoadProfileResult {
 
     interface Mapper<T : Any> {
 
-        fun map(name: String, email: String): T
+        fun mapSuccess(name: String, email: String): T
+
+        fun mapError(message: String): T
     }
 
-    data class Base(private val name: String, private val email: String) : LoadProfileResult {
+    data class Success(private val name: String, private val email: String) : LoadProfileResult {
 
-        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.map(name, email)
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapSuccess(name, email)
+    }
+
+    data class Error(private val message: String) : LoadProfileResult {
+
+        override fun <T : Any> map(mapper: Mapper<T>): T = mapper.mapError(message)
     }
 }

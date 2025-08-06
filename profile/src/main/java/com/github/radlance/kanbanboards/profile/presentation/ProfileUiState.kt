@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.github.radlance.kanbanboards.core.presentation.ErrorMessage
 import com.github.radlance.profile.R
 
 interface ProfileUiState {
@@ -37,15 +38,15 @@ interface ProfileUiState {
         }
     }
 
+    data class Error(private val message: String) : ProfileUiState {
+
+        @Composable
+        override fun Show() = ErrorMessage(message)
+    }
+
     object Loading : ProfileUiState {
 
         @Composable
         override fun Show() = CircularProgressIndicator()
-    }
-
-    object Initial : ProfileUiState {
-
-        @Composable
-        override fun Show() = Unit
     }
 }

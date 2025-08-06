@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.kanbanboars.profile.edit.presentation
 
 import com.github.radlance.kanbanboards.auth.presentation.signin.CredentialResult
 import com.github.radlance.kanbanboards.core.core.ManageResource

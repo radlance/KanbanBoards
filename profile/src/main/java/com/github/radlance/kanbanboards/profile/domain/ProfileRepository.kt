@@ -1,17 +1,13 @@
 package com.github.radlance.kanbanboards.profile.domain
 
-import com.github.radlance.kanbanboards.api.service.ProfileProvider
-import com.github.radlance.kanbanboards.core.domain.UnitResult
+import kotlinx.coroutines.flow.Flow
 
-interface ProfileRepository {
+interface ProfileInfoRepository {
 
-    fun profile(): LoadProfileResult
+    fun profile(): Flow<LoadProfileResult>
+}
+
+interface ProfileRepository : ProfileInfoRepository {
 
     suspend fun signOut()
-
-    fun profileProvider(): ProfileProvider
-
-    suspend fun deleteProfileWithGoogle(userTokenId: String): UnitResult
-
-    suspend fun deleteProfileWithEmail(email: String, password: String): UnitResult
 }

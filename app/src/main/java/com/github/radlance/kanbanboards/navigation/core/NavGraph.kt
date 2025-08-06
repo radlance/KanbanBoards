@@ -37,6 +37,7 @@ import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketScree
 import com.github.radlance.kanbanboards.ticket.edit.presentation.EditTicketViewModel
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoScreen
 import com.github.radlance.kanbanboards.ticket.info.presentation.TicketInfoViewModel
+import com.github.radlance.kanbanboars.profile.edit.presentation.EditProfileScreen
 
 @Composable
 fun NavGraph(
@@ -118,11 +119,12 @@ fun NavGraph(
 
         composable<Profile> {
             ProfileScreen(
-                navigateToSignInScreen = {
+                navigateToSignIn = {
                     navHostController.navigate(SignIn) {
                         popUpTo<Boards> { inclusive = true }
                     }
                 },
+                navigateToEditProfile = { navHostController.navigate(EditProfile) },
                 navigateUp = navHostController::navigateUp
             )
         }
@@ -212,6 +214,17 @@ fun NavGraph(
             InvitationScreen(
                 navigateUp = navHostController::navigateUp,
                 viewModel = invitationViewModel
+            )
+        }
+
+        composable<EditProfile> {
+            EditProfileScreen(
+                navigateUp = navHostController::navigateUp,
+                navigateToSignIn = {
+                    navHostController.navigate(SignIn) {
+                        popUpTo<Boards> { inclusive = true }
+                    }
+                }
             )
         }
     }

@@ -3,6 +3,7 @@ package com.github.radlance.kanbanboards.ticket.edit.data
 import com.github.radlance.kanbanboards.board.core.BaseBoardCoreTest
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.EditTicket
+import com.github.radlance.kanbanboards.core.data.HandleUnitResult
 import com.github.radlance.kanbanboards.core.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository
 import com.github.radlance.kanbanboards.ticket.info.TestTicketInfoRepository

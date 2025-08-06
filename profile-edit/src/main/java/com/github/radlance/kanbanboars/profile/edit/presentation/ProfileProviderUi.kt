@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.kanbanboars.profile.edit.presentation
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image

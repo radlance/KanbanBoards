@@ -31,9 +31,11 @@ class ProfileViewModelTest : BaseTest() {
             profileRepository = repository,
             facade = BaseProfileMapperFacade(
                 loadProfileMapper = LoadProfileResultMapper(),
-                profileProviderMapper = ProfileProviderMapper(),
-                profileCredentialMapper = ProfileCredentialMapper(manageResource),
-                deleteProfileMapper = DeleteProfileMapper()
+                profileProviderMapper = com.github.radlance.kanbanboars.profile.edit.presentation.ProfileProviderMapper(),
+                profileCredentialMapper = com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialMapper(
+                    manageResource
+                ),
+                deleteProfileMapper = com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileMapper()
             ),
             handleProfile = handleProfile,
             runAsync = TestRunAsync()
@@ -56,9 +58,15 @@ class ProfileViewModelTest : BaseTest() {
             ProfileUiState.Base(name = "test name", email = "test@gmail.com"),
             handleProfile.saveProfileUiStateCalledList[1]
         )
-        assertEquals(ProfileProviderUi.Email, viewModel.profileProviderUi.value)
+        assertEquals(
+            com.github.radlance.kanbanboars.profile.edit.presentation.ProfileProviderUi.Email,
+            viewModel.profileProviderUi.value
+        )
         assertEquals(1, handleProfile.saveProfileProviderUiCalledList.size)
-        assertEquals(ProfileProviderUi.Email, handleProfile.saveProfileProviderUiCalledList[0])
+        assertEquals(
+            com.github.radlance.kanbanboars.profile.edit.presentation.ProfileProviderUi.Email,
+            handleProfile.saveProfileProviderUiCalledList[0]
+        )
         assertEquals(1, handleProfile.profileCredentialUiStateCalledCount)
         assertEquals(1, handleProfile.deleteProfileUiStateCalledCount)
     }
@@ -73,23 +81,31 @@ class ProfileViewModelTest : BaseTest() {
     fun test_create_credential() {
         viewModel.createCredential(CredentialResult.Error)
         assertEquals(
-            ProfileCredentialUiState.Error(manageResource),
+            com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState.Error(
+                manageResource
+            ),
             viewModel.profileCredentialUiState.value
         )
         assertEquals(1, handleProfile.saveProfileCredentialUiStateCalledList.size)
         assertEquals(
-            ProfileCredentialUiState.Error(manageResource),
+            com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState.Error(
+                manageResource
+            ),
             handleProfile.saveProfileCredentialUiStateCalledList[0]
         )
 
         viewModel.createCredential(CredentialResult.Success(idToken = "test token"))
         assertEquals(
-            ProfileCredentialUiState.Success(idToken = "test token"),
+            com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState.Success(
+                idToken = "test token"
+            ),
             viewModel.profileCredentialUiState.value
         )
         assertEquals(2, handleProfile.saveProfileCredentialUiStateCalledList.size)
         assertEquals(
-            ProfileCredentialUiState.Success(idToken = "test token"),
+            com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState.Success(
+                idToken = "test token"
+            ),
             handleProfile.saveProfileCredentialUiStateCalledList[1]
         )
         assertEquals(1, handleProfile.profileCredentialUiStateCalledCount)
@@ -100,7 +116,7 @@ class ProfileViewModelTest : BaseTest() {
         repository.makeExpectedDeleteProfileResult(UnitResult.Error(message = "delete error"))
         viewModel.deleteProfile(userTokenId = "test token")
         assertEquals(
-            DeleteProfileUiState.Error("delete error"),
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Error("delete error"),
             viewModel.deleteProfileUiState.value
         )
         assertEquals(1, repository.deleteProfileWithGoogleCalledList.size)
@@ -110,29 +126,29 @@ class ProfileViewModelTest : BaseTest() {
         )
         assertEquals(2, handleProfile.saveDeleteProfileUiStateCalledList.size)
         assertEquals(
-            DeleteProfileUiState.Loading,
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Loading,
             handleProfile.saveDeleteProfileUiStateCalledList[0]
         )
         assertEquals(
-            DeleteProfileUiState.Error("delete error"),
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Error("delete error"),
             handleProfile.saveDeleteProfileUiStateCalledList[1]
         )
 
         repository.makeExpectedDeleteProfileResult(UnitResult.Success)
         viewModel.deleteProfile(userTokenId = "another token")
         assertEquals(
-            DeleteProfileUiState.Success,
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Success,
             viewModel.deleteProfileUiState.value
         )
         assertEquals(2, repository.deleteProfileWithGoogleCalledList.size)
         assertEquals("another token", repository.deleteProfileWithGoogleCalledList[1])
         assertEquals(4, handleProfile.saveDeleteProfileUiStateCalledList.size)
         assertEquals(
-            DeleteProfileUiState.Loading,
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Loading,
             handleProfile.saveDeleteProfileUiStateCalledList[2]
         )
         assertEquals(
-            DeleteProfileUiState.Success,
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Success,
             handleProfile.saveDeleteProfileUiStateCalledList[3]
         )
     }
@@ -142,7 +158,7 @@ class ProfileViewModelTest : BaseTest() {
         repository.makeExpectedDeleteProfileResult(UnitResult.Error(message = "delete error"))
         viewModel.deleteProfile(email = "test@email.com", password = "123456")
         assertEquals(
-            DeleteProfileUiState.Error("delete error"),
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Error("delete error"),
             viewModel.deleteProfileUiState.value
         )
         assertEquals(1, repository.deleteProfileWithEmailCalledList.size)
@@ -152,18 +168,18 @@ class ProfileViewModelTest : BaseTest() {
         )
         assertEquals(2, handleProfile.saveDeleteProfileUiStateCalledList.size)
         assertEquals(
-            DeleteProfileUiState.Loading,
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Loading,
             handleProfile.saveDeleteProfileUiStateCalledList[0]
         )
         assertEquals(
-            DeleteProfileUiState.Error("delete error"),
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Error("delete error"),
             handleProfile.saveDeleteProfileUiStateCalledList[1]
         )
 
         repository.makeExpectedDeleteProfileResult(UnitResult.Success)
         viewModel.deleteProfile(email = "anotherEmail@gmai.com", password = "987654")
         assertEquals(
-            DeleteProfileUiState.Success,
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Success,
             viewModel.deleteProfileUiState.value
         )
         assertEquals(2, repository.deleteProfileWithEmailCalledList.size)
@@ -173,11 +189,11 @@ class ProfileViewModelTest : BaseTest() {
         )
         assertEquals(4, handleProfile.saveDeleteProfileUiStateCalledList.size)
         assertEquals(
-            DeleteProfileUiState.Loading,
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Loading,
             handleProfile.saveDeleteProfileUiStateCalledList[2]
         )
         assertEquals(
-            DeleteProfileUiState.Success,
+            com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Success,
             handleProfile.saveDeleteProfileUiStateCalledList[3]
         )
     }
@@ -207,7 +223,7 @@ class ProfileViewModelTest : BaseTest() {
         override fun profile(): LoadProfileResult {
             profileCalledCount++
             val userProfileEntity = userProfileEntity
-            return LoadProfileResult.Base(userProfileEntity.name!!, userProfileEntity.email)
+            return LoadProfileResult.Success(userProfileEntity.name!!, userProfileEntity.email)
         }
 
         override suspend fun signOut() {
@@ -232,27 +248,33 @@ class ProfileViewModelTest : BaseTest() {
 
     private class TestHandleProfile : HandleProfile {
 
-        private val profileUiStateMutable = MutableStateFlow<ProfileUiState>(ProfileUiState.Initial)
+        private val profileUiStateMutable = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
         var profileUiStateCalledCount = 0
         val saveProfileUiStateCalledList = mutableListOf<ProfileUiState>()
 
         var profileProviderUiCalledCount = 0
-        private val profileProviderUiMutable = MutableStateFlow<ProfileProviderUi>(
-            ProfileProviderUi.Initial
+        private val profileProviderUiMutable =
+            MutableStateFlow<com.github.radlance.kanbanboars.profile.edit.presentation.ProfileProviderUi>(
+                com.github.radlance.kanbanboars.profile.edit.presentation.ProfileProviderUi.Initial
         )
-        val saveProfileProviderUiCalledList = mutableListOf<ProfileProviderUi>()
+        val saveProfileProviderUiCalledList =
+            mutableListOf<com.github.radlance.kanbanboars.profile.edit.presentation.ProfileProviderUi>()
 
         var profileCredentialUiStateCalledCount = 0
-        private val profileCredentialUiStateMutable = MutableStateFlow<ProfileCredentialUiState>(
-            ProfileCredentialUiState.Initial
+        private val profileCredentialUiStateMutable =
+            MutableStateFlow<com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState>(
+                com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState.Initial
         )
-        val saveProfileCredentialUiStateCalledList = mutableListOf<ProfileCredentialUiState>()
+        val saveProfileCredentialUiStateCalledList =
+            mutableListOf<com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState>()
 
         var deleteProfileUiStateCalledCount = 0
-        private val deleteProfileUiStateMutable = MutableStateFlow<DeleteProfileUiState>(
-            DeleteProfileUiState.Initial
+        private val deleteProfileUiStateMutable =
+            MutableStateFlow<com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState>(
+                com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState.Initial
         )
-        val saveDeleteProfileUiStateCalledList = mutableListOf<DeleteProfileUiState>()
+        val saveDeleteProfileUiStateCalledList =
+            mutableListOf<com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState>()
 
         override val profileUiState: StateFlow<ProfileUiState>
             get() {
@@ -265,35 +287,35 @@ class ProfileViewModelTest : BaseTest() {
             saveProfileUiStateCalledList.add(profileUiState)
         }
 
-        override val profileProviderUi: StateFlow<ProfileProviderUi>
+        override val profileProviderUi: StateFlow<com.github.radlance.kanbanboars.profile.edit.presentation.ProfileProviderUi>
             get() {
                 profileProviderUiCalledCount++
                 return profileProviderUiMutable
             }
 
-        override fun saveProfileProviderUi(profileProviderUi: ProfileProviderUi) {
+        override fun saveProfileProviderUi(profileProviderUi: com.github.radlance.kanbanboars.profile.edit.presentation.ProfileProviderUi) {
             saveProfileProviderUiCalledList.add(profileProviderUi)
             profileProviderUiMutable.value = profileProviderUi
         }
 
-        override val profileCredentialUiState: StateFlow<ProfileCredentialUiState>
+        override val profileCredentialUiState: StateFlow<com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState>
             get() {
                 profileCredentialUiStateCalledCount++
                 return profileCredentialUiStateMutable
             }
 
-        override fun saveProfileCredentialUiState(profileCredentialUiState: ProfileCredentialUiState) {
+        override fun saveProfileCredentialUiState(profileCredentialUiState: com.github.radlance.kanbanboars.profile.edit.presentation.ProfileCredentialUiState) {
             saveProfileCredentialUiStateCalledList.add(profileCredentialUiState)
             profileCredentialUiStateMutable.value = profileCredentialUiState
         }
 
-        override val deleteProfileUiState: StateFlow<DeleteProfileUiState>
+        override val deleteProfileUiState: StateFlow<com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState>
             get() {
                 deleteProfileUiStateCalledCount++
                 return deleteProfileUiStateMutable
             }
 
-        override fun saveDeleteProfileUiState(deleteProfileUiState: DeleteProfileUiState) {
+        override fun saveDeleteProfileUiState(deleteProfileUiState: com.github.radlance.kanbanboars.profile.edit.presentation.DeleteProfileUiState) {
             saveDeleteProfileUiStateCalledList.add(deleteProfileUiState)
             deleteProfileUiStateMutable.value = deleteProfileUiState
         }

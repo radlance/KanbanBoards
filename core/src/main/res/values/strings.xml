@@ -44,5 +44,6 @@
     <string name="create_board_error">Creating board error</string>
     <string name="create_board">Create Board</string>
     <string name="assigned_to">Assigned to:</string>
+    <string name="edit_profile">Edit profile</string>
 
 </resources>

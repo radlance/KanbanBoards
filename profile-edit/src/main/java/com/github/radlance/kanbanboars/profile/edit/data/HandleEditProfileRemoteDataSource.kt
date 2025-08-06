@@ -1,23 +1,26 @@
-package com.github.radlance.kanbanboards.profile.data
+package com.github.radlance.kanbanboars.profile.edit.data
 
 import com.github.radlance.kanbanboards.api.service.MyUser
 import com.github.radlance.kanbanboards.api.service.Service
 import com.github.radlance.kanbanboards.board.core.data.BoardRemoteDataSource
 import com.github.radlance.kanbanboards.core.data.HandleError
+import com.github.radlance.kanbanboards.core.data.UserProfileEntity
 import javax.inject.Inject
 
-internal interface HandleProfileRemoteDataSource {
+internal interface HandleEditProfileRemoteDataSource {
 
-    suspend fun handle(deleteAction: () -> Unit)
+    suspend fun handleDelete(deleteAction: () -> Unit)
+
+    suspend fun handleEdit(email: String, name: String, editAction: suspend () -> Unit)
 
     class Base @Inject constructor(
         private val handle: HandleError,
         private val service: Service,
         private val boardRemoteDataSource: BoardRemoteDataSource,
         private val myUser: MyUser
-    ) : HandleProfileRemoteDataSource {
+    ) : HandleEditProfileRemoteDataSource {
 
-        override suspend fun handle(deleteAction: () -> Unit) {
+        override suspend fun handleDelete(deleteAction: () -> Unit) {
             try {
                 val uid = myUser.id
 
@@ -70,6 +73,23 @@ internal interface HandleProfileRemoteDataSource {
 
                 deleteAction.invoke()
                 myUser.signOut()
+            } catch (e: Exception) {
+                handle.handle(e)
+            }
+        }
+
+        override suspend fun handleEdit(
+            email: String,
+            name: String,
+            editAction: suspend () -> Unit
+        ) {
+            try {
+                editAction.invoke()
+                service.update(
+                    path = "users",
+                    subPath = myUser.id,
+                    obj = UserProfileEntity(email = email, name = name)
+                )
             } catch (e: Exception) {
                 handle.handle(e)
             }

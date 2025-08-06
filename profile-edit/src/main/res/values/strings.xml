@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="enter_new_name">Enter new name</string>
+    <string name="enter_new_email">Enter new email</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="sign_in_again_to_edit_your_profile">Sign in again to edit your profile</string>
+</resources>

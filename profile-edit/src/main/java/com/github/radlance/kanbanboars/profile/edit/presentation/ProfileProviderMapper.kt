@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.kanbanboars.profile.edit.presentation
 
 import com.github.radlance.kanbanboards.api.service.ProfileProvider
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.kanbanboars.profile.edit.presentation
 
 import androidx.compose.runtime.Composable
 import com.github.radlance.kanbanboards.core.core.ManageResource

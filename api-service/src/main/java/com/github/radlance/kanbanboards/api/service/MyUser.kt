@@ -3,6 +3,7 @@ package com.github.radlance.kanbanboards.api.service
 import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import javax.inject.Inject
 
@@ -19,6 +20,8 @@ interface MyUser {
     val exists: Boolean
 
     fun signOut()
+
+    fun updateDisplayedName(name: String)
 }
 
 internal class BaseMyUser @Inject constructor() : MyUser {
@@ -44,5 +47,14 @@ internal class BaseMyUser @Inject constructor() : MyUser {
 
     override fun signOut() {
         Firebase.auth.signOut()
+    }
+
+    override fun updateDisplayedName(name: String) {
+        val currentUser = Firebase.auth.currentUser!!
+        currentUser.updateProfile(
+            UserProfileChangeRequest.Builder().apply {
+                displayName = name
+            }.build()
+        )
     }
 }

@@ -52,3 +52,7 @@ object BoardSettings : Destination
 @Keep
 @Serializable
 object Invitation : Destination
+
+@Keep
+@Serializable
+object EditProfile : Destination

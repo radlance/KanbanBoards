@@ -37,7 +37,7 @@ interface TicketRemoteDataSource {
 internal class BaseTicketRemoteDataSource @Inject constructor(
     private val service: Service,
     private val handleError: HandleError,
-    private val columnMapper: ColumnTypeMapper
+    private val columnMapper: Column.Mapper<String>
 ) : TicketRemoteDataSource {
 
     override fun ticket(ticketId: String): Flow<Ticket?> {
@@ -78,7 +78,7 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
                                 colorHex = color,
                                 name = title,
                                 description = description,
-                                assignedMemberNames = namesArray.filterNotNull(),
+                                assignedMemberNames = namesArray.toList(),
                                 assignedMemberIds = entity.assignee,
                                 column = columnType(entity),
                                 creationDate = LocalDateTime.parse(creationDate)

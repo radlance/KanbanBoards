@@ -1,15 +1,11 @@
-package com.github.radlance.kanbanboards.profile.presentation
+package com.github.radlance.kanbanboars.profile.edit.presentation
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-interface HandleProfile {
-
-    val profileUiState: StateFlow<ProfileUiState>
-
-    fun saveProfileUiState(profileUiState: ProfileUiState)
+interface HandleEditProfile {
 
     val profileProviderUi: StateFlow<ProfileProviderUi>
 
@@ -22,14 +18,20 @@ interface HandleProfile {
     val deleteProfileUiState: StateFlow<DeleteProfileUiState>
 
     fun saveDeleteProfileUiState(deleteProfileUiState: DeleteProfileUiState)
+
+    val editProfileUiState: StateFlow<EditProfileUiState>
+
+    fun saveEditProfileUiState(editProfileUiState: EditProfileUiState)
 }
 
-internal class BaseHandleProfile @Inject constructor() : HandleProfile {
-
-    private val profileUiStateMutable = MutableStateFlow<ProfileUiState>(ProfileUiState.Initial)
+internal class BaseHandleEditProfile @Inject constructor() : HandleEditProfile {
 
     private val profileProviderUiMutable = MutableStateFlow<ProfileProviderUi>(
         ProfileProviderUi.Initial
+    )
+
+    private val editProfileUiStateMutable = MutableStateFlow<EditProfileUiState>(
+        EditProfileUiState.Initial
     )
 
     private val profileCredentialUiStateMutable = MutableStateFlow<ProfileCredentialUiState>(
@@ -39,12 +41,6 @@ internal class BaseHandleProfile @Inject constructor() : HandleProfile {
     private val deleteProfileUiStateMutable = MutableStateFlow<DeleteProfileUiState>(
         DeleteProfileUiState.Initial
     )
-
-    override val profileUiState get() = profileUiStateMutable.asStateFlow()
-
-    override fun saveProfileUiState(profileUiState: ProfileUiState) {
-        profileUiStateMutable.value = profileUiState
-    }
 
     override val profileProviderUi: StateFlow<ProfileProviderUi>
         get() = profileProviderUiMutable.asStateFlow()
@@ -65,5 +61,12 @@ internal class BaseHandleProfile @Inject constructor() : HandleProfile {
 
     override fun saveDeleteProfileUiState(deleteProfileUiState: DeleteProfileUiState) {
         deleteProfileUiStateMutable.value = deleteProfileUiState
+    }
+
+    override val editProfileUiState: StateFlow<EditProfileUiState>
+        get() = editProfileUiStateMutable.asStateFlow()
+
+    override fun saveEditProfileUiState(editProfileUiState: EditProfileUiState) {
+        editProfileUiStateMutable.value = editProfileUiState
     }
 }

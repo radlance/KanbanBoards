@@ -6,5 +6,7 @@ import javax.inject.Inject
 internal class LoadProfileResultMapper @Inject constructor() :
     LoadProfileResult.Mapper<ProfileUiState> {
 
-    override fun map(name: String, email: String): ProfileUiState = ProfileUiState.Base(name, email)
+    override fun mapSuccess(name: String, email: String) = ProfileUiState.Base(name, email)
+
+    override fun mapError(message: String) = ProfileUiState.Error(message)
 }

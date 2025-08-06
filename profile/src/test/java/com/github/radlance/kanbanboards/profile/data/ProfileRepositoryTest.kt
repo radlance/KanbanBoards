@@ -38,13 +38,13 @@ class ProfileRepositoryTest : BaseTest() {
     fun test_profile() {
         remoteDataSource.setUserData(name = "test", email = "test@gmail.com")
         assertEquals(
-            LoadProfileResult.Base(name = "test", email = "test@gmail.com"),
+            LoadProfileResult.Success(name = "test", email = "test@gmail.com"),
             repository.profile()
         )
         assertEquals(1, remoteDataSource.profileCalledCount)
         remoteDataSource.setUserData(name = null, email = "test@gmail.com")
         assertEquals(
-            LoadProfileResult.Base(name = "", email = "test@gmail.com"),
+            LoadProfileResult.Success(name = "", email = "test@gmail.com"),
             repository.profile()
         )
         assertEquals(2, remoteDataSource.profileCalledCount)
