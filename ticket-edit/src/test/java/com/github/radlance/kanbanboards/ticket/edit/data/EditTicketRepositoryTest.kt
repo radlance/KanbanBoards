@@ -3,7 +3,6 @@ package com.github.radlance.kanbanboards.ticket.edit.data
 import com.github.radlance.kanbanboards.board.core.BaseBoardCoreTest
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.EditTicket
-import com.github.radlance.kanbanboards.core.data.HandleUnitResult
 import com.github.radlance.kanbanboards.core.domain.UnitResult
 import com.github.radlance.kanbanboards.ticket.edit.domain.EditTicketRepository
 import com.github.radlance.kanbanboards.ticket.info.TestTicketInfoRepository
@@ -34,7 +33,7 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
         repository = RemoteEditTicketRepository(
             ticketInfoRepository = ticketInfoRepository,
             ticketRemoteDataSource = ticketRemoteDataSource,
-            handleUnitResult = HandleUnitResult.Base(manageResource),
+            handleUnitResult = TestHandleUnitResult(),
             usersRepository = usersRepository
         )
     }
@@ -108,7 +107,6 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
 
     @Test
     fun test_edit_ticket_error_without_message() = runBlocking {
-        manageResource.makeExpectedString(expected = "create ticket error")
         ticketRemoteDataSource.makeExpectedEditTicketException(
             IllegalStateException()
         )
@@ -124,7 +122,7 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
                 column = Column.Todo
             )
         )
-        assertEquals(UnitResult.Error(message = "create ticket error"), actual)
+        assertEquals(UnitResult.Error(message = "Error"), actual)
         assertEquals(1, ticketRemoteDataSource.editTicketCalledList.size)
         assertEquals(
             EditTicket(
@@ -139,7 +137,6 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
             ),
             ticketRemoteDataSource.editTicketCalledList[0]
         )
-        assertEquals(1, manageResource.stringCalledCount)
     }
 
     @Test
@@ -156,14 +153,12 @@ class EditTicketRepositoryTest : BaseBoardCoreTest() {
 
     @Test
     fun test_delete_ticket_error_without_message() = runBlocking {
-        manageResource.makeExpectedString(expected = "create ticket error")
         ticketRemoteDataSource.makeExpectedDeleteTicketException(
             IllegalStateException()
         )
         val actual = repository.deleteTicket(ticketId = "000")
-        assertEquals(UnitResult.Error(message = "create ticket error"), actual)
+        assertEquals(UnitResult.Error(message = "Error"), actual)
         assertEquals(1, ticketRemoteDataSource.deleteTicketCalledList.size)
         assertEquals("000", ticketRemoteDataSource.deleteTicketCalledList[0])
-        assertEquals(1, manageResource.stringCalledCount)
     }
 }

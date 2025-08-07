@@ -48,5 +48,6 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(project(":auth"))
     implementation(project(":board-core"))
+    testImplementation(testFixtures(project(":board-core")))
     implementation(project(":profile"))
 }

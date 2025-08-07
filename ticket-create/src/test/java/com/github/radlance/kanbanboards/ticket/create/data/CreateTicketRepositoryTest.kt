@@ -31,7 +31,7 @@ class CreateTicketRepositoryTest : BaseBoardCoreTest() {
 
         repository = RemoteCreateTicketRepository(
             ticketRemoteDataSource = ticketRemoteDataSource,
-            manageResource = manageResource,
+            handleUnitResult = TestHandleUnitResult(),
             usersRepository = usersRepository
         )
     }
@@ -86,7 +86,6 @@ class CreateTicketRepositoryTest : BaseBoardCoreTest() {
 
     @Test
     fun test_create_ticket_error_without_message() = runBlocking {
-        manageResource.makeExpectedString(expected = "create ticket error")
         ticketRemoteDataSource.makeExpectedCreateTicketException(
             IllegalStateException()
         )
@@ -100,8 +99,7 @@ class CreateTicketRepositoryTest : BaseBoardCoreTest() {
                 creationDate = LocalDateTime.of(2023, 2, 2, 2, 2)
             )
         )
-        assertEquals(UnitResult.Error(message = "create ticket error"), actual)
-        assertEquals(1, manageResource.stringCalledCount)
+        assertEquals(UnitResult.Error(message = "Error"), actual)
     }
 
     @Test

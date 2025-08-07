@@ -3,11 +3,13 @@ package com.github.radlance.kanbanboards.core
 import com.github.radlance.kanbanboards.core.core.ManageResource
 import com.github.radlance.kanbanboards.core.data.BoardsRemoteDataSource
 import com.github.radlance.kanbanboards.core.data.DataStoreManager
+import com.github.radlance.kanbanboards.core.data.HandleUnitResult
 import com.github.radlance.kanbanboards.core.data.IgnoreHandle
 import com.github.radlance.kanbanboards.core.data.UsersRemoteDataSource
 import com.github.radlance.kanbanboards.core.domain.Board
 import com.github.radlance.kanbanboards.core.domain.BoardMembersResult
 import com.github.radlance.kanbanboards.core.domain.SearchUsersResult
+import com.github.radlance.kanbanboards.core.domain.UnitResult
 import com.github.radlance.kanbanboards.core.domain.User
 import com.github.radlance.kanbanboards.core.domain.UsersRepository
 import com.github.radlance.kanbanboards.core.presentation.RunAsync
@@ -26,6 +28,32 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 
 abstract class BaseTest {
+
+    protected class TestHandleUnitResult : HandleUnitResult {
+
+        override fun handle(action: () -> Unit): UnitResult {
+            return try {
+                action.invoke()
+                UnitResult.Success
+            } catch (e: Exception) {
+                UnitResult.Error(
+                    e.message ?: "Error"
+                )
+            }
+        }
+
+        override suspend fun handleSuspend(action: suspend () -> Unit): UnitResult {
+            return try {
+                action.invoke()
+                UnitResult.Success
+            } catch (e: Exception) {
+                UnitResult.Error(
+                    e.message ?: "Error"
+                )
+            }
+        }
+    }
+
     protected class TestRunAsync : RunAsync {
         override fun <T : Any> async(
             background: suspend () -> T,
