@@ -32,6 +32,12 @@
       <video controls src="https://github.com/user-attachments/assets/7c974439-7523-4c5e-abe2-4f82e91f7738" muted="muted"></video>
 </div>
 
+## Download
+ 
+<a href="https://www.rustore.ru/catalog/app/com.github.radlance.kanbanboards">
+  <img height="80px" alt="image" src="https://github.com/user-attachments/assets/c91b535f-883d-4cdd-8dbb-0e2985e8f941" />
+</a>
+
 ## Technologies
 
 - [Kotlin](https://kotlinlang.org/) - A programming language that is used for Android app development
