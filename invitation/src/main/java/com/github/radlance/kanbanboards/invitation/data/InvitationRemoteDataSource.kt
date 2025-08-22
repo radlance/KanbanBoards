@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.invitation.data
 
 import com.github.radlance.kanbanboards.api.service.MyUser
 import com.github.radlance.kanbanboards.api.service.Service
+import com.github.radlance.kanbanboards.api.service.getValue
 import com.github.radlance.kanbanboards.core.data.BoardEntity
 import com.github.radlance.kanbanboards.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.core.data.UserProfileEntity
@@ -40,7 +41,7 @@ internal interface InvitationRemoteDataSource {
 
             return invitationsQuery.flatMapLatest { invitationsSnapshot ->
                 val boardInvitations = invitationsSnapshot.mapNotNull { invitationSnapshot ->
-                    invitationSnapshot.getValue(InvitationEntity::class.java)?.let { entity ->
+                    invitationSnapshot.getValue<InvitationEntity>()?.let { entity ->
                         entity to invitationSnapshot.id
                     }
                 }
@@ -54,14 +55,14 @@ internal interface InvitationRemoteDataSource {
                                 path = "boards",
                                 subPath = invitationEntity.boardId
                             ).flatMapLatest { boardSnapshot ->
-                                val boardEntity = boardSnapshot.getValue(BoardEntity::class.java)
+                                val boardEntity = boardSnapshot.getValue<BoardEntity>()
                                 boardEntity?.let {
                                     service.get(
                                         path = "users",
                                         subPath = boardEntity.owner
                                     ).mapNotNull { userSnapshot ->
                                         val user =
-                                            userSnapshot.getValue(UserProfileEntity::class.java)
+                                            userSnapshot.getValue<UserProfileEntity>()
                                         Invitation(
                                             id = invitationId,
                                             boardId = boardSnapshot.id,

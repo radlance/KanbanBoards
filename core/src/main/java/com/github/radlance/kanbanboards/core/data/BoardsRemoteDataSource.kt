@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.core.data
 
 import com.github.radlance.kanbanboards.api.service.MyUser
 import com.github.radlance.kanbanboards.api.service.Service
+import com.github.radlance.kanbanboards.api.service.getValue
 import com.github.radlance.kanbanboards.core.domain.Board
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +38,7 @@ internal class BaseBoardsRemoteDataSource @Inject constructor(
         return query.map { snapshots ->
             snapshots.mapNotNull {
                 val key = it.id
-                val entity = it.getValue(BoardEntity::class.java) ?: return@mapNotNull null
+                val entity = it.getValue<BoardEntity>() ?: return@mapNotNull null
                 Board.My(key, entity.name)
             }
 
@@ -53,7 +54,7 @@ internal class BaseBoardsRemoteDataSource @Inject constructor(
 
         return membersQuery.flatMapLatest { membersSnapshot ->
             val boardIds = membersSnapshot.mapNotNull {
-                it.getValue(BoardMemberEntity::class.java)?.boardId
+                it.getValue<BoardMemberEntity>()?.boardId
             }
 
             if (boardIds.isEmpty()) {
@@ -70,13 +71,13 @@ internal class BaseBoardsRemoteDataSource @Inject constructor(
         path = "boards",
         subPath = boardId
     ).flatMapLatest { boardSnapshot ->
-        val boardEntity = boardSnapshot.getValue(BoardEntity::class.java)
+        val boardEntity = boardSnapshot.getValue<BoardEntity>()
         boardEntity?.let {
             service.get(
                 path = "users",
                 subPath = boardEntity.owner
             ).mapNotNull { userSnapshot ->
-                val user = userSnapshot.getValue(UserProfileEntity::class.java)
+                val user = userSnapshot.getValue<UserProfileEntity>()
                 Board.Other(
                     id = boardSnapshot.id,
                     name = boardEntity.name,

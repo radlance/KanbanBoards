@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.board.settings.data
 
 import com.github.radlance.kanbanboards.api.service.Service
+import com.github.radlance.kanbanboards.api.service.getValue
 import com.github.radlance.kanbanboards.board.settings.domain.BoardUser
 import com.github.radlance.kanbanboards.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.core.data.HandleError
@@ -97,7 +98,7 @@ internal interface BoardSettingsRemoteDataSource {
 
             return membersQuery.flatMapLatest { snapshots ->
                 val ids: List<Pair<String, String>> = snapshots.map {
-                    Pair(it.id, it.getValue(BoardMemberEntity::class.java)!!.memberId)
+                    Pair(it.id, it.getValue<BoardMemberEntity>()!!.memberId)
                 }
 
                 if (ids.isEmpty()) {
@@ -109,8 +110,7 @@ internal interface BoardSettingsRemoteDataSource {
                                 path = "users",
                                 subPath = pair.second
                             ).mapNotNull { memberSnapshot ->
-                                val userProfileEntity =
-                                    memberSnapshot.getValue(UserProfileEntity::class.java)
+                                val userProfileEntity = memberSnapshot.getValue<UserProfileEntity>()
                                 with(userProfileEntity ?: return@mapNotNull null) {
                                     BoardUser(
                                         id = pair.first,

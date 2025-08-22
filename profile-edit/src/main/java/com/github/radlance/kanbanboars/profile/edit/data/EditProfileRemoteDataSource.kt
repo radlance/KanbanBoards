@@ -4,6 +4,7 @@ import com.github.radlance.kanbanboards.api.service.Auth
 import com.github.radlance.kanbanboards.api.service.MyUser
 import com.github.radlance.kanbanboards.api.service.ProfileProvider
 import com.github.radlance.kanbanboards.api.service.Service
+import com.github.radlance.kanbanboards.api.service.getValue
 import com.github.radlance.kanbanboards.core.data.HandleError
 import com.github.radlance.kanbanboards.core.data.UserProfileEntity
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +33,7 @@ internal interface EditProfileRemoteDataSource {
 
         override fun profile(): Flow<UserProfileEntity> {
             return service.get(path = "users", subPath = myUser.id).mapNotNull {
-                it.getValue(UserProfileEntity::class.java)
+                it.getValue<UserProfileEntity>()
             }
         }
 

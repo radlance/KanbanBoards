@@ -2,6 +2,10 @@ package com.github.radlance.kanbanboards.api.service
 
 import com.google.firebase.database.DataSnapshot
 
+inline fun <reified T> Snapshot.getValue(): T? {
+    return getValue(T::class.java)
+}
+
 interface Snapshot {
 
     val id: String

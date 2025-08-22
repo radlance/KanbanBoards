@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.board.core.data
 
 import com.github.radlance.kanbanboards.api.service.MyUser
 import com.github.radlance.kanbanboards.api.service.Service
+import com.github.radlance.kanbanboards.api.service.getValue
 import com.github.radlance.kanbanboards.core.data.BoardEntity
 import com.github.radlance.kanbanboards.core.data.BoardMemberEntity
 import com.github.radlance.kanbanboards.core.data.IgnoreHandle
@@ -41,12 +42,10 @@ internal class BaseBoardRemoteDataSource @Inject constructor(
             )
         ) { boardSnapshot, membersSnapshot ->
             val key = boardSnapshot.id
-            val entity =
-                boardSnapshot.getValue(BoardEntity::class.java)
-                    ?: return@combine null
+            val entity = boardSnapshot.getValue<BoardEntity>() ?: return@combine null
 
             val isMember = membersSnapshot.any {
-                it.getValue(BoardMemberEntity::class.java)?.memberId == myUserId
+                it.getValue<BoardMemberEntity>()?.memberId == myUserId
             }
 
             if (entity.owner != myUserId && !isMember) {
@@ -71,7 +70,7 @@ internal class BaseBoardRemoteDataSource @Inject constructor(
         )
 
         val result = boardMemberSnapshot.firstOrNull {
-            it.child("memberId").getValue(String::class.java) == myUserId
+            it.child("memberId").getValue<String>() == myUserId
         }
 
         result?.ref?.removeValue()

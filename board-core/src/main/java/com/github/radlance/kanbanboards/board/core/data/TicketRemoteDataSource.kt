@@ -1,6 +1,7 @@
 package com.github.radlance.kanbanboards.board.core.data
 
 import com.github.radlance.kanbanboards.api.service.Service
+import com.github.radlance.kanbanboards.api.service.getValue
 import com.github.radlance.kanbanboards.board.core.domain.Column
 import com.github.radlance.kanbanboards.board.core.domain.EditTicket
 import com.github.radlance.kanbanboards.board.core.domain.NewTicket
@@ -43,7 +44,7 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
     override fun ticket(ticketId: String): Flow<Ticket?> {
         val tickets = service.get(path = "tickets", subPath = ticketId)
         return tickets.flatMapLatest { ticketSnapshot ->
-            val entity = ticketSnapshot.getValue(TicketEntity::class.java)
+            val entity = ticketSnapshot.getValue<TicketEntity>()
 
             if (entity == null) {
                 flowOf(null)
@@ -51,7 +52,7 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
                 val userFlows = entity.assignee.map { assigneeId ->
                     service.get(path = "users", subPath = assigneeId)
                         .mapNotNull { userSnapshot ->
-                            userSnapshot.getValue(UserProfileEntity::class.java)?.name
+                            userSnapshot.getValue<UserProfileEntity>()?.name
                         }
                 }
 
@@ -100,8 +101,7 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
         return ticketsQuery.flatMapLatest { snapshot ->
             val ticketFlows: List<Flow<Ticket>> = snapshot.mapNotNull { ticketSnapshot ->
                 val key = ticketSnapshot.id
-                val entity = ticketSnapshot.getValue(TicketEntity::class.java)
-                    ?: return@mapNotNull null
+                val entity = ticketSnapshot.getValue<TicketEntity>() ?: return@mapNotNull null
 
                 if (entity.assignee.isEmpty()) {
                     flowOf(
@@ -122,7 +122,7 @@ internal class BaseTicketRemoteDataSource @Inject constructor(
                     val userFlows = entity.assignee.map { assigneeId ->
                         service.get(path = "users", subPath = assigneeId)
                             .map { userSnapshot ->
-                                userSnapshot.getValue(UserProfileEntity::class.java)?.name ?: ""
+                                userSnapshot.getValue<UserProfileEntity>()?.name ?: ""
                             }
                     }
 

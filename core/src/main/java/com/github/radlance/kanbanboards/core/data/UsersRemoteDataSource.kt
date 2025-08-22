@@ -2,6 +2,7 @@ package com.github.radlance.kanbanboards.core.data
 
 import com.github.radlance.kanbanboards.api.service.MyUser
 import com.github.radlance.kanbanboards.api.service.Service
+import com.github.radlance.kanbanboards.api.service.getValue
 import com.github.radlance.kanbanboards.core.domain.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +32,7 @@ internal class BaseUsersRemoteDataSource @Inject constructor(
         path = "users",
         subPath = userId
     ).mapNotNull { memberSnapshot ->
-        val userProfileEntity = memberSnapshot.getValue(UserProfileEntity::class.java)
+        val userProfileEntity = memberSnapshot.getValue<UserProfileEntity>()
         with(userProfileEntity ?: return@mapNotNull null) {
             User(id = userId, email = email, name = name ?: "")
         }
@@ -67,7 +68,7 @@ internal class BaseUsersRemoteDataSource @Inject constructor(
                 add(ownerId)
                 addAll(
                     membersSnapshot.mapNotNull {
-                        it.getValue(BoardMemberEntity::class.java)?.memberId
+                        it.getValue<BoardMemberEntity>()?.memberId
                     }
                 )
             }
