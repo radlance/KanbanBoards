@@ -96,7 +96,7 @@ fun NavGraph(
             SignUpScreen(
                 navigateToBoardsScreen = navigateToBoardsScreen,
                 navigateToSignInScreen = {
-                    navHostController.navigate(SignIn) { popUpTo<SignIn> { inclusive = true } }
+                    navHostController.popBackStack(SignIn, inclusive = false)
                 }
             )
         }
