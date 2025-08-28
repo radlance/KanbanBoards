@@ -271,6 +271,6 @@ fun sharedXTransitionOut(
     )
 }
 
-private const val NAVIGATION_TIME: Int = 300
+private const val NAVIGATION_TIME = 300
 private const val INITIAL_OFFSET = 0.175f
 private const val OFFSET_LIMIT = 0.4f
